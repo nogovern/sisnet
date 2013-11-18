@@ -1,0 +1,53 @@
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>Hello, world!</h1>
+        <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span12">
+          
+        <table class="table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>구분</th>
+              <th>이름</th>
+              <th>아이디</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+<?php
+$colors = array( "success", "error", "warning", "info");
+foreach($rows as $row):
+  $index = mt_rand(0, 3);
+?>
+            <tr class="<?=$colors[$index]?>">
+              <td><?=$row->ID?></td>
+              <td><?=$row->GUBUN?></td>
+              <td><?=$row->NAME?></td>
+              <td><?=$row->USERNAME?></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+<?php
+endforeach;
+?>
+          </tbody>
+
+        </table>
+
+        </div>
+      </div>
