@@ -16,7 +16,7 @@ class User_repository extends CI_Model {
 		foreach( $data as $k => $v) {
 			if("date_register" == $k) {
 				$v = "sysdate";
-				$this->db->set(strtoupper($k), $v, FALSE);		// 등록일시 
+				$this->db->set(strtoupper($k), $v, FALSE);		// 등록일시 현재시간 입력
 			} else {
 				$this->db->set(strtoupper($k), $v);
 			}

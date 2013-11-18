@@ -25,9 +25,14 @@
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="/assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/assets/ico/favicon.png">
+
+    <link rel="stylesheet" href="/assets/css/colorbox.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery.colorbox.js"></script>
   </head>
 
   <body>
@@ -44,8 +49,26 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/users">사용자</a></li>
+                  <li><a href="/admin/offices">사무소</a></li>
+                  <li><a href="/admin/inventories">재고창고</a></li>
+                  <li><a href="/admin/partners">고객사</a></li>
+                  <li><a href="/admin/stores">점포</a></li>
+                </ul>
+              </li>
+
               <li><a href="#about">일정</a></li>
-              <li><a href="#contact">입고</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">입고 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/orders/request_form">입고요청</a></li>
+                  <li><a href="/orders/lists">입고요청 확인</a></li>
+                </ul>
+              </li>
+
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">설치 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -58,7 +81,10 @@
                   <li><a href="#">One more separated link</a></li>
                 </ul>
               </li>
+
+              <li><a href="">철수</a></li>
             </ul>
+
             <form class="navbar-form pull-right">
               <input class="span2" type="text" placeholder="Email">
               <input class="span2" type="password" placeholder="Password">

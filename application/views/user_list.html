@@ -1,7 +1,6 @@
       <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+      <div class="page-header">
+        <h1>사용자 리스트</h1>
       </div>
 
       <!-- Example row of columns -->
@@ -49,5 +48,17 @@ endforeach;
 
         </table>
 
+        <p>
+          <a class='ajax' href="/assets/content/ajax.html" title="Homer Defined">Outside HTML (Ajax)</a>
+        </p>
+        <p>
+          <a href="/users/form"><button class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;사용자 등록</button></a>
+        </p>
+
         </div>
       </div>
+      <script type="text/javascript">
+      $(document).ready(function(){
+          $(".ajax").colorbox({'opacity': '0.6', 'width': '80%'});
+      });
+      </script>
