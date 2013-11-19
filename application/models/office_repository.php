@@ -10,7 +10,7 @@ class Office_repository extends CI_Model {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->db = $this->load->database('oracle', TRUE);
+		//$this->db = $this->load->database('oracle', TRUE);
 
 		$this->table_name = "gs2_offices";
 		$this->table_name = strtoupper($this->table_name);		// oracle 테이블명은 대문자로
@@ -45,6 +45,23 @@ class Office_repository extends CI_Model {
 		return $new_id;
 	}
 
+	public function getList()
+	{
+		$rs = $this->db->get($this->table_name);
+
+		return $rs->result();
+	}
+
+	public function delete($office_id)
+	{
+		if(empty($office_id)) {
+			return FALSE;
+		}
+
+		$sql = "delete from " . $this->table_name . " where ID = " . $office_id;
+		$rs = $this->db->query($sql);
+	}
+
 	////////////////////////////////
 	// 공통으로 사용할 수 있을듯 
 	////////////////////////////////
@@ -68,7 +85,7 @@ class Office {
 	var $id;
 	var $code;
 	var $name;
-	var $is_inventory;
+	var $has_inventory;
 	var $inventory_id;
 	var $tel;
 	var $address;

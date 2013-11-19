@@ -32,6 +32,10 @@
           <p>
             <button class="btn btn-primary" type="button">입력완료</button>
           </p>
+
+          <p class="submit">
+            <input type="submit" vlaue="Send md the activation link">
+          </p>
         </form>
 
         </div>

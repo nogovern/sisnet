@@ -4,9 +4,9 @@ class User_repository extends CI_Model {
 	
 	public function __construct() {
 		parent::__construct();
-		$this->db = $this->load->database('oracle', TRUE);
 
-		// echo __CLASS__ . " is loaded...";
+		$this->table_name = 'gs2_users';
+		$this->table_name = strtoupper($this->table_name);
 	}
 
 	public function add($data) {

@@ -55,8 +55,10 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		$office_repository = $this->CI->office_repository;
 
 		$office1 = new Office();
-		$office1->name = "본사";
-		$office1->is_inventory = "N";
+		$office1->name = "테스트";
+		$office1->has_inventory = "N";
+		$office1->status = "1";
+		$office1->memo = "입력 테스트중임 - " . date();
 
 		$office_id = $office_repository->add($office1);
 
@@ -74,7 +76,8 @@ class UserTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCustomerAdd()
 	{
-		
+		$data = array(
+		);	
 	}
 
 }

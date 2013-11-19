@@ -53,10 +53,10 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="/users">사용자</a></li>
-                  <li><a href="/admin/offices">사무소</a></li>
-                  <li><a href="/admin/inventories">재고창고</a></li>
-                  <li><a href="/admin/partners">고객사</a></li>
-                  <li><a href="/admin/stores">점포</a></li>
+                  <li><a href="/admin/office">사무소</a></li>
+                  <li><a href="/admin/inventory">재고창고</a></li>
+                  <li><a href="/admin/customer">고객사</a></li>
+                  <li><a href="/admin/store">점포</a></li>
                 </ul>
               </li>
 
@@ -72,9 +72,9 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">설치 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">신규</a></li>
-                  <li><a href="#">휴점S(매장 장비)</a></li>
-                  <li><a href="#">휴점C</a></li>
+                  <li><a href="/install/new">신규</a></li>
+                  <li><a href="/install/hujum_s">휴점S(매장 장비)</a></li>
+                  <li><a href="/install/hujum_c">휴점C</a></li>
                   <li class="divider"></li>
                   <li class="nav-header">Nav header</li>
                   <li><a href="#">Separated link</a></li>
