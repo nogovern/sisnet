@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * undocumented class
+ * Admin Controller class
  *
  * @package gs25
  * @author Jang KwangHee 
@@ -32,7 +32,16 @@ class Admin extends CI_Controller
 
 	public function inventory($action = 'lists')
 	{
-		;
+		$this->load->model('inventory_repository');
+		$rows = $this->inventory_repository->getList();
+
+		$data = array(
+			'rows' => $rows,
+			'title' => 'Sisnet service >> 창고 리스트',
+			'page_title' => '창고 리스트'
+			);
+
+		$this->render('inventory_list.html', $data);
 	}
 
 	public function user($action = 'lists') {
@@ -57,7 +66,7 @@ class Admin extends CI_Controller
 	 */
 	public function render($view_url, $data = array())
 	{
-		$this->load->view('layout/header');		
+		$this->load->view('layout/header', array('title' => $data['title']));		
 		$this->load->view($view_url, $data);
 		$this->load->view('layout/footer');
 	}

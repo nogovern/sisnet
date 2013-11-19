@@ -11,10 +11,7 @@
           <thead>
             <tr>
               <th>No</th>
-              <th>CODE</th>
-              <th>사무소명</th>
-              <th>창고 여부</th>
-              <th>담당자</th>
+              <th>창고명</th>
               <th>상태</th>
               <th>&nbsp;</th>
             </tr>
@@ -26,10 +23,7 @@ foreach($rows as $row):
 ?>
             <tr>
               <td><?=$row->ID?></td>
-              <td><?=$row->CODE?></td>
               <td><?=$row->NAME?></td>
-              <td><?=$row->HAS_INVENTORY?></td>
-              <td><?=$row->USER_NAME?></td>
               <td><?=$row->STATUS?></td>
               <td><?=''?></td>
             </tr>
@@ -40,7 +34,7 @@ endforeach;
         </table>
 
         <p>
-          <a href="/admin/office/add"><button class="btn btn-primary">&nbsp;신규  등록</button></a>
+          <a href="/admin/inventory/add"><button class="btn btn-primary">&nbsp;신규  등록</button></a>
         </p>
 
         </div>

@@ -2,7 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8">
-    <title>시스넷서비스</title>
+    <title><?=isset($title) ? $title : '시스넷 서비스(default)';?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="GS25 asset management system">
     <meta name="author" content="Jang KwangHee">
@@ -45,22 +45,23 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">GS25 재고관리</a>
+          <a class="brand" href="<?=base_url();?>">GS25 재고관리</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="/users">사용자</a></li>
                   <li><a href="/admin/office">사무소</a></li>
-                  <li><a href="/admin/inventory">재고창고</a></li>
+                  <li><a href="/admin/inventory">창고</a></li>
                   <li><a href="/admin/customer">고객사</a></li>
                   <li><a href="/admin/store">점포</a></li>
                 </ul>
               </li>
 
-              <li><a href="#about">일정</a></li>
+              <li><a href="/schedule">일정</a></li>
+              <li><a href="/stock">재고</a></li>
+
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">입고 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
