@@ -2,99 +2,41 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8">
-    <title><?=isset($title) ? $title : '시스넷 서비스(default)';?></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="GS25 asset management system">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Jang KwangHee">
 
-    <!-- Le styles -->
-    <link href="/assets/css/bootstrap.css" rel="stylesheet">
+    <title><?=isset($title) ? $title : '시스넷 서비스(default)';?></title>
+
+    <!-- bootstrap 3.x -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+
     <style type="text/css">
       body {
+        font-family: NanumGothic, 나눔고딕;
         padding-top: 60px;
         padding-bottom: 40px;
       }
     </style>
-    <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    
+    <!-- Colorbox-->
+    <link rel="stylesheet" href="/assets/css/colorbox.css" />
+    <script src="/assets/js/jquery.colorbox.js"></script>
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="/assets/js/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="/assets/ico/favicon.png">
-
-    <link rel="stylesheet" href="/assets/css/colorbox.css" />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/js/jquery.colorbox.js"></script>
   </head>
 
   <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="<?=base_url();?>">GS25 재고관리</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리 <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/users">사용자</a></li>
-                  <li><a href="/admin/office">사무소</a></li>
-                  <li><a href="/admin/inventory">창고</a></li>
-                  <li><a href="/admin/customer">고객사</a></li>
-                  <li><a href="/admin/store">점포</a></li>
-                </ul>
-              </li>
-
-              <li><a href="/schedule">일정</a></li>
-              <li><a href="/stock">재고</a></li>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">입고 <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/orders/request_form">입고요청</a></li>
-                  <li><a href="/orders/lists">입고요청 확인</a></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">설치 <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/install/new">신규</a></li>
-                  <li><a href="/install/hujum_s">휴점S(매장 장비)</a></li>
-                  <li><a href="/install/hujum_c">휴점C</a></li>
-                  <li class="divider"></li>
-                  <li class="nav-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
-                </ul>
-              </li>
-
-              <li><a href="">철수</a></li>
-            </ul>
-
-            <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="Email">
-              <input class="span2" type="password" placeholder="Password">
-              <button type="submit" class="btn">Sign in</button>
-            </form>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-
-    <!-- start of div.container -->
-    <div class="container">

@@ -1,49 +1,54 @@
+    <!-- start of div.container -->
+    <div class="container">
+    
       <!-- Example row of columns -->
       <div class="row">
-        <div class="span12">
-          
-        <form>
-          <fieldset>
-            <legend>사용자 추가 양식</legend>
+        <div class="col-md-12">
+          <div class="form-group">  
+            <form role="form">
+              <h2>사용자 추가 양식</h2>
 
-            <label>사용자 구분</label>
-            <label class="radio">
-              <input type="radio" name="gubun" id="gubun_1" checked>
-              시스넷 서비스
-            </label>
-            <label class="radio">
-              <input type="radio" name="gubun" id="gubun_2">
-              GS25 유저
-            </label>
-            <label class="radio">
-              <input type="radio" name="gubun" id="gubun_3">
-              납품처 유저
-            </label>
+              <div class="form-group">
+                <label for="group">사용자 그룹 선택</label>
+                <input type="radio">
+              </div>
 
-            <label>사용자 ID</label>
-            <div class="form-horizontal">
-              <input type="text" name="username" placeholder="ID를 입력하세요...">
-              <button type="button" class="btn btn-warning">ID 중복확인</button>
-            </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                  Option one is this and that&mdash;be sure to include why it's great
+                </label>
+              </div>
 
-            <label>이름</label>
-            <input type="text" name="name" placeholder="(필수)성함을 입력하세요...">
+              <div class="form-group">
+                <lable for="username">사용자 ID 입력</lable>
+                <input type="text" class="form-control" id="username" placeholder="Enter ID">
+              </div>
 
-            <label>패스워드</label>
-            <input type="password" name="password" placeholder="패스워드를 입력하세요...">
+              <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요">
+              </div>
 
-            <label>패스워드 확인</label>
-            <input type="password" name="re_password" placeholder="패스워드를 다시 입력하세요...">
+              <div class="form-group has-error">
+                <label for="password" class="control-label">패스워드</label>
+                <input type="password" class="form-control" id="password" placeholder="패스워드를 입력하세요">
+              </div>
 
-            <label>연락처</label>
-            <input type="text" name="tel" placeholder="전화번호를 입력하세요...">
-          </fieldset>
-
-          <p class="form-actions">
-            <button class="btn btn-primary" type="button">입력완료</button>
-          </p>
-
-        </form>
+              <div class="form-group has-success">
+                <label for="re_password" class="control-label">패스워드 재입력</label>
+                <input type="password" class="form-control" id="re_password" placeholder="패스워드를 입력하세요">
+              </div>
+              
+              <p class="form-actions">
+                <button class="btn btn-primary" type="button">입력완료</button>
+                <button id="ajax" class="btn btn-default" type="button">팝업 띄우기</button>
+                <button id="ajax" class="btn btn-danger" type="button">다른 종류</button>
+              </p>
+            </form>
+          </div>
 
         </div>
       </div>
+      <!-- start of div.container -->
+    <div class="container">
