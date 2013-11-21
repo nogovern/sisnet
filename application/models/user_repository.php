@@ -5,6 +5,8 @@ class User_repository extends CI_Model {
 	public function __construct() {
 		parent::__construct();
 
+		// $this->load->database(); 	// autoload
+
 		$this->table_name = 'gs2_users';
 		$this->table_name = strtoupper($this->table_name);
 	}
@@ -70,29 +72,5 @@ class User_repository extends CI_Model {
 	}
 }
 
-class User {
-	private $id;
-	private $gubun;
-	private $username;
-	private $name;
-	private $password;
-	private	$phone;
-	private	$email;
-	private	$fax;
-	private $date_register;
-	private $status;
 
-	public function __construct() {
-
-	}
-
-	public function set($key='', $value='') {
-		$this->$key = $value; 
-	}
-
-	public function save() {
-		$repo = new User_repository();
-	}
-
-}
 

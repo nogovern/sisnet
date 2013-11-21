@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+
 use Doctrine\Common\ClassLoader,
+    Doctrine\ORM\Tools\Setup,
     Doctrine\ORM\Configuration,
     Doctrine\ORM\EntityManager,
     Doctrine\Common\Cache\ArrayCache,
@@ -7,54 +9,38 @@ use Doctrine\Common\ClassLoader,
 
 class Doctrine {
 
-  public $em = null;
+    public $em = null;
 
-  public function __construct()
-  {
+    public function __construct()
+    {
     // load database configuration from CodeIgniter
-    require_once APPPATH.'config/database.php';
-
-    // Set up class loading. You could use different autoloaders, provided by your favorite framework,
-    // if you want to.
-    //require_once APPPATH.'libraries/Doctrine/Common/ClassLoader.php';
-
-    $doctrineClassLoader = new ClassLoader('Doctrine',  APPPATH.'libraries');
-    $doctrineClassLoader->register();
-    $entitiesClassLoader = new ClassLoader('models', rtrim(APPPATH, "/" ));
-    $entitiesClassLoader->register();
-    $proxiesClassLoader = new ClassLoader('Proxies', APPPATH.'models/proxies');
-    $proxiesClassLoader->register();
-
-    // Set up caches
-    $config = new Configuration;
-    $cache = new ArrayCache;
-    $config->setMetadataCacheImpl($cache);
-    $driverImpl = $config->newDefaultAnnotationDriver(array(APPPATH.'models/Entities'));
-    $config->setMetadataDriverImpl($driverImpl);
-    $config->setQueryCacheImpl($cache);
-
-    $config->setQueryCacheImpl($cache);
-
-    // Proxy configuration
-    $config->setProxyDir(APPPATH.'/models/proxies');
-    $config->setProxyNamespace('Proxies');
-
-    // Set up logger
-    $logger = new EchoSQLLogger;
-    $config->setSQLLogger($logger);
-
-    $config->setAutoGenerateProxyClasses( TRUE );
+    require APPPATH.'config/database.php';
 
     // Database connection information
     $connectionOptions = array(
-        'driver' => 'pdo_mysql',
-        'user' =>     $db['default']['username'],
-        'password' => $db['default']['password'],
-        'host' =>     $db['default']['hostname'],
-        'dbname' =>   $db['default']['database']
+        'driver'    =>  $db[$active_group]['dbdriver'],
+        'user'      =>  $db[$active_group]['username'],
+        'password'  =>  $db[$active_group]['password'],
+        'host'      =>  "211.106.178.179",
+        'port'      =>  $db[$active_group]['port'],   
+        'dbname'    =>  $db[$active_group]['database'],
+        'charset'   =>  $db[$active_group]['char_set']
     );
+
+    // With this configuration, your model files need to be in application/models/Entity
+    // e.g. Creating a new Entity\User loads the class from application/models/Entity/User.php
+    $models_namespace = 'Entity';
+    $models_path = APPPATH . 'models';
+    $proxies_dir = APPPATH . 'models/proxies';
+    $metadata_paths = array(APPPATH . 'models');
+
+    // Set $dev_mode to TRUE to disable caching while you develop
+    $config = Setup::createAnnotationMetadataConfiguration($metadata_paths, $dev_mode = true, $proxies_dir);
 
     // Create EntityManager
     $this->em = EntityManager::create($connectionOptions, $config);
-  }
+
+    $loader = new ClassLoader($models_namespace, $models_path);
+    $loader->register();
+    }
 }

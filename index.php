@@ -196,7 +196,7 @@ if (defined('ENVIRONMENT'))
  * --------------------------------------------------------------------
  */
 
-require_once './vendor/autoload.php';
+require_once BASEPATH.'../vendor/autoload.php';
 
 /*
  * --------------------------------------------------------------------

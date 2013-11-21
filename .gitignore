@@ -15,4 +15,5 @@ application/config/database.php
 application/config/config.php
 application/controllers/tests.php
 
+composer.lock
 
