@@ -8,20 +8,37 @@
             <form role="form">
               <h2>사용자 추가 양식</h2>
 
-              <div class="form-group">
-                <label for="group">사용자 그룹 선택</label>
-                <input type="radio">
-              </div>
-
-              <div class="radio">
-                <label>
-                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                  Option one is this and that&mdash;be sure to include why it's great
-                </label>
+              <div class="form-group has-success">
+                <lable for="type" class="control-label">Select User Type</lable>
+                  <select id="type" class="form-control">
+                    <option>--선택하세요--</option>
+                    <option>시스네트</option>
+                    <option>GS</option>
+                    <option>납품처</option>
+                  </select>
               </div>
 
               <div class="form-group">
-                <lable for="username">사용자 ID 입력</lable>
+                <lable for="office" class="control-label">사무소 선택</lable>
+                  <select id="office" class="form-control">
+                    <option>--선택하세요--</option>
+                    <option>가산</option>
+                    <option>대전</option>
+                    <option>부산</option>
+                    <option>제주</option>
+                  </select>
+              </div>
+
+              <!-- 외부 업체 선택-->
+              <div class="form-group">
+                <lable for="customer" class="control-label">외부 업체 선택</lable>
+                  <select id="customer" class="form-control">
+                    <option>--선택하세요--</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                <lable for="username" >사용자 ID 입력</lable>
                 <input type="text" class="form-control" id="username" placeholder="Enter ID">
               </div>
 

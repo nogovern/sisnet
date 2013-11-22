@@ -33,12 +33,15 @@ class Customer extends CI_Controller {
 	}
 
 	public function lists() {
+
 		$em = $this->doctrine->em;
 
 		$items = $em->getRepository('Entity\Customer')->findAll();
 
+		$this->load->view('layout/header');
+		$this->load->view('layout/navbar');
 		print_r($items);
-
+		$this->load->view('layout/footer');
 	}
 
 	/**

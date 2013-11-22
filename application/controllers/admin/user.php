@@ -4,7 +4,12 @@ class User extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('user_repository');
+		
+		// $this->load->model('user_repository');
+		$this->load->library('doctrine');
+
+		// 프로파일링 설정
+		// $this->output->enable_profiler(TRUE);
 	}
 
 	public function index() {
@@ -12,30 +17,17 @@ class User extends CI_Controller {
 	}
 
 	public function lists() {
-		$data['rows'] = $this->user_repository->lists();
+		$em = $this->doctrine->em;
+
+		$items = $em->getRepository('Entity\User')->findAll();
+		$data['rows'] = $items;
 		
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
 		$this->load->view('user_list.html', $data);
 		$this->load->view('layout/footer');
 	}
-
-	public function auto_add() {
-		$data = array(
-			"name" => "테스트1",	
-			"username" => "테스트1",	
-			"password" => "********",	
-			"gubun" => "1",	
-			"phone" => "",	
-			"email" => "",	
-			"fax" => "",	
-			"date_register" => "",	
-			"status" => "1"
-		);	
-
-		$this->user_repository->add($data);
-	}
-
+	
 	public function add() {
 		
 	}

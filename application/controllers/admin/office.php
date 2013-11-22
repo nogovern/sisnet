@@ -10,6 +10,8 @@ class Office extends CI_Controller
 {
 	public function __construct() {
 		parent::__construct();
+
+		$this->load->library('doctrine');
 	}
 
 	public function index()
@@ -18,11 +20,13 @@ class Office extends CI_Controller
 	}
 
 	public function lists($action = 'lists') {
-		$this->load->model('office_repository');
-		$rows = $this->office_repository->getList();
+		$em = $this->doctrine->em;
+
+		$items = $em->getRepository('Entity\Office')->findAll();
+		// $data['rows'] = $items;
 
 		$data = array(
-			'rows' => $rows,
+			'rows' => $items,
 			'title' => '사무소 리스트',
 			'page_title' => '사무소 리스트'
 			);
@@ -32,7 +36,8 @@ class Office extends CI_Controller
 
 	public function render($view_url, $data = array())
 	{
-		$this->load->view('layout/header', array('title' => $data['title']));		
+		$this->load->view('layout/header', array('title' => $data['title']));
+		$this->load->view('layout/navbar');
 		$this->load->view($view_url, $data);
 		$this->load->view('layout/footer');
 	}

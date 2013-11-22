@@ -45,18 +45,6 @@ class Customer
 		return $this->$key;
 	}
 
-	public function __set($key, $value) {
-		if($key == 'id') {
-			trigger_error("ID(PK)는 설정할수 없습니다.");
-		}
-
-		$method = 'set' . ucfirst($key);	// setName 형식의 메서드 명
-		if(method_exists($this, $method)) {
-			$this->$method($value);
-		} else {
-			$this->$key = $value;
-		}
-	}
 	
 }
 
