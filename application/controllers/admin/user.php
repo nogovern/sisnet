@@ -1,13 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * 사용자 컨트롤러
- */
 
-class Users extends CI_Controller {
-	public function __construct() {
+class User extends CI_Controller {
+	public function __construct()
+	{
 		parent::__construct();
-
-		$this->output->enable_profiler(TRUE);
 		$this->load->model('user_repository');
 	}
 
@@ -41,12 +37,7 @@ class Users extends CI_Controller {
 	}
 
 	public function add() {
-		$data = array();
-
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
-		$this->load->view('user_add_form', $data);
-		$this->load->view('layout/footer');
+		
 	}
 
 	public function form() {

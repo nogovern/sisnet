@@ -81,38 +81,3 @@ class Office_repository extends CI_Model {
 
 }
 
-class Office {
-	var $id;
-	var $code;
-	var $name;
-	var $has_inventory;
-	var $inventory_id;
-	var $tel;
-	var $address;
-	var $memo;
-	var $status;
-
-	private $props = array();
-
-	public function __construct($id = '')
-	{
-		$repl = new ReflectionClass($this);
-		$props = $repl->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
-		
-		foreach($props as $obj) {
-			array_push($this->props, $obj->name);
-		}
-	}
-
-	public function set($val = '') {
-
-	}
-
-	public function _set($val = '') {
-		print_r($this->props);
-	}
-
-	public function getPropertiesList() {
-		return $this->props;
-	}
-}

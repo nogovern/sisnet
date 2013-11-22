@@ -57,6 +57,12 @@ p {
 	<div id="container">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
+		<hr>
+		<pre>
+			<?php
+			debug_print_backtrace();
+			?>
+		</pre>
 	</div>
 </body>
 </html>
