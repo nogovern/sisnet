@@ -4,32 +4,41 @@ class Customer extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
+		$this->load->library('doctrine');
+		
+		// 프로파일링 설정
+		$this->output->enable_profiler(TRUE);
 	}
 
 	public function index() {
-		echo 'hi there';
+		$this->lists();
 	}
 
 	public function add() {
-		$this->output->enable_profiler(TRUE);
+		$em = $this->doctrine->em;		
 
-		$this->load->library('doctrine');
-		$em = $this->doctrine->em;
-
-		if(0) {
+		if(1) {
 			$customer = new Entity\Customer();
 			$customer->name = "IBM Corp";
 			$customer->code = "IBM";
 			$customer->type = "1";
-			// $customer->date_register = "SYSDATE";
+			$customer->date_register = new DateTime();
+			// $customer->date_register = "2013-11-11 00:00:00";
 
 			$em->persist($customer);
 			$em->flush();
 		}
 
-		echo __METHOD__;
+	}
 
-		// print_r($customer);
+	public function lists() {
+		$em = $this->doctrine->em;
+
+		$items = $em->getRepository('Entity\Customer')->findAll();
+
+		print_r($items);
+
 	}
 
 	/**

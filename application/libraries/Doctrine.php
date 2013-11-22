@@ -7,6 +7,8 @@ use Doctrine\Common\ClassLoader,
     Doctrine\Common\Cache\ArrayCache,
     Doctrine\DBAL\Logging\EchoSQLLogger;
 
+use Doctrine\Common\EventManager;
+
 class Doctrine {
 
     public $em = null;
@@ -37,10 +39,30 @@ class Doctrine {
     // Set $dev_mode to TRUE to disable caching while you develop
     $config = Setup::createAnnotationMetadataConfiguration($metadata_paths, $dev_mode = true, $proxies_dir);
 
+    ///////////////////
+    // Set up logger //
+    ///////////////////
+    // $logger = new EchoSQLLogger;
+    // $config->setSQLLogger($logger);
+
+    /*
+     oracle 에서 매우 중요  
+     date / datetme 사용시 oracle 용 Doctrine Data Type 을 로드하지 못함.
+     그러므로 강제로 등록함
+     */
+    
+    ///////////////////
+    // event manager //
+    ///////////////////
+    $evm = new EventManager;
+    $evm->addEventSubscriber(new \Doctrine\DBAL\Event\Listeners\OracleSessionInit);
+
     // Create EntityManager
-    $this->em = EntityManager::create($connectionOptions, $config);
+    $this->em = EntityManager::create($connectionOptions, $config, $evm);
 
     $loader = new ClassLoader($models_namespace, $models_path);
     $loader->register();
+
+    
     }
 }
