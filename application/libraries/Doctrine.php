@@ -49,6 +49,7 @@ class Doctrine {
      oracle 에서 매우 중요  
      date / datetme 사용시 oracle 용 Doctrine Data Type 을 로드하지 못함.
      그러므로 강제로 등록함
+     (배운점) 웹검색을 통한 것보다, debug를 통해서 해결하는게 더 도움됨. 웹검색은 hint 정도만...
      */
     
     ///////////////////
