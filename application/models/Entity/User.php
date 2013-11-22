@@ -8,6 +8,8 @@ class User {
 	/**
 	 * @Id
 	 * @Column(type="integer", nullable=false)
+ 	 * @GeneratedValue(strategy="AUTO")
+	 * @SequenceGenerator(sequenceName="user_id_seq")
 	 */
 	protected $id;
 
@@ -44,10 +46,6 @@ class User {
 
 	public function setName($name) {
 		$this->name = $name;
-	}
-
-	public function setId($id) {
-		$this->id = mt_rand(100,1000);
 	}
 
 	public function setPassword($string) {

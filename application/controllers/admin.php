@@ -55,7 +55,22 @@ class Admin extends CI_Controller
 	 */
 	public function customer($action = 'lists')
 	{
-		# code...
+		$this->output->enable_profiler(TRUE);
+
+		$this->load->library('doctrine');
+		$em = $this->doctrine->em;
+
+		$customer = new Entity\Customer();
+		$customer->name = "IBM Corp";
+		$customer->code = "IBM";
+		$customer->type = "1";
+		// $customer->date_register = "SYSDATE";
+
+		$em->persist($customer);
+		$em->flush();
+
+		// print_r($customer);
+
 	}
 
 	/**
