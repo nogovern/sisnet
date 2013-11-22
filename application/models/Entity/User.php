@@ -1,5 +1,6 @@
 <?php
 namespace Entity;
+
 /**
  *  @Entity
  *  @Table(name="GS2_USERS")
@@ -9,7 +10,7 @@ class User {
 	 * @Id
 	 * @Column(type="integer", nullable=false)
  	 * @GeneratedValue(strategy="AUTO")
-	 * @SequenceGenerator(sequenceName="user_id_seq")
+	 * @SequenceGenerator(sequenceName="gs2_user_seq")
 	 */
 	protected $id;
 
