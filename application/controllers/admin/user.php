@@ -29,7 +29,49 @@ class User extends CI_Controller {
 	}
 	
 	public function add() {
-		
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$data['title'] = "Create a new user";
+
+		// 에러 구분자 UI 설정
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '<button type="button" class="close" aria-hidden="true">&times;</button></div>');
+
+		// 규칙 설정
+		$this->form_validation->set_rules('username', '사용자 ID', 'required');
+		$this->form_validation->set_rules('name', '이름', 'required');
+		$this->form_validation->set_rules('type', '사용자 종류', 'required');
+
+		if($this->form_validation->run() === FALSE){
+			$this->load->view('layout/header');
+			$this->load->view('layout/navbar');
+			$this->load->view('user_add_form', $data);
+			$this->load->view('layout/footer');
+		}
+		else 
+		{
+			// 새로운 사용자 등록
+			$em = $this->doctrine->em;
+
+			$user = new Entity\User();
+
+			$user->setUsername($this->input->post('username'));
+			$user->setName($this->input->post('name'));
+			$user->setPassword($this->input->post('password'));
+			$user->setType($this->input->post('type'));
+			$user->setDateRegister();
+			$user->setStatus(1);
+
+			$em->persist($user);
+			$em->flush();
+
+			// 입력 성공 메세지
+			var_dump($_POST);
+			echo "성공";
+
+			redirect('/admin/user');
+
+		}
 	}
 
 	public function form() {

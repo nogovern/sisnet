@@ -24,18 +24,16 @@
 
           <tbody>
 <?php
-$colors = array( "success", "error", "warning", "info");
 foreach($rows as $row):
-  $index = mt_rand(0, 3);
 ?>
-            <tr class="<?=$colors[$index]?>">
+            <tr class="">
               <td><?=$row->id?></td>
-              <td><?=$row->gubun?></td>
+              <td><?=$row->getUserTypeText()?></td>
               <td><?=$row->name?></td>
               <td><?=$row->username?></td>
-              <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d'): '';?></td>
+              <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
               <td><?=$row->status?></td>
-              <td><?=''?></td>
+              <td><?='--'?></td>
             </tr>
 <?php
 endforeach;
