@@ -1,13 +1,17 @@
 <?php
 /**
- * @group User
+ *
+ * 주의!
+ * - 꼭 ../vendor/bin/phpunit 으로 실행할 것!!!
  */
-
 class UserTest extends PHPUnit_Framework_TestCase {
+	protected static $em = NULL;
 	
 	public function setUp()
 	{
 		$this->CI = &get_instance();
+
+		//self::$em = $this->CI->load->library('doctrine');
 	}
 
 	public function tearDown() {
@@ -26,58 +30,18 @@ class UserTest extends PHPUnit_Framework_TestCase {
 	    $this->assertEquals(0, count($stack));
 	}
 
-	public function testUsingModel() {
-		$model = $this->CI->load->model('user_repository');
-		$user_repository = $this->CI->user_repository;	// 쉬운 형태로 변경
-
-		// $this->CI-> 형태로 불러와야 함
-		$rows = $this->CI->user_repository->lists();
-		$this->assertEquals( count($rows), 7);
-
-		$this->assertFalse( $user_repository::find() );
+	public function test2() {
+		$query = $this->CI->db->query("SELECT * FROM gs_user_info");
+		$rs = $query->result();
 	}
 
-	public function testAddUser() {
-
+	public function testAddPart() {
+		$this->CI->load->library('doctrine');
+		
+		$em =  $this->CI->doctrine->em;
+		$repo = $em->getRepository("Entity\InventoryPartAssociation");
 	}
 
-	public function testDoctrine2()
-	{
-		// $this->CI->load->library('doctrine');
-	}
-
-	/**
-	 * 사무소 입력 테스트
-	 */
-	public function testOfficeSingleAdd()
-	{
-		$this->CI->load->model('office_repository');
-		$office_repository = $this->CI->office_repository;
-
-		$office1 = new Office();
-		$office1->name = "테스트";
-		$office1->has_inventory = "N";
-		$office1->status = "1";
-		$office1->memo = "입력 테스트중임 - " . date();
-
-		$office_id = $office_repository->add($office1);
-
-		// offices 테이블의 id 최대값이 입력 시 리턴 됨 id 와 같은지 확인
-		$max_id = $office_repository->getMaxId();
-		$this->assertEquals($max_id, $office_id);
-
-		// 테스트 후 입력데이터 초기화 (truncate???)
-		// 
-		// $office_repository->truncate();
-	}
-
-	/**
-	 * 거래처 입력 테스트
-	 */
-	public function testCustomerAdd()
-	{
-		$data = array(
-		);	
-	}
+	
 
 }
