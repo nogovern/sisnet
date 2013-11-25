@@ -1,0 +1,66 @@
+    <!-- start of div.container -->
+    <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="page-header">
+        <h1>장비 리스트</h1>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span12">
+          
+        <table class="table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>타입(Type)</th>
+              <th>장비종류</th>
+              <th>모델명</th>
+              <th>제조사명</th>
+              <th>등록일자</th>
+              <th>재고수량</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+
+          <tbody>
+<?php
+foreach($rows as $row):
+?>
+            <tr class="">
+              <td><?=$row->id?></td>
+              <td><?=$row->type?></td>
+              <td><?='[장비종류]'?></td>
+              <td><?=$row->name?></td>
+              <td><?=$row->company_id?></td>
+              <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
+              <td><?=$row->cnt_total?></td>
+              <td><?=$row->status?></td>
+            </tr>
+<?php
+endforeach;
+?>
+          </tbody>
+
+        </table>
+
+        <p>
+          <a class='iframe' href="<?=site_url('admin/part/add')?>" title="장비 를 등록하세요">iframe open</a>
+        </p>
+        <p>
+          <a href="/admin/part/add"><button class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;장비 등록</button></a>
+        </p>
+
+        </div>
+      </div>
+    </div><!-- end of container -->
+      <script type="text/javascript">
+      $(document).ready(function(){
+          $(".ajax").colorbox({'opacity': '0.6', 'width': '80%'});
+          $(".iframe").colorbox({
+            'iframe'  : true,
+            'width'   : '50%',
+            'height'  : '80%'
+          });
+      });
+      </script>

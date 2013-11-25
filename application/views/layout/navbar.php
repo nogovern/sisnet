@@ -18,7 +18,7 @@
                 <li><a href="/admin/office">사무소</a></li>
                 <li><a href="/admin/inventory">창고</a></li>
                 <li><a href="/admin/customer">고객사</a></li>
-                <li><a href="/admin/equipment">장비</a></li>
+                <li><a href="/admin/part">장비</a></li>
                 <li><a href="/admin/store">점포</a></li>
               </ul>
             </li>
