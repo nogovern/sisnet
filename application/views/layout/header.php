@@ -21,7 +21,7 @@
       select,
       textarea,
       h1, h2, h3, h4, h5 {
-        font-family : Consolas, NanumGothic, "나눔고딕", Gulim;
+        font-family : "Lucida Grande", NanumGothic, "나눔고딕", Gulim;
       }
 
       body {
