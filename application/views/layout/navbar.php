@@ -48,6 +48,20 @@
             </li>
           </ul>
 
+          <ul class="nav navbar-nav navbar-right navbar-user">
+            <li class="dropdown user-dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> John Smith <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-inbox"></span> Inbox <span class="badge">7</span></a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                <li class="divider"></li>
+                <li><a href="#"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>
+              </ul>
+            </li>
+          </ul>
+          
+          <!--
           <form class="navbar-form navbar-right">
             <div class="form-group">
               <input type="text" placeholder="Email" class="form-control">
@@ -57,6 +71,7 @@
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
           </form>
+        -->
           
         </div><!--/.nav-collapse -->
       </div>

@@ -14,8 +14,17 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
 
     <style type="text/css">
+      body,
+      button,
+      input,
+      button,
+      select,
+      textarea,
+      h1, h2, h3, h4, h5 {
+        font-family : Consolas, NanumGothic, "나눔고딕", Gulim;
+      }
+
       body {
-        font-family: NanumGothic, 나눔고딕;
         padding-top: 60px;
         padding-bottom: 40px;
       }
