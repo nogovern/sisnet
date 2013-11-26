@@ -11,9 +11,6 @@ class InventoryPartAssociation
 {
 	/**
 	 * @Id
-	 * @Column(type="integer", nullable=false)
-	 * @GeneratedValue(strategy="AUTO")
-	 * 
 	 */
 	protected $id;
 

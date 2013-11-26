@@ -39,8 +39,8 @@ class Part extends CI_Controller {
 
 		// 규칙 설정
 		$this->form_validation->set_rules('type', '장비 타입', 'required');
-		$this->form_validation->set_rules('name', '장비명', 'required');
-		$this->form_validation->set_rules('qty_total', '사용자 ID', 'required');
+		$this->form_validation->set_rules('name', '장비 모델명', 'required');
+		$this->form_validation->set_rules('category', '장비 종류', 'required');
 
 		if($this->form_validation->run() === FALSE){
 			$this->load->view('layout/header');
@@ -50,20 +50,24 @@ class Part extends CI_Controller {
 		}
 		else 
 		{
+			var_dump($_POST);
+
 			// 새로운 사용자 등록
 			$em = $this->doctrine->em;
 
-			$user = new Entity\User();
+			$part = new Entity\Part();
+			$part->setName($this->input->post('name'));
+			$part->setType($this->input->post('type'));
+			$part->setPartCode($this->input->post('category_name'));
+			$part->setManufacturer($this->input->post('manufacturer'));
+			$part->setRegisterDate();
 
-
-			// $em->persist($user);
-			// $em->flush();
+			$em->persist($part);
+			$em->flush();
 
 			// 입력 성공 메세지
-			var_dump($_POST);
-			echo "성공";
 
-			redirect('/admin/user');
+			redirect('/admin/part');
 
 		}
 	}

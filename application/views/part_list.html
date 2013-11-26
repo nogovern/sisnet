@@ -30,11 +30,11 @@ foreach($rows as $row):
             <tr class="">
               <td><?=$row->id?></td>
               <td><?=$row->type?></td>
-              <td><?='[장비종류]'?></td>
+              <td><?=$row->part_code?></td>
               <td><?=$row->name?></td>
-              <td><?=$row->company_id?></td>
+              <td><?=$row->manufacturer?></td>
               <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
-              <td><?=$row->cnt_total?></td>
+              <td><?=intval($row->qty_total)?></td>
               <td><?=$row->status?></td>
             </tr>
 <?php
@@ -45,9 +45,6 @@ endforeach;
         </table>
 
         <p>
-          <a class='iframe' href="<?=site_url('admin/part/add')?>" title="장비 를 등록하세요">iframe open</a>
-        </p>
-        <p>
           <a href="/admin/part/add"><button class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;장비 등록</button></a>
         </p>
 
@@ -55,12 +52,4 @@ endforeach;
       </div>
     </div><!-- end of container -->
       <script type="text/javascript">
-      $(document).ready(function(){
-          $(".ajax").colorbox({'opacity': '0.6', 'width': '80%'});
-          $(".iframe").colorbox({
-            'iframe'  : true,
-            'width'   : '50%',
-            'height'  : '80%'
-          });
-      });
       </script>

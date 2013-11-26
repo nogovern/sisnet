@@ -64,7 +64,7 @@
 
               <div class="form-group">
                 <label for="re_password" class="control-label">패스워드 재입력</label>
-                <input type="password" class="form-control" id="re_password" name="password" placeholder="패스워드를 입력하세요">
+                <input type="password" class="form-control" id="re_password" name="re_password" placeholder="패스워드를 입력하세요">
               </div>
               
               <p class="form-actions">

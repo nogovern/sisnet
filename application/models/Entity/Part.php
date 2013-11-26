@@ -28,6 +28,11 @@ class Part
 	protected $part_no;
 
 	/**
+	 * @column(type="string", length=50)
+	 */
+	protected $name;
+
+	/**
 	 * @Column(type="string", length=50)
 	 */
 	protected $part_code;
@@ -59,7 +64,7 @@ class Part
 
 	/**
 	 * 
-	 * @_OneToMany(targetEntity="InventoryPartAssociation" mappedBy="parts")
+	 * @_OneToMany(targetEntity="InventoryPartAssociation", mappedBy="parts")
 	 */
 	protected $inventories;
 
@@ -78,10 +83,12 @@ class Part
 	
 	public function setType($val='') {
 		$this->type = $val;
+		return $this;
 	}
 
-	public function setPartNumber($val='') {
+	public function setPartNo($val='') {
 		$this->part_no = $val;
+		return $this;
 	}
 
 	public function setPartCode($val='') {
@@ -90,14 +97,24 @@ class Part
 
 	public function setName($val='') {
 		$this->name = $val;
+		return $this;
 	}
 
 	public function setRegisterDate() {
 		$this->date_register = new \DateTime("now");
+		return $this;
 	}
 
 	public function setStatus($val='') {
 		$this->status = $val;
+	}
+
+	public function setManufacturer($val='') {
+		$this->manufacturer = $val;
+	}
+
+	public function setQuantity($val) {
+		$this->qty_total = $val;
 	}
 
 }

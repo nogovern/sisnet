@@ -13,21 +13,49 @@
             <?php echo form_open('', 'role="form"');?>
             <!-- <form role="form"> -->
               <h2>장비 등록 양식</h2>
+              
+              <input type="hidden" name="category_name" id="category_name" value="">
+              <div class="form-group">
+                <label>장비 타입을 선택하세요</label>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="type1" name="type" value="1" checked>
+                    시리얼 관리 장비
+                  </label>
+                </div>
 
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="type2" name="type" value="2">
+                    수량 관리 장비
+                  </label>
+                </div>
+
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="type3" name="type" value="3">
+                    소모품
+                  </label>
+                </div>
+
+              </div>
 
               <div class="form-group">
-                <lable for="type" class="control-label">Select User Type</lable>
-                  <select id="type" name="type" class="form-control">
+                <lable for="category" class="control-label">장비 종류</lable>
+                  <select id="category" name="category" class="form-control">
                     <option value="">--선택하세요--</option>
-                    <option value="1">시스네트</option>
-                    <option value="2">GS</option>
-                    <option value="3">납품처</option>
+                    <option value="1">POS스캐너</option>
+                    <option value="2">고정스캐너</option>
+                    <option value="3">모니터_CRT</option>
+                    <option value="4">모니터_LCD</option>
+                    <option value="5">서버</option>
+                    <option value="6">프린터_점포용</option>
                   </select>
               </div>
 
               <div class="form-group">
-                <lable for="office_id" class="control-label">사무소 선택</lable>
-                  <select id="office_id" class="form-control">
+                <lable for="inventory_id" class="control-label">창고 선택</lable>
+                  <select id="inventory_id" class="form-control">
                     <option>--선택하세요--</option>
                     <option value="1">가산</option>
                     <option value="2">대전</option>
@@ -35,8 +63,8 @@
                     <option value="4">제주</option>
                   </select>
               </div>
-
-              <!-- 외부 업체 선택-->
+              
+              <!--
               <div class="form-group">
                 <lable for="customer_id" class="control-label">외부 업체 선택</lable>
                   <select id="customer_id" class="form-control">
@@ -46,25 +74,26 @@
                     <option value="3">LG</option>
                   </select>
               </div>
+              -->
 
               <div class="form-group">
-                <lable for="username" >사용자 ID 입력</lable>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Enter ID">
+                <lable for="part_no" >장비 식별자 입력</lable>
+                <input type="text" class="form-control" id="part_no" name="part_no" placeholder="Enter...">
               </div>
 
               <div class="form-group">
-                <label for="name">이름</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
+                <label for="part_code">장비 CODE</label>
+                <input type="text" class="form-control" id="part_code" name="part_code" placeholder="Enter...">
+              </div>
+
+              <div class="form-group has-success">
+                <label for="name" class="control-label">모델명</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter...">
               </div>
 
               <div class="form-group">
-                <label for="password" class="control-label">패스워드</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="패스워드를 입력하세요">
-              </div>
-
-              <div class="form-group">
-                <label for="re_password" class="control-label">패스워드 재입력</label>
-                <input type="password" class="form-control" id="re_password" name="password" placeholder="패스워드를 입력하세요">
+                <label for="manufacturer" class="control-label">제조사명</label>
+                <input type="text" class="form-control" id="manufacturer" name="manufacturer" placeholder="Enter...">
               </div>
               
               <p class="form-actions">
@@ -85,7 +114,17 @@
     <script type="text/javascript">
     $(document).ready(function(){
       $("#re_password").parent().addClass('has-warning');
+      $("form").submit(function(){
+        var selected = $("#category").val();
+        if( selected == ''){
+          alert('장비 종류를 선택하세요');
+          return false;
+        }
 
-      // $("select option").attr('font-weight', 'bold').attr('color', 'red');
+        var cat_name = $("#category option:selected").text();
+        $("#category_name").val(cat_name);      
+
+      });
+
     });
     </script>
