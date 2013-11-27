@@ -11,8 +11,7 @@ class Part
 {
 	/**
 	 * @Id
-	 * @Column(type="integer", nullable=false)
-	 * @GeneratedValue(strategy="AUTO")
+	 * @Column(type="integer", nullable=false) @GeneratedValue(strategy="AUTO")
 	 * @SequenceGenerator(sequenceName="gs2_part_seq")
 	 */
 	protected $id;
@@ -64,13 +63,13 @@ class Part
 
 	/**
 	 * 
-	 * @_OneToMany(targetEntity="InventoryPartAssociation", mappedBy="parts")
+	 * @OneToMany(targetEntity="Stock", mappedBy="parts")
 	 */
-	protected $inventories;
+	protected $stock_list;
 
 	/* ------------------------------ */
 	public function __construct() {
-		$this->inventories = new ArrayCollection();
+		$this->stock_list = new ArrayCollection();
 	}
 
 	public function __get($key) {
@@ -115,6 +114,14 @@ class Part
 
 	public function setQuantity($val) {
 		$this->qty_total = $val;
+	}
+
+	public function getStockList() {
+		return $this->stock_list;
+	}
+
+	public function assignToStockList(Stock $stock) {
+		$this->stock_list[] = $stock;
 	}
 
 }

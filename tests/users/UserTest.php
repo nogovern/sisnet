@@ -39,7 +39,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		$this->CI->load->library('doctrine');
 		
 		$em =  $this->CI->doctrine->em;
-		$repo = $em->getRepository("Entity\InventoryPartAssociation");
+		$repo = $em->getRepository("Entity\Stock");
 	}
 
 	

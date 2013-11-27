@@ -7,21 +7,24 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity
  * @Table(name="GS2_INVENTORY_PART")
  */
-class InventoryPartAssociation
+class Stock
 {
 	/**
 	 * @Id
+	 * @Column(type="integer", nullable=false)
+	 * @GeneratedValue(strategy="AUTO")
+	 * @SequenceGenerator(sequenceName="gs2_stock_seq")
 	 */
 	protected $id;
 
 	/**
-	 * @ManyToOne(targetEntity="Inventory", inversedBy="")
+	 * @ManyToOne(targetEntity="Inventory", inversedBy="stock_list")
 	 * @JoinColumn(name="inventory_id", referencedColumnName="id")
 	 */
 	protected $inventories;
 
 	/**
-	 * @ManyToOne(targetEntity="Part", inversedBy="inventories")
+	 * @ManyToOne(targetEntity="Part", inversedBy="stock_list")
 	 * @JoinColumn(name="part_id", referencedColumnName="id")
 	 */
 	protected $parts;

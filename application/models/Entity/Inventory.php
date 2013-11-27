@@ -16,6 +16,12 @@ class Inventory
 	protected $id;
 
 	/**
+	 * 
+	 * @OneToMany(targetEntity="Stock", mappedBy="inventories")
+	 */
+	protected $stock_list;
+
+	/**
 	 * @Column(type="string", length=50)
 	 */
 	protected $name;
