@@ -3,6 +3,7 @@
 
 class StockTest extends PHPUnit_Framework_TestCase {
 	protected $em = NULL;
+	protected $cnt_stock = 0 ;		// 디버깅용 InventoryPartAssociation 데이터 갯수
 	
 	public function setUp()
 	{
@@ -29,33 +30,30 @@ class StockTest extends PHPUnit_Framework_TestCase {
 	public function testStockFromPart() {
 		$repo = $this->em->getRepository('Entity\Part');
 		$items = $repo->find(1);
-
 		
 		$stocks = $items->getStockList();
 		foreach($stocks as $stock) {
-			echo "\n qyt : " . $stock->qty_new;
-			$invens = $stock->inventories;
-			echo " -- " . $invens->name;
+			echo "\n Qty : " . $stock->qty_new; // 재고 수량
+			$invens = $stock->inventory;		// 창고
 		}
-		echo "\n";
+		echo "\n==============\n";
 	}
-
 	
 	public function testStock() {
 		$this->em->clear();
 		$repo = $this->em->getRepository('Entity\Stock');
 		$rows = $repo->findAll();
 
-		$this->assertEquals(count($rows), 3);
+		$this->cnt_stock = count($rows);
+
+		$this->assertEquals(count($rows), 5);
 	}
 
 	public function testDQL() {
 		$dql = "select p, sl FROM Entity\Part p JOIN p.stock_list sl";
 		$rows = $this->em->createQuery($dql)->getResult();
 
-		foreach($rows as $row) {
-			echo __METHOD__ . " " . count($rows);
-		}
+		echo count($rows);
 	}
 
 	public function testUseRawSQLInDoctrine() {
@@ -68,14 +66,58 @@ class StockTest extends PHPUnit_Framework_TestCase {
 		$sql0 = "select * from GS2_INVENTORY_PART";
 
 		$rows = $conn->fetchAll($sql0);
-		echo __METHOD__ . " " . count($rows);
+		echo count($rows) . "\n";
 	}
 
 	public function testUsingCI() {
 		$query = $this->CI->db->query("SELECT * FROM GS2_INVENTORY_PART");
 		$rows = $query->result();
+	}
 
-		// echo $this->CI->db->last_query();
-		//var_dump($rows);
+	public function testAddStock() {
+		$part = $this->em->getRepository('Entity\Part')->find(3);
+		$inventory = $this->em->getRepository('Entity\Inventory')->find(1);
+
+		// echo get_class($inventory);
+
+		$stock = new Entity\Stock();
+		$stock->setPart($part);
+		$stock->setInventory($inventory);
+
+		$stock->setQtyMinimum(0);
+		$stock->setQtyNew(3);
+		$stock->setQtyUsed(999);
+
+		if(0){
+			$this->em->persist($stock);
+			$this->em->flush();
+		}
+
+		// Stock 테이블 행수 
+		$repo = $this->em->getRepository('Entity\Stock');
+		$rows = $repo->findAll();
+
+		$this->assertEquals( count($rows), 5);
+	}
+
+	/*
+	장비의 재고량 알기
+	 */
+	public function testPartStock() {
+		// 값 1개
+		$dql = "select sum(s.qty_new) AS qyt_total FROM Entity\Stock s " .
+				"WHERE s.part = 1 AND s.inventory = 1";
+		$result = $this->em->createQuery($dql)->getSingleScalarResult();
+
+		// 장비별 재고량
+		$dql = "select sum(s.qty_new) AS qyt_total FROM Entity\Stock s " .
+				"GROUP BY s.part";
+		$result = $this->em->createQuery($dql)->getResult();
+
+		// 조인이용한 장비별 재고량 출력
+		$dql = "select p.name, sum(s.qty_new) AS total_new, sum(s.qty_used) AS total_used FROM Entity\Part p " .
+				"JOIN p.stock_list s GROUP BY s.part, p.name";
+		$result = $this->em->createQuery($dql)->getResult();
+		// var_dump($result);
 	}
 }

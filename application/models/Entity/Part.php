@@ -63,7 +63,7 @@ class Part
 
 	/**
 	 * 
-	 * @OneToMany(targetEntity="Stock", mappedBy="parts")
+	 * @OneToMany(targetEntity="Stock", mappedBy="part")
 	 */
 	protected $stock_list;
 

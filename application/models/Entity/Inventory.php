@@ -1,6 +1,8 @@
 <?php
 namespace Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Entity
  * @Table(name="GS2_INVENTORIES")
@@ -17,7 +19,7 @@ class Inventory
 
 	/**
 	 * 
-	 * @OneToMany(targetEntity="Stock", mappedBy="inventories")
+	 * @OneToMany(targetEntity="Stock", mappedBy="inventory")
 	 */
 	protected $stock_list;
 
@@ -45,7 +47,9 @@ class Inventory
 		return $this->$key;
 	}
 
-	
+	public function __construct() {
+		$this->stock_list = new ArrayCollection();
+	}
 
 }
 
