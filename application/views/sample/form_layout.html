@@ -37,6 +37,51 @@
                     <option value="4">제주</option>
                   </select>
               </div>
+
+              <div class="panel panel-danger">
+              	<div class="panel-heading">수량 입력</div>
+              	<div class="panel-body">
+              		<div class="form-group row">
+              			<label for="qty_new" class="control-label col-md-2">신품</label>
+						<div class="col-md-4">
+	              			<input type="text" id="qty_new" name="qty_new" class="form-control" placeholder="0">
+						</div>
+						<div class="col-md-6">개&nbsp;</div>
+              		</div>
+              		<div class="form-group row">
+              			<label for="qty_used" class="control-label col-md-2">중고</label>
+						<div class="col-md-4">
+	              			<input type="text" id="qty_used" name="qty_used" class="form-control" placeholder="0">
+						</div>
+						<div class="col-md-6">개&nbsp;</div>
+              		</div>
+              	</div><!-- end of panel-body -->
+              </div>
+
+				<!-- 테이블 사용 -->
+          	<div class="panel panel-success">
+              	<div class="panel-heading">수량 입력</div>
+              	<div class="panel-body">
+              		<table class="table">
+              			<tr>
+              				<td>신품</td>
+              				<td><input type="text" id="qty_new" name="qty_new" class="form-control" placeholder="0"></td>
+              				<td>개</td>
+              				<td></td>
+              				<td></td>
+              				<td></td>
+              			</tr>
+              			<tr>
+              				<td>중고</td>
+              				<td><input type="text" id="qty_used" name="qty_used" class="form-control" placeholder="0"></td>
+              				<td>개</td>
+              				<td></td>
+              				<td></td>
+              				<td></td>
+              			</tr>
+              		</table>
+              	</div><!-- end of panel-body -->
+              </div>
 		</form>
 	</div>
 </div>
