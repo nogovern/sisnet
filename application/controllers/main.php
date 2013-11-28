@@ -22,4 +22,9 @@ class Main extends CI_Controller
 		echo "<br>[Todo] 로그인 기능 추가해야함";
 
 	}
+
+	// 로그인 화면
+	public function login() {
+		$this->load->view('login');
+	}
 }

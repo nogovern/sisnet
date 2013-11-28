@@ -49,6 +49,7 @@ if(count($row->getStockList())):
       <td><?=$stock->qty_minimum?></td>
       <td><?=number_format($stock->qty_new)?></td>
       <td><?=number_format($stock->qty_used)?></td>
+      <td><button class="btn btn-info btn-xs" type="button">Add</button></td>
     </tr>
 <?php
 endforeach;
@@ -77,6 +78,10 @@ endforeach;
           <li><a href="#">5</a></li>
           <li><a href="#">&raquo;</a></li>
         </ul>
+
+        <p class="well">
+          <a href="/stock/add"><button class="btn btn-primary">&nbsp;신규  등록</button></a>
+        </p>
 
         </div>
       </div>

@@ -29,16 +29,22 @@ class Stock extends CI_Controller
 	}
 
 	private function _lists() {
+
 		$em = $this->doctrine->em;
-
-		$data = array();
-
 		$parts = $em->getRepository('Entity\Part')->findAll();
-		// foreach($parts as $part) {
-		// 	$stocks = $part->getStockList();
-		// 	echo count($stocks);
-		// }
 
 		return $parts;
+	}
+
+	public function add() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		
+		$data['title'] = '재고 수동 입력';
+
+		$this->load->view('layout/header');
+		$this->load->view('layout/navbar');
+		$this->load->view('stock_manual_add_form', $data);
+		$this->load->view('layout/footer');
 	}
 }
