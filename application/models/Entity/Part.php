@@ -116,12 +116,24 @@ class Part
 		$this->qty_total = $val;
 	}
 
+	// 재고 목록 얻기 - Stock 객체 리스트
 	public function getStockList() {
 		return $this->stock_list;
 	}
 
 	public function assignToStockList(Stock $stock) {
 		$this->stock_list[] = $stock;
+	}
+
+	// 신품 재고 합계 
+	public function getNewTotal() {
+		$sum = 0;
+
+		foreach($this->stock_list as $stock) {
+			$sum += $stock->qty_new;
+		}
+
+		return $sum;
 	}
 
 }

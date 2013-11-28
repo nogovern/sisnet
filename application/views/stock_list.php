@@ -33,7 +33,7 @@ foreach($rows as $row):
               <td><?=$row->part_code?></td>
               <td><?=$row->name?></td>
               <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
-              <td><?=intval($row->qty_total)?></td>
+              <td><?=intval($row->getNewTotal())?></td>
               <td><?=$row->status?></td>
               <td>
 <?php
