@@ -73,11 +73,11 @@ class Stock
 		$this->qty_minimum = $qty;
 	}
 
-	public function plusQtyMinimum($qty) {
+	public function addQtyMinimum($qty) {
 		$this->qty_minimum = $this->qty_minimum + $qty;
 	}
 
-	public function minusQtyMinimum($qty) {
+	public function substractQtyMinimum($qty) {
 		if( $qty > $this->qty_minium) {
 			throw new Exception("재고량 보다 큰 수량을 뺄 수 없습니다", 1);
 		}

@@ -67,6 +67,12 @@ class Part
 	 */
 	protected $stock_list;
 
+	/*
+	 상태 정의
+	 */
+	const STATUS_DISABLE 	= 0;
+	const STATUS_ENABLE 	= 1;
+
 	/* ------------------------------ */
 	public function __construct() {
 		$this->stock_list = new ArrayCollection();

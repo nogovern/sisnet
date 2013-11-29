@@ -4,12 +4,9 @@ class User extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
-		// $this->load->model('user_repository');
-		$this->load->library('doctrine');
 
-		// 프로파일링 설정
-		// $this->output->enable_profiler(TRUE);
+		// load User model...
+		$this->load->model('user_m');
 	}
 
 	public function index() {
@@ -17,15 +14,20 @@ class User extends CI_Controller {
 	}
 
 	public function lists() {
-		$em = $this->doctrine->em;
-
-		$items = $em->getRepository('Entity\User')->findAll();
-		$data['rows'] = $items;
+		$data['rows'] = $this->user_m->getList();
 		
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
 		$this->load->view('user_list.html', $data);
 		$this->load->view('layout/footer');
+	}
+
+	public function view($id) {
+		$user = $this->user_m->get($id);
+
+		echo '<pre>';
+		var_dump($user);
+		echo '</pre>';
 	}
 	
 	public function add() {
@@ -51,8 +53,6 @@ class User extends CI_Controller {
 		else 
 		{
 			// 새로운 사용자 등록
-			$em = $this->doctrine->em;
-
 			$user = new Entity\User();
 
 			$user->setUsername($this->input->post('username'));
@@ -62,8 +62,7 @@ class User extends CI_Controller {
 			$user->setDateRegister();
 			$user->setStatus(1);
 
-			$em->persist($user);
-			$em->flush();
+			$ok = $this->user_m->add($user);
 
 			// 입력 성공 메세지
 			var_dump($_POST);
