@@ -49,10 +49,35 @@ class User_m extends CI_Model {
 
 	public function delete($id = NULL) {
 
+	}
+
+	public function find($options) {
+		$rows = $this->em->getRepository('Entity\User')->findBy($options);
+		
+		return $rows;	
 	} 
 
+	/**
+	 *  ID 번호로 정보 가져오기
+	 * 
+	 * @param  integer $id User.ID
+	 * @return ojbect     User Object or NULL
+	 */
 	public function get($id) {
 		return $this->em->getRepository('Entity\User')->find($id);
+	}
+
+	/**
+	 * 사용자 ID(username) 로 정보 가져오기
+	 * 
+	 * @param  string $value
+	 * @return array [User 객체 배열] 
+	 */
+	public function getByUsername($value)
+	{
+		$rows = $this->em->getRepository('Entity\User')->findBy(array('username' => $value));
+
+		return $rows;
 	}
 
 	////////////////////////////////
