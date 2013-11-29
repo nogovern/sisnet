@@ -10,6 +10,9 @@ class User_m extends CI_Model {
 		// Doctrine load
 		$this->load->library('doctrine');
 		$this->em = $this->doctrine->em;
+
+		// Entity 명 지정;
+		$this->entity_name = 'Entity\Office';
 		
 		// 태이블명 셋팅 (CI database 로 바로 쿼리 할 경우 사용)
 		$this->table_name = 'gs2_users';

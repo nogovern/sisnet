@@ -1,17 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- * Office Controller class
- *
- * @package gs25
- * @author Jang KwangHee 
- **/
 class Office extends CI_Controller
 {
 	public function __construct() {
 		parent::__construct();
+		
+		// load User model...
+		$this->load->model('office_m', 'office_model');
 
-		$this->load->library('doctrine');
 	}
 
 	public function index()
@@ -20,10 +16,7 @@ class Office extends CI_Controller
 	}
 
 	public function lists($action = 'lists') {
-		$em = $this->doctrine->em;
-
-		$items = $em->getRepository('Entity\Office')->findAll();
-		// $data['rows'] = $items;
+		$items = $this->office_model->getList();
 
 		$data = array(
 			'rows' => $items,
