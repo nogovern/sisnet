@@ -13,8 +13,8 @@
           <thead>
             <tr>
               <th>No</th>
-              <th>장비명</th>
               <th>장비종류</th>
+              <th>장비명</th>
               <th>모델명</th>
               <th>상태</th>
               <th>신품 합계</th>
@@ -25,11 +25,19 @@
 
           <tbody>
 <?php
+$arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
+$arr_type_class= array('1' => 'label-success', '2'=>'label-warning', '3'=>'label-default');
 foreach($rows as $row):
 ?>
             <tr class="">
               <td><?=$row->id?></td>
-              <td><?=$row->type?></td>
+              <td>
+                <span class="label <?=$arr_type_class[$row->type]?>">
+<?php
+                echo $arr_type_text[$row->type];
+?>
+                </span>
+              </td>
               <td><?=$row->part_code?></td>
               <td><?=$row->name?></td>
               <td><?=$row->status?></td>
