@@ -16,9 +16,9 @@
               <th>장비명</th>
               <th>장비종류</th>
               <th>모델명</th>
-              <th>등록일자</th>
-              <th>재고수량</th>
               <th>상태</th>
+              <th>신품 합계</th>
+              <th>중고 합계</th>
               <th>재고</th>
             </tr>
           </thead>
@@ -32,9 +32,9 @@ foreach($rows as $row):
               <td><?=$row->type?></td>
               <td><?=$row->part_code?></td>
               <td><?=$row->name?></td>
-              <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
-              <td><?=intval($row->getNewTotal())?></td>
               <td><?=$row->status?></td>
+              <td><?=intval($row->getNewTotal())?></td>
+              <td><?=intval($row->getUsedTotal())?></td>
               <td>
 <?php
 if(count($row->getStockList())):
@@ -45,11 +45,11 @@ if(count($row->getStockList())):
   foreach($row->getStockList() as $stock):
 ?>
     <tr class="warning">
-      <td><?=$stock->inventory->name?></td>
-      <td><?=$stock->qty_minimum?></td>
-      <td><?=number_format($stock->qty_new)?></td>
-      <td><?=number_format($stock->qty_used)?></td>
-      <td><button class="btn btn-info btn-xs" type="button">Order</button></td>
+      <td class="col-sm-4"><?=$stock->inventory->name?></td>
+      <td class="col-sm-2"><?=$stock->qty_minimum?></td>
+      <td class="col-sm-2"><?=number_format($stock->qty_new)?></td>
+      <td class="col-sm-2"><?=number_format($stock->qty_used)?></td>
+      <td class="col-sm-2"><button class="btn btn-info btn-xs" type="button">Order</button></td>
     </tr>
 <?php
 endforeach;

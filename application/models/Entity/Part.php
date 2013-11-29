@@ -136,5 +136,16 @@ class Part
 		return $sum;
 	}
 
+	// 중고 재고 합계 
+	public function getUsedTotal() {
+		$sum = 0;
+
+		foreach($this->stock_list as $stock) {
+			$sum += $stock->qty_used;
+		}
+
+		return $sum;
+	}
+
 }
 
