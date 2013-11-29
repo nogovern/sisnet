@@ -39,12 +39,12 @@ foreach($rows as $row):
 <?php
 if(count($row->getStockList())):
 ?>
-<table class="table table-hover">
+<table class="table table-hover" style="margin-bottom:0;">
   <tbody>
 <?php
   foreach($row->getStockList() as $stock):
 ?>
-    <tr class="warning">
+    <tr class="success">
       <td class="col-sm-4"><?=$stock->inventory->name?></td>
       <td class="col-sm-2"><?=$stock->qty_minimum?></td>
       <td class="col-sm-2"><?=number_format($stock->qty_new)?></td>
