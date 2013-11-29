@@ -5,10 +5,11 @@ class Customer extends CI_Controller {
 	{
 		parent::__construct();
 
-		$this->load->library('doctrine');
-		
+		// load User model...
+		$this->load->model('customer_m', 'customer_model');
+
 		// 프로파일링 설정
-		$this->output->enable_profiler(TRUE);
+		//$this->output->enable_profiler(TRUE);
 	}
 
 	public function index() {
@@ -16,31 +17,17 @@ class Customer extends CI_Controller {
 	}
 
 	public function add() {
-		$em = $this->doctrine->em;		
-
-		if(1) {
-			$customer = new Entity\Customer();
-			$customer->name = "IBM Corp";
-			$customer->code = "IBM";
-			$customer->type = "1";
-			$customer->date_register = new DateTime();
-			// $customer->date_register = "2013-11-11 00:00:00";
-
-			$em->persist($customer);
-			$em->flush();
-		}
-
+		echo '업체 등록 화면.. coming soon';
 	}
 
 	public function lists() {
 
-		$em = $this->doctrine->em;
-
-		$items = $em->getRepository('Entity\Customer')->findAll();
+		$data['page_title'] = '업체 리스트';
+		$data['rows'] = $this->customer_model->getList();
 
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
-		print_r($items);
+		$this->load->view('customer_list.html', $data);
 		$this->load->view('layout/footer');
 	}
 

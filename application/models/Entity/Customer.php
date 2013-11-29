@@ -15,35 +15,42 @@ class Customer
 	 */
 	protected $id;
 
-	/**
-	 * @column(type="string", length=20)
-	 */
+	/** @column(type="string", length=20) */
 	protected $code;
 
-	/**
-	 * @Column(type="string", length=1)
-	 */
+	/** @Column(type="string", length=1) */
 	protected $type;
 	
-	/**
-	 * @Column(type="string")
-	 */
+	/** @column(type="string", length=50) */
 	protected $name;
 
+	/** @column(type="string", length=20) */
 	protected $tel;
+
+	/** @column(type="string", length=100) */
 	protected $address;
+
+	/** @column(type="integer") */
 	protected $user_id;
+	
+	/** @column(type="string", length=255) */
 	protected $memo;
 
-	/**
-	 * @Column(type="datetime", nullable=true)
-	 */
+	/** @column(type="datetime", nullable=true) */
 	protected $date_register;
+
+	/** @Column(type="string", length=1) */
 	protected $status;
 
 	public function __get($key) {
 		return $this->$key;
 	}
+
+	public function getRegisterDate() {
+		return ($this->date_register) ? $this->date_register->format('Y-m-d H:i:s') : '';
+	}
+
+
 
 	
 }

@@ -1,7 +1,7 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Office_m extends CI_Model {
+class Customer_m extends CI_Model {
 	protected $em = NULL;
 
 	protected $entity_name;
@@ -14,17 +14,17 @@ class Office_m extends CI_Model {
 		$this->em = $this->doctrine->em;
 
 		// Entity 명 지정;
-		$this->entity_name = 'Entity\Office';
+		$this->entity_name = 'Entity\Customer';
 
 		
 		// 태이블명 셋팅 (CI database 로 바로 쿼리 할 경우 사용)
-		$this->table_name = 'gs2_offices';
+		$this->table_name = 'gs2_customers';
 		$this->table_name = strtoupper($this->table_name);
 	}
 
-	public function add(Office $object)
+	public function save($object)
 	{
-		if(!($object instanceof Entity\Office)) {
+		if(!($object instanceof $this->Entity_name)) {
 			trigger_error("인수는 적절한 Object type 이어야 함!");
 		}
 
@@ -33,7 +33,7 @@ class Office_m extends CI_Model {
 		$this->em->flush();
 	}
 
-	public function save($object) {
+	public function add($object) {
 		$this->add($object);
 	}
 
