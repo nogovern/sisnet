@@ -24,7 +24,7 @@ class StockTest extends PHPUnit_Framework_TestCase {
 		$items = $repo->findAll();
 
 		$count = count($items);
-		$this->assertEquals($count, 4);
+		$this->assertEquals($count, 5);
 	}
 
 	public function testStockFromPart() {
@@ -46,7 +46,7 @@ class StockTest extends PHPUnit_Framework_TestCase {
 
 		$this->cnt_stock = count($rows);
 
-		$this->assertEquals(count($rows), 5);
+		$this->assertEquals(count($rows), 6);
 	}
 
 	public function testDQL() {
@@ -74,6 +74,9 @@ class StockTest extends PHPUnit_Framework_TestCase {
 		$rows = $query->result();
 	}
 
+	/*
+	재고 입력 테스트
+	 */
 	public function testAddStock() {
 		$part = $this->em->getRepository('Entity\Part')->find(3);
 		$inventory = $this->em->getRepository('Entity\Inventory')->find(1);
@@ -97,7 +100,25 @@ class StockTest extends PHPUnit_Framework_TestCase {
 		$repo = $this->em->getRepository('Entity\Stock');
 		$rows = $repo->findAll();
 
-		$this->assertEquals( count($rows), 5);
+		$this->assertEquals( count($rows), 6);
+	}
+
+	/*
+	장비 - 창고 조합의 재고 데이터가 존재하는지 확인
+	 */
+	public function testStockExist() {
+		$part_id = 10;
+		$inventory_id = 1;
+		$stock = $this->em->getRepository('Entity\Stock')->findBy(array(
+			'part' => $part_id,
+			'inventory' => $inventory_id
+		));
+
+		$cnt_stock = count($stock);
+		$has_stock = count($stock) ? TRUE : FALSE;
+
+		// $this->assertEquals(get_class($stock), 'Entity\Stock');
+		$this->assertTrue($has_stock);
 	}
 
 	/*

@@ -50,6 +50,7 @@
                     <option value="4">모니터_LCD</option>
                     <option value="5">서버</option>
                     <option value="6">프린터_점포용</option>
+                    <option value="7">자동차</option>
                   </select>
               </div>
 

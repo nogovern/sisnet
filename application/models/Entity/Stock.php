@@ -38,6 +38,12 @@ class Stock
 	/** @Column(type="integer") */
 	protected $qty_used;
 
+	/** @Column(type="integer") */
+	protected $qty_s100;
+
+	/** @Column(type="integer") */
+	protected $qty_s400;
+
 	public function __construct()
 	{
 
@@ -88,5 +94,18 @@ class Stock
 	public function setQtyUsed($qty) {
 		$this->qty_used = $qty;
 	}
+
+	//////////////////
+	// 비가용 수량 //
+	//////////////////
+	public function setQtyS100($qty) {
+		$this->qty_s100 = $qty;
+	}
+
+	public function setQtyS400($qty) {
+		$this->qty_s400 = $qty;
+	}
+
+	
 }
 

@@ -9,7 +9,7 @@
       <div class="row">
         <div class="span12">
           
-        <table class="table table-responsive" id="stock_list">
+        <table class="table table-responsive table-hover" id="stock_list">
           <thead>
             <tr>
               <th>No</th>
@@ -39,7 +39,7 @@ foreach($rows as $row):
 <?php
 if(count($row->getStockList())):
 ?>
-<table class="table">
+<table class="table table-hover">
   <tbody>
 <?php
   foreach($row->getStockList() as $stock):
@@ -49,7 +49,7 @@ if(count($row->getStockList())):
       <td><?=$stock->qty_minimum?></td>
       <td><?=number_format($stock->qty_new)?></td>
       <td><?=number_format($stock->qty_used)?></td>
-      <td><button class="btn btn-info btn-xs" type="button">Add</button></td>
+      <td><button class="btn btn-info btn-xs" type="button">Order</button></td>
     </tr>
 <?php
 endforeach;
