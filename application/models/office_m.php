@@ -1,59 +1,13 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Office_m extends CI_Model {
-	protected $em = NULL;
-
-	protected $entity_name;
+class Office_m extends MY_Model {
 
 	public function __construct() {
 		parent::__construct();
 
-		// Doctrine load
-		$this->load->library('doctrine');
-		$this->em = $this->doctrine->em;
-
-		// Entity 명 지정;
-		$this->entity_name = 'Entity\Office';
-
-		
-		// 태이블명 셋팅 (CI database 로 바로 쿼리 할 경우 사용)
-		$this->table_name = 'gs2_offices';
-		$this->table_name = strtoupper($this->table_name);
-	}
-
-	public function add(Office $object)
-	{
-		if(!($object instanceof Entity\Office)) {
-			trigger_error("인수는 적절한 Object type 이어야 함!");
-		}
-
-		// 저장
-		$this->em->persist($$object);
-		$this->em->flush();
-	}
-
-	public function save($object) {
-		$this->add($object);
-	}
-
-	public function delete($id) {
-		;
-	}
-
-	public function getList() {
-		$repo = $this->em->getRepository($this->entity_name);
-		return $repo->findAll();
-	}
-
-	public function get($id) {
-		$repo = $this->em->getRepository($this->entity_name);
-		return $repo->find($id);
-	}
-
-	public function find($options) {
-		$repo = $this->em->getRepository($this->entity_name);
-		return $repo->findBy($options);
+		$this->setEntityName('Office');
+		$this->setTableName('gs2_offices');
 	}
 
 	public function getByName($value) {
