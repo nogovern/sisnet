@@ -45,20 +45,17 @@ class Office
 	 */
 	protected $address;
 	
-	/**
-	 * @Column(type="string", length=255)
-	 */
+	/** @Column(type="string", length=255) */
 	protected $memo;
 
-	/**
-	 * @Column(type="string", length=1)
-	 */
+	/** @Column(type="string", length=1) */
 	protected $status;
 
 	/**
-	 * @Column(type="integer")
+	 * @OneToOne(targetEntity="User")
+	 * @JoinColumn(name="user_id", referencedColumnName="id")
 	 */
-	protected $user_id;
+	protected $user;
 
 
 	public function __get($key) {

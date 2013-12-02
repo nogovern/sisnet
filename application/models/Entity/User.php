@@ -6,6 +6,9 @@ namespace Entity;
  *  @Table(name="GS2_USERS")
  */
 class User {
+	const STATUS_DISABLE 	= 0;
+	const STATUS_ENABLE 	= 1;
+
 	/**
 	 * @Id
 	 * @Column(type="integer", nullable=false)
@@ -74,6 +77,10 @@ class User {
 
 	public function setUsername($name) {
 		$this->username = $name;
+	}
+
+	public function getName() {
+		return $this->name;
 	}
 
 	public function setName($name) {
