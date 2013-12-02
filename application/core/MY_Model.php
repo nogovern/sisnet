@@ -40,12 +40,16 @@ class MY_Model extends CI_Model {
 		}
 	}
 
-	protected function getEntityName() {
+	public function getEntityName() {
 		return $this->entity_name;
 	}
 
-	protected function getTableName() {
+	public function getTableName() {
 		return $this->table_name;
+	}
+
+	public function getEntityManger() {
+		return $this->em;
 	}
 
 	//---------------------------------------------------------
