@@ -10,7 +10,7 @@ class Stock extends CI_Controller
 	{
 		parent::__construct();
 
-		$this->load->library('doctrine');
+		$this->load->model('stock_m', 'stock_model');
 	}
 
 	public function index() {
@@ -20,20 +20,14 @@ class Stock extends CI_Controller
 	public function lists() {
 
 		$data['title'] = '재고------------------^';
-		$data['rows'] = $this->_lists();
+
+		$em = $this->stock_model->getEntityManger();
+		$data['rows'] = $em->getRepository('Entity\Part')->findAll();
 
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
 		$this->load->view('stock_list', $data);
 		$this->load->view('layout/footer');
-	}
-
-	private function _lists() {
-
-		$em = $this->doctrine->em;
-		$parts = $em->getRepository('Entity\Part')->findAll();
-
-		return $parts;
 	}
 
 	public function add() {
@@ -43,7 +37,7 @@ class Stock extends CI_Controller
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$em = $this->doctrine->em;
+		$em = $this->stock_model->getEntityManger();
 		// 장비 목록
 		$parts = $em->getRepository('Entity\Part')->findAll();
 		$option_parts = array();

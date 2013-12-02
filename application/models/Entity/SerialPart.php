@@ -55,8 +55,19 @@ class SerialPart				// 시리얼 관리 장비
 		return $this->$key;
 	}
 
-	public function getRegisterDate() {
-		return ($this->date_register) ? $this->date_register->format('Y-m-d H:i:s') : '';
+	// 수정일시
+	public function getModifyDate() {
+		return ($this->date_modify) ? $this->date_modify->format('Y-m-d H:i:s') : '';
+	}
+
+	// 설치일
+	public function getInstallDate() {
+		return ($this->date_install) ? $this->date_install->format('Y-m-d H:i:s') : '';
+	}
+
+	// 입고일
+	public function getEnterDate() {
+		return ($this->date_enter) ? $this->date_enter->format('Y-m-d H:i:s') : '';
 	}
 
 	public function setPart(Entity\Part $part) {
