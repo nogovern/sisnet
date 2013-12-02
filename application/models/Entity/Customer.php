@@ -30,8 +30,11 @@ class Customer
 	/** @column(type="string", length=100) */
 	protected $address;
 
-	/** @column(type="integer") */
-	protected $user_id;
+	/**
+	 * @OneToOne(targetEntity="User")
+	 * @JoinColumn(name="user_id", referencedColumnName="id")
+	 */
+	protected $user;
 	
 	/** @column(type="string", length=255) */
 	protected $memo;
@@ -50,7 +53,9 @@ class Customer
 		return ($this->date_register) ? $this->date_register->format('Y-m-d H:i:s') : '';
 	}
 
-
+	public function setUser(Entity\User $user) {
+		$this->user = $user;
+	}
 
 	
 }
