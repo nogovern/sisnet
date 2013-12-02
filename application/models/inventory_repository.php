@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * 
+ * 창고 모델 
  */
 
 class Inventory_repository extends CI_Model {

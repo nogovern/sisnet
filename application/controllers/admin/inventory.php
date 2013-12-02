@@ -10,6 +10,8 @@ class Inventory extends CI_Controller
 {
 	public function __construct() {
 		parent::__construct();
+
+		$this->load->model('inventory_m', 'inventory_model');
 	}
 
 	public function index()
@@ -20,11 +22,9 @@ class Inventory extends CI_Controller
 
 	public function lists()
 	{
-		$this->load->model('inventory_repository');
-		$rows = $this->inventory_repository->getList();
 
 		$data = array(
-			'rows' => $rows,
+			'rows' => $this->inventory_model->getList(),
 			'title' => 'Sisnet service >> 창고 리스트',
 			'page_title' => '창고 리스트'
 			);
@@ -34,7 +34,8 @@ class Inventory extends CI_Controller
 
 	public function render($view_url, $data = array())
 	{
-		$this->load->view('layout/header', array('title' => $data['title']));		
+		$this->load->view('layout/header', array('title' => $data['title']));
+		$this->load->view('layout/navbar', $data);
 		$this->load->view($view_url, $data);
 		$this->load->view('layout/footer');
 	}
