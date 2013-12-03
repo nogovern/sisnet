@@ -14,14 +14,8 @@ class Inventory_m extends MY_Model {
 		$this->setEntityName('Inventory');
 	}
 
-	////////////////////////////////
-	// 공통으로 사용할 수 있을듯 
-	////////////////////////////////
-	public function newId() {
-		$sql = "select max(ID) as new_id from " . $this->table_name;
-		$query = $this->db->query($sql);
-
-		return ($query->num_rows) ? $query->row()->NEW_ID + 1 : 1;
+	public function addPartToInventory($part, $qty) {
+		return FALSE;
 	}
 
 }

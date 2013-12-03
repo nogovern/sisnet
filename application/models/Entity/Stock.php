@@ -9,6 +9,13 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Stock
 {
+	const QTY_TYPE_NEW 		= 'new';
+	const QTY_TYPE_USED 	= 'used';
+	const QTY_TYPE_S100 	= 's100';
+	const QTY_TYPE_S200 	= 's200';
+	const QTY_TYPE_S300 	= 's300';
+	const QTY_TYPE_S400 	= 's400';
+	
 	/**
 	 * @Id
 	 * @Column(type="integer", nullable=false)

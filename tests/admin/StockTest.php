@@ -45,25 +45,54 @@ class StockTest extends PHPUnit_Framework_TestCase {
 		
 		// 창고
 		$this->CI->load->model('inventory_m');
-		$inventory = $this->CI->inventory_m->get(1);
+		$inventory = $this->CI->inventory_m->get(2);
 		$this->assertInstanceOf('Entity\Inventory', $inventory);
 
 		// 장비
 		$this->CI->load->model('part_m');
-		$part = $this->CI->part_m->get(1);
+		$part = $this->CI->part_m->get(3);
 		$this->assertInstanceOf('Entity\part', $part);
 
 		// 1번 창고에 1번 부품을 5개 입고한다
-		$result = $inventory->add( $part, 5);
-		$this->assertTrue($result);
+		// Stock 객체를 리턴한다
+		$stock = $inventory->add( 'new', $part, 1);
 
-		// 1번 부품 재고량 확인 
-		// 원수량 + 5 == 재고량
+		// 저장
+		$this->em->persist($stock);
+		$this->em->flush();
+
+		$this->assertEquals(20, $stock->qty_new);
+
+		////////////////
+		// 로그 기록  //
+		////////////////
+
 	}
 
 	// 출고 테스트
 	public function testStockOut() {
+		
+		// 창고 (from)
+		$this->CI->load->model('inventory_m');
+		$inventory = $this->CI->inventory_m->get(2);
+
+		// 장비
+		$this->CI->load->model('part_m');
+		$part = $this->CI->part_m->get(3);
+
+		// 출고 장소
+		 
+		////////////////
+		// 로그 기록  //
+		////////////////
 
 	}
+
+	
+
+
+	// 교체 프로세스
+	// 출고 -> 입고
+	// 
 	
 }

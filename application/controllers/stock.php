@@ -11,6 +11,9 @@ class Stock extends CI_Controller
 		parent::__construct();
 
 		$this->load->model('stock_m', 'stock_model');
+
+		// 프로파일링
+		// $this->output->enable_profiler(TRUE);
 	}
 
 	public function index() {
