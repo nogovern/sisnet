@@ -4,9 +4,8 @@ class Part extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
-		// $this->load->model('user_repository');
-		$this->load->library('doctrine');
+
+		$this->load->model('part_m', 'part_model');
 
 		// 프로파일링 설정
 		// $this->output->enable_profiler(TRUE);
@@ -16,10 +15,14 @@ class Part extends CI_Controller {
 		$this->lists();
 	}
 
-	public function lists() {
-		$em = $this->doctrine->em;
+	public function lists($type = NULL) {
+		if($type) {
+			$items= $this->part_model->find(array('type' => $type));
+		} else {
+			$items = $this->part_model->getList();
+		}
 
-		$items = $em->getRepository('Entity\Part')->findAll();
+		$data['title']  = '장비리스트';		
 		$data['rows'] = $items;
 		
 		$this->load->view('layout/header');
@@ -53,7 +56,6 @@ class Part extends CI_Controller {
 			var_dump($_POST);
 
 			// 새로운 사용자 등록
-			$em = $this->doctrine->em;
 
 			$part = new Entity\Part();
 			$part->setName($this->input->post('name'));
@@ -62,8 +64,7 @@ class Part extends CI_Controller {
 			$part->setManufacturer($this->input->post('manufacturer'));
 			$part->setRegisterDate();
 
-			$em->persist($part);
-			$em->flush();
+			$this->part_model->save($part);
 
 			// 입력 성공 메세지
 
@@ -79,5 +80,17 @@ class Part extends CI_Controller {
 	public function render( $view_url = '', $title = '기본 타이틀', $options)
 	{
 
+	}
+
+	public function serial() {
+		$rows = $this->part_model->getSerialPartList();
+		
+		$data['title'] = '---- 리스트 -------';
+		$data['rows'] = $rows;
+
+		$this->load->view('layout/header');
+		$this->load->view('layout/navbar');
+		$this->load->view('part_serial_list.html', $data);
+		$this->load->view('layout/footer');
 	}
 }

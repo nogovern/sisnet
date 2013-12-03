@@ -10,12 +10,10 @@ class SerialPart				// 시리얼 관리 장비
 	/**
 	 * @Id
 	 * @Column(type="integer", nullable=false)
-	 * @GeneratedValue(strategy="AUTO")
-	 * @SequenceGenerator(sequenceName="gs2_part_serial_seq")
 	 */
 	protected $id;
 
-	/** @column(type="string", length=20) */
+	/** @Column(type="string", length=20) */
 	protected $serial_number;
 
 	/**
@@ -24,13 +22,13 @@ class SerialPart				// 시리얼 관리 장비
 	 */
 	protected $part;
 	
-	/** @column(type="string", length=30) */
+	/** @Column(type="string", length=30) */
 	protected $status_operation;
 
-	/** @column(type="string", length=30) */
+	/** @Column(type="string", length=30) */
 	protected $previous_location;
 
-	/** @column(type="string", length=30) */
+	/** @Column(type="string", length=30) */
 	protected $current_location;
 
 	/** @Column(type="string", length=1) */
@@ -39,13 +37,13 @@ class SerialPart				// 시리얼 관리 장비
 	/** @Column(type="string", length=1) */
 	protected $is_valid;
 
-	/** @column(type="datetime") */
+	/** @Column(type="datetime") */
 	protected $date_enter;
 
-	/** @column(type="datetime") */
+	/** @Column(type="datetime") */
 	protected $date_install;
 
-	/** @column(type="datetime", name="date_modified") */
+	/** @Column(type="datetime", name="date_modified") */
 	protected $date_modify;
 
 	/** @Column(type="string", length=1) */
