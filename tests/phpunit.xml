@@ -12,6 +12,9 @@
         <testsuite name="UserTests">
             <directory>users</directory>
         </testsuite>
+        <testsuite name="CommonTests">
+            <directory>common</directory>
+        </testsuite>
         <testsuite name="AdminTests">
             <directory>admin</directory>
         </testsuite>
