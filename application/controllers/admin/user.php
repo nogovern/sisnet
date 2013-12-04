@@ -6,7 +6,7 @@ class User extends CI_Controller {
 		parent::__construct();
 
 		// load User model...
-		$this->load->model('user_m');
+		$this->load->model('user_m', 'user_model');
 	}
 
 	public function index() {
@@ -17,7 +17,7 @@ class User extends CI_Controller {
 		if(!$type) {
 			$rows = $this->user_m->getList();
 		} else {
-			$rows = $this->user_m->getListByTYpe($type);
+			$rows = $this->user_m->getListByType($type);
 		}
 
 		$data['rows'] = $rows;
@@ -41,10 +41,28 @@ class User extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$data['title'] = "Create a new user";
 
-		// 에러 구분자 UI 설정
-		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '<button type="button" class="close" aria-hidden="true">&times;</button></div>');
+		$em = $this->user_model->getEntityManger();
+		// 사무소 목록
+		$offices = $em->getRepository('Entity\Office')->findAll();
+		$option_offices = array();
+		$option_offices[0] = "-- 사무소 를 선택하세요 --";
+		foreach($offices as $office) {
+			$option_offices[$office->id] = $office->name;
+		}
+
+		// 거래처 목록
+		$companies = $em->getRepository('Entity\Customer')->findBy(array('type' => 3));
+		$option_companies = array();
+		$option_companies[0] = "-- 업체 를 선택하세요 --";
+		foreach($companies as $company) {
+			$option_companies[$company->id] = $company->name;
+		}
+
+		// selectbox 생성
+		$data['form_office_select'] = form_dropdown('office_id', $option_offices, 0, 'id="office_id" class="form-control"');
+		$data['form_company_select'] = form_dropdown('company_id', $option_companies, 0, 'id="company_id" class="form-control"');
+		$data['title'] = "Create a new user";
 
 		// 규칙 설정
 		$this->form_validation->set_rules('username', '사용자 ID', 'required');

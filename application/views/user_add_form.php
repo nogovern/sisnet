@@ -3,7 +3,7 @@
     
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
           <?php
             // 에러 출력
             echo validation_errors();
@@ -16,35 +16,34 @@
 
 
               <div class="form-group">
-                <lable for="type" class="control-label">Select User Type</lable>
-                  <select id="type" name="type" class="form-control">
-                    <option value="">--선택하세요--</option>
-                    <option value="1">시스네트</option>
-                    <option value="2">GS</option>
-                    <option value="3">납품처</option>
-                  </select>
+                <p>사용자 타입 선택</p>
+                <label class="radio-inline">
+                  <input type="radio" class="grey" name="type" value="1">
+                  시스네트
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" class="grey" name="type" value="2">
+                  GS25
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" class="grey" name="type" value="3">
+                  납품업체
+                </label>
               </div>
 
-              <div class="form-group">
+              <div class="form-group" id="select_office">
                 <lable for="office_id" class="control-label">사무소 선택</lable>
-                  <select id="office_id" class="form-control">
-                    <option>--선택하세요--</option>
-                    <option value="1">가산</option>
-                    <option value="2">대전</option>
-                    <option value="3">부산</option>
-                    <option value="4">제주</option>
-                  </select>
+                <?php
+                echo $form_office_select;
+                ?>
               </div>
 
               <!-- 외부 업체 선택-->
-              <div class="form-group">
+              <div class="form-group" id="select_company">
                 <lable for="customer_id" class="control-label">외부 업체 선택</lable>
-                  <select id="customer_id" class="form-control">
-                    <option>--선택하세요--</option>
-                    <option value="1">IBM</option>
-                    <option value="2">Samsung</option>
-                    <option value="3">LG</option>
-                  </select>
+                <?php
+                echo $form_company_select;
+                ?>
               </div>
 
               <div class="form-group">
@@ -86,6 +85,26 @@
     $(document).ready(function(){
       $("#re_password").parent().addClass('has-warning');
 
-      // $("select option").attr('font-weight', 'bold').attr('color', 'red');
+      var user_type;
+
+      $("#select_office").hide();
+      $("#select_company").hide();
+
+      $(":radio[name=type]").change(function(e){
+        user_type = $(this).val();
+        
+        if(user_type == 1) {
+          $("#select_office").fadeIn();
+          $("#select_company").hide();
+        } else if(user_type == 2) {
+          $("#select_office").hide();
+          $("#select_company").hide();
+        } else if(user_type == 3) {
+          $("#select_office").hide();
+          $("#select_company").fadeIn();
+        } 
+
+      });
+
     });
     </script>
