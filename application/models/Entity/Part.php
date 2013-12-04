@@ -127,6 +127,21 @@ class Part
 		return $this->stock_list;
 	}
 
+
+	//////////////////
+	// 상태 - 불가로 변경 //
+	//////////////////
+	public function disable() {
+		$this->status = 'N';
+	}
+
+	//////////
+	// 단종  //
+	//////////
+	public function discontinue() {
+		return FALSE;
+	}
+
 	public function assignToStockList(Stock $stock) {
 		$this->stock_list[] = $stock;
 	}
