@@ -10,10 +10,9 @@ class Customer
 	/**
 	 * @Id
 	 * @Column(type="integer", nullable=false)
-	 * @GeneratedValue(strategy="AUTO")
-	 * @SequenceGenerator(sequenceName="gs2_customer_seq")
+	 * @GeneratedValue(strategy="IDENTITY")
 	 */
-	protected $id;
+	protected $id;				// 트리거로 자동 생성
 
 	/** @column(type="string", length=20) */
 	protected $code;
@@ -47,6 +46,10 @@ class Customer
 
 	public function __get($key) {
 		return $this->$key;
+	}
+
+	public function __set($key, $value) {
+		$this->$key = $value;
 	}
 
 	public function getRegisterDate() {
