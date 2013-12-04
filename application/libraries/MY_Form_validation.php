@@ -10,6 +10,9 @@ class MY_Form_validation extends CI_Form_validation
 	{
 		parent::__construct($rules);
 		log_message('debug', '*** Hello from MY_Form_validation ***');
+
+		// 에러 구분자 UI 설정
+		$this->set_error_delimiters('<div class="alert alert-danger">', '<button type="button" class="close" aria-hidden="true">&times;</button></div>');
 	}
 
 	public function callback_unique_name() {

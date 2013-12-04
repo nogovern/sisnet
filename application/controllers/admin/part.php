@@ -37,9 +37,6 @@ class Part extends CI_Controller {
 
 		$data['title'] = "신규 장비를 등록하세요";
 
-		// 에러 구분자 UI 설정
-		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '<button type="button" class="close" aria-hidden="true">&times;</button></div>');
-
 		// 규칙 설정
 		$this->form_validation->set_rules('type', '장비 타입', 'required');
 		$this->form_validation->set_rules('name', '장비 모델명', 'required');

@@ -22,10 +22,37 @@ class Customer extends CI_Controller {
 
 		$data['title'] = '거래처 등록';
 
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
-		$this->load->view('customer_add_form', $data);
-		$this->load->view('layout/footer');
+		// 규칙 설정
+		$this->form_validation->set_rules('type', '거래처 타입', 'required');
+		$this->form_validation->set_rules('name', '거래처 업체명', 'required');
+		$this->form_validation->set_rules('code', '거래처 코드', 'required');
+
+		if($this->form_validation->run() === FALSE){
+			$this->load->view('layout/header');
+			$this->load->view('layout/navbar');
+			$this->load->view('customer_add_form', $data);
+			$this->load->view('layout/footer');
+
+		} else {
+			$new = new Entity\Customer();
+
+			$new->code = $this->input->post('code');
+			$new->type = $this->input->post('type');
+			$new->name = $this->input->post('name');
+			$new->tel = $this->input->post('tel');
+			$new->address = $this->input->post('address');
+			$new->memo = $this->input->post('memo');
+			$new->date_register = new DateTime("now");		// 현재 시간
+			$new->status = 'Y';
+
+			// user_id 가 있으면 
+			// $new->user = $user;
+
+			$this->customer_model->save($new);
+
+			redirect('/admin/customer');
+		}
+
 	}
 
 	public function lists() {
