@@ -11,7 +11,8 @@ class Part
 {
 	/**
 	 * @Id
-	 * @Column(type="integer", nullable=false) @GeneratedValue(strategy="AUTO")
+	 * @Column(type="integer", nullable=false) 
+	 * @GeneratedValue(strategy="AUTO")
 	 * @SequenceGenerator(sequenceName="gs2_part_seq")
 	 */
 	protected $id;

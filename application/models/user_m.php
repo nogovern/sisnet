@@ -25,15 +25,16 @@ class User_m extends MY_Model {
 		return $rows;
 	}
 
-	////////////////////////////////
-	// 공통으로 사용할 수 있을듯 
-	////////////////////////////////
-	public function newId() {
-		$sql = "select max(id) as new_id from gs2_users";
-		$query = $this->db->query($sql);
+	public function getListByType($type) {
+		$repo = $this->em->getRepository($this->getEntityName());
+		$options = array(
+			'type'	=> $type
+			);
+		$rows = $repo->findBy($options);
 
-		return ($query->num_rows) ? $query->row()->NEW_ID + 1 : 1;
+		return $rows;
 	}
+
 }
 
 

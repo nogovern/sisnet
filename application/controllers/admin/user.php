@@ -13,8 +13,15 @@ class User extends CI_Controller {
 		$this->lists();
 	}
 
-	public function lists() {
-		$data['rows'] = $this->user_m->getList();
+	public function lists($type = '') {
+		if(!$type) {
+			$rows = $this->user_m->getList();
+		} else {
+			$rows = $this->user_m->getListByTYpe($type);
+		}
+
+		$data['rows'] = $rows;
+		$data['type'] = $type;		// 회원구분
 		
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
@@ -102,4 +109,5 @@ class User extends CI_Controller {
 		$this->load->view($view_url, $data);
 		$this->load->view('layout/footer');
 	}
+
 }
