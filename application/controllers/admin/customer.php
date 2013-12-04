@@ -17,7 +17,15 @@ class Customer extends CI_Controller {
 	}
 
 	public function add() {
-		echo '업체 등록 화면.. coming soon';
+		$this->load->library('Form_Validation');
+		$this->load->helper('form');
+
+		$data['title'] = '거래처 등록';
+
+		$this->load->view('layout/header');
+		$this->load->view('layout/navbar');
+		$this->load->view('customer_add_form', $data);
+		$this->load->view('layout/footer');
 	}
 
 	public function lists() {
