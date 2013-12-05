@@ -76,3 +76,59 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
+
+    
+    <style type="text/css">
+    #breadcrumbs {
+        color: #737373;
+        background-color: #eeeef6;
+        border:1px solid #d4d4e8;
+        border-top:0;
+        margin:0 auto;
+        font-size:.875em;
+        line-height:1.71428571428571;
+    }
+    #breadcrumbs ul {
+        padding:.5em .75em;
+        margin:.5em 0;
+    }
+    #breadcrumbs div {
+        padding:.5em .75em;
+    }
+    #breadcrumbs li {
+        display:inline-block;
+    }
+    #breadcrumbs li+li:before {
+        padding:0 .5em 0;
+        content:"\203A";
+    }
+    #breadcrumbs a:link,
+    #breadcrumbs a:visited {
+        border-width:0;
+    }
+
+    #breadcrumbs .prev {
+        float: left;
+        min-width: 23.4043%;
+        margin-right: 2.1276%;
+        box-sizing: border-box;
+    }
+    #breadcrumbs .next {
+        float: right;
+    }
+    #breadcrumbs .breadcrumbs-container {
+        /* Prevent the breadcrumbs from wrapping around the previous link. */
+        overflow: hidden;
+    }
+    </style>
+
+    <div id="breadcrumbs" class="container" style="position:relative;top:-10px;">
+      <div class="next" style="margin-top:5px;">
+        <sapn class="label label-danger"> 예시 입니다 </sapn>
+      </div>
+      <ul class="breadcrumbs-container">
+        <li><a href='/'>홈</a></li>
+        <li><a href='/admin'>관리자</a></li>
+        <li><a href='/admin/user'>사용자 리스트</a></li>    
+      </ul>
+    </div>
