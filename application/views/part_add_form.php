@@ -65,18 +65,6 @@
                   </select>
               </div>
               
-              <!--
-              <div class="form-group">
-                <lable for="customer_id" class="control-label">외부 업체 선택</lable>
-                  <select id="customer_id" class="form-control">
-                    <option>--선택하세요--</option>
-                    <option value="1">IBM</option>
-                    <option value="2">Samsung</option>
-                    <option value="3">LG</option>
-                  </select>
-              </div>
-              -->
-
               <div class="form-group">
                 <lable for="part_no" >장비 식별자 입력</lable>
                 <input type="text" class="form-control" id="part_no" name="part_no" placeholder="Enter...">

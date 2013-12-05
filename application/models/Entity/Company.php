@@ -3,14 +3,15 @@ namespace Entity;
 
 /**
  * @Entity
- * @Table(name="GS2_CUSTOMERS")
+ * @Table(name="GS2_COMPANIES")
  */
 class Company
 {
 	/**
 	 * @Id
 	 * @Column(type="integer", nullable=false)
-	 * @GeneratedValue(strategy="IDENTITY")
+	 * @GeneratedValue(strategy="AUTO")
+	 * @SequenceGenerator(sequenceName="gs2_company_seq")
 	 */
 	protected $id;				// 트리거로 자동 생성
 

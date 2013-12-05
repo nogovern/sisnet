@@ -9,7 +9,7 @@ class Company_m extends MY_Model {
 		// 테이블명
 		$this->setEntityName('Company');
 		// Entity명
-		$this->setTableName('gs2_customers');
+		$this->setTableName('gs2_companies');
 	}
 
 	public function getByName($value) {

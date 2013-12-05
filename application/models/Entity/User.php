@@ -17,50 +17,40 @@ class User {
 	 */
 	protected $id;
 
-	/**
-	 * @Column(type="string", length=1)
-	 */
+	/** @Column(type="string", length=1) */
 	protected $type;
 	
-	/**
-	 * @Column(type="string")
-	 */
+	/** @Column(type="string") */
 	protected $username;
-
-	/**
-	 * @Column(type="string")
-	 */
+	
+	/** @Column(type="string") */
 	protected $name;
 
-	/**
-	 * @Column(type="string")
-	 */
+	/** @Column(type="string") */ 
 	protected $password;
-
-	/**
-	 * @Column(type="string")
-	 */
+	
+	/** @Column(type="string", length=20) */
 	protected $phone;
-
-	/**
-	 * @Column(type="string")
-	 */
+	
+	/** @Column(type="string") */ 
 	protected $email;
-
-	/**
-	 * @Column(type="string")
-	 */
+	
+	/** @Column(type="string", length=20) */
 	protected $fax;
 
-	/**
-	 * @Column(type="datetime")
-	 */
+	/** @Column(type="datetime") */ 
 	protected $date_register;
+	
+	/** @Column(type="string", length=1) */
+	protected $status;
 
 	/**
-	 * @Column(type="string", length=1)
+	 * @ManyToOne(targetEntity="Office")
+	 * @JoinColumn(name="office_id", referencedColumnName="id")
 	 */
-	protected $status;
+	protected $office;			// 사무소 연관
+
+	protected $company;			// 거래처 연관
 	
 	/**
 	 * [__get description]

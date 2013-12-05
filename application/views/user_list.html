@@ -15,11 +15,12 @@
             <li class="<?=($type==3)?'active':''?>"><a href="/admin/user/lists/3">납품처</a></li>
           </ul>
 
-          <table class="table">
+          <table class="table table-hover">
             <thead>
               <tr>
                 <th>No</th>
                 <th>구분</th>
+                <th>소속</th>
                 <th>이름</th>
                 <th>아이디</th>
                 <th>등록일자</th>
@@ -35,6 +36,7 @@
               <tr class="">
                 <td><?=$row->id?></td>
                 <td><?=$row->getUserTypeText()?></td>
+                <td><?=($row->type == 1) ? $row->office->name : ''?></td>
                 <td><?=$row->name?></td>
                 <td><?=$row->username?></td>
                 <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
