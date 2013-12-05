@@ -118,10 +118,4 @@ class StockTest extends PHPUnit_Framework_TestCase {
 
 	}
 
-	
-	// 설치 프로세스
-	// - 장비 수량이 "설치전 " 수량으로 이동
-	// - 비가용 수량으로 전환
-	// - 설치후에는 비가용 수량에서 출고 
-	
 }
