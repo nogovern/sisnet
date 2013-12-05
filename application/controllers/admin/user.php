@@ -15,9 +15,9 @@ class User extends CI_Controller {
 
 	public function lists($type = '') {
 		if(!$type) {
-			$rows = $this->user_m->getList();
+			$rows = $this->user_model->getList();
 		} else {
-			$rows = $this->user_m->getListByType($type);
+			$rows = $this->user_model->getListByType($type);
 		}
 
 		$data['rows'] = $rows;
@@ -30,7 +30,7 @@ class User extends CI_Controller {
 	}
 
 	public function view($id) {
-		$user = $this->user_m->get($id);
+		$user = $this->user_model->get($id);
 
 		echo '<pre>';
 		var_dump($user);
@@ -87,7 +87,7 @@ class User extends CI_Controller {
 			$user->setDateRegister();
 			$user->setStatus(1);
 
-			$ok = $this->user_m->add($user);
+			$ok = $this->user_model->add($user);
 
 			// 입력 성공 메세지
 			var_dump($_POST);
