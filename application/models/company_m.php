@@ -1,13 +1,13 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Customer_m extends MY_Model {
+class Company_m extends MY_Model {
 
 	public function __construct() {
 		parent::__construct();
 
 		// 테이블명
-		$this->setEntityName('Customer');
+		$this->setEntityName('Company');
 		// Entity명
 		$this->setTableName('gs2_customers');
 	}

@@ -1,12 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Customer extends CI_Controller {
+class Company extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
 
 		// load User model...
-		$this->load->model('customer_m', 'customer_model');
+		$this->load->model('company_m', 'company_model');
 
 		// 프로파일링 설정
 		//$this->output->enable_profiler(TRUE);
@@ -30,11 +30,11 @@ class Customer extends CI_Controller {
 		if($this->form_validation->run() === FALSE){
 			$this->load->view('layout/header');
 			$this->load->view('layout/navbar');
-			$this->load->view('customer_add_form', $data);
+			$this->load->view('company_add_form', $data);
 			$this->load->view('layout/footer');
 
 		} else {
-			$new = new Entity\Customer();
+			$new = new Entity\Company();
 
 			$new->code = $this->input->post('code');
 			$new->type = $this->input->post('type');
@@ -48,9 +48,9 @@ class Customer extends CI_Controller {
 			// user_id 가 있으면 
 			// $new->user = $user;
 
-			$this->customer_model->save($new);
+			$this->company_model->save($new);
 
-			redirect('/admin/customer');
+			redirect('/admin/company');
 		}
 
 	}
@@ -58,11 +58,11 @@ class Customer extends CI_Controller {
 	public function lists() {
 
 		$data['page_title'] = '업체 리스트';
-		$data['rows'] = $this->customer_model->getList();
+		$data['rows'] = $this->company_model->getList();
 
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
-		$this->load->view('customer_list.html', $data);
+		$this->load->view('company_list', $data);
 		$this->load->view('layout/footer');
 	}
 

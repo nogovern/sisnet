@@ -5,7 +5,7 @@ namespace Entity;
  * @Entity
  * @Table(name="GS2_CUSTOMERS")
  */
-class Customer
+class Company
 {
 	/**
 	 * @Id

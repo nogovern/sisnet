@@ -58,7 +58,7 @@ endforeach;
         </table>
 
         <p>
-          <a href="/admin/customer/add"><span class="btn btn-primary">&nbsp;신규  등록</span></a>
+          <a href="/admin/company/add"><span class="btn btn-primary">&nbsp;신규  등록</span></a>
         </p>
 
         </div>
