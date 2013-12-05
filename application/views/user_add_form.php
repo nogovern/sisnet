@@ -40,7 +40,7 @@
 
               <!-- 외부 업체 선택-->
               <div class="form-group" id="select_company">
-                <lable for="customer_id" class="control-label">외부 업체 선택</lable>
+                <lable for="company_id" class="control-label">외부 업체 선택</lable>
                 <?php
                 echo $form_company_select;
                 ?>

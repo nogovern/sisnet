@@ -52,7 +52,7 @@ class User extends CI_Controller {
 		}
 
 		// 거래처 목록
-		$companies = $em->getRepository('Entity\Customer')->findBy(array('type' => 3));
+		$companies = $em->getRepository('Entity\Company')->findBy(array('type' => 3));
 		$option_companies = array();
 		$option_companies[0] = "-- 업체 를 선택하세요 --";
 		foreach($companies as $company) {
