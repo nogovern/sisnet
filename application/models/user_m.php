@@ -20,9 +20,8 @@ class User_m extends MY_Model {
 	 */
 	public function getByUsername($value)
 	{
-		$rows = $this->em->getRepository($this->getEntityName())->findBy(array('username' => $value));
-
-		return $rows;
+		$repo = $this->em->getRepository($this->getEntityName());
+		return $repo->findOneBy(array('username' => $value));
 	}
 
 	public function getListByType($type) {

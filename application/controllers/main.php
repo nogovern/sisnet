@@ -25,6 +25,29 @@ class Main extends CI_Controller
 
 	// 로그인 화면
 	public function login() {
-		$this->load->view('login');
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		// auth liabrary
+		$this->load->library('auth');
+
+		$this->form_validation->set_rules('username', 'username', 'required');
+
+		///// data //////
+		$data = array();
+
+		if($this->form_validation->run() === TRUE) {
+			if($this->auth->login($this->input->post('username'), $this->input->post('password'))) {
+				echo '로그인 성공! ' . $this->input->post('username') . ' 님 환영합니다.';
+				exit;
+			} else {
+				echo '==== 로그인 실패!!! ======';
+				echo '<pre>';
+				var_dump($_POST);
+				echo '</pre>';
+			}
+		} 
+		
+		$this->load->view('login', $data);
 	}
 }

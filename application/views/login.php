@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
 
     <title>시스넷 :: 자산관리시스템 로그인</title>
 
@@ -71,14 +70,18 @@
   <body>
 
     <div class="container">
-
-      <form class="form-signin" method="get" action="<?=site_url('/admin/part')?>">
+    
+      <!--<form class="form-signin" method="get" action="">-->
+<?php
+      echo form_open('', 'role="form" class="form-signin"');
+      echo validation_errors();
+?>  
         <h1 class="form-signin-heading">GS25 Login</h1>
         
-        <input type="text" class="form-control" placeholder="Email address" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
+        <input type="text" class="form-control" name="username" placeholder="username" required autofocus>
+        <input type="password" class="form-control" name="password" placeholder="password" required>
         <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
+          <input type="checkbox" value="remember-me" name="remember-me"> Remember me
         </label>
         <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
       </form>

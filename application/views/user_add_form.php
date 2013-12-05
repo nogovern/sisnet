@@ -83,8 +83,6 @@
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-      $("#re_password").parent().addClass('has-warning');
-
       var user_type;
 
       $("#select_office").hide();
