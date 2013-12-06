@@ -42,7 +42,7 @@ class User extends CI_Controller {
 		$this->load->library('form_validation');
 
 
-		$em = $this->user_model->getEntityManger();
+		$em = $this->user_model->getEntityManager();
 		// 사무소 목록
 		$offices = $em->getRepository('Entity\Office')->findAll();
 		$option_offices = array();

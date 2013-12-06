@@ -24,7 +24,7 @@ class Stock extends CI_Controller
 
 		$data['title'] = '재고------------------^';
 
-		$em = $this->stock_model->getEntityManger();
+		$em = $this->stock_model->getEntityManager();
 		$data['rows'] = $em->getRepository('Entity\Part')->findAll();
 
 		$this->load->view('layout/header');
@@ -40,7 +40,7 @@ class Stock extends CI_Controller
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$em = $this->stock_model->getEntityManger();
+		$em = $this->stock_model->getEntityManager();
 		// 장비 목록
 		$parts = $em->getRepository('Entity\Part')->findAll();
 		$option_parts = array();

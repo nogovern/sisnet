@@ -48,7 +48,7 @@ class MY_Model extends CI_Model {
 		return $this->table_name;
 	}
 
-	public function getEntityManger() {
+	public function getEntityManager() {
 		return $this->em;
 	}
 

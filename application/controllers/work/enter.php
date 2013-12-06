@@ -10,8 +10,10 @@ class Enter extends CI_Controller
 	{
 		parent::__construct();
 
-		$this->load->library(array('doctrine', 'auth'));
-		$this->em = $this->doctrine->em;
+		$this->load->model('work_m', 'work_model');
+		$this->em = $this->work_model->getEntityManager();
+
+		$this->load->library('auth');
 	}
 
 	public function index() {
@@ -26,5 +28,12 @@ class Enter extends CI_Controller
 			var_dump($row->office->name);
 			var_dump($row->user->name);
 		}
+
+		echo $this->work_model->makeOperationNo();
+	}
+
+	// 입고요청
+	public function add() {
+
 	}
 }
