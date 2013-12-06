@@ -50,6 +50,10 @@ class User {
 	 */
 	protected $office;			// 사무소 연관
 
+	/**
+	 * @ManyToOne(targetEntity="Company")
+	 * @JoinColumn(name="company_id", referencedColumnName="id")
+	 */
 	protected $company;			// 거래처 연관
 	
 	/**
@@ -88,6 +92,14 @@ class User {
 
 	public function setStatus($val) {
 		$this->status = $val;
+	}
+
+	public function setCompany(Company $reference) {
+		$this->company = $reference;
+	}
+
+	public function setOffice(Office $reference) {
+		$this->office = $reference;
 	}
 
 	// datetime 타입을 문자열로 반환

@@ -1,3 +1,4 @@
+
     <!-- start of div.container -->
     <div class="container">
       <!-- Main hero unit for a primary marketing message or call to action -->
@@ -20,8 +21,9 @@
               <tr>
                 <th>No</th>
                 <th>구분</th>
-                <th>소속</th>
                 <th>이름</th>
+                <th>소속</th>
+                <th>거래처</th>
                 <th>아이디</th>
                 <th>등록일자</th>
                 <th>상태</th>
@@ -36,8 +38,9 @@
               <tr class="">
                 <td><?=$row->id?></td>
                 <td><?=$row->getUserTypeText()?></td>
-                <td><?=($row->type == 1) ? $row->office->name : ''?></td>
                 <td><?=$row->name?></td>
+                <td><?=($row->type == 1) ? $row->office->name : ''?></td>
+                <td><?=($row->type == 3) ? $row->company->name : ''?></td>
                 <td><?=$row->username?></td>
                 <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
                 <td><?=$row->status?></td>

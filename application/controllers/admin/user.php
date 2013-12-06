@@ -87,6 +87,17 @@ class User extends CI_Controller {
 			$user->setDateRegister();
 			$user->setStatus(1);
 
+			// 사무소 유저일 경우
+			if($this->input->post('office_id')) {
+				$user->setOffice($em->getReference('Entity\Office', $this->input->post('office_id')));
+			}
+
+			// 거래처 유저일 경우
+			if($this->input->post('company_id')) {
+				$user->setCompany($em->getReference('Entity\Company', $this->input->post('company_id')));
+			}
+
+			// 저장
 			$ok = $this->user_model->add($user);
 
 			// 입력 성공 메세지

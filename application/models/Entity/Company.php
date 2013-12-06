@@ -57,7 +57,7 @@ class Company
 		return ($this->date_register) ? $this->date_register->format('Y-m-d H:i:s') : '';
 	}
 
-	public function setUser(Entity\User $user) {
+	public function setUser(User $user) {
 		$this->user = $user;
 	}
 
