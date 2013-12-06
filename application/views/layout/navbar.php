@@ -11,26 +11,27 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="dropdown">
+            <li class="dropdown" id="page-admin">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리자 <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="/admin/user">사용자</a></li>
-                <li><a href="/admin/office">사무소</a></li>
-                <li><a href="/admin/inventory">창고</a></li>
-                <li><a href="/admin/company">거래처</a></li>
-                <li><a href="/admin/part">장비</a></li>
-                <li><a href="/admin/store">점포</a></li>
+                <li id="page-admin-user"><a href="/admin/user">사용자</a></li>
+                <li id="page-admin-office"><a href="/admin/office">사무소</a></li>
+                <li id="page-admin-inventory"><a href="/admin/inventory">창고</a></li>
+                <li id="page-admin-company"><a href="/admin/company">거래처</a></li>
+                <li id="page-admin-part"><a href="/admin/part">장비</a></li>
+                <li id="page-admin-store"><a href="/admin/store">점포</a></li>
               </ul>
             </li>
 
             <li><a href="/schedule">일정</a></li>
             <li><a href="/stock">재고</a></li>
 
-            <li class="dropdown">
+            <li class="dropdown" id="page-enter">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">입고 <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="/orders/request_form">입고요청</a></li>
-                <li><a href="/orders/lists">입고요청 확인</a></li>
+                <li><a href="/work/enter/">입고 목록 보기</a></li>
+                <li><a href="/work/enter/request">입고 요청</a></li>
+                <li><a href="/work/enter/check_request">입고 요청 확인</a></li>
               </ul>
             </li>
 
