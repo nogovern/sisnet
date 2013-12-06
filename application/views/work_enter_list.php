@@ -1,4 +1,7 @@
-
+<?php
+$this->load->view('layout/header', array('title' => '안녕하세요'));
+$this->load->view('layout/navbar', array('current' => 'page_enter'));
+?>
     <!-- start of div.container -->
     <div class="container">
       <!-- Main hero unit for a primary marketing message or call to action -->
@@ -79,3 +82,7 @@
         });
     });
     </script>
+
+<?php
+$this->load->view('layout/footer');
+?>
