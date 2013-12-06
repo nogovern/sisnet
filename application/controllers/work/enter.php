@@ -21,15 +21,15 @@ class Enter extends CI_Controller
 	}
 
 	public function main() {
-		$rows = $this->em->getRepository('Entity\Operation')->findAll();
 
-		foreach($rows as $row) {
-			var_dump($row->no);
-			var_dump($row->office->name);
-			var_dump($row->user->name);
-		}
-
-		echo $this->work_model->makeOperationNo();
+		$data['title'] = '입고업무';
+		$data['type'] = '';
+		$data['rows'] = $this->work_model->getEnterList();
+		
+		$this->load->view('layout/header');
+		$this->load->view('layout/navbar');
+		$this->load->view('work_enter_list', $data);
+		$this->load->view('layout/footer');
 	}
 
 	// 입고요청

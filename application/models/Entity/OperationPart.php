@@ -23,6 +23,9 @@ class OperationPart {
 	/** @Column(type="string", length=1) */
 	protected $type;
 
+	/** @Column(type="integer") */
+	protected $part_id; 
+
 	/** @Column(type="string", length=20) */
 	protected $part_category; 
 
@@ -41,4 +44,12 @@ class OperationPart {
 	/** @Column(type="string", length=255) */
 	protected $extra;			// 여분 데이타
 
+	// ---------- set -------------
+	
+
+
+	// ---------- get -------------
+	public function __get($key) {
+		return $this->$key;
+	}
 }
