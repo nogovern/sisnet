@@ -13,8 +13,8 @@ class SerialPart				// 시리얼 관리 장비
 	 */
 	protected $id;
 
-	/** @Column(type="string", length=20) */
-	protected $serial_number;
+	/** @Column(type="string", length=20, name="serail_number") */
+	protected $serial_no;
 
 	/**
 	 * @OneToOne(targetEntity="Part")

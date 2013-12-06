@@ -4,6 +4,8 @@
  */
 namespace Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /* 이 부분을 전역 상수로 갈까? 클래스 const 로 갈까? */
 define('GS2_OPERATION_STATUS_A', 100);
 define('GS2_OPERATION_STATUS_INSTALL', 200);
@@ -17,7 +19,7 @@ define('GS2_OPERATION_STATUS_s', 900);				/*	상태변경 */
 
 /**
  * @Entity
- * @Table(name="GS2_OPERATIONSS")
+ * @Table(name="GS2_OPERATIONS")
  */
 class Operation
 {
@@ -29,42 +31,80 @@ class Operation
 	 */
 	protected $id;
 
-	/** @column(type="string", length=20) */
+	/** @Column(type="string", length=20, name="operation_no") */
 	protected $no;									// 작업 번호 
 
 	/** @Column(type="string", length=20) */
 	protected $type;
 	
-	/** @column(type="integer") */
-	protected $office_id;
+	/**
+	 * @OneToOne(targetEntity="Office")
+	 * @JoinColumn(name="office_id", referencedColumnName="id")
+	 */
+	protected $office;
 
-	/** @column(type="integer") */
-	protected $user_id;
+	/**
+	 * @OneToOne(targetEntity="User")
+	 * @JoinColumn(name="user_id", referencedColumnName="id")
+	 */
+	protected $user;						// 등록 유저
 
-	/** @column(type="integer") */
-	protected $worker_id;
+	/**
+	 * @OneToOne(targetEntity="User")
+	 * @JoinColumn(name="user_id", referencedColumnName="id")
+	 */
+	protected $worker;					// 담당 유저
 
-	/** @column(type="datetime", nullable=true) */
+	/** @Column(type="datetime", nullable=true) */
 	protected $date_register;	// 요청서 등록일시
 
-	/** @column(type="datetime") */
+	/** @Column(type="datetime") */
 	protected $date_request;	// 작업 요청일
 
-	/** @column(type="datetime") */
+	/** @Column(type="datetime") */
 	protected $date_modify;		// 작업 상태 변경일시
 
-	/** @column(type="datetime") */
+	/** @Column(type="datetime") */
 	protected $date_work;		// 작업일시
 
-	/** @column(type="datetime") */
+	/** @Column(type="datetime") */
 	protected $date_finish;		// 작업완료일시
 
-	/** @column(type="string", length=255) */
+	/** @Column(type="string", length=255) */
 	protected $memo;
 
 	/** @Column(type="string", length=1) */
 	protected $status;
 
+	/**
+	 * @OneToMany(targetEntity="OperationPart", mappedBy="operation")
+	 */
+	private $part_list;					// 작업 장비들 목록
+
+	//////////
+	// 생성자 //
+	//////////
+	public function __construct() {
+		$this->part_list = new ArrayCollection();
+	}
+
+
+	// ---------- set -------------
+	public function setOffice(Office $ref) {
+		$this->office = $ref;
+	}
+
+	// 요청자 지정 (필수)
+	public function setUser(User $ref) {
+		$this->user = $ref;
+	}
+
+	// 담당자 지정
+	public function setWorker(User $ref) {
+		$this->worker = $ref;
+	}
+
+	// ---------- get -------------
 	public function __get($key) {
 		return $this->$key;
 	}
