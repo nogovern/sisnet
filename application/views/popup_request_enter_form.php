@@ -15,22 +15,13 @@ $this->load->view('layout/header_popup', array('title' => "$title"));
             // 에러 출력
             echo validation_errors();
           ?>
-          <ul class="well">
-            <li>작업 요청일</li>
-            <li>담당자 - 입고시는 제고사/납품처 담당자</li>
-            <li>메모</li>
-            <li>장비</li>
-            <li>수량</li>
-            <li>장비 상태 (중고/신품)</li>
-            <li></li>
-          </ul>
- 
           <div>
 <?php 
 echo form_open('', 'role="form"');
 
-/*
-hidden 대신 로그인 session 을 이용해도 될듯
+/*=============================================
+  hidden 값은 로그인 session 을 사용 해야 함!
+ *=============================================
  */
 echo form_hidden('type', '101');
 echo form_hidden('office_id', '');      // 사무소
@@ -56,13 +47,18 @@ echo form_hidden('user_id', '');        // 사용자
               </div>
 
               <div class="form-group">
-                <label for="username">사용자 ID 입력</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Enter ID">
+                <label for="office_name">사무소명</label>
+                <input type="text" class="form-control" id="office_name" name="office_name" value="" palceholder="지정값">
               </div>
 
               <div class="form-group">
-                <label for="name">이름</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
+                <label for="part_name">장비명</label>
+                <input type="text" class="form-control" id="part_name" name="part_name" value="" palceholder="지정값">
+              </div>
+
+              <div class="form-group">
+                <label for="qty">수량</label>
+                <input type="text" class="form-control" id="qty" name="qty" placeholder="수량을 입력하세요">
               </div>
 
               <div class="form-group">

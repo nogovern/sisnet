@@ -87,7 +87,10 @@
       </form>
 
     </div> <!-- /container -->
-
+    
+    <p class="text-danger">
+      <a href="<?=site_url()?>stock">[재고] 페이지로 이동</a>
+    </p>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

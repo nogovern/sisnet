@@ -13,14 +13,11 @@ class Main extends CI_Controller
 	}
 
 	public function index() {
-		redirect('/stock');
+		$this->login();
 	}
 
 	public function admin() {
 		echo "<h1>" . __method__ . "</h1>" ;
-		echo anchor('/admin/user', '사용자관리페이지로 이동');
-		echo "<br>[Todo] 로그인 기능 추가해야함";
-
 	}
 
 	// 로그인 화면
