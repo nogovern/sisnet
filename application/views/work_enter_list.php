@@ -65,7 +65,7 @@ $this->load->view('layout/navbar', array('current' => 'page_enter'));
             <a class='iframe' href="<?=site_url('admin/user/form')?>" title="사용자를 등록하세요">iframe open</a>
           </p>
           <p>
-            <a href="/admin/user/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;사용자 등록</span></a>
+            <a href="/work/enter/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;입고 요청 등록</span></a>
           </p>
 
         </div>

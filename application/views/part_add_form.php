@@ -41,7 +41,7 @@
               </div>
 
               <div class="form-group">
-                <lable for="category" class="control-label">장비 종류</lable>
+                <label for="category" class="control-label">장비 종류</label>
                   <select id="category" name="category" class="form-control">
                     <option value="">--선택하세요--</option>
                     <option value="1">POS스캐너</option>
@@ -55,7 +55,7 @@
               </div>
 
               <div class="form-group">
-                <lable for="inventory_id" class="control-label">창고 선택</lable>
+                <label for="inventory_id" class="control-label">창고 선택</label>
                   <select id="inventory_id" class="form-control">
                     <option>--선택하세요--</option>
                     <option value="1">가산</option>
@@ -66,7 +66,7 @@
               </div>
               
               <div class="form-group">
-                <lable for="part_no" >장비 식별자 입력</lable>
+                <label for="part_no" >장비 식별자 입력</label>
                 <input type="text" class="form-control" id="part_no" name="part_no" placeholder="Enter...">
               </div>
 

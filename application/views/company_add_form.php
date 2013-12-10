@@ -56,7 +56,7 @@
             </div>
             
             <div class="form-group">
-              <lable for="user_id">담당자 선택</lable>
+              <label for="user_id">담당자 선택</label>
                 <select id="user_id" name="user_id" class="form-control">
                   <option value="">-- 담당자 지정 --</option>
                   <option value="1">who_are_you?</option>

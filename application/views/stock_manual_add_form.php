@@ -15,7 +15,7 @@
               <h2>재고 등록 양식 (관리자 전용)</h2>
 
               <div class="form-group">
-                <lable for="category" class="control-label">장비 종류</lable>
+                <label for="category" class="control-label">장비 종류</label>
                   <select id="category" name="category" class="form-control" disabled>
                     <option value="">-- 장비종류를 선택하세요--</option>
                     <option value="1">POS스캐너</option>
@@ -28,14 +28,14 @@
               </div>
 
               <div class="form-group">
-                <lable for="part_id" class="control-label">장비를 선택하세요</lable>
+                <label for="part_id" class="control-label">장비를 선택하세요</label>
                 <?php
                 echo $form_part_select;
                 ?>
               </div>
 
               <div class="form-group">
-                <lable for="inventory_id" class="control-label">창고 선택</lable>
+                <label for="inventory_id" class="control-label">창고 선택</label>
                 <?php
                 echo $form_inventory_select;
                 ?>

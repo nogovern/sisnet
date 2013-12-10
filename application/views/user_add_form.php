@@ -32,7 +32,7 @@
               </div>
 
               <div class="form-group" id="select_office">
-                <lable for="office_id" class="control-label">사무소 선택</lable>
+                <label for="office_id" class="control-label">사무소 선택</label>
                 <?php
                 echo $form_office_select;
                 ?>
@@ -40,14 +40,14 @@
 
               <!-- 외부 업체 선택-->
               <div class="form-group" id="select_company">
-                <lable for="company_id" class="control-label">외부 업체 선택</lable>
+                <label for="company_id" class="control-label">외부 업체 선택</label>
                 <?php
                 echo $form_company_select;
                 ?>
               </div>
 
               <div class="form-group">
-                <lable for="username" >사용자 ID 입력</lable>
+                <label for="username" >사용자 ID 입력</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter ID">
               </div>
 
