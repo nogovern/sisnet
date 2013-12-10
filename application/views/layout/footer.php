@@ -10,9 +10,10 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript">
     $(document).ready(function(){
-      var current;
+      var current = '<?=(isset($current)) ? $current : "page-admin"?>';
+      var $current = $("#" + current);
 
-      $("#page-enter").addClass('active');
+      $current.addClass('active');
     });
     </script>
   </body>

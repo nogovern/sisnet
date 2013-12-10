@@ -1,8 +1,8 @@
 <?php
 $this->load->view('layout/header', array('title' => "$title"));
-$this->load->view('layout/navbar', array('current' => 'page_stock'));
-?>
+$this->load->view('layout/navbar', array('current' => $current));
 
+?>
     <!-- start of div.container -->
     <div class="container">
       <!-- Main hero unit for a primary marketing message or call to action -->
@@ -15,10 +15,11 @@ $this->load->view('layout/navbar', array('current' => 'page_stock'));
         <div class="span12">
 
         <ul class="nav nav-pills">
-          <li class="<?=($type=='')?'active':''?>"><a href="/admin/user">전체</a></li>
-          <li class="<?=($type==1)?'active':''?>"><a href="/admin/user/lists/1">시스네트</a></li>
-          <li class="<?=($type==2)?'active':''?>"><a href="/admin/user/lists/2">GS25</a></li>
-          <li class="<?=($type==3)?'active':''?>"><a href="/admin/user/lists/3">납품처</a></li>
+          <li class="<?=($inven->id=='')?'active':''?>"><a href="<?=site_url()?>stock/lists">전체</a></li>
+          <li class="<?=($inven->id==1)?'active':''?>"><a href="<?=site_url()?>stock/listByInventory/1">서울-가산</a></li>
+          <li class="<?=($inven->id==2)?'active':''?>"><a href="<?=site_url()?>stock/listByInventory/2">대전</a></li>
+          <li class="<?=($inven->id==3)?'active':''?>"><a href="<?=site_url()?>stock/listByInventory/3">부산</a></li>
+          <li class="<?=($inven->id==4)?'active':''?>"><a href="<?=site_url()?>stock/listByInventory/4">제주</a></li>
         </ul>
           
         <table class="table table-responsive table-hover" id="stock_list">
@@ -31,7 +32,11 @@ $this->load->view('layout/navbar', array('current' => 'page_stock'));
               <th>상태</th>
               <th>신품 합계</th>
               <th>중고 합계</th>
-              <th>재고</th>
+              <th>기준수량</th>
+              <th>신품</th>
+              <th>중고</th>
+              <th>S100</th>
+              <th>S400</th>
             </tr>
           </thead>
 
@@ -44,43 +49,22 @@ foreach($rows as $row):
             <tr class="">
               <td><?=$row->id?></td>
               <td>
-                <span class="label <?=$arr_type_class[$row->type]?>">
+                <span class="label <?=$arr_type_class[$row->part->type]?>">
 <?php
-                echo $arr_type_text[$row->type];
+                echo $arr_type_text[$row->part->type];
 ?>
                 </span>
               </td>
-              <td><?=$row->part_code?></td>
-              <td><?=$row->name?></td>
-              <td><?=$row->status?></td>
-              <td><?=intval($row->getNewTotal())?></td>
-              <td><?=intval($row->getUsedTotal())?></td>
-              <td>
-<?php
-if(count($row->getStockList())):
-?>
-<table class="table table-hover" style="margin-bottom:0;">
-  <tbody>
-<?php
-  foreach($row->getStockList() as $stock):
-?>
-    <tr class="success">
-      <td class="col-sm-4"><?=$stock->inventory->name?></td>
-      <td class="col-sm-2"><?=$stock->qty_minimum?></td>
-      <td class="col-sm-2"><?=number_format($stock->qty_new)?></td>
-      <td class="col-sm-2"><?=number_format($stock->qty_used)?></td>
-      <td class="col-sm-2"><button class="btn btn-info btn-xs" type="button">Order</button></td>
-    </tr>
-<?php
-endforeach;
-?>
-  </tbody>
-</table>
-<?php
-endif;
-?>
-                
-              </td>
+              <td><?=$row->part->part_code?></td>
+              <td><?=$row->part->name?></td>
+              <td><?=$row->part->status?></td>
+              <td></td>
+              <td></td>
+              <td><?=$row->qty_minimum?></td>
+              <td><?=$row->qty_new?></td>
+              <td><?=$row->qty_used?></td>
+              <td><?=$row->qty_s100?></td>
+              <td><?=$row->qty_s400?></td>
             </tr>
 <?php
 endforeach;
@@ -114,7 +98,6 @@ endforeach;
         });
       });
       </script>
-
 <?php
-$this->load->view('layout/footer');
+$this->load->view('layout/footer', array('current' => $current));
 ?>

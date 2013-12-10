@@ -43,16 +43,19 @@ class Inventory
 	 */
 	protected $status;
 
+	// --------------------------------------------
+	
+	public function __construct() {
+		$this->stock_list = new ArrayCollection();
+	}
+	
 	public function __get($key) {
 		return $this->$key;
 	}
 
-	public function __construct() {
-		$this->stock_list = new ArrayCollection();
+	public function getStockList() {
+		return $this->stock_list;
 	}
-
-
-	// --------------------------------------------
 
 	/*
 	신품 입고

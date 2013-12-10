@@ -60,6 +60,8 @@ class Stock
 	 * 매직 메소드 (테스트용)
 	 */
 	public function __get($key) {
+		if(strstr($key, "qty_"))
+			return $this->$key ? $this->$key : 0;
 		return $this->$key;
 	}
 

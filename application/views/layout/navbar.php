@@ -24,9 +24,9 @@
             </li>
 
             <li><a href="/schedule">일정</a></li>
-            <li><a href="/stock">재고</a></li>
+            <li id="page-stock"><a href="/stock">재고</a></li>
 
-            <li class="dropdown" id="page-enter">
+            <li id="page-enter" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">입고 <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="/work/enter/">입고 목록 보기</a></li>

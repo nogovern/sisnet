@@ -4,7 +4,6 @@
  * 창고 모델 
  */
 class Inventory_m extends MY_Model {
-	private $table_name;
 
 	public function __construct()
 	{
@@ -12,10 +11,17 @@ class Inventory_m extends MY_Model {
 
 		$this->setTableName('gs2_inventories');
 		$this->setEntityName('Inventory');
+
+		$this->repo = $this->em->getRepository($this->getEntityName());
 	}
 
 	public function addPartToInventory($part, $qty) {
 		return FALSE;
+	}
+
+	//  창고내 재고 리스트 
+	public function getStockList($inventory_id) {
+		;
 	}
 
 }

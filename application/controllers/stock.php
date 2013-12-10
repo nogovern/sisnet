@@ -20,17 +20,29 @@ class Stock extends CI_Controller
 		$this->lists();
 	}
 
+	// 전체 장비 재고 리스트
 	public function lists() {
 
 		$data['title'] = '재고------------------^';
 
 		$em = $this->stock_model->getEntityManager();
+		$data['type'] = '';
 		$data['rows'] = $em->getRepository('Entity\Part')->findAll();
 
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
 		$this->load->view('stock_list', $data);
-		$this->load->view('layout/footer');
+	}
+
+	// 창고별 장비 재고
+	public function listByInventory($inven_id) {
+		$data['title'] = '창고별 재고 상황';
+		$data['current'] = 'page-stock';
+
+		$this->load->model('inventory_m', 'inventory_model');
+		$inventory =  $this->inventory_model->get($inven_id);
+		$data['inven'] = $inventory;				// Inventory 객체
+		$data['rows'] = $inventory->getStockList();
+
+		$this->load->view('stock_list_by_inventory', $data);
 	}
 
 	public function add() {

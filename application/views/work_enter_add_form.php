@@ -37,19 +37,6 @@ echo form_hidden('user_id', '');        // 사용자
             <!-- <form role="form"> -->
               <h2><span class="fa fa-pencil-square-o"></span> 입고 요청 양식</h2>
 
-
-              <div class="form-group">
-                <p>장비 타입</p>
-                <label class="radio-inline">
-                  <input type="radio" class="grey" name="part_status" value="1">
-                  신품
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" class="grey" name="part_status" value="2">
-                  중고
-                </label>
-              </div>
-
               <!-- 장비 선택-->
               <div class="form-group">
                 <label for="part_id" class="control-label">장비 선택</label>
