@@ -25,8 +25,8 @@
       }
 
       body {
-        padding-top: 60px;
-        padding-bottom: 40px;
+        padding-top: 0px;
+        padding-bottom: 0px;
       }
     </style>
 
