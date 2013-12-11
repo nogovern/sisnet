@@ -10,16 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Part
 {
 	/**
-	 * @Id
-	 * @Column(type="integer", nullable=false) 
+	 * @Id @Column(type="integer", nullable=false) 
 	 * @GeneratedValue(strategy="AUTO")
 	 * @SequenceGenerator(sequenceName="gs2_part_seq")
 	 */
 	protected $id;
 
-	/**
-	 * @column(type="string", length=1)
-	 */
+	/** @column(type="string", length=1) */
 	protected $type;
 
 	/**
@@ -27,46 +24,32 @@ class Part
 	 */
 	protected $part_no;
 
-	/**
-	 * @column(type="string", length=50)
-	 */
+	/** @Column(type="string", length=50) */
 	protected $name;
 
-	/**
-	 * @Column(type="string", length=50)
-	 */
+	/** @Column(type="string", length=50) */
 	protected $part_code;
 	
-	/**
-	 * @Column(type="string", length=50)
-	 */
+	/** @Column(type="string", length=50) */
 	protected $manufacturer;
 
-	/**
-	 * @Column(type="integer")
-	 */
+	/** @Column(type="integer") */
 	protected $company_id;
 
-	/**
-	 * @Column(type="integer")
-	 */
+	/** @Column(type="integer") */
 	protected $qty_total;
 
-	/**
-	 * @Column(type="datetime")
-	 */
+	/** @Column(type="datetime") */
 	protected $date_register;
 
-	/**
-	 * @Column(type="string", length=1)
-	 */
+	/** @Column(type="string", length=1) */
 	protected $status;
 
-	/**
-	 * 
-	 * @OneToMany(targetEntity="Stock", mappedBy="part")
-	 */
+	/** @OneToMany(targetEntity="Stock", mappedBy="part") */
 	protected $stock_list;
+
+	/** @Column(type="integer") */
+	protected $category_id;					// 2013.12.11 추가 - 장비 카테고리
 
 	/*
 	 상태 정의
