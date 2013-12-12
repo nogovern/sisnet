@@ -33,8 +33,13 @@ class Part
 	/** @Column(type="string", length=50) */
 	protected $manufacturer;
 
-	/** @Column(type="integer") */
-	protected $company_id;
+	/** 
+	 * 납품처
+	 * 
+	 * @OneToOne(targetEntity="Company") 
+	 * @JoinColumn(name="company_id", referencedColumnName="id")
+	 */
+	protected $company;							
 
 	/** @Column(type="integer") */
 	protected $qty_total;
@@ -48,8 +53,13 @@ class Part
 	/** @OneToMany(targetEntity="Stock", mappedBy="part") */
 	protected $stock_list;
 
-	/** @Column(type="integer") */
-	protected $category_id;					// 2013.12.11 추가 - 장비 카테고리
+	/** 
+	 * 장비 카테고리
+	 * 
+	 * @OneToOne(targetEntity="Category") 
+	 * @JoinColumn(name="category_id", referencedColumnName="id")
+	 */
+	protected $category;					// 2013.12.11 추가 - 장비 카테고리
 
 	/*
 	 상태 정의
@@ -63,12 +73,27 @@ class Part
 	}
 
 	public function __get($key) {
-		return $this->$key;
+		if($key == 'company_id') {
+			return $this->getCompany();
+		} else {
+			return $this->$key;
+		}
+	}
+
+	public function getCompany() {
+		return is_null($this->company) ? '' : $this->company->name;
 	}
 
 	/**
 	 * setter 정의
 	 */
+	public function setCompany(Comapny $obj) {
+		$this->company = $obj;
+	}
+
+	public function setCategory(Category $obj) {
+		$this->category = $obj;
+	}
 	
 	public function setType($val='') {
 		$this->type = $val;
@@ -98,6 +123,7 @@ class Part
 		$this->status = $val;
 	}
 
+	// 제조사명 (text)
 	public function setManufacturer($val='') {
 		$this->manufacturer = $val;
 	}

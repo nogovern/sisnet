@@ -87,5 +87,14 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 		echo join('->', $stack);
 	}
 
+	public function testCarCategory() {
+		$this->repo = $this->em->getRepository('Entity\Category');
+		$parent = $this->em->getReference('Entity\Category', 2);
+
+		$children = $this->repo->findBy(array('parent' => $parent));
+
+		echo count($children);
+	}
+
 
 }

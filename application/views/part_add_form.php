@@ -66,7 +66,7 @@
               </div>
               
               <div class="form-group">
-                <label for="part_no" >장비 식별자 입력</label>
+                <label for="part_no" >장비 식별자 입력 (자동입력)</label>
                 <input type="text" class="form-control" id="part_no" name="part_no" placeholder="Enter...">
               </div>
 

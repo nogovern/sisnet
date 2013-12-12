@@ -25,10 +25,7 @@ class Part extends CI_Controller {
 		$data['title']  = '장비리스트';		
 		$data['rows'] = $items;
 		
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
 		$this->load->view('part_list.html', $data);
-		$this->load->view('layout/footer');
 	}
 	
 	public function add() {
