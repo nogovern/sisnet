@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* 	공통 Ajax 요청/응답 컨트롤러
+* 	공통 Ajax 응답 컨트롤러
 */
 class Ajax extends CI_Controller
 {
@@ -33,5 +33,31 @@ class Ajax extends CI_Controller
 		$this->load->view('popup_request_enter_form', $data);
 	}
 
-	
+	// 전체 장비 목록
+	public function response($id) {
+		if(isset($_POST)) {
+			$id = $this->input->post('category_id');
+		}
+
+		$this->load->model('part_m');
+
+		$em = $this->part_m->getEntityManager();
+		$parts = $em->getRepository('Entity\Part')->findBy(array('category_id' => $id));
+
+		if(count($parts)){
+			echo '<option vlaue="0">--선택하세요--</option>';
+			foreach($parts as $p) {
+				echo '<option vlaue="' . $p->id . '">'.  $p->name.'</option>';
+			}
+		} else {
+			echo '1000';
+		}
+
+	}
+
+	// 창고의 장비 재고 목록
+	public function response_1() {
+
+	}
+
 }
