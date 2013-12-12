@@ -39,6 +39,9 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
+
+    <!-- jQuery Cookie -->
+    <script src="/assets/js/jquery.cookie.js"></script>
     
     <!-- Colorbox-->
     <link href="/assets/css/colorbox.css" rel="stylesheet">
