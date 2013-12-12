@@ -35,6 +35,7 @@ class Ajax extends CI_Controller
 
 	// 전체 장비 목록
 	public function response($id) {
+
 		if(isset($_POST)) {
 			$id = $this->input->post('category_id');
 		}
@@ -44,6 +45,7 @@ class Ajax extends CI_Controller
 		$em = $this->part_m->getEntityManager();
 		$parts = $em->getRepository('Entity\Part')->findBy(array('category_id' => $id));
 
+		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 		if(count($parts)){
 			echo '<option vlaue="0">--선택하세요--</option>';
 			foreach($parts as $p) {

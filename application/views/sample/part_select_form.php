@@ -11,11 +11,11 @@ $this->load->view('layout/header_popup', array('title' => "$title"));
       <form name="my_form" mehtod="post" role="form" action="">
         <div class="row">
           <!-- 장비 종류 선택 -->
-          <div class="col-xs-5">
+          <div class="col-xs-4">
             <div class="form-group">
               <label for="select_category">장비 종류 선택</label>
               <select id="select_category" class="form-control">
-                <option vlaue="0"></option>
+                <option value="">--선택하세요--</option>
 <?php
 foreach($cats as $cat):
 ?>
@@ -28,7 +28,7 @@ endforeach;
           </div>
 
           <!-- 장비 선택 -->
-          <div class="col-xs-5">
+          <div class="col-xs-4">
             <div class="form-group">
               <label for="select_part">장비 선택</label>
               <select id="select_part" class="form-control"></select>
@@ -36,11 +36,15 @@ endforeach;
           </div>
 
           <!-- 수량 입력 -->
-          <div class="col-xs-2">
+          <div class="col-xs-1">
             <div class="form-group">
-              <label for="inputqty">수 량</label>
-              <input type="text" class="form-control" placeholder="수량">
+              <label for="input_qty">수 량</label>
+              <input type="text" class="form-control" id="input_qty" placeholder="수량">
             </div>
+          </div>
+
+          <div class="col-xs-3">
+            <div style="margin-top: 25px;"><button type="button" class="btn btn-warning btn-small" id="btn_add" disabled>Add</button></div>
           </div>
         </div>
 
@@ -52,21 +56,13 @@ endforeach;
             <thead>
               <tr>
                 <th>#</th>
-                <th>col1</th>
-                <th>col2</th>
-                <th>col3</th>
-                <th>col4</th>
+                <th>장비종류</th>
+                <th>장비명</th>
+                <th>수량</th>
+                <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>row1</td>
-                <td>row2</td>
-                <td>row3</td>
-                <td><button class="btn btn-success" id="create-user">Create new user</button></td>
-                <td><button class="btn btn-default" id="btn_modal" data-target="#b3_modal" data-toggle="modal">modal popup</button></td>
-              </tr>
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
       </div>
@@ -99,21 +95,29 @@ endforeach;
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
     <script type="text/javascript">
+    var btn_enabled = false;
+    var tbl_idx = 1; 
+
     $(document).ready(function(){
+      // 장비 종류 선택 시 장비 목록 가져오기
       $("#select_category").change(function(){
         var cat = $(":selected",this).val();
+        // console.log(cat);
         if( cat == ''){
+          $("#select_part").html('');
           return false;
         } else {
           var target_url = "<?=site_url('ajax/response/')?>" + '/' + cat;
         }
 
+        // ajax request
         $.ajax({
           url: target_url,
           type: "POST",
           data: {
             "category_id": cat,
-            "extra": "test"
+            "extra": "test",
+            "csrf_test_name": $.cookie("csrf_cookie_name")
           },
           dataType: "html",
         })
@@ -121,13 +125,30 @@ endforeach;
             if(html == 1000){
               alert('error : 해당 카테고리에 등록된 장비가 없어요');
             } else {
-              // console.log(html);
-              $("#select_part").append(html);
+              $("#select_part").html(html);
+              $("#btn_add").prop("disabled", false);
             }
           })
           .fail(function(xhr, textStatus){
             alert("Request failed: " + textStatus);
           });
+      });
+
+      $("#btn_add").click(function(){
+        var table = $("#part_table tbody");
+
+        var $tr = $('<tr>').addClass('active');
+        var $td = $("<td>").html(tbl_idx);
+        $tr.append($td);
+        $td = $("<td>").html($("#select_category :selected").text());
+        $tr.append($td);
+        $tr.append($("<td>").html($("#select_part :selected").text()));
+        $tr.append($("<td>").html($("#input_qty").val()));
+
+        console.log($tr);
+
+        table.append($tr);
+        tbl_idx++;
       });
 
     });
