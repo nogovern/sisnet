@@ -25,9 +25,9 @@ $this->load->view('layout/navbar', array('current' => 'page_stock'));
           <thead>
             <tr>
               <th>No</th>
-              <th>장비 구분</th>
+              <th>장비 타입</th>
+              <th>장비 종류</th>
               <th>장비명</th>
-              <th>모델명</th>
               <th>상태</th>
               <th>신품 합계</th>
               <th>중고 합계</th>
@@ -50,7 +50,7 @@ foreach($rows as $row):
 ?>
                 </span>
               </td>
-              <td><?=$row->part_code?></td>
+              <td><?=$row->category->name?></td>
               <td><?=$row->name?></td>
               <td><?=$row->status?></td>
               <td><?=intval($row->getNewTotal())?></td>

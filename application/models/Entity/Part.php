@@ -87,10 +87,19 @@ class Part
 	/**
 	 * setter 정의
 	 */
+	
+	/**
+	 * 납품처 설정
+	 * @param Comapny $obj Company Entity
+	 */
 	public function setCompany(Comapny $obj) {
 		$this->company = $obj;
 	}
 
+	/**
+	 * 장비 종류 설정
+	 * @param Category $obj Category Entity
+	 */
 	public function setCategory(Category $obj) {
 		$this->category = $obj;
 	}

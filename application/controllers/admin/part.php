@@ -34,16 +34,43 @@ class Part extends CI_Controller {
 
 		$data['title'] = "신규 장비를 등록하세요";
 
+		// 장비 카테고리 와 배열로 변경
+		$em = $this->part_model->getEntityManager();
+
+		$parent = $em->getRepository('Entity\Category')->find(1);
+		$rows = $em
+					->getRepository('Entity\Category')
+					->findBy(
+						array('parent' => $parent),
+						array('id' => 'ASC')				// order by 
+					);
+		$cats[0] = "--선택하세요--";
+		foreach($rows as $row) {
+			$cats[$row->id] = $row->name; 
+		}
+
+		// 납품처 목록
+		unset($rows);
+		$rows = $em->getRepository('Entity\Company')->findBy(
+				array('type' => 3),
+				array('id' => 'ASC')
+			);
+		$companies[0] = '--선택하세요';
+		foreach($rows as $row) {
+			$companies[$row->id] = $row->name;
+		}
+
+		// selectbox 생성
+		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
+		$data['select_company'] = form_dropdown('company_id', $companies, 0, 'id="company_id" class="form-control"');
+
 		// 규칙 설정
 		$this->form_validation->set_rules('type', '장비 타입', 'required');
 		$this->form_validation->set_rules('name', '장비 모델명', 'required');
-		$this->form_validation->set_rules('category', '장비 종류', 'required');
+		$this->form_validation->set_rules('category_id', '장비 종류', 'required');
 
 		if($this->form_validation->run() === FALSE){
-			$this->load->view('layout/header');
-			$this->load->view('layout/navbar');
 			$this->load->view('part_add_form', $data);
-			$this->load->view('layout/footer');
 		}
 		else 
 		{
@@ -54,9 +81,14 @@ class Part extends CI_Controller {
 			$part = new Entity\Part();
 			$part->setName($this->input->post('name'));
 			$part->setType($this->input->post('type'));
-			$part->setPartCode($this->input->post('category_name'));
 			$part->setManufacturer($this->input->post('manufacturer'));
 			$part->setRegisterDate();
+
+			$category = $em->getReference('Entity\Category', $this->input->post('category_id'));
+			$part->setCategory($category);
+
+			$company = $em->getReference('Entity\Company', $this->input->post('company_id'));
+			$part->setCompany($company);
 
 			$this->part_model->save($part);
 
