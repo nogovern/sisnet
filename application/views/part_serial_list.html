@@ -7,9 +7,9 @@
 
       <!-- Example row of columns -->
       <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
           
-        <table class="table">
+        <table class="table table-hover">
           <thead>
             <tr>
               <th>No</th>
@@ -32,14 +32,14 @@ foreach($rows as $row):
 ?>
             <tr class="">
               <td><?=$row->id?></td>
-              <td><?=$row->serial_number?></td>
-              <td><?=$row->part->part_code?></td>
+              <td><?=$row->getSerialNumber()?></td>
+              <td><?=$row->part->category->name?></td>
               <td><?=$row->part->name?></td>
               <td><?=$row->part->manufacturer?></td>
               <td><?=$row->current_location?></td>
               <td><?=$row->previous_location?></td>
               <td><?=$row->date_install?></td>
-              <td><?=$row->date_enter?></td>
+              <td><?=$row->getEnterDate()?></td>
               <td><?=$row->date_modify?></td>
               <td><?=$row->status?></td>
             </tr>
@@ -51,7 +51,7 @@ endforeach;
         </table>
 
         <p>
-          <a href="/admin/part/add"><button class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;장비 등록</button></a>
+          <a href="/admin/part/add"><button class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;장비 등록???</button></a>
         </p>
 
         </div>

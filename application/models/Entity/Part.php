@@ -90,9 +90,9 @@ class Part
 	
 	/**
 	 * 납품처 설정
-	 * @param Comapny $obj Company Entity
+	 * @param Company $obj Company Entity
 	 */
-	public function setCompany(Comapny $obj) {
+	public function setCompany(Company $obj) {
 		$this->company = $obj;
 	}
 
