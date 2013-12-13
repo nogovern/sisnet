@@ -96,5 +96,19 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 		echo count($children);
 	}
 
+	public function testInputStore() {
+		$store = new Entity\Store;
+
+		$store->name = "뉴타운점";
+		$store->owner_name ="장광희";
+		$store->join_type = "거저";
+		$store->date_register = new DateTime("now");
+		$store->tel = "02-9876-1234";
+
+		// $this->em->persist($store);
+		// $this->em->flush();
+
+	}
+
 
 }
