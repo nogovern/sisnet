@@ -34,6 +34,7 @@ class Part extends CI_Controller {
 
 		$data['title'] = "신규 장비를 등록하세요";
 
+		//================ refactoring needed ===================
 		// 장비 카테고리 와 배열로 변경
 		$em = $this->part_model->getEntityManager();
 
