@@ -25,7 +25,7 @@
               </ul>
             </li>
 
-            <li><a href="/schedule">일정</a></li>
+            <li id="page-schedule"><a href="/schedule">일정</a></li>
             <li id="page-stock"><a href="/stock">재고</a></li>
 
             <li id="page-enter" class="dropdown">

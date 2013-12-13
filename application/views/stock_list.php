@@ -1,6 +1,6 @@
 <?php
 $this->load->view('layout/header', array('title' => "$title"));
-$this->load->view('layout/navbar', array('current' => 'page_stock'));
+$this->load->view('layout/navbar', array('current' => 'page-stock'));
 ?>
 
     <!-- start of div.container -->

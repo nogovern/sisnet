@@ -1,6 +1,6 @@
 <?php
-$this->load->view('layout/header', array('title' => '관리자 >> 장비 목록'));
-$this->load->view('layout/navbar', array('current' => 'page-admin'));
+$this->load->view('layout/header', array('title' => '관리자 >> GS25 점포 리스트'));
+$this->load->view('layout/navbar', array('current' => 'page-admin-store'));
 ?>
     <!-- start of div.container -->
     <div class="container">
@@ -51,7 +51,7 @@ endforeach;
         </table>
 
         <p>
-          <a href="/admin/part/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;장비 등록</span></a>
+          <a href="/admin/store/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;장비 등록</span></a>
         </p>
 
         </div>

@@ -1,6 +1,6 @@
 <?php
-$this->load->view('layout/header', array('title' => '안녕하세요'));
-$this->load->view('layout/navbar', array('current' => 'page_enter'));
+$this->load->view('layout/header', array('title' => '입고 >> 입고 리스트'));
+$this->load->view('layout/navbar', array('current' => 'page-enter'));
 ?>
     <!-- start of div.container -->
     <div class="container">
