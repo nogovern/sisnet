@@ -14,22 +14,36 @@ class Schedule extends CI_Controller
 
 	public function index()
 	{
-		$prefs = array(
-			'show_next_prev' => TRUE,
-		);
-
-		$this->load->library('calendar', $prefs);
-
 		$data['title'] = '일정';
-		$this->load->view('layout/header', array('title' => $data['title']));		
-		echo $this->calendar->generate();
-		// $this->load->view($view_url, $data);
-		$this->load->view('layout/footer');
+		$data['calendar'] = $this->calendar->generate();
+
+		$this->load->library('calendar', $this->_setting());
+		$this->load->view('calendar', $data);
 	}
 
-	public function template($value='')
+	public function month($year= null, $month=null, $day=null) {
+		$year  = (empty($year) || !is_numeric($year))?  date('Y') :  $year;
+		$month = (is_numeric($month) &&  $month > 0 && $month < 13)? $month : date('m');
+		$day   = (is_numeric($day) &&  $day > 0 && $day < 31)?  $day : date('d');
+
+		$data['title'] = '일정';
+		
+		$this->load->library('calendar', $this->_setting());
+		$data['calendar'] = $this->calendar->generate($year, $month, $day);
+
+		$this->load->view('calendar', $data);	
+
+	}
+
+	private function _setting()
 	{
-		$prefs['template'] = '
+		$prefs = array(
+			'start_day'	=> 'sunday',
+			'show_next_prev'	=> TRUE,
+			'next_prev_url'		=> site_url('schedule/month/'),
+			'month_type'		=> 'long',
+			'day_type'			=> 'short',
+			'template' => '
 		   {table_open}<table class="table table-bordered">{/table_open}
 
 		   {heading_row_start}<tr>{/heading_row_start}
@@ -41,7 +55,7 @@ class Schedule extends CI_Controller
 		   {heading_row_end}</tr>{/heading_row_end}
 
 		   {week_row_start}<tr>{/week_row_start}
-		   {week_day_cell}<td>{week_day}</td>{/week_day_cell}
+		   {week_day_cell}<th>{week_day}</th>{/week_day_cell}
 		   {week_row_end}</tr>{/week_row_end}
 
 		   {cal_row_start}<tr>{/cal_row_start}
@@ -59,16 +73,8 @@ class Schedule extends CI_Controller
 		   {cal_row_end}</tr>{/cal_row_end}
 
 		   {table_close}</table>{/table_close}
-		';
-
-		$data['title'] = '일정';
-
-		$this->load->library('calendar', $prefs);
-
-		$this->load->view('layout/header', array('title' => $data['title']));		
-		echo $this->calendar->generate();
-		$this->load->view('layout/footer');
-
+		');
+		return $prefs;
 	}
 
 } // END class Schedule extends CI_Controller
