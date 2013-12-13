@@ -15,9 +15,10 @@ class Schedule extends CI_Controller
 	public function index()
 	{
 		$data['title'] = '일정';
-		$data['calendar'] = $this->calendar->generate();
 
 		$this->load->library('calendar', $this->_setting());
+		$data['calendar'] = $this->calendar->generate();
+		
 		$this->load->view('calendar', $data);
 	}
 
