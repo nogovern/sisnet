@@ -35,15 +35,17 @@ class Ajax extends CI_Controller
 
 	// 전체 장비 목록
 	public function response($id) {
-
-		if(isset($_POST)) {
+		// 주의 
+		// isset($_POST) 하면 항상 TRUE 를 리턴한다.
+		if(!empty($_POST['category_id'])) {
 			$id = $this->input->post('category_id');
 		}
 
 		$this->load->model('part_m');
 
 		$em = $this->part_m->getEntityManager();
-		$parts = $em->getRepository('Entity\Part')->findBy(array('category_id' => $id));
+		$category = $em->getReference("Entity\Category", $id);
+		$parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
 
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 		if(count($parts)){
