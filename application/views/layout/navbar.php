@@ -20,6 +20,8 @@
                 <li id="page-admin-company"><a href="/admin/company">거래처</a></li>
                 <li id="page-admin-part"><a href="/admin/part">장비</a></li>
                 <li id="page-admin-store"><a href="/admin/store">점포</a></li>
+                <li class="divider"></li>
+                <li id="page-admin-category"><a href="/admin/category">장비 카테고리</a></li>
               </ul>
             </li>
 
