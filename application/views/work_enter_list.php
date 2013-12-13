@@ -46,10 +46,10 @@ $this->load->view('layout/navbar', array('current' => 'page_enter'));
                 <td><?=$row->office->name?></td>
                 <td><?=$row->user->name?></td>
                 <!-- 장비 -->
-                <td><?=$row->part_list[0]->part_category?></td>
-                <td><?=$row->part_list[0]->name?></td>
-                <td><?=$row->part_list[0]->part_id?></td>
-                <td><?=$row->part_list[0]->qty?></td>
+                <td><?=$row->items[0]->part->category->name?></td>
+                <td><?=$row->items[0]->part->name?></td>
+                <td><?=$row->items[0]->part->company->name?></td>
+                <td><?=$row->items[0]->qty_request?></td>
                 <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
                 <td><?=(is_object($row->date_request)) ? $row->date_request->format('Y-m-d'): '';?></td>
                 <td><?=$row->status?></td>

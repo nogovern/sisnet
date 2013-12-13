@@ -79,13 +79,13 @@ class Operation
 	/**
 	 * @OneToMany(targetEntity="OperationPart", mappedBy="operation")
 	 */
-	private $part_list;					// 작업 장비들 목록
+	private $items;					// 작업 장비들 목록
 
 	//////////
 	// 생성자 //
 	//////////
 	public function __construct() {
-		$this->part_list = new ArrayCollection();
+		$this->items = new ArrayCollection();
 	}
 
 

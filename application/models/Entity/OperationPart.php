@@ -10,7 +10,7 @@ class OperationPart {
 	 * @Id
 	 * @Column(type="integer", nullable=false)
 	 * @GeneratedValue(strategy="AUTO")
-	 * @SequenceGenerator(sequenceName="gs2_operationpart_seq")
+	 * @SequenceGenerator(sequenceName="gs2_operation_part_seq")
 	 */
 	protected $id;
 
@@ -23,17 +23,17 @@ class OperationPart {
 	/** @Column(type="string", length=1) */
 	protected $type;
 
+	/**
+	 * @OneToOne(targetEntity="Part")
+	 * @JoinColumn(name="part_id", referencedColumnName="id")
+	 */
+	protected $part; 
+
 	/** @Column(type="integer") */
-	protected $part_id; 
+	protected $qty_request; 
 
-	/** @Column(type="string", length=20) */
-	protected $part_category; 
-
-	/** @Column(type="string", length=20, name="part_name") */
-	protected $name;
-
-	/** @Column(type="string", length=20, name="part_qty") */
-	protected $qty; 
+	/** @Column(type="integer") */
+	protected $qty_complete; 
 
 	/** @Column(type="datetime", nullable=true) */
 	protected $date_register;	
@@ -43,6 +43,12 @@ class OperationPart {
 
 	/** @Column(type="string", length=255) */
 	protected $extra;			// 여분 데이타
+
+	/** @Column(type="string", length=1) */
+	protected $is_new;
+
+	/** @Column(type="string", length=1) */
+	protected $is_complete;
 
 	// ---------- set -------------
 	
