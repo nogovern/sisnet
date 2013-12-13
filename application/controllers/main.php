@@ -35,8 +35,10 @@ class Main extends CI_Controller
 
 		if($this->form_validation->run() === TRUE) {
 			if($this->auth->login($this->input->post('username'), $this->input->post('password'))) {
-				echo '로그인 성공! ' . $this->input->post('username') . ' 님 환영합니다.';
-				exit;
+				$this->load->helper('alert');
+
+				// 로그인 메세지
+				alert('로그인 되었습니다', site_url('stock'));
 			} else {
 				echo '==== 로그인 실패!!! ======';
 				echo '<pre>';
@@ -46,5 +48,19 @@ class Main extends CI_Controller
 		} 
 		
 		$this->load->view('login', $data);
+	}
+
+	// 로그아웃
+	public function logout() {
+		$this->load->library('auth');
+		$this->load->helper('alert');
+
+		if($this->auth->isLoggedIn()) {
+			$this->auth->logout();
+			alert('성공적으로 로그아웃 되었습니다', site_url('/'));
+		} else {
+			alert('로그인 먼저 해라!');
+		}
+
 	}
 }
