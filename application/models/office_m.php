@@ -15,15 +15,43 @@ class Office_m extends MY_Model {
 		return $repo->findBy(array('name' => $value));
 	}	
 
-	////////////////////////////////
-	// 공통으로 사용할 수 있을듯 
-	////////////////////////////////
-	public function newId() {
-		$sql = "select max(id) as new_id from gs2_users";
-		$query = $this->db->query($sql);
+	public function add($post_array) {
 
-		return ($query->num_rows) ? $query->row()->NEW_ID + 1 : 1;
+		$new = new Entity\Office;
+		
+		$new->setName($post_array['name']);
+		$new->setCode($post_array['code']);
+		$new->setTel($post_array['tel']);
+		$new->setAddress($post_array['address']);
+		$new->setmemo($post_array['memo']);
+
+		// 담당자
+		if($post_array['user_id'] != '0') {
+			$user = $this->em->getReference('Entity\User', $post_array['user_id']);
+		} else {
+			$user = NULL;
+		}
+		$new->setUser($user);
+
+		// 창고
+		if($post_array['inventory_id'] != '0') {
+			$inventory = $this->em->getReference('Entity\Inventory', $post_array['inventory_id']);
+		} else {
+			$inventory = NULL;
+		}
+		$new->setInventory($inventory);
+
+		$this->em->persist($new);
+		$this->em->flush();
+
+		return TRUE;
 	}
+	
+	public function save($data) {
+		echo 'call!';
+		return FALSE;
+	}
+	
 }
 
 

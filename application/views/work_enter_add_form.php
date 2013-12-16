@@ -1,6 +1,6 @@
 <?php
 $this->load->view('layout/header', array('title' => '입고 >> 입고 요청 양식'));
-$this->load->view('layout/navbar', array('current' => 'page-enter'));
+$this->load->view('layout/navbar', array('current' => 'page-work-enter'));
 ?>
 
     <!-- start of div.container -->
