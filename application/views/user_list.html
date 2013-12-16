@@ -21,10 +21,9 @@
               <tr>
                 <th>No</th>
                 <th>구분</th>
-                <th>이름</th>
-                <th>소속</th>
-                <th>거래처</th>
                 <th>아이디</th>
+                <th>이름</th>
+                <th>소속/거래처</th>
                 <th>등록일자</th>
                 <th>상태</th>
                 <th>&nbsp;</th>
@@ -38,10 +37,17 @@
               <tr class="">
                 <td><?=$row->id?></td>
                 <td><?=$row->getUserTypeText()?></td>
-                <td><?=$row->name?></td>
-                <td><?=($row->type == 1) ? $row->office->name : ''?></td>
-                <td><?=($row->type == 3) ? $row->company->name : ''?></td>
                 <td><?=$row->username?></td>
+                <td><?=$row->name?></td>
+                <td>
+<?php
+  if($row->type == 1) {
+    echo $row->office->name;
+  } elseif($row->type == 3) {
+    echo $row->company->name;
+  }
+?>
+                </td>
                 <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
                 <td><?=$row->status?></td>
                 <td><?='--'?></td>
@@ -52,6 +58,16 @@
             </tbody>
 
           </table>
+
+          <ul class="pagination pagination-sm">
+            <li><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+          </ul>
 
           <p>
             <a class='iframe' href="<?=site_url('admin/user/form')?>" title="사용자를 등록하세요">iframe open</a>
