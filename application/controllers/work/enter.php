@@ -60,4 +60,14 @@ class Enter extends CI_Controller
 
 		show_404();
 	}
+
+	public function popup_order() {
+		$data['title'] = "입고 요청 작성";
+
+		$this->load->library('form_validation');
+		$this->load->helper('form');
+
+		$this->load->view('popup_request_enter_form', $data);
+
+	}
 }

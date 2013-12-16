@@ -39,14 +39,6 @@ echo form_hidden('user_id', '');        // 사용자
               </div>
 
               <div class="form-group">
-                <label class="control-label">입고 예정일 <small class="text-danger">입고 희망 날짜</small></label>
-                <div class="input-group">
-                    <input type="text" id="date_request1" name="date_request1" class="form-control date-picker">
-                    <span class="input-group-addon" id="btn_date1"><i class="fa fa-calendar"></i></span>
-                </div>
-              </div>
-
-              <div class="form-group">
                 <label for="office_name">사무소명</label>
                 <input type="text" class="form-control" id="office_name" name="office_name" value="" palceholder="지정값">
               </div>
@@ -62,8 +54,16 @@ echo form_hidden('user_id', '');        // 사용자
               </div>
 
               <div class="form-group">
+                <label class="control-label">입고 예정일 <small class="text-danger">입고 희망 날짜</small></label>
+                <div class="input-group">
+                    <input type="text" id="date_request1" name="date_request1" class="form-control date-picker">
+                    <span class="input-group-addon" id="btn_date1"><i class="fa fa-calendar"></i></span>
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="memo">메 모  <small class="text-success">간단한 추가 요청 사항</small></label>
-                <textarea name="memo" id="memo" rows="3" class="form-control"></textarea>
+                <textarea name="memo" id="memo" rows="2" class="form-control"></textarea>
               </div>
 
               <p class="form-actions">
