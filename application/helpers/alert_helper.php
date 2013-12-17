@@ -52,6 +52,18 @@ if (!function_exists('alert_continue')) {
 	}
 }
 
+// color popup 창에서 닫기 
+if (!function_exists('alert_colorbox_close')) {
+    function alert_colorbox_close($msg){
+        $CI =& get_instance();
+
+        echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=".$CI->config->item('charset')."\">";
+        echo "<script type='text/javascript'> alert('".$msg."'); parent.jQuery.fn.colorbox.close(); </script>";
+        exit;
+        exit;
+    }
+}
+
 //////////////////////////////////////////////////////
 /// bootstrap element 를 이용한 메세지 출력           
 //////////////////////////////////////////////////////
