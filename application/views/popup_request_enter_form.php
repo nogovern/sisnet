@@ -24,20 +24,13 @@ echo form_open('', 'role="form"');
  *=============================================
  */
 echo form_hidden('type', '101');
-echo form_hidden('office_id', '');      // 사무소
-echo form_hidden('user_id', '');        // 사용자
+echo form_hidden('user_id', '8');        // 사용자
+echo form_hidden('office_id', '1');      // 사무소
+echo form_hidden('part_id', '1');
 ?>
             <!-- <form role="form"> -->
               <h2><span class="fa fa-pencil-square-o"></span> 입고 요청 양식</h2>
-
-              <!-- 장비 선택-->
-              <div class="form-group">
-                <label for="part_id" class="control-label">장비 선택</label>
-                <?php
-                // echo $form_part_select;
-                ?>
-              </div>
-
+              
               <div class="form-group">
                 <label for="office_name">사무소명</label>
                 <input type="text" class="form-control" id="office_name" name="office_name" value="" palceholder="지정값">

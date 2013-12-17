@@ -69,7 +69,10 @@ if(count($row->getStockList())):
       <td class="col-sm-2"><?=$stock->qty_minimum?></td>
       <td class="col-sm-2"><?=number_format($stock->qty_new)?></td>
       <td class="col-sm-2"><?=number_format($stock->qty_used)?></td>
-      <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-order="<?=sprintf('?part_id=%d&extra=extra',$row->id)?>">Order</button></td>
+      <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part=%d&inventory=%d',$row->id, $stock->inventory->id)?>">Order</button></td>
+      <!--
+      <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-part="work/enter/order_part/<?=$row->id?>">Order</button></td>
+      -->
     </tr>
 <?php
 endforeach;
@@ -112,8 +115,10 @@ endforeach;
         
         // 입고 요청 팝업
         $(".btn_order").click(function(){
-          var request_uri = $(this).data('order');
-          request_uri = '<?=site_url("work/enter/popup_order/")?>' + request_uri;
+          var url = 'work/enter/order_part/';
+          var query = $(this).data('query');
+          var request_uri = url + query;
+
           console.log(request_uri);
 
           $.colorbox({
