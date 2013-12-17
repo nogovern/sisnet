@@ -18,33 +18,47 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
 <?php 
 echo form_open('', 'role="form"');
 ?>
-            <!-- <form role="form"> -->
               <h2><span class="fa fa-pencil-square-o"></span> 사무소 등록</h2>
+
+
+              <div class="form-group">
+                <label>타입을 선택하세요</label>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="type1" name="type" value="O" checked>
+                    사무소
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="type2" name="type" value="I">
+                    창  고
+                  </label>
+                </div>
+              </div>
 
               <div class="form-group">
                 <label for="name">사무소명</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="입력하세요" required>
               </div>
 
+              <!-- 마스터 사무소 선택-->
               <div class="form-group">
-                <label for="code">사무소 CODE</label>
-                <input type="text" class="form-control" id="code" name="code" placeholder="입력하세요">
-              </div>
+                <label for="office_id" class="control-label">
+                  상위 사무소 선택 <small class="text-info">선택 안하면 최상위 사무소가 됩니다</small>
+                </label>
 
-              <!-- 창고 선택-->
-              <div class="form-group">
-                <label for="inventory_id" class="control-label">담당 창고 선택 <small class="text-danger">없으면 그냥 두세요</small></label>
-                <?php
-                  echo $select_inventory;
-                ?>
+<?php
+  echo $select_office;
+?>
               </div>
 
               <!-- 담당자 선택-->
               <div class="form-group">
                 <label for="user_id" class="control-label">담당자 선택</label>
-                <?php
-                  echo $select_user;
-                ?>
+<?php
+  echo $select_user;
+?>
               </div>
 
               <!-- 담당자 선택 (임시)-->
@@ -66,8 +80,8 @@ echo form_open('', 'role="form"');
               </div>
 
               <div class="form-group">
-                <label for="tel">전화번호</label>
-                <input type="text" class="form-control" id="tel" name="tel" placeholder="입력하세요">
+                <label for="phone">전화번호</label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="입력하세요">
               </div>
 
               <div class="form-group">

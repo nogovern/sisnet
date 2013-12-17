@@ -17,9 +17,9 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
             <thead>
               <tr>
                 <th>#</th>
-                <th>사무소CODE</th>
+                <th>Type</th>
                 <th>사무소명</th>
-                <th>창고</th>
+                <th>Master 사무소</th>
                 <th>담당자</th>
                 <th>전화번호</th>
                 <th>주소</th>
@@ -35,9 +35,9 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
   ?>
               <tr>
                 <td><?=$row->id?></td>
-                <td><?=$row->code?></td>
+                <td><?=$row->type?></td>
                 <td><?=$row->name?></td>
-                <td><?=($row->has_inventory == 'Y' && $row->inventory) ? $row->inventory->name : '' ?></td>
+                <td><?=($row->is_master == 'Y') ? '' : $row->master->name ?></td>
                 <td>
   <?php
   if($row->user){
@@ -47,7 +47,7 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
   }
   ?>
                 </td>
-                <td><?=$row->tel?></td>
+                <td><?=$row->phone?></td>
                 <td><?=$row->address?></td>
                 <td><?=$row->memo?></td>
                 <td><?=$row->status?></td>

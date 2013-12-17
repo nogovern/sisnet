@@ -15,11 +15,11 @@ $this->load->view('layout/navbar', array('current' => $current));
         <div class="span12">
 
         <ul class="nav nav-pills">
-          <li class="<?=($inven->id=='')?'active':''?>"><a href="<?=site_url()?>stock/lists">전체</a></li>
-          <li class="<?=($inven->id==1)?'active':''?>"><a href="<?=site_url()?>stock/listByInventory/1">서울-가산</a></li>
-          <li class="<?=($inven->id==2)?'active':''?>"><a href="<?=site_url()?>stock/listByInventory/2">대전</a></li>
-          <li class="<?=($inven->id==3)?'active':''?>"><a href="<?=site_url()?>stock/listByInventory/3">부산</a></li>
-          <li class="<?=($inven->id==4)?'active':''?>"><a href="<?=site_url()?>stock/listByInventory/4">제주</a></li>
+          <li class="<?=($office == '')?'active':''?>"><a href="<?=site_url()?>stock/lists">전체</a></li>
+          <li class="<?=($office->id==1)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/1">서울-가산</a></li>
+          <li class="<?=($office->id==2)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/2">대전</a></li>
+          <li class="<?=($office->id==3)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/3">부산</a></li>
+          <li class="<?=($office->id==4)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/4">제주</a></li>
         </ul>
           
         <table class="table table-responsive table-hover" id="stock_list">

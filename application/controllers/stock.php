@@ -21,28 +21,39 @@ class Stock extends CI_Controller
 	}
 
 	// 전체 장비 재고 리스트
-	public function lists() {
+	public function lists($id = '') {
 
 		$data['title'] = '재고------------------^';
 
-		$em = $this->stock_model->getEntityManager();
 		$data['type'] = '';
+
+		if($id) {
+			$this->load->model('office_m', 'office_model');
+			$office = $this->office_model->get($id);	
+		} else {
+			$office = new stdClass;
+			$office->id = '';
+		}
+
+		$data['office'] = $office;
+
+		$em = $this->stock_model->getEntityManager();
 		$data['rows'] = $em->getRepository('Entity\Part')->findAll();
 
 		$this->load->view('stock_list', $data);
 	}
 
-	// 창고별 장비 재고
-	public function listByInventory($inven_id) {
-		$data['title'] = '창고별 재고 상황';
+	// 사무소별 장비 재고
+	public function listByOffice($id) {
+		$data['title'] = '사무소별 재고 상황';
 		$data['current'] = 'page-stock';
 
-		$this->load->model('inventory_m', 'inventory_model');
-		$inventory =  $this->inventory_model->get($inven_id);
-		$data['inven'] = $inventory;				// Inventory 객체
-		$data['rows'] = $inventory->getStockList();
+		$this->load->model('office_m', 'office_model');
+		$office =  $this->office_model->get($id);
+		$data['office'] = $office;				// office 객체
+		$data['rows'] = $office->getStockList();
 
-		$this->load->view('stock_list_by_inventory', $data);
+		$this->load->view('stock_list_by_office', $data);
 	}
 
 	public function add() {
@@ -61,25 +72,26 @@ class Stock extends CI_Controller
 			$option_parts[$part->id] = $part->name;
 		}
 
-		// 창고 목록
-		$inventories = $em->getRepository('Entity\Inventory')->findAll(); 
-		$option_inventories = array();
-		$option_inventories[0] = "-- 창고를 선택하세요 --";
-		foreach($inventories as $inven) {
-			$option_inventories[$inven->id] = $inven->name;
+		// 사무소 목록
+		$this->load->model('office_m', 'office_model');
+		$rows = $this->office_model->getList(); 
+		$arr_office = array();
+		$arr_office[0] = "-- 창고를 선택하세요 --";
+		foreach($rows as $row) {
+			$arr_office[$row->id] = $row->name;
 		}
 
 
 		$data['title'] = '재고 수동 입력';
-		$data['form_part_select'] = form_dropdown('part_id', $option_parts, 0, 'id="part_id" class="form-control"');
-		$data['form_inventory_select'] = form_dropdown('inventory_id', $option_inventories, 0, 'id="inventory_id" class="form-control"');
+		$data['select_part'] = form_dropdown('part_id', $option_parts, 0, 'id="part_id" class="form-control"');
+		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
 
         // 에러 구분자 UI 설정
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '<button type="button" class="close" aria-hidden="true">&times;</button></div>');
 
 		// 규칙 설정
 		$this->form_validation->set_rules('part_id', '장비 모델명', 'required|greater_than');
-		$this->form_validation->set_rules('inventory_id', '창고', 'required|greater_than');
+		$this->form_validation->set_rules('office_id', '창고', 'required|greater_than');
 		$this->form_validation->set_rules('qty_minumum', '기준수량', 'numeric');
 		$this->form_validation->set_rules('qty_new', '신품 수량', 'numeric');
 		$this->form_validation->set_rules('qty_used', '중고 수량', 'numeric');
@@ -100,7 +112,7 @@ class Stock extends CI_Controller
 			// 재고가 등록되어 있는지 여부 확인
 			$stock = $em->getRepository('Entity\Stock')->findBy(array(
 				'part' => (int)$this->input->post('part_id'),
-				'inventory' => (int)$this->input->post('inventory_id')
+				'office' => (int)$this->input->post('office_id')
 			));
 
 			$has_stock = (count($stock)) ? TRUE : FALSE;
@@ -119,13 +131,13 @@ class Stock extends CI_Controller
 					exit;
 				}
 
-				$part = $em->getRepository('Entity\Part')->find((int)$this->input->post('part_id'));
-				$inventory = $em->getRepository('Entity\Inventory')->find((int)$this->input->post('inventory_id'));
+				$part = $em->getReference('Entity\Part', (int)$this->input->post('part_id'));
+				$office = $em->getReference('Entity\office', (int)$this->input->post('office_id'));
 
 				unset($stock);
 				$stock = new Entity\Stock();
 				$stock->setPart($part);
-				$stock->setInventory($inventory);
+				$stock->setOffice($office);
 
 				$stock->setQtyMinimum((int)$this->input->post('qty_minimum'));
 				$stock->setQtyNew((int)$this->input->post('qty_new'));

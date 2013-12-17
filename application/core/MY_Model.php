@@ -6,10 +6,13 @@ class MY_Model extends CI_Model {
 	protected $em = NULL;
 
 	/* Main Entity Name */
-	private $entity_name;
+	protected $entity_name;
 
 	/* 테이블 명 */
-	private $table_name; 
+	protected $table_name;
+
+	/* 테이블 명 */
+	protected $repo = NULL;
 
 	////////////
 	// 생성자 //
@@ -20,7 +23,6 @@ class MY_Model extends CI_Model {
 		// Doctrine load
 		$this->load->library('doctrine');
 		$this->em = $this->doctrine->em;
-
 	}
 
 	// 태이블명 셋팅 (CI database 로 바로 쿼리 할 경우 사용)
@@ -38,6 +40,9 @@ class MY_Model extends CI_Model {
 		} else {
 			$this->entity_name = 'Entity\\' . ucfirst($name);
 		}
+
+		// 편의 위해 repository 셋팅
+		$this->repo = $this->em->getRepository($this->entity_name);
 	}
 
 	public function getEntityName() {

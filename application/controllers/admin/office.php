@@ -24,7 +24,7 @@ class Office extends CI_Controller
 			'page_title' => '사무소 리스트'
 			);
 
-		$this->load->view('office_list.html', $data);
+		$this->load->view('office_list', $data);
 	}
 
 	// 입고요청
@@ -35,13 +35,13 @@ class Office extends CI_Controller
 		$this->load->helper('form');
 
 		//================ refactoring needed ===================
-		// 창고 목록
 		$em = $this->office_model->getEntityManager();
-		$rows = $em->getRepository('Entity\Inventory')->findAll(); 
-		$invens = array();
-		$invens[0] = "-- 선택하세요 --";
+		// 재고 사무소 목록
+		$arr_office = array();		
+		$arr_office[0] = '-- 선택하세요 --';
+		$rows = $this->office_model->getMasterList();
 		foreach($rows as $row) {
-			$invens[$row->id] = $row->name;
+			$arr_office[$row->id] = $row->name;
 		}
 
 		// 담당자
@@ -54,7 +54,7 @@ class Office extends CI_Controller
 		}
 
 		// selectbox 생성
-		$data['select_inventory'] = form_dropdown('inventory_id', $invens, 0, 'id="inventory_id" class="form-control"');
+		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
 		$data['select_user'] = form_dropdown('user_id', $users, 0, 'id="user_id" class="form-control"');
 
 		// 규칙 설정

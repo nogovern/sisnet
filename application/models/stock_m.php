@@ -11,7 +11,7 @@ class Stock_m extends MY_Model
 	{
 		parent::__construct();
 
-		$this->setTableName('gs2_invnetory_part');
+		$this->setTableName('gs2_stocks');
 		$this->setEntityName('Stock');
 	}
 }

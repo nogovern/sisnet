@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity
- * @Table(name="GS2_INVENTORY_PART")
+ * @Table(name="GS2_STOCKS")
  */
 class Stock
 {
@@ -25,10 +25,10 @@ class Stock
 	protected $id;
 
 	/**
-	 * @ManyToOne(targetEntity="Inventory", inversedBy="stock_list")
-	 * @JoinColumn(name="inventory_id", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="Office", inversedBy="stock_list")
+	 * @JoinColumn(name="office_id", referencedColumnName="id")
 	 */
-	protected $inventory;
+	protected $office;
 
 	/**
 	 * @ManyToOne(targetEntity="Part", inversedBy="stock_list")
@@ -51,11 +51,6 @@ class Stock
 	/** @Column(type="integer") */
 	protected $qty_s400;
 
-	public function __construct()
-	{
-
-	}
-	
 	/**
 	 * 매직 메소드 (테스트용)
 	 */
@@ -65,8 +60,10 @@ class Stock
 		return $this->$key;
 	}
 
-	public function setInventory(Inventory $inven) {
-		$this->inventory = $inven;
+	public function setOffice($instance = NULL) {
+		if($instance){
+			$this->office = $instance;
+		}
 
 		return $this;
 	}

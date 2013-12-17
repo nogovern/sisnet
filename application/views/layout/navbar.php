@@ -16,7 +16,6 @@
               <ul class="dropdown-menu">
                 <li id="page-admin-user"><a href="/admin/user">사용자</a></li>
                 <li id="page-admin-office"><a href="/admin/office">사무소</a></li>
-                <li id="page-admin-inventory"><a href="/admin/inventory">창고</a></li>
                 <li id="page-admin-company"><a href="/admin/company">거래처</a></li>
                 <li id="page-admin-part"><a href="/admin/part">장비</a></li>
                 <li id="page-admin-store"><a href="/admin/store">점포</a></li>

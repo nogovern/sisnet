@@ -15,10 +15,11 @@ $this->load->view('layout/navbar', array('current' => 'page-stock'));
         <div class="span12">
 
         <ul class="nav nav-pills">
-          <li class="<?=($type=='')?'active':''?>"><a href="/admin/user">전체</a></li>
-          <li class="<?=($type==1)?'active':''?>"><a href="/admin/user/lists/1">시스네트</a></li>
-          <li class="<?=($type==2)?'active':''?>"><a href="/admin/user/lists/2">GS25</a></li>
-          <li class="<?=($type==3)?'active':''?>"><a href="/admin/user/lists/3">납품처</a></li>
+          <li class="<?=($office->id=='')?'active':''?>"><a href="<?=site_url()?>stock/lists">전체</a></li>
+          <li class="<?=($office->id==1)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/1">서울-가산</a></li>
+          <li class="<?=($office->id==2)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/2">대전</a></li>
+          <li class="<?=($office->id==3)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/3">부산</a></li>
+          <li class="<?=($office->id==4)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/4">제주</a></li>
         </ul>
           
         <table class="table table-responsive table-hover" id="stock_list">
@@ -65,11 +66,11 @@ if(count($row->getStockList())):
   foreach($row->getStockList() as $stock):
 ?>
     <tr class="success">
-      <td class="col-sm-4"><?=$stock->inventory->name?></td>
+      <td class="col-sm-4"><?=$stock->office->name?></td>
       <td class="col-sm-2"><?=$stock->qty_minimum?></td>
       <td class="col-sm-2"><?=number_format($stock->qty_new)?></td>
       <td class="col-sm-2"><?=number_format($stock->qty_used)?></td>
-      <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part=%d&inventory=%d',$row->id, $stock->inventory->id)?>">Order</button></td>
+      <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part=%d&office=%d',$row->id, $stock->office->id)?>">Order</button></td>
       <!--
       <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-part="work/enter/order_part/<?=$row->id?>">Order</button></td>
       -->

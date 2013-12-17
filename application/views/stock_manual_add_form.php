@@ -29,16 +29,16 @@
 
               <div class="form-group">
                 <label for="part_id" class="control-label">장비를 선택하세요</label>
-                <?php
-                echo $form_part_select;
-                ?>
+<?php
+  echo $select_part;
+?>
               </div>
 
               <div class="form-group">
-                <label for="inventory_id" class="control-label">창고 선택</label>
-                <?php
-                echo $form_inventory_select;
-                ?>
+                <label for="office_id" class="control-label">재고 사무소 선택</label>
+<?php
+  echo $select_office;
+?>
               </div>
 
               <!-- 수량 등록 -->

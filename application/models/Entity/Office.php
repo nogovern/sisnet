@@ -18,22 +18,26 @@ class Office
 	/** @column(type="string", length=20) */
 	protected $name;
 	
-	/** @column(type="string", length=20) */
-	protected $code;
+	/** @column(type="string", length=1) */
+	protected $type = 'O';							// 창고는 'I'
+
+	/** @Column(type="string", length=1) */
+	protected $is_master = 'Y';						// default 값
 
 	/**
-	 * @Column(type="string", length=1)
+	 * @OneToOne(targetEntity="Office")
+	 * @JoinColumn(name="office_id", referencedColumnName="id")
 	 */
-	protected $has_inventory = 'N';					// default 값
+	protected $master;								
 
 	/**
-	 * @OneToOne(targetEntity="Inventory")
-	 * @JoinColumn(name="inventory_id", referencedColumnName="id")
+	 * @OneToOne(targetEntity="User")
+	 * @JoinColumn(name="user_id", referencedColumnName="id")
 	 */
-	protected $inventory;
+	protected $user;
 
 	/** @Column(type="string", length=20) */
-	protected $tel;
+	protected $phone;
 
 	/** @Column(type="string", length=100) */
 	protected $address;
@@ -45,28 +49,50 @@ class Office
 	protected $status;
 
 	/**
-	 * @OneToOne(targetEntity="User")
-	 * @JoinColumn(name="user_id", referencedColumnName="id")
+	 * 
+	 * @OneToMany(targetEntity="Stock", mappedBy="office")
 	 */
-	protected $user;
+	protected $stock_list;
 
-	public function __construct(){
-		;
-	}
+	//--------------------------------------------------------
 
 	public function __get($key) {
 		return $this->$key;
 	}
 
-	public function setInventory($instance = NULL) {
-		if(is_null($instance)){
+	public function getStockList() {
+		return $this->stock_list;
+	}
+
+	/**
+	 * 지역의 master 사무소를 선택한다
+	 * 자신이 master 이면 office_id 가 NULL 이고, is_master = "Y"
+	 * 
+	 * @param [type] $instance Office 객체
+	 */
+	public function setMaster($instance = NULL) {
+		if(!$instance){
 			return FALSE;
 		}
 
-		$this->inventory = $instance;
-		$this->has_inventory = 'Y';
+		$this->master = $instance;
+		$this->setMasterFlag(FALSE);
 	}
 
+	/**
+	 * 마스터 사무소 구분 flag 설정
+	 * 
+	 * @param boolean $boolen TRUE/FALSE
+	 */
+	public function setMasterFlag($boolen = FALSE) {
+		$this->is_master = ($boolen) ? 'Y' : 'N';
+	}
+
+	/**
+	 * 담당자 지정
+	 * 
+	 * @param [User] $instance User 인스턴스
+	 */
 	public function setUser($instance = NULL) {
 		if(is_null($instance)){
 			return FALSE;
@@ -78,16 +104,20 @@ class Office
 		$this->name = $name;
 	}
 
-	public function setCode($code) {
-		$this->code = $code;
+	/**
+	 * 사무소 타입 지정 
+	 * @param string $type O: Office/I: Inventory
+	 */
+	public function setType($type = "O") {
+		$this->type = $type;
 	}
 
 	public function setMemo($memo) {
 		$this->memo = $memo;
 	}
 
-	public function setTel($tel) {
-		$this->tel = $tel;
+	public function setPhone($phone) {
+		$this->phone = $phone;
 	}
 
 	public function setAddress($address) {
