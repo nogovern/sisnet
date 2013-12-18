@@ -39,3 +39,18 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
+
+define('GS2_LOCATION_TYPE_OFFICE', 	'O');			// 사무소
+define('GS2_LOCATION_TYPE_COMPANY', 'C');			// 거래처
+define('GS2_LOCATION_TYPE_STORE', 	'S');			// 점포
+
+define('GS2_OPERATION_STATUS_ENTER', 	100);			// 입고
+define('GS2_OPERATION_STATUS_INSTALL', 	200);			// 설치
+define('GS2_OPERATION_STATUS_CHANGE', 	300);			// 교체
+define('GS2_OPERATION_STATUS_WITHDRAW',	400);			// 철수
+define('GS2_OPERATION_STATUS_REPAIR', 	500);			// 장비 수리
+define('GS2_OPERATION_STATUS_DESTROY', 	510);			// 장비 폐기
+define('GS2_OPERATION_STATUS_MOVE', 	520);			// 장비 이동
+define('GS2_OPERATION_STATUS_TRANS', 	530);			// 장비 이관
+define('GS2_OPERATION_STATUS_ETC', 		900);			// 상태 변경
+
