@@ -76,7 +76,7 @@ class Stock extends CI_Controller
 		$this->load->model('office_m', 'office_model');
 		$rows = $this->office_model->getList(); 
 		$arr_office = array();
-		$arr_office[0] = "-- 창고를 선택하세요 --";
+		$arr_office[0] = "-- 재고 사무소를 선택하세요 --";
 		foreach($rows as $row) {
 			$arr_office[$row->id] = $row->name;
 		}

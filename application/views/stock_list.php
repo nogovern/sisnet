@@ -70,7 +70,7 @@ if(count($row->getStockList())):
       <td class="col-sm-2"><?=$stock->qty_minimum?></td>
       <td class="col-sm-2"><?=number_format($stock->qty_new)?></td>
       <td class="col-sm-2"><?=number_format($stock->qty_used)?></td>
-      <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part=%d&office=%d',$row->id, $stock->office->id)?>">Order</button></td>
+      <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$row->id, $stock->office->id)?>">Order</button></td>
       <!--
       <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-part="work/enter/order_part/<?=$row->id?>">Order</button></td>
       -->

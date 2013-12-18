@@ -61,12 +61,12 @@ class Enter extends CI_Controller
 			exit;
 		}
 
-		$part_id = @$_GET['part'];
-		$inventory_id = @$_GET['inventory'];
+		$part_id = @$_GET['part_id'];
+		$office_id = @$_GET['office_id'];
 
-		if(empty($part_id) || empty($inventory_id)) {
+		if(empty($part_id) || empty($office_id)) {
 			$this->load->helper('alert');
-			alert_colorbox_close('에러!');
+			alert_colorbox_close('에러!');		// alert helper
 		}
 
 		$data['title'] = "입고 요청 작성";
