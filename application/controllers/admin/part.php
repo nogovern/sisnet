@@ -69,6 +69,7 @@ class Part extends CI_Controller {
 		$this->form_validation->set_rules('type', '장비 타입', 'required');
 		$this->form_validation->set_rules('name', '장비 모델명', 'required');
 		$this->form_validation->set_rules('category_id', '장비 종류', 'required');
+		$this->form_validation->set_rules('company_id', '납품처', 'required');
 
 		if($this->form_validation->run() === FALSE){
 			$this->load->view('part_add_form', $data);
