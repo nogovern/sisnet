@@ -116,9 +116,9 @@ endforeach;
         
         // 입고 요청 팝업
         $(".btn_order").click(function(){
-          var url = 'work/enter/order_part/';
+          var url = '<?=site_url("work/enter/order_part")?>';
           var query = $(this).data('query');
-          var request_uri = url + query;
+          var request_uri = url + '/' + query;
 
           console.log(request_uri);
 

@@ -30,10 +30,10 @@ class OperationPart {
 	protected $part; 
 
 	/** @Column(type="integer") */
-	protected $qty_request; 
+	protected $qty_request = 0; 
 
 	/** @Column(type="integer") */
-	protected $qty_complete; 
+	protected $qty_complete = 0; 
 
 	/** @Column(type="datetime", nullable=true) */
 	protected $date_register;	
@@ -41,21 +41,72 @@ class OperationPart {
 	/** @Column(type="datetime", nullable=true) */
 	protected $date_modify;
 
-	/** @Column(type="string", length=255) */
-	protected $extra;			// 여분 데이타
-
 	/** @Column(type="string", length=1) */
 	protected $is_new;
 
 	/** @Column(type="string", length=1) */
-	protected $is_complete;
+	protected $is_complete = 'N';
+
+	/** @Column(type="string", length=255) */
+	protected $extra = '';			// 여분 데이타
 
 	// ---------- set -------------
 	
+	public function __set($key, $value) {
+		$this->$key = $value;
+	}
 
+	public function setType($type) {
+		$this->type = $type;
+	}
+
+	public function setPart($part) {
+		$this->part = $part;				// Part Instance
+	}
+
+	public function setOperation($op) {
+		$this->operation = $op;				// Operatino Instance
+	}
+
+	public function setRequestQuantity($qty) {
+		$this->qty_request = $qty;
+	}
+
+	public function setCompleteQuantity($qty) {
+		$this->qty_complete = $qty;
+	}
+
+	// 등록일시
+	public function setDateRegister() {
+		$num_args = func_num_args();
+		$argv = ($num_args == 0 ) ? 'now' : func_get_arg(0);
+
+		$this->date_register = new \DateTime($argv);
+	}
+
+	public function setDateModify($datetime) {
+		$num_args = func_num_args();
+		$argv = ($num_args == 0 ) ? 'now' : func_get_arg(0);
+
+		$this->date_modify = new \DateTime($argv);
+	}
+
+	public function setNewFlag($is_new) {
+		$this->is_new = ($is_new) ? 'Y' : 'N';
+	}
+
+	public function setCompleteFlag($is_complete) {
+		$this->is_complete = ($is_complete) ? 'Y' : 'N';
+	}
+
+	public function setStatus($status) {
+		$this->status = $status;
+	}
 
 	// ---------- get -------------
 	public function __get($key) {
 		return $this->$key;
 	}
+
+	
 }

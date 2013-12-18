@@ -21,7 +21,6 @@ class Enter extends CI_Controller
 	}
 
 	public function main() {
-
 		$data['title'] = '입고업무';
 		$data['type'] = '';
 		$data['rows'] = $this->work_model->getEnterList();
@@ -61,8 +60,8 @@ class Enter extends CI_Controller
 			exit;
 		}
 
-		$part_id = @$_GET['part_id'];
-		$office_id = @$_GET['office_id'];
+		$part_id = @$_REQUEST['part_id'];
+		$office_id = @$_REQUEST['office_id'];
 
 		if(empty($part_id) || empty($office_id)) {
 			$this->load->helper('alert');
@@ -74,25 +73,36 @@ class Enter extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->helper('form');
 
-		$hidden_array = array(
-				'work_type'	=> '101',
-				'part_id'	=> '1',
-				'office_id'	=> '1',
-				'user_id'	=> '8'
+		$data['form_hiddens'] = array(
+				'work_type'	=> GS2_OPERATION_TYPE_ENTER,
+				'user_id'	=> '8',
+				'part_id'	=> $part_id,
+				'office_id'	=> $office_id
 			);
 
 
 		// 규칙 설정
 		$this->form_validation->set_rules('qty', '수량', 'required|greater_than[0]');
-		$this->form_validation->set_rules('date_expected', '입고 희망일', 'required');
+		$this->form_validation->set_rules('date_request', '입고 희망일', 'required');
 
 		////////////
 		// 폼 검증 
 		////////////
 		if($this->form_validation->run() === FALSE) {
+			$em = $this->work_model->getEntityManager();
+			$office = $em->getRepository('Entity\Office')->find($office_id);
+			$part = $em->getRepository('Entity\Part')->find($part_id);
+
+			$data['office_name'] = $office->name;
+			$data['part_name'] = $part->name;
+
 			$this->load->view('popup_request_enter_form', $data);
 
 		} else {
+			var_dump($_POST);
+
+			// 100 - 입고업무
+			$this->work_model->add(GS2_OPERATION_TYPE_ENTER, $this->input->post());
 			echo 'done';
 			exit;
 		}

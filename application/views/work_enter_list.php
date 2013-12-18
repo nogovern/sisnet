@@ -48,7 +48,7 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <!-- 장비 -->
                 <td><?=$row->items[0]->part->category->name?></td>
                 <td><?=$row->items[0]->part->name?></td>
-                <td><?=$row->items[0]->part->company->name?></td>
+                <td><?=@$row->location_object->name;?></td>
                 <td><?=$row->items[0]->qty_request?></td>
                 <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
                 <td><?=(is_object($row->date_request)) ? $row->date_request->format('Y-m-d'): '';?></td>

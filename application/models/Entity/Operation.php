@@ -6,17 +6,6 @@ namespace Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-/* 이 부분을 전역 상수로 갈까? 클래스 const 로 갈까? */
-define('GS2_OPERATION_STATUS_A', 100);
-define('GS2_OPERATION_STATUS_INSTALL', 200);
-define('GS2_OPERATION_STATUS_E', 300);
-define('GS2_OPERATION_STATUS_CHAGNE', 400);
-define('GS2_OPERATION_STATUS_REPAIR', 500);
-define('GS2_OPERATION_STATUS_des', 600);
-define('GS2_OPERATION_STATUS_move', 700);
-define('GS2_OPERATION_STATUS_trans', 800);
-define('GS2_OPERATION_STATUS_s', 900);				/*	상태변경 */
-
 /**
  * @Entity
  * @Table(name="GS2_OPERATIONS")
@@ -51,9 +40,12 @@ class Operation
 
 	/**
 	 * @OneToOne(targetEntity="User")
-	 * @JoinColumn(name="user_id", referencedColumnName="id")
+	 * @JoinColumn(name="worker_id", referencedColumnName="id")
 	 */
 	protected $worker;					// 담당 유저
+
+	/** @Column(name="work_location", type="string", length=20) */
+	protected $work_location;				// 대상 장소 ( office  or company or store) 
 
 	/** @Column(type="datetime", nullable=true) */
 	protected $date_register;	// 요청서 등록일시
@@ -84,12 +76,20 @@ class Operation
 	//////////
 	// 생성자 //
 	//////////
-	public function __construct() {
+	public function __construct($em = NULL) {
 		$this->items = new ArrayCollection();
 	}
 
 
 	// ---------- set -------------
+	public function setOperationNumber($no) {
+		$this->no = $no;
+	}
+
+	public function setType($type) {
+		$this->type = $type;
+	}
+
 	public function setOffice(Office $ref) {
 		$this->office = $ref;
 	}
@@ -104,6 +104,34 @@ class Operation
 		$this->worker = $ref;
 	}
 
+	public function setWorkLocation($location_id, $type) {
+		$this->work_location = $type . '@' . $location_id;
+	}
+
+	// 등록일시
+	public function setDateRegister() {
+		$num_args = func_num_args();
+		$argv = ($num_args == 0 ) ? 'now' : func_get_arg(0);
+
+		$this->date_register = new \DateTime($argv);
+	}
+
+	// 업무 요청 일시
+	public function setDateRequest() {
+		$num_args = func_num_args();
+		$argv = ($num_args == 0 ) ? 'now' : func_get_arg(0);
+
+		$this->date_request = new \DateTime("$argv");
+	}
+
+	public function setMemo($memo) {
+		$this->memo = $memo;
+	}
+
+	public function setStatus($status) {
+		$this->status = $status;
+	}
+
 	// ---------- get -------------
 	public function __get($key) {
 		return $this->$key;
@@ -113,6 +141,19 @@ class Operation
 		return ($this->date_register) ? $this->date_register->format('Y-m-d H:i:s') : '';
 	}
 
+	public function getWorkLocation() {
+		return $this->work_location;
+	}
+
+	// 업무 아이템 목록 
+	public function getItemList() {
+		return $this->items;
+	}
+
+	// 업무 아이템 추가
+	public function addItem($item) {
+		$this->items[] = $item;				// OperationPart
+	}
 	
 }
 

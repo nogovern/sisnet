@@ -11,10 +11,6 @@ $this->load->view('layout/header_popup', array('title' => "$title"));
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-8">
-          <?php
-            // 에러 출력
-            echo validation_errors();
-          ?>
           <div>
 <?php 
 echo form_open('', 'role="form"');
@@ -23,22 +19,25 @@ echo form_open('', 'role="form"');
   hidden 값은 로그인 session 을 사용 해야 함!
  *=============================================
  */
-echo form_hidden('type', '101');
-echo form_hidden('user_id', '8');        // 사용자
-echo form_hidden('office_id', '1');      // 사무소
-echo form_hidden('part_id', '1');
+echo form_hidden('work_type', $form_hiddens['work_type']);
+echo form_hidden('user_id', $form_hiddens['user_id']);        // 사용자
+echo form_hidden('office_id', $form_hiddens['office_id']);      // 사무소
+echo form_hidden('part_id', $form_hiddens['part_id']);
 ?>
             <!-- <form role="form"> -->
               <h2><span class="fa fa-pencil-square-o"></span> 입고 요청 양식</h2>
               
+          <?php
+            echo validation_errors();   // 에러 출력
+          ?>
               <div class="form-group">
                 <label for="office_name">사무소명</label>
-                <input type="text" class="form-control" id="office_name" name="office_name" value="" palceholder="지정값">
+                <input type="text" class="form-control" id="office_name" name="office_name" value="<?=set_value('office_name', $office_name)?>" disabled>
               </div>
 
               <div class="form-group">
                 <label for="part_name">장비명</label>
-                <input type="text" class="form-control" id="part_name" name="part_name" value="" palceholder="지정값">
+                <input type="text" class="form-control" id="part_name" name="part_name" value="<?=set_value('part_name', $part_name)?>" disabled>
               </div>
 
               <div class="form-group">
@@ -49,7 +48,7 @@ echo form_hidden('part_id', '1');
               <div class="form-group">
                 <label class="control-label">입고 예정일 <small class="text-danger">입고 희망 날짜</small></label>
                 <div class="input-group">
-                    <input type="text" id="date_request1" name="date_request1" class="form-control date-picker">
+                    <input type="text" id="date_request" name="date_request" class="form-control date-picker">
                     <span class="input-group-addon" id="btn_date1"><i class="fa fa-calendar"></i></span>
                 </div>
               </div>
