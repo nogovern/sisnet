@@ -42,10 +42,13 @@ class OperationPart {
 	protected $date_modify;
 
 	/** @Column(type="string", length=1) */
-	protected $is_new;
+	protected $is_new = 'Y';
 
 	/** @Column(type="string", length=1) */
 	protected $is_complete = 'N';
+
+	/** @Column(type="string", length=1) */
+	protected $status = "1";
 
 	/** @Column(type="string", length=255) */
 	protected $extra = '';			// 여분 데이타
@@ -106,6 +109,14 @@ class OperationPart {
 	// ---------- get -------------
 	public function __get($key) {
 		return $this->$key;
+	}
+
+	public function isNew() {
+		return ($this->is_new == 'Y') ? TRUE : FALSE;
+	}
+
+	public function isComplete() {
+		return ($this->is_complete == 'Y') ? TRUE : FALSE;
 	}
 
 	

@@ -121,4 +121,13 @@ class Enter extends CI_Controller
 		show_404();
 	}
 
+	public function view($work_id) {
+		$data['title'] = '입고 요청 보기';
+
+		$work = $this->work_model->get($work_id);
+		$data['work'] = $work;
+
+		$this->load->view('work_enter_view', $data);
+	}
+
 }

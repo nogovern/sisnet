@@ -21,7 +21,7 @@ class Operation
 	protected $id;
 
 	/** @Column(type="string", length=20, name="operation_no") */
-	protected $no;									// 작업 번호 
+	protected $operation_number;							// 작업 번호 
 
 	/** @Column(type="string", length=20) */
 	protected $type;
@@ -145,15 +145,22 @@ class Operation
 		return $this->work_location;
 	}
 
-	// 업무 아이템 목록 
+	// 업무 아이템(장비) 목록 
 	public function getItemList() {
 		return $this->items;
+	}
+
+	// 업무 관련 아이템 index 로 1개 얻기, default = 0
+	public function getItem($index  = 0) {
+		return $this->items[$index];
 	}
 
 	// 업무 아이템 추가
 	public function addItem($item) {
 		$this->items[] = $item;				// OperationPart
 	}
+
+
 	
 }
 

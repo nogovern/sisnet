@@ -118,7 +118,7 @@ class Part extends CI_Controller {
 
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
-		$this->load->view('part_serial_list.html', $data);
+		$this->load->view('part_serial_list', $data);
 		$this->load->view('layout/footer');
 	}
 }
