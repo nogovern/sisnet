@@ -64,6 +64,10 @@ class Office
 		return $this->stock_list;
 	}
 
+	public function isMaster() {
+		return ($this->is_master == 'Y') ? TRUE : FALSE;
+	}
+
 	/**
 	 * 지역의 master 사무소를 선택한다
 	 * 자신이 master 이면 office_id 가 NULL 이고, is_master = "Y"
