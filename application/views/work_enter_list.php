@@ -34,6 +34,7 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <th>요청일</th>
                 <th>상태</th>
                 <th>메모</th>
+                <th>&nbsp;</th>
               </tr>
             </thead>
 
@@ -55,6 +56,7 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <td><?=(is_object($row->date_request)) ? $row->date_request->format('Y-m-d'): '';?></td>
                 <td><?=$row->status?></td>
                 <td><?=(mb_strlen($row->memo) > 20) ? mb_substr($row->memo, 0, 20) . '...' : $row->memo;?></td>
+                <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/enter/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php
   endforeach;
@@ -63,9 +65,6 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
 
           </table>
 
-          <p>
-            <a class='iframe' href="<?=site_url('admin/user/form')?>" title="사용자를 등록하세요">iframe open</a>
-          </p>
           <p>
             <a href="/work/enter/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;입고 요청 등록</span></a>
           </p>
@@ -76,13 +75,24 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
 
     <script type="text/javascript">
     $(document).ready(function(){
-        $(".ajax").colorbox({'opacity': '0.6', 'width': '80%'});
-        $(".iframe").colorbox({
-          'iframe'  : true,
-          'width'   : '50%',
-          'height'  : '80%'
-        });
+      
+      // colorbox      
+      $(".ajax").colorbox({'opacity': '0.6', 'width': '80%'});
+      $(".iframe").colorbox({
+        'iframe'  : true,
+        'width'   : '50%',
+        'height'  : '80%'
+      });
+
+        // 상세 보기 페이지로 이동
+      $("button.btn_view").click(function(){
+        var href = $(this).data('href');
+        location.href = href;
+        return false;
+      });
     });
+
+
     </script>
 
 <?php

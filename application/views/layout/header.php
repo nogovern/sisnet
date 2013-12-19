@@ -11,6 +11,8 @@
     <link href="/assets/css/bootstrap.css" rel="stylesheet">
     <link href="/assets/css/bootstrap-theme.min.css" rel="stylesheet">
 
+
+    <!--<link href="/assets/css/main.css" rel="stylesheet">-->
     <style type="text/css">
       @import url("http://fonts.googleapis.com/earlyaccess/nanumgothic.css");
 
@@ -27,6 +29,7 @@
       body {
         padding-top: 60px;
         padding-bottom: 40px;
+        font-size: 13px;
       }
     </style>
 
