@@ -22,11 +22,17 @@ class Part_m extends MY_Model
 	
 	// 시리얼 관리 제품 목록
 	public function getSerialPartList() {
-		$repo = $this->em->getRepository('Entity\SerialPart');
-		// $rows = $repo->findAll();
-		$rows = $repo->findBy(array(), array('id' => 'asc'));		// 정렬
-
+			
+		// (주의) 
+		// DQL 안에서 "" 쓰면 안된다. '' 를 써야함
+		// ouble quotation marks ”...” define a terminal string a vertical bar | represents an alternative
+		// 
+		$qb = $this->em->createQueryBuilder();
+		$query = $this->em->createQuery('SELECT sp FROM Entity\SerialPart sp WHERE sp.is_valid = \'Y\' AND sp.replace_part IS NULL ');
+		$rows = $query->getResult();
+		
 		return $rows;
+
 	}
 
 }

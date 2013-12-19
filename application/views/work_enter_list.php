@@ -24,8 +24,8 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
               <tr>
                 <th>No</th>
                 <th>종류</th>
-                <th>소속</th>
-                <th>이름</th>
+                <th>요청자</th>
+                <th>입고위치</th>
                 <th>장비종류</th>
                 <th>모 델</th>
                 <th>납품처</th>
@@ -33,6 +33,7 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <th>등록일</th>
                 <th>요청일</th>
                 <th>상태</th>
+                <th>메모</th>
               </tr>
             </thead>
 
@@ -43,16 +44,17 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
               <tr class="">
                 <td><?=$row->id?></td>
                 <td><?=$row->type?></td>
-                <td><?=$row->office->name?></td>
                 <td><?=$row->user->name?></td>
+                <td><?=$row->office->name?></td>
                 <!-- 장비 -->
                 <td><?=$row->items[0]->part->category->name?></td>
                 <td><?=$row->items[0]->part->name?></td>
                 <td><?=@$row->location_object->name;?></td>
                 <td><?=$row->items[0]->qty_request?></td>
-                <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d H:i:s'): '';?></td>
+                <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d'): '';?></td>
                 <td><?=(is_object($row->date_request)) ? $row->date_request->format('Y-m-d'): '';?></td>
                 <td><?=$row->status?></td>
+                <td><?=(mb_strlen($row->memo) > 20) ? mb_substr($row->memo, 0, 20) . '...' : $row->memo;?></td>
               </tr>
   <?php
   endforeach;

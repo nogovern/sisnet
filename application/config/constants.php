@@ -54,3 +54,9 @@ define('GS2_OPERATION_TYPE_MOVE', 		520);		// 이동
 define('GS2_OPERATION_TYPE_TRANS', 		530);		// 이관 (정확한 개념???)
 define('GS2_OPERATION_TYPE_ETC', 		900);		// 상태 변경
 
+define('GS2_OPERATION_STATUS_REQUEST', 	'1');		// 요청
+define('GS2_OPERATION_STATUS_CHECK', 	'2');		// 요청접수
+define('GS2_OPERATION_STATUS_3', 	'3');		// 처리중
+define('GS2_OPERATION_STATUS_4', 	'4');		// 확인중
+define('GS2_OPERATION_STATUS_5', 	'5');		// 완료
+define('GS2_OPERATION_STATUS_CONFIRM', 	'9');		// 승인

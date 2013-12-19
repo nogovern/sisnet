@@ -59,17 +59,19 @@ class Work_m extends MY_Model {
 
 	// 입고 업무 등록
 	public function add($type, $post) {
-		// 새로운 업무 객체
+		
 		$part = $this->em->getReference('Entity\Part', $post['part_id']);
 		$user = $this->em->getReference('Entity\User', $post['user_id']);
 		$office = $this->em->getReference('Entity\Office', $post['office_id']);
 		
+		// 새로운 업무 객체
 		$new = new Entity\Operation($this->em);
 
 		$new->setType($post['work_type']);
 		$new->setOperationNumber('SYS' . date("Ymd"));		// 새로운 O/N
 		$new->setDateRegister();
 		$new->setDateRequest($post['date_request']);
+		$new->setStatus('1');
 		$new->setMemo($post['memo']);
 
 		$new->setOffice($office);
@@ -111,6 +113,7 @@ class Work_m extends MY_Model {
 	//////////
 	/// 공통 함수
 	//////////
+
 	public function parseLocation($location_str) {
 		if(is_null($location_str)) {
 			return NULL;
@@ -135,6 +138,27 @@ class Work_m extends MY_Model {
 		}
 
 		return $instance;
+	}
+
+	/**
+	 * Loaction 컬럼에 들어갈 문자열 형식으로 변환
+	 * @param  [object] $obj 객체 타입
+	 * @return [string] "객체타입@객체ID" 형식의 문자열
+	 */
+	public function makeLocationString($obj) {
+		$prefix = '';
+
+		if($obj instanceof Entity\Office) {
+			$prefix = 'O';
+		} elseif ($obj instanceof Entity\Company) {
+			$prefix = 'C';
+		} elseif ($obj instanceof Entity\Store) {
+			$prefix = 'S';
+		} else {
+			return FALSE;
+		}
+
+		return $prefix . '@' . $obj->id;
 	}
 }
 
