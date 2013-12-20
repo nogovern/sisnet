@@ -14,7 +14,7 @@
 
     <!--<link href="/assets/css/main.css" rel="stylesheet">-->
     <style type="text/css">
-      @import url("http://fonts.googleapis.com/earlyaccess/nanumgothic.css");
+      @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
       body,
       button,
@@ -23,7 +23,7 @@
       select,
       textarea,
       h1, h2, h3, h4, h5 {
-        font-family : NanumGothic, "나눔고딕", Gulim;
+        font-family : "Nanum Gothic", "나눔고딕", sans-serif;
       }
 
       body {
