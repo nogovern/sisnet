@@ -59,25 +59,25 @@ class MY_Model extends CI_Model {
 
 	//---------------------------------------------------------
 
-	// add or update
-	public function save($object)
-	{
-		if(!($object instanceof $this->entity_name)) {
-			trigger_error("인수는 적절한 Object type 이어야 함!");
-		}
-
-		// 저장
+	/**
+	 * 변경할 객체를 추가한다
+	 * @param [object] $object [description]
+	 */
+	public function _add($object) {
 		$this->em->persist($object);
+	}
+
+	/**
+	 * 최종 변경 저장
+	 * @return [none]
+	 */
+	public function _commit()
+	{
 		$this->em->flush();
 	}
 
-	// save 의 alias
-	public function add($object) {
-		$this->save($object);
-	}
-
 	// 삭제
-	public function delete($id) {
+	public function _delete($obj) {
 		;
 	}
 
