@@ -37,19 +37,19 @@ class Stock
 	protected $part;
 
 	/** @Column(type="integer") */
-	protected $qty_minimum;
+	protected $qty_minimum = 0;
 
 	/** @Column(type="integer") */
-	protected $qty_new;
+	protected $qty_new = 0;
 
 	/** @Column(type="integer") */
-	protected $qty_used;
+	protected $qty_used = 0;
 
 	/** @Column(type="integer") */
-	protected $qty_s100;
+	protected $qty_s100 = 0;
 
 	/** @Column(type="integer") */
-	protected $qty_s400;
+	protected $qty_s400 = 0;
 
 	/**
 	 * 매직 메소드 (테스트용)
@@ -74,20 +74,14 @@ class Stock
 		return $this;
 	}
 
-	// 기준 수량  (최소 수량)
+	/**
+	 * 신품 기준 수량  (최소 수량)
+	 * - 기준 수량은 더하기/빼기 개념이 아님
+	 * 
+	 * @param [integer] $qty [수량]
+	 */
 	public function setQtyMinimum($qty) {
 		$this->qty_minimum = $qty;
-	}
-
-	public function addQtyMinimum($qty) {
-		$this->qty_minimum = $this->qty_minimum + $qty;
-	}
-
-	public function substractQtyMinimum($qty) {
-		if( $qty > $this->qty_minium) {
-			throw new Exception("재고량 보다 큰 수량을 뺄 수 없습니다", 1);
-		}
-		$this->qty_minimum = $this->qty_minimum - $qty;
 	}
 
 	// 신품 수량  

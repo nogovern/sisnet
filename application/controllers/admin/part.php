@@ -115,7 +115,12 @@ class Part extends CI_Controller {
 		$rows = $this->part_model->getSerialPartList();
 		
 		$data['title'] = '---- 리스트 -------';
-		$data['rows'] = $rows;
+		$data['rows'] =& $rows;
+
+		foreach($rows as $row){
+			$row->current = $this->part_model->parseLocation($row->current_location);
+			$row->previous = $this->part_model->parseLocation($row->previous_location);
+		}
 
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');

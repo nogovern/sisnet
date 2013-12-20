@@ -47,7 +47,14 @@ class Part_m extends MY_Model
 		return ($row) ? TRUE : FALSE; 
 	}
 
-	public function registerSerialPart($post) {
+	/**
+	 * 시리얼관리장비 추가
+	 * 
+	 * @param  [array] $post [description]
+	 * @param  [integer] $qty 기본 수량은 1
+	 * @return [object]       [description]
+	 */
+	public function addSerialPart($post, $qty = 1, $type = 'new') {
 		if(!count($post)) {
 			return FALSE;
 		}
@@ -59,19 +66,33 @@ class Part_m extends MY_Model
 		}
 
 		if($this->existSerialNumber($post['serial_number'])) {
-			trigger_error('시리얼넘버 중복!');
+			trigger_error('duplicate serial number! S/N must be unique.');
 			return FALSE;
 		}
 
 		$new = new Entity\SerialPart;
 		$new->setPart($part);
-		$new->setSerialNumber($post['serial_number']);
-		$new->setCurrentLocation($post['current_location']);
+		$new->setSerialNumber($post['serial_number']);				// 필수
+		$new->setCurrentLocation($post['current_location']);		// 필수
 		$new->setPreviousLocation($post['previous_location']);
 		$new->setNewFlag($post['is_new']);
 		$new->setValidFlag($post['is_valid']);
+		$new->setDateModify();
+		$new->setMemo($post['memo']);
 
-		return FALSE;
+		// 입고 사무소 찾기
+		$office = $this->parseLocation($new->current_location);
+		// 재고량 변경
+		$stock = $office->in($part, $qty, $type);
+
+		// doctrine persist() 
+		$this->_add($new);
+		$this->_add($stock);
+
+		// doctrine flush()
+		$this->_commit();
+
+		return $new;
 	}
 
 }

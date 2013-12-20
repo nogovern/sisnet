@@ -105,57 +105,7 @@ class Work_m extends MY_Model {
 	public function _remap($method) {
 		echo 'call';
 	}
-
-	//////////
-	/// 공통 함수
-	//////////
-
-	public function parseLocation($location_str) {
-		if(is_null($location_str)) {
-			return NULL;
-		}
-
-		$arr = explode('@', $location_str);
-		$instance = NULL;
-
-		switch ($arr[0]) {
-			case GS2_LOCATION_TYPE_COMPANY:
-				$instance = $this->em->getReference('Entity\Company', intval($arr[1]));
-				break;
-			
-			case GS2_LOCATION_TYPE_OFFICE:
-				$instance = $this->em->getReference('Entity\Office', intval($arr[1]));
-				break;
-			
-			case GS2_LOCATION_TYPE_STORE:
-			default:
-				$instance = $this->em->getReference('Entity\Store', intval($arr[1]));
-				break;
-		}
-
-		return $instance;
-	}
-
-	/**
-	 * Loaction 컬럼에 들어갈 문자열 형식으로 변환
-	 * @param  [object] $obj 객체 타입
-	 * @return [string] "객체타입@객체ID" 형식의 문자열
-	 */
-	public function makeLocationString($obj) {
-		$prefix = '';
-
-		if($obj instanceof Entity\Office) {
-			$prefix = 'O';
-		} elseif ($obj instanceof Entity\Company) {
-			$prefix = 'C';
-		} elseif ($obj instanceof Entity\Store) {
-			$prefix = 'S';
-		} else {
-			return FALSE;
-		}
-
-		return $prefix . '@' . $obj->id;
-	}
+	
 }
 
 

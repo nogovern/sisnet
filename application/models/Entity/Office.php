@@ -132,5 +132,71 @@ class Office
 		$this->status = $status;
 	}
 
+	/**
+	 * 장비 입고
+	 * @param [type] $part [description]
+	 * @param [type] $qty  [description]
+	 * @param [type] $type [description]
+	 */
+	public function in($part, $qty, $type = 'new') {
+
+		// 재고 목록 내 $part 장비가 있는지 검색
+		$stock = $this->existPart($part);
+
+		// 장비가 존재하지 않으면
+		if($stock === NULL) {
+			$stock = new Stock();		// 생성
+
+			$stock->setOffice($this);
+			$stock->setPart($part);
+			$stock->setQtyNew(0);
+		}
+
+		// 재고 수량 변경
+		$stock->setQtyNew($stock->qty_new + $qty);
+
+		return $stock;
+	}
+
+	public function add($part, $qty, $type = 'new') {
+		return $this->in($part, $qty, $type);
+	}
+
+
+	// 장비 출고
+	public function out($part, $qty, $type = 'new') {
+		$stock = $this->existPart($part);
+
+		if($stock === NULL) {
+			return FALSE;
+		} 
+
+		// 출고 수량이 재고 수량 보다 클수 없음 
+		if( $qty > $stock->qty_new) {
+			trigger_error("out quantity is not greater than current quuantity");
+			return FALSE;
+		}
+
+		$stock->setQtyNew($stock->qty_new - $qty);
+		return $stock;
+	}
+
+	// 창고 내 장비 존재 하는지 검사하여 
+	// 있으면 Stock object 를 반환한다
+	// 없으면 NULL 	
+	public function existPart($part) {
+		if(!count($this->stock_list))
+			return NULL;
+
+		foreach($this->stock_list as $item) {
+			if( $part->id == $item->part->id) {
+				return $item;			// Stock object
+				break;
+			}
+		}
+
+		return NULL;
+	}
+
 }
 

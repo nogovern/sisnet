@@ -84,7 +84,7 @@ class SerialPart				// 시리얼 관리 장비
 	}
 
 	// 수정일시
-	public function getModifyDate($date_only = TRUE) {
+	public function getDateModify($date_only = TRUE) {
 		if(empty($this->date_modify))
 			return '';
 		else
@@ -92,12 +92,15 @@ class SerialPart				// 시리얼 관리 장비
 	}
 
 	// 설치일
-	public function getInstallDate() {
-		return ($this->date_install) ? $this->date_install->format('Y-m-d H:i:s') : '';
+	public function getDateInstall($date_only = TRUE) {
+		if(empty($this->date_install))
+			return '';
+		else
+			return ($date_only) ? $this->date_install->format('Y-m-d') : $this->date_install->format('Y-m-d H:i:s');
 	}
 
 	// 입고일
-	public function getEnterDate($date_only = TRUE) {
+	public function getDateEnter($date_only = TRUE) {
 		if(empty($this->date_enter))
 			return '';
 		else
@@ -145,15 +148,15 @@ class SerialPart				// 시리얼 관리 장비
 		$this->is_valid = ($bool) ? 'Y' : 'N';
 	}
 
-	public function setDateEnter($date) {
+	public function setDateEnter($date = 'now') {
 		$this->date_enter = new \DateTime($date);
 	}
 
-	public function setDateInstall($date) {
+	public function setDateInstall($date = 'now') {
 		$this->date_install = new \DateTime($date);
 	}
 
-	public function setDateModify($date) {
+	public function setDateModify($date = 'now') {
 		$this->date_modify = new \DateTime($date);
 	}
 

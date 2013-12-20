@@ -23,6 +23,7 @@
               <th>입고일</th>
               <th>수정일</th>
               <th>상태</th>
+              <th>메모</th>
             </tr>
           </thead>
 
@@ -36,12 +37,13 @@ foreach($rows as $row):
               <td><?=$row->part->category->name?></td>
               <td><?=$row->part->name?></td>
               <td><?=$row->part->manufacturer?></td>
-              <td><?=$row->current_location?></td>
-              <td><?=$row->previous_location?></td>
+              <td><?=$row->current->name?></td>
+              <td><?=$row->previous->name?></td>
               <td><?=$row->date_install?></td>
-              <td><?=$row->getEnterDate()?></td>
-              <td><?=$row->date_modify?></td>
+              <td><?=$row->getDateEnter()?></td>
+              <td><?=$row->getDateModify()?></td>
               <td><?=$row->status?></td>
+              <td><?=$row->memo?></td>
             </tr>
 <?php
 endforeach;
