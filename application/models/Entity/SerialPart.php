@@ -115,7 +115,7 @@ class SerialPart				// 시리얼 관리 장비
 	//===================================================
 	public function setPart($obj) {
 		if($obj instanceof Part) {
-			$this->part = $part;
+			$this->part = $obj;
 		} else {
 			trigger_error(__LINE__ . ' 에러 !!!');
 		}
@@ -130,7 +130,7 @@ class SerialPart				// 시리얼 관리 장비
 	}	
 
 	public function setPreviousLocation($string) {
-		$tbis->previous_location = $string;
+		$this->previous_location = $string;
 	}
 
 	public function setReplacePart($obj) {
