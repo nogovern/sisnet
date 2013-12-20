@@ -29,17 +29,13 @@ class Enter extends CI_Controller
 	}
 
 	// 입고요청
-	public function add() {
+	public function request() {
 		$data['title'] = "입고 요청 작성";
 
 		$this->load->library('form_validation');
 		$this->load->helper('form');
 
 		$this->load->view('work_enter_add_form', $data);
-	}
-
-	public function request() {
-		$this->add();
 	}
 
 	// 납품처 기능 
@@ -102,7 +98,7 @@ class Enter extends CI_Controller
 			var_dump($_POST);
 
 			// 100 - 입고업무
-			$this->work_model->add(GS2_OPERATION_TYPE_ENTER, $this->input->post());
+			$this->work_model->register(GS2_OPERATION_TYPE_ENTER, $this->input->post());
 			echo 'done';
 			exit;
 		}

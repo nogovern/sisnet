@@ -58,7 +58,7 @@ class Work_m extends MY_Model {
 	}
 
 	// 입고 업무 등록
-	public function add($type, $post) {
+	public function register($type, $post) {
 		
 		$part = $this->em->getReference('Entity\Part', $post['part_id']);
 		$user = $this->em->getReference('Entity\User', $post['user_id']);
@@ -81,7 +81,7 @@ class Work_m extends MY_Model {
 		$new->setWorkLocation($part->company->id, GS2_LOCATION_TYPE_COMPANY);
 
 
-		$this->em->persist($new);
+		$this->work_model->_add($new);
 
 		// $new_id = $new->id;		// 새로운 operation.id
 		
@@ -95,15 +95,11 @@ class Work_m extends MY_Model {
 		$item->setDateRegister();
 		$item->setNewFlag(TRUE);						// 신품
 
-		$this->em->persist($item);
+		$this->work_model->_add($item);
 
-		// save 
-		$this->em->flush();
+		// apply to db
+		$this->work_model->_commit();
 
-	}
-
-	public function register($type, $post) {
-		return $this->add($type, $post);
 	}
 
 	public function _remap($method) {

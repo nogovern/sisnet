@@ -66,7 +66,7 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
           </table>
 
           <p>
-            <a href="/work/enter/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;입고 요청 등록</span></a>
+            <a href="/work/enter/request"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;입고 요청 등록</span></a>
           </p>
 
         </div>

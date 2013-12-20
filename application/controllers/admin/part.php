@@ -92,7 +92,8 @@ class Part extends CI_Controller {
 			$company = $em->getReference('Entity\Company', $this->input->post('company_id'));
 			$part->setCompany($company);
 
-			$this->part_model->save($part);
+			$this->part_model->_add($part);
+			$this->part_model->_commit();		// 최종 반영
 
 			// 입력 성공 메세지
 

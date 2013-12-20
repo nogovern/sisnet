@@ -167,7 +167,8 @@ endfor;
         <div class="col-md-12">
           <button id="btn_next" class="btn btn-success btn-sm" type="button">요청확정</button>
           <button id="btn_cancel" class="btn btn-default btn-sm" type="button">리스트로...</button>
-          <button id="btn_register" class="btn btn-success btn-sm" type="button">개별등록</button>
+          <button id="btn_register" class="btn btn-warning btn-sm" type="button">개별등록</button>
+          <button id="btn_delivery" class="btn btn-success btn-sm" type="button">출고</button>
         </div>
       </div>
           

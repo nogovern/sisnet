@@ -48,7 +48,8 @@ class Company extends CI_Controller {
 			// user_id 가 있으면 
 			// $new->user = $user;
 
-			$this->company_model->save($new);
+			$this->company_model->_add($new);
+			$this->company_model->_commit();
 
 			redirect('/admin/company');
 		}

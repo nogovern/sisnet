@@ -34,5 +34,44 @@ class Part_m extends MY_Model
 		return $rows;
 
 	}
+ 	
+ 	/**
+ 	 * 시리얼넘버가 존재하는지 검색
+ 	 * @param  [string] $sn  시리얼 넘버
+ 	 * @return [boolean]     시러얼넘버가 있으면 true 반환
+ 	 */
+	public function existSerialNumber($sn) {
+		$repo = $this->em->getRepository('Entity\SerialPart');
+		$row = $repo->findBy(array('serial_number' => $sn));
+
+		return ($row) ? TRUE : FALSE; 
+	}
+
+	public function registerSerialPart($post) {
+		if(!count($post)) {
+			return FALSE;
+		}
+
+		$part = $this->em->getReference('Entity\Part', $post['part_id']);
+		if(!$part) {
+			trigger_error("존재하지 않는 장비 입니다");
+			exit;
+		}
+
+		if($this->existSerialNumber($post['serial_number'])) {
+			trigger_error('시리얼넘버 중복!');
+			return FALSE;
+		}
+
+		$new = new Entity\SerialPart;
+		$new->setPart($part);
+		$new->setSerialNumber($post['serial_number']);
+		$new->setCurrentLocation($post['current_location']);
+		$new->setPreviousLocation($post['previous_location']);
+		$new->setNewFlag($post['is_new']);
+		$new->setValidFlag($post['is_valid']);
+
+		return FALSE;
+	}
 
 }

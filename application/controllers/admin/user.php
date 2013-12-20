@@ -98,7 +98,8 @@ class User extends CI_Controller {
 			}
 
 			// 저장
-			$ok = $this->user_model->add($user);
+			$this->user_model->_add($user);
+			$this->user_model->_commit();
 
 			// 입력 성공 메세지
 			var_dump($_POST);

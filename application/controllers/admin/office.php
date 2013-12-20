@@ -65,11 +65,9 @@ class Office extends CI_Controller
 
 		} else {
 			$post = $this->input->post();
-			$result = $this->office_model->add($post);
-
-			if(!$result){
-				die('사무소 등록 중 에러!');
-			}
+			
+			$this->office_model->_add($post);
+			$this->office_model->_commit();
 
 			redirect('admin/office');
 			exit;
