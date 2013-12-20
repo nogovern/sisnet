@@ -160,6 +160,11 @@ if ( ! defined('CIUnit_Version') ) {
  * --------------------------------------------------------------------
  */
 
+// console에서 session 때문에 에러문구 발생 막기
+if(!isset($_SERVER['REMOTE_ADDR'])) {
+    $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+}
+
 // Load the CIUnit CodeIgniter Core
 require_once CIUPATH . 'core/CodeIgniter' . EXT;
 
