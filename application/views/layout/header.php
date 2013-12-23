@@ -15,6 +15,7 @@
     <!--<link href="/assets/css/main.css" rel="stylesheet">-->
     <style type="text/css">
       @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+      /*@import url(http://fonts.googleapis.com/css?family=Lato);*/
 
       body,
       button,

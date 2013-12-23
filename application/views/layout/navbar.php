@@ -17,9 +17,10 @@
                 <li id="page-admin-user"><a href="/admin/user">사용자</a></li>
                 <li id="page-admin-office"><a href="/admin/office">사무소</a></li>
                 <li id="page-admin-company"><a href="/admin/company">거래처</a></li>
-                <li id="page-admin-part"><a href="/admin/part">장비</a></li>
                 <li id="page-admin-store"><a href="/admin/store">점포</a></li>
                 <li class="divider"></li>
+                <li id="page-admin-part"><a href="/admin/part">장비</a></li>
+                <li id="page-admin-serialpart"><a href="/admin/part/serial">시리얼관리장비</a></li>
                 <li id="page-admin-category"><a href="/admin/category">장비 카테고리</a></li>
               </ul>
             </li>
