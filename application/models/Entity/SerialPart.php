@@ -132,8 +132,12 @@ class SerialPart				// 시리얼 관리 장비
 		$this->status = $status;
 	}	
 
-	public function setPreviousLocation($string) {
+	public function setPreviousLocation($string = '') {
 		$this->previous_location = $string;
+	}
+
+	public function setCurrentLocation($string = '') {
+		$this->current_location = $string;
 	}
 
 	public function setReplacePart($obj) {
@@ -158,10 +162,6 @@ class SerialPart				// 시리얼 관리 장비
 
 	public function setDateModify($date = 'now') {
 		$this->date_modify = new \DateTime($date);
-	}
-
-	public function setCurrentLocation($string) {
-		$this->current_location = $string;
 	}
 
 	public function setMemo($memo) {

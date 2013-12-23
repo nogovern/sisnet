@@ -102,15 +102,7 @@ class Part extends CI_Controller {
 		}
 	}
 
-	public function form() {
-
-	}
-
-	public function render( $view_url = '', $title = '기본 타이틀', $options)
-	{
-
-	}
-
+	// 시리얼 장비 리스트
 	public function serial() {
 		$rows = $this->part_model->getSerialPartList();
 		
@@ -126,5 +118,81 @@ class Part extends CI_Controller {
 		$this->load->view('layout/navbar');
 		$this->load->view('part_serial_list', $data);
 		$this->load->view('layout/footer');
+	}
+
+	public function serial_add() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$data['title'] = "시리얼관리장비 등록";
+
+		//================ refactoring needed ===================
+		// 장비 카테고리 와 배열로 변경
+		$em = $this->part_model->getEntityManager();
+
+		$parent = $em->getRepository('Entity\Category')->find(1);
+		$rows = $em
+					->getRepository('Entity\Category')
+					->findBy(
+						array('parent' => $parent),
+						array('id' => 'ASC')				// order by 
+					);
+		$cats[0] = "--선택하세요--";
+		foreach($rows as $row) {
+			$cats[$row->id] = $row->name; 
+		}
+
+		// 재고 사무소 목록
+		$arr_office = array();		
+		$arr_office[0] = '-- 선택하세요 --';
+		$this->load->model('office_m', 'office_model');
+		$rows = $this->office_model->getMasterList();
+		foreach($rows as $row) {
+			$arr_office[$row->id] = $row->name;
+		}
+
+		// 시리얼 관리 장비 모델명
+		$arr_part[0] = '-- 선택하세요 --';
+		$rows = $this->part_model->getSerialPartModelList();
+		foreach($rows as $row) {
+			$arr_part[$row->id] = $row->name;
+		}
+
+		// selectbox 생성
+		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
+		$data['select_part'] = form_dropdown('part_id', $arr_part, 0, 'id="part_id" class="form-control"');
+
+		// 규칙 설정
+		$this->form_validation->set_rules('part_id', '장비모델', 'required|greater_than[0]');
+		$this->form_validation->set_rules('office_id', '입고 사무소', 'required|greater_than[0]');
+		$this->form_validation->set_rules('serial_number', '시리얼넘버', 'required');
+		$this->form_validation->set_rules('date_enter', '최초 입고일', 'required');
+
+		if($this->form_validation->run() === FALSE) {
+			$this->load->view('part_serial_add_form', $data);	
+		} else {
+			$post = $this->input->post();
+			/* default */ 
+			$post['is_valid'] = 'Y';									// 가용 여부
+			$post['current_location'] = 'O@' . $post['office_id'];		// 입고 사무소
+			$post['previous_location'] = '';
+			$post['date_install']	= '';
+			// var_dump($post);
+			// exit;
+
+			$entry = $this->part_model->addSerialPart($post);
+			if(!$entry) {
+				die('에러');
+			}
+
+			redirect('admin/part/serial');
+		}
+
+	}
+
+	// 테스트
+	public function ajax_serial_add() {
+
+		print_r($_POST);
 	}
 }

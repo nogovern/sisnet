@@ -15,12 +15,35 @@ class Part_m extends MY_Model
 		$this->setEntityName('Part');
 	}
 
+	// 시리얼 장비 모델 
+	// gs2_parts 내 type = 1 인 장비 검색 
+	function getSerialPartModelList() {
+		$criteria = array( 'type' => '1');
+		return $this->find($criteria);
+	}
+
+	/**
+	 * 재고가 있는 장비 목록
+	 * 
+	 * @param  string $part_type 인자가 없으면 전체
+	 * @return array of objects   장비 object
+	 */
+	function getListInStock($part_type = '') {
+		if(empty($part_type)) {
+
+		}
+	}
+
 
 	/////////////////////////////
 	// 시리얼 관리 장비 전용 //
 	////////////////////////////
 	
-	// 시리얼 관리 제품 목록
+	/**
+	 * 시리얼 관리 제품 리스트
+	 * 
+	 * @return array of objects [description]
+	 */
 	public function getSerialPartList() {
 			
 		// (주의) 
@@ -37,8 +60,9 @@ class Part_m extends MY_Model
  	
  	/**
  	 * 시리얼넘버가 존재하는지 검색
- 	 * @param  [string] $sn  시리얼 넘버
- 	 * @return [boolean]     시러얼넘버가 있으면 true 반환
+ 	 * 
+ 	 * @param  string $sn  시리얼 넘버
+ 	 * @return boolean     시러얼넘버가 있으면 TRUE
  	 */
 	public function existSerialNumber($sn) {
 		$repo = $this->em->getRepository('Entity\SerialPart');
@@ -50,9 +74,9 @@ class Part_m extends MY_Model
 	/**
 	 * 시리얼관리장비 추가
 	 * 
-	 * @param  [array] $post [description]
-	 * @param  [integer] $qty 기본 수량은 1
-	 * @return [object]       [description]
+	 * @param  array $post 		POST 데이터
+	 * @param  integer 	$qty 	기본 수량은 1
+	 * @return \Entity\SerialPart   성공시 추가된 object
 	 */
 	public function addSerialPart($post, $qty = 1, $type = 'new') {
 		if(!count($post)) {
@@ -77,6 +101,10 @@ class Part_m extends MY_Model
 		$new->setPreviousLocation($post['previous_location']);
 		$new->setNewFlag($post['is_new']);
 		$new->setValidFlag($post['is_valid']);
+		$new->setDateEnter($post['date_enter']);
+		if(@!empty($post['date_install'])) {
+			$new->setDateInstall($post['date_install']);
+		}
 		$new->setDateModify();
 		$new->setMemo($post['memo']);
 

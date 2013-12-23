@@ -133,10 +133,13 @@ class Office
 	}
 
 	/**
-	 * 장비 입고
-	 * @param [type] $part [description]
-	 * @param [type] $qty  [description]
-	 * @param [type] $type [description]
+	 * 사무소로 장비 입고
+	 * 
+	 * @param \Entity\Part $part [description]
+	 * @param integer $qty 	수량
+	 * @param string $type 	type 문자열
+	 *
+	 * @return \Entity\Stock
 	 */
 	public function in($part, $qty, $type = 'new') {
 
@@ -163,7 +166,15 @@ class Office
 	}
 
 
-	// 장비 출고
+	/**
+	 * 사무소에서 장비 출고
+	 * 
+	 * @param  \Entity\Part $part
+	 * @param  integer $qty  	수량
+	 * @param  string $type 	type 문자열
+	 * 
+	 * @return \Entity\Stock     The Stock class
+	 */
 	public function out($part, $qty, $type = 'new') {
 		$stock = $this->existPart($part);
 
@@ -181,9 +192,12 @@ class Office
 		return $stock;
 	}
 
-	// 창고 내 장비 존재 하는지 검사하여 
-	// 있으면 Stock object 를 반환한다
-	// 없으면 NULL 	
+	/**
+	 * 사무소창고 내 장비 존재 하는지 검사
+	 * 
+	 * @param  \Entity\Part $part 	the Part class
+	 * @return \Entity\Stock      	없으면 null
+	 */
 	public function existPart($part) {
 		if(!count($this->stock_list))
 			return NULL;
