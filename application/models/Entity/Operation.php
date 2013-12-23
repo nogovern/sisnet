@@ -116,6 +116,12 @@ class Operation
 		$this->date_register = new \DateTime($argv);
 	}
 
+	// 변경일시
+	public function setDateModify($date = 'now') {
+		if(!empty($date))
+			$this->date_register = new \DateTime($date);
+	}
+
 	// 업무 요청 일시
 	public function setDateRequest() {
 		$num_args = func_num_args();
@@ -137,8 +143,15 @@ class Operation
 		return $this->$key;
 	}
 
-	public function getRegisterDate() {
+	public function getDateRegister() {
 		return ($this->date_register) ? $this->date_register->format('Y-m-d H:i:s') : '';
+	}
+
+	public function getDateModify() {
+		if(empty($this->date_modify))
+			return '';
+		else 
+			return $this->date_modify->format('Y-m-d H:i:s');
 	}
 
 	public function getWorkLocation() {

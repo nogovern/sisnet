@@ -126,4 +126,49 @@ class Enter extends CI_Controller
 		$this->load->view('work_enter_view', $data);
 	}
 
+
+	////////////////
+	// ajax 요청 처리 
+	////////////////
+	public function ajax($action) {
+		if(empty($action)){
+			echo 'error - $actin 이 비어있음!!!';
+		}
+
+		$work_id = $_REQUEST['id'];
+
+		// 요청 -> 요청확정 단계로 이동
+		if($action == 'request_ok') {
+			$work = $this->work_model->get($work_id);
+
+			$work->setStatus('2');
+			$work->setDateModify();
+
+			$this->work_model->_add($work);
+			$this->work_model->_commit();
+
+			echo 'success';
+		} 
+		// 납품처 장비 등록
+		elseif( $action == 'sender_register') {
+
+		} 
+		// 출고 완료
+		elseif( $action == 'delivery_done') {
+			var_dump($_POST);
+			echo '출고 상태로 변경 하였음!';
+		}
+		// 장비 확인
+		elseif($action == 'inspect') {
+			echo '받은 장비 확인중';
+		}
+		// 업무 종료
+		elseif($action == 'complete') {
+			echo '입고 업무를 종료함';
+
+		} else {
+			echo '[error] 등록되지 않은 요청임다!';
+		}
+	}
+
 }
