@@ -60,3 +60,9 @@ define('GS2_OPERATION_STATUS_3', 	'3');		// 처리중
 define('GS2_OPERATION_STATUS_4', 	'4');		// 확인중
 define('GS2_OPERATION_STATUS_5', 	'5');		// 완료
 define('GS2_OPERATION_STATUS_CONFIRM', 	'9');		// 승인
+
+// 장비 관련
+define('GS2_PART_TYPE_SERIAL', 	'1');				// 시리얼관리장비
+define('GS2_PART_TYPE_COUNT', 	'2');				// 수량관리장비
+define('GS2_PART_TYPE_SUPPLIES', '3');				// 소모품
+
