@@ -126,6 +126,15 @@ class Enter extends CI_Controller
 		$this->load->view('work_enter_view', $data);
 	}
 
+	public function view2($work_id) {
+		$data['title'] = '입고 요청 보기';
+
+		$work = $this->work_model->get($work_id);
+		$data['work'] = $work;
+
+		$this->load->view('work_enter_view2', $data);
+	}
+
 
 	////////////////
 	// ajax 요청 처리 
@@ -135,11 +144,11 @@ class Enter extends CI_Controller
 			echo 'error - $actin 이 비어있음!!!';
 		}
 
-		$work_id = $_REQUEST['id'];
+		$id = $_REQUEST['id'];
+		$work = $this->work_model->get($id);
 
 		// 요청 -> 요청확정 단계로 이동
 		if($action == 'request_ok') {
-			$work = $this->work_model->get($work_id);
 
 			$work->setStatus('2');
 			$work->setDateModify();
@@ -150,11 +159,35 @@ class Enter extends CI_Controller
 			echo 'success';
 		} 
 		// 납품처 장비 등록
-		elseif( $action == 'sender_register') {
+		elseif( $action == 'temp_add') {
+			$part = $work->getItem()->part;
+			$val = $_POST['val'];
+			$temp = $this->work_model->addTempItem($work, $part, $val);
+			if(!$temp){
+				echo 'error!';
+				exit;
+			}
 
+			// 수량 비교용 
+			$request_qty = $work->getItem()->qty_request;
+
+			$tpl = '<tr data-temp_id="%d">
+                    <td>-</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%d</td>
+                    <td style="width:150px;">
+                      <button class="btn btn-danger btn-xs btn_delete" type="button">X</button>
+                    </td>
+                  </tr>';
+            echo sprintf($tpl, $temp->id, $part->name, $temp->getSerialNumber(), $temp->qty);
+            exit;
+		}
+		elseif( $action == 'temp_delete') {
+			echo $_POST['temp_id'];
 		} 
 		// 출고 완료
-		elseif( $action == 'delivery_done') {
+		elseif( $action == 'delivery') {
 			var_dump($_POST);
 			echo '출고 상태로 변경 하였음!';
 		}

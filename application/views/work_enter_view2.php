@@ -66,7 +66,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-enter'));
               </tr>
               <tr>
                 <td>납품 담당자</td>
-                <td><?='추후 구현'?></td>
+                <td><?=$work->getItem()->part->company->user->name?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
@@ -125,62 +125,32 @@ $this->load->view('layout/navbar', array('current' => 'page-work-enter'));
         <div class="col-md-12">
           <!-- start: ALERTS PANEL -->
           <div class="panel panel-primary">
-            <div class="panel-heading"><i class="fa fa-tags"></i> 장  비 </div>
+            <div class="panel-heading"><i class="fa fa-tags"></i>출고 대기 리스트</div>
             <div class="panel-body" style="padding:0 15px;">
-              <form id="myform" role="form">
               <table class="table table-hover" id="part_table">
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>장비명</th>
-                    <th>Serial Number</th>
-                    <th>요청수량</th>
+                    <th>S/N</th>
                     <th>등록수량</th>
-                    <th>기능</th>
+                    <th>삭제</th>
                   </tr>
                 </thead>
                 <tbody>
                   <!-- sample -->
-<?php
-$qty = $work->getItem()->qty_request;
-if($work->getItem()->part->type == GS2_PART_TYPE_SERIAL) {
-  for($i=1; $i <= $qty; $i++):
-?>                  
-                  <tr>
-                    <td><?=$i?></td>
+                  <tr data-temp_id="">
+                    <td>-</td>
                     <td><?=$work->getItem()->part->name?></td>
-                    <td>
-                      <input class="form-control work_item" type="text" name="part_id:<?=$i?>" value="" style="height:30px;max-width:200px;">
-                    </td>
-                    <td><?='1'?></td>
-                    <td>0</td>
-                    <td style="width:150px;">
-                      <button class="btn btn-danger btn-xs">reset</button>
-                      <button class="btn btn-success btn-xs">input s/n</button>
-                    </td>
-                  </tr>
-<?php
-  endfor;
-} else {
-?>
-                  <tr>
+                    <td></td>
                     <td>1</td>
-                    <td><?=$work->getItem()->part->name?></td>
-                    <td><input class="form-control work_item" type="text" name="part_id" value="" style="height:30px;max-width:200px;" disabled></td>
-                    <td><?=$qty?></td>
-                    <td><input type="text" class="form-control" name="qty"style="width:50px;" value="0"></td>
                     <td style="width:150px;">
-                      <button class="btn btn-danger btn-xs">reset</button>
-                      <button class="btn btn-success btn-xs">input s/n</button>
+                      <button class="btn btn-danger btn-xs btn_delete" type="button">X</button>
                     </td>
                   </tr>
-
-<?php  
-}
-?>                  
+             
                 </tbody>
               </table>
-              </form>
             </div>
           </div>
           <!-- end: ALERTS PANEL -->
@@ -191,17 +161,17 @@ if($work->getItem()->part->type == GS2_PART_TYPE_SERIAL) {
 <?php
 if($work->status == 1):
 ?>
-          <button id="btn_request_ok" class="btn btn-success btn-sm" type="button">요청확정</button>
+          <button id="btn_request_ok" class="btn btn-success" type="button">요청확정</button>
 <?php
 endif;
 ?>
-          <button id="btn_cancel" class="btn btn-default btn-sm" type="button">리스트로...</button>
+          <button id="btn_cancel" class="btn btn-default" type="button">리스트로...</button>
 
 <?php
 if($work->status == 2):
 ?>
-          <button id="btn_register" class="btn btn-warning btn-sm" type="button">개별등록</button>
-          <button id="btn_delivery" class="btn btn-success btn-sm" type="button">출고</button>
+          <button id="btn_register" class="btn btn-warning btn_add" type="button">개별등록</button>
+          <button id="btn_delivery" class="btn btn-success btn_delivery" type="button"  disabled>출고</button>
 <?php
 endif;
 ?>
@@ -212,17 +182,14 @@ endif;
     
     <!-- dialog form -->
     <div id="dialog-form" title="납품요청확인">
-      <p class="validateTips">All form fields are required.</p>
-      <form name="dialog-form">
-      <fieldset>
-        <label for="name">납품예정일</label>
-        <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
-        <label for="email">Email</label>
-        <input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
-        <label for="date_request">납품예정일</label>
-        <input type="date_request" name="date_request" id="date_request" value="" class="text ui-widget-content ui-corner-all">
-      </fieldset>
+      <div class="row">
+      <form id="my_form" role="form" class="form">
+        <div class="form-group">
+          <label class="form-label col-sm-3">값</label>
+          <input id="my_val" class="form-control" name="value" id="value">
+        </div>
       </form>
+      </div>
     </div>
 
     <!-- jquery form validation -->
@@ -240,15 +207,24 @@ endif;
         modal: true,
         buttons: {
           "저장": function() {
-            var table = $("#part_table tbody");
-
-            table.append( '<tr class="active">' +
-              "<td>1111</td>" +
-              "<td>1111</td>" +
-              "<td>1111</td>" +
-              "<td>1111</td>" +
-              "<td>1111</td>" +
-            "</tr>");
+            $.ajax({
+              url: "/work/enter/ajax/temp_add",
+              type: "POST",
+              data: {
+                id : <?=$work->id?>,
+                val: $("#my_val").val(),
+                "csrf_test_name": $.cookie("csrf_cookie_name")
+              },
+              dataType: "html",
+            })
+              .done(function(html) {
+                $("#part_table tbody").append(html);
+                alert(html);
+                console.log(html);
+              })
+              .fail(function(xhr, textStatus){
+                alert("Request failed: " + textStatus);
+              });
             $(this).dialog("close");
           },
           "닫기": function() {
@@ -273,7 +249,7 @@ endif;
           })
             .done(function(html) {
               alert(html);
-              location.href = "<?=site_url('/work/enter/');?>";
+              location.reload();
             })
             .fail(function(xhr, textStatus){
               alert("Request failed: " + textStatus);
@@ -283,39 +259,39 @@ endif;
 
       // 장비 시리얼 등록
       var items = [];
-      $(".work_item").change(function(){
-          var current = $(this).val();
-          var saved = $(this).data('serial');
+      $(".btn_add").click(function(){
+          $("#dialog-form").dialog('open');
+      });
 
-          // console.log(current + ', ' + saved);
-          
-          if(items.indexOf(current) >= 0){
-            alert('시리얼넘버가 중복됩니다');
-            $(this).val((saved) ? saved: '');
-            $(this).focus();
-            return false;
-          }
+      // 리스트 장비 삭제
+      $(document).on("click", ".btn_delete", function(e){
+        console.log($(this).parent().html());
+        console.log($(this).parent().parent().data('temp_id'));
+        return false;
+        if(!confirm('목록에서 삭제 할까요?')){
+          return false;
+        }
 
-          if(!saved){
-            items.push(current);            // 배열에 추가
-          } else { 
-            if(saved !== current) {
-              var tmp = items.indexOf(saved);
-              items.splice(tmp, 1);         // 기존값 삭제
-              
-              if(current){ 
-                items.push(current);        // 배열에 추가
-              }
-            }
-          }
-            
-          $(this).data('serial', current);
-          console.log(items);
+        $.ajax({
+          url: "/work/enter/ajax/temp_delete",
+          type: "POST",
+          data: {
+            id : <?=$work->id?>,
+            temp_id: $(this).parent().parent().data('temp_id'),
+            "csrf_test_name": $.cookie("csrf_cookie_name")
+          },
+          dataType: "html",
+        })
+          .done(function(html) {
+            alert(html);
+          })
+          .fail(function(xhr, textStatus){
+            alert("Request failed: " + textStatus);
+          });
       });
       
       // 출고
       $("#btn_delivery").click(function(){
-        
         if(items.length == 0) {
           alert('최소 1개 이상의 장비 정보를 입력해야 합니다');
           return false;

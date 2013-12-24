@@ -49,6 +49,15 @@ class Work_m extends MY_Model {
 		return $rows;
 	}
 
+	/**
+	 * 해당 업무 완료
+	 * 
+	 * @return [type] [description]
+	 */
+	public function close($operation) {
+
+	}
+
 	// 철수 목록
 	public function getEvaucationList() {
 		$criteria = array('type' => '300');
@@ -99,12 +108,70 @@ class Work_m extends MY_Model {
 
 		// apply to db
 		$this->work_model->_commit();
+	}
+
+	/**
+	 * 작업 처리용 장비 임시 테이블
+	 * 임시테이블에 아이템 추가 
+	 * 
+	 * @param [type]  $op          Operation class
+	 * @param [type]  $part        Part class
+	 * @param [type]  $val       part type - 1:시리얼넘버, 2:수량
+	 * @param boolean $is_complete default FALSE;
+	 * @param boolean $is_scan     default FALSE;
+	 */
+	public function addTempItem($op, $part, $val, $is_complete = FALSE, $is_scan = FALSE) {
+		if(!($op instanceof Entity\Operation)){
+			die('첫번째 인자는 Operation Class 여야 함!!!');
+		}
+		
+		if(!($part instanceof Entity\Part)){
+			die('2번째 인자는 Part Class 여야 함!!!');
+		}
+
+		// 수량장비일 경우 $val 은 숫자 형식이어야 함!
+		if($part->type == 2 && !is_numeric($val)) {
+			return FALSE;
+		}
+
+		$temp = new Entity\OperationTempPart;
+		$temp->setOperation($op);
+		$temp->setPart($part);
+		$temp->setDateRegister();
+		$temp->setPartType($part->type);
+		$temp->setCompleteFlag($is_complete);
+
+		// 임시로
+		$loc = $this->work_model->parseLocation($op->getWorkLocation());
+		$user = $loc->user;
+		$temp->setuser($user);				// 처리 담당자
+		
+		if($part->type == 1){
+			$temp->setSerialNumber($val);
+		} else {
+			$temp->setQuantity($val);
+		}
+
+		$this->work_model->_add($temp);
+		$this->work_model->_commit();
+
+		return $temp;
+	}
+
+	/**
+	 * 임시테이블에서 장비 삭제
+	 * 
+	 * @param  class $item   OperationTempPart class
+	 * @return [type]       [description]
+	 */
+	public function removeTempItem($item) {
 
 	}
 
-	public function _remap($method) {
-		echo 'call';
+	public function updateTempItem($item, $val, $is_complete = FALSE, $is_scan = FALSE) {
+
 	}
+
 	
 }
 
