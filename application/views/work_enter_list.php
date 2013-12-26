@@ -54,7 +54,7 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <td><?=$row->items[0]->qty_request?></td>
                 <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d'): '';?></td>
                 <td><?=(is_object($row->date_request)) ? $row->date_request->format('Y-m-d'): '';?></td>
-                <td><?=$row->status?></td>
+                <td><?=constant("GS2_OP_ENTER_STATUS_" .$row->status)?></td>
                 <td><?=(mb_strlen($row->memo) > 20) ? mb_substr($row->memo, 0, 20) . '...' : $row->memo;?></td>
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/enter/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>

@@ -133,7 +133,7 @@ class Office
 	}
 
 	/**
-	 * 사무소로 장비 입고
+	 * 사무소로 장비 입고 (flush() 는 하지 않음)
 	 * 
 	 * @param \Entity\Part $part [description]
 	 * @param integer $qty 	수량

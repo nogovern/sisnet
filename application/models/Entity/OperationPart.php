@@ -71,27 +71,21 @@ class OperationPart {
 		$this->operation = $op;				// Operatino Instance
 	}
 
-	public function setRequestQuantity($qty) {
+	public function setQtyRequest($qty) {
 		$this->qty_request = $qty;
 	}
 
-	public function setCompleteQuantity($qty) {
+	public function setQtyComplete($qty) {
 		$this->qty_complete = $qty;
 	}
 
 	// 등록일시
 	public function setDateRegister() {
-		$num_args = func_num_args();
-		$argv = ($num_args == 0 ) ? 'now' : func_get_arg(0);
-
-		$this->date_register = new \DateTime($argv);
+		$this->date_register = new \DateTime($when);
 	}
 
-	public function setDateModify($datetime) {
-		$num_args = func_num_args();
-		$argv = ($num_args == 0 ) ? 'now' : func_get_arg(0);
-
-		$this->date_modify = new \DateTime($argv);
+	public function setDateModify($when = 'now') {
+		$this->date_modify = new \DateTime($when);
 	}
 
 	public function setNewFlag($is_new) {

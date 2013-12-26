@@ -44,22 +44,22 @@ define('GS2_LOCATION_TYPE_OFFICE', 	'O');			// 사무소
 define('GS2_LOCATION_TYPE_COMPANY', 'C');			// 거래처
 define('GS2_LOCATION_TYPE_STORE', 	'S');			// 점포
 
-define('GS2_OPERATION_TYPE_ENTER', 		100);		// 입고
-define('GS2_OPERATION_TYPE_INSTALL', 	200);		// 설치
-define('GS2_OPERATION_TYPE_CHANGE', 	300);		// 교체
-define('GS2_OPERATION_TYPE_WITHDRAW',	400);		// 철수
-define('GS2_OPERATION_TYPE_REPAIR', 	500);		// 수리
-define('GS2_OPERATION_TYPE_DESTROY', 	510);		// 폐기
-define('GS2_OPERATION_TYPE_MOVE', 		520);		// 이동
-define('GS2_OPERATION_TYPE_TRANS', 		530);		// 이관 (정확한 개념???)
-define('GS2_OPERATION_TYPE_ETC', 		900);		// 상태 변경
+define('GS2_OP_TYPE_ENTER', 	100);		// 입고
+define('GS2_OP_TYPE_INSTALL', 	200);		// 설치
+define('GS2_OP_TYPE_CHANGE', 	300);		// 교체
+define('GS2_OP_TYPE_WITHDRAW',	400);		// 철수
+define('GS2_OP_TYPE_REPAIR', 	500);		// 수리
+define('GS2_OP_TYPE_DESTROY', 	510);		// 폐기
+define('GS2_OP_TYPE_MOVE', 		520);		// 이동
+define('GS2_OP_TYPE_TRANS', 		530);		// 이관 (정확한 개념???)
+define('GS2_OP_TYPE_ETC', 		900);		// 상태 변경
 
-define('GS2_OPERATION_STATUS_REQUEST', 	'1');		// 요청
-define('GS2_OPERATION_STATUS_CHECK', 	'2');		// 요청접수
-define('GS2_OPERATION_STATUS_3', 	'3');		// 처리중
-define('GS2_OPERATION_STATUS_4', 	'4');		// 확인중
-define('GS2_OPERATION_STATUS_5', 	'5');		// 완료
-define('GS2_OPERATION_STATUS_CONFIRM', 	'9');		// 승인
+define('GS2_OP_ENTER_STATUS_1', 	'요청');		// 요청
+define('GS2_OP_ENTER_STATUS_2', 	'입력');		// 요청접수
+define('GS2_OP_ENTER_STATUS_3', 	'출고');		// 처리중
+define('GS2_OP_ENTER_STATUS_4', 	'입고확인중');		// 확인중
+define('GS2_OP_ENTER_STATUS_5', 	'완료');		// 완료
+define('GS2_OP_ENTER_STATUS_6', 	'9');		// 승인
 
 // 장비 관련
 define('GS2_PART_TYPE_SERIAL', 	'1');				// 시리얼관리장비

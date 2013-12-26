@@ -110,7 +110,11 @@ class Enter extends CI_Controller
 	 * @param  integer $work_id 업무 UID
 	 * @return void        
 	 */
-	public function view($work_id) {
+	public function view($work_id = 0) {
+		if($work_id == 0) {
+			die('에러! 업무 번호는 필수입니다');
+		}
+
 		$em = $this->work_model->getEntityManager();
 
 		$data['title'] = '입고 요청 보기';
@@ -119,7 +123,12 @@ class Enter extends CI_Controller
 		$data['work'] = $work;
 		$data['items'] = $em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
 
-		$this->load->view('work_enter_view', $data);
+		if($work->status >= "3") {
+			$this->load->view('work_enter_scan_view', $data);
+		} else {
+			$this->load->view('work_enter_view', $data);
+		}
+
 	}
 
 
@@ -187,17 +196,88 @@ class Enter extends CI_Controller
 
 			echo '출고 상태로 변경 하였음!';
 		}
+		// 스캔 저장
+		elseif($action == 'scan_save') {
+			$items = explode(",", $_POST['items']);
+			foreach($items as $sn) {
+				$temp = $this->work_model->em->getRepository('Entity\OperationTempPart')
+												->findBy(array('operation' => $work, 'serial_number' => $sn));
+				if($temp[0]){
+					$temp[0]->setScanFlag(TRUE);
+					$temp[0]->setQuantity(1);
+
+					$this->work_model->em->persist($temp[0]);
+				}
+			}
+
+			$this->work_model->_commit();
+
+			echo '스캔 결과 저장';
+		}
 		// 장비 확인
 		elseif($action == 'inspect') {
 			echo '받은 장비 확인중';
 		}
 		// 업무 종료
 		elseif($action == 'complete') {
-			echo '입고 업무를 종료함';
+			$this->load->model('part_m', 'part_model');
+
+			// 업무 메인 
+			$work->setStatus('4');
+			$work->setDateModify();
+
+			$this->work_model->_add($work);
+
+			// 임시 장비 목록
+			$complete_count = 0; 
+			$temps = $this->work_model->em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
+			$idx = 0;
+			foreach($temps as $temp) {
+				if ($temp->isScan()) { 
+					$temp->setCompleteFlag(TRUE);
+					$complete_count += $temp->qty;
+				}
+				$this->work_model->_add($temp);
+
+				// 시리얼 관리 장비 등록
+				if($temp->part_type == '1') {
+					$location_string = 'O@' . $work->office->id;
+
+					$data = array(
+						'part'		=> $temp->part,
+						'part_id'	=> $temp->part->id,
+						'serial_number'		=> $temp->serial_number,
+						'previous_location'	=> '',
+						'current_location'	=> $location_string,
+						'is_valid'	=> TRUE,
+						'is_new'	=> TRUE,
+						'date_enter'=> 'now',
+						'memo'	=> '입고 업무로 들어 왔어',
+						);
+					$new = $this->part_model->addSerialPart($data);
+				}				 
+			}
+
+			// 업무 장비 목록
+			$item = $work->getItem();
+			$item->setQtyComplete($complete_count);
+			$item->setDateModify();
+			$item->setCompleteFlag(TRUE);
+
+			$this->work_model->_add($item);
+
+			////////////
+			// Last 
+			////////////
+			$this->work_model->_commit();
+			
+			echo  '완료 : '. $complete_count .'\n입고 업무를 종료함';
 
 		} else {
 			echo '[error] 등록되지 않은 요청임다!';
 		}
+
+		exit;
 	}
 
 

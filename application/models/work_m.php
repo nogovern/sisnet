@@ -28,7 +28,7 @@ class Work_m extends MY_Model {
 
 	// 입고 목록
 	public function getEnterList() {
-		$criteria = array('type' => GS2_OPERATION_TYPE_ENTER);
+		$criteria = array('type' => GS2_OP_TYPE_ENTER);
 		$rows = $this->repo->findBy($criteria);
 
 		// Location 해석
@@ -100,7 +100,7 @@ class Work_m extends MY_Model {
 
 		$item->setPart($part);
 		$item->setType($post['work_type']);
-		$item->setRequestQuantity($post['qty']);		// 요청수량
+		$item->setQtyRequest($post['qty']);		// 요청수량
 		$item->setDateRegister();
 		$item->setNewFlag(TRUE);						// 신품
 
@@ -120,7 +120,7 @@ class Work_m extends MY_Model {
 	 * @param boolean $is_complete default FALSE;
 	 * @param boolean $is_scan     default FALSE;
 	 */
-	public function addTempItem($op, $part, $val, $is_complete = FALSE, $is_scan = FALSE) {
+	public function addTempItem($op, $part, $val, $is_scan = FALSE, $is_complete = FALSE) {
 		if(!($op instanceof Entity\Operation)){
 			die('첫번째 인자는 Operation Class 여야 함!!!');
 		}
@@ -169,7 +169,9 @@ class Work_m extends MY_Model {
 		$this->em->flush();
 	}
 
-	public function updateTempItem($item, $val, $is_complete = FALSE, $is_scan = FALSE) {
+	public function updateTempItem($item, $val, $is_scan = FALSE, $is_complete = FALSE) {
+		$item->setScanFlag($is_scan);
+		$item->setCompleteFlag($is_complete);
 
 	}
 

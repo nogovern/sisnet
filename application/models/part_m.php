@@ -117,8 +117,8 @@ class Part_m extends MY_Model
 		$this->_add($new);
 		$this->_add($stock);
 
-		// doctrine flush()
-		$this->_commit();
+		// doctrine flush() -- flush 는 호출하는 쪽에서
+		//$this->_commit();
 
 		return $new;
 	}

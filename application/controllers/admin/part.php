@@ -181,6 +181,7 @@ class Part extends CI_Controller {
 			// exit;
 
 			$entry = $this->part_model->addSerialPart($post);
+			$this->part_model->_commit();
 			if(!$entry) {
 				die('에러');
 			}
