@@ -104,35 +104,22 @@ class Enter extends CI_Controller
 		}
 	}
 
-
-	public function _remap($method, $params = array()) {
-		if(!$method) 
-			$method = 'main'; 
-		
-		if(method_exists($this, $method))
-		{
-			return call_user_func_array(array($this, $method), $params);
-		}
-
-		show_404();
-	}
-
+	/**
+	 * 업무 내용 상세보기
+	 *
+	 * @param  integer $work_id 업무 UID
+	 * @return void        
+	 */
 	public function view($work_id) {
+		$em = $this->work_model->getEntityManager();
+
 		$data['title'] = '입고 요청 보기';
 
 		$work = $this->work_model->get($work_id);
 		$data['work'] = $work;
+		$data['items'] = $em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
 
 		$this->load->view('work_enter_view', $data);
-	}
-
-	public function view2($work_id) {
-		$data['title'] = '입고 요청 보기';
-
-		$work = $this->work_model->get($work_id);
-		$data['work'] = $work;
-
-		$this->load->view('work_enter_view2', $data);
 	}
 
 
@@ -183,12 +170,21 @@ class Enter extends CI_Controller
             echo sprintf($tpl, $temp->id, $part->name, $temp->getSerialNumber(), $temp->qty);
             exit;
 		}
+		// 납품처 - 장비 목록에서 삭제
 		elseif( $action == 'temp_delete') {
-			echo $_POST['temp_id'];
+			$temp_obj = $this->work_model->em->getReference('Entity\OperationTempPart', $_POST['temp_id']);
+			$this->work_model->removeTempItem($temp_obj);
+
+			echo 'OK';
 		} 
 		// 출고 완료
 		elseif( $action == 'delivery') {
-			var_dump($_POST);
+			$work->setStatus('3');
+			$work->setDateModify();
+
+			$this->work_model->_add($work);
+			$this->work_model->_commit();
+
 			echo '출고 상태로 변경 하였음!';
 		}
 		// 장비 확인
@@ -202,6 +198,19 @@ class Enter extends CI_Controller
 		} else {
 			echo '[error] 등록되지 않은 요청임다!';
 		}
+	}
+
+
+	public function _remap($method, $params = array()) {
+		if(!$method) 
+			$method = 'main'; 
+		
+		if(method_exists($this, $method))
+		{
+			return call_user_func_array(array($this, $method), $params);
+		}
+
+		show_404();
 	}
 
 }

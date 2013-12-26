@@ -142,7 +142,7 @@ class Work_m extends MY_Model {
 		$temp->setCompleteFlag($is_complete);
 
 		// 임시로
-		$loc = $this->work_model->parseLocation($op->getWorkLocation());
+		$loc = $this->parseLocation($op->getWorkLocation());
 		$user = $loc->user;
 		$temp->setuser($user);				// 처리 담당자
 		
@@ -152,8 +152,8 @@ class Work_m extends MY_Model {
 			$temp->setQuantity($val);
 		}
 
-		$this->work_model->_add($temp);
-		$this->work_model->_commit();
+		$this->_add($temp);
+		$this->_commit();
 
 		return $temp;
 	}
@@ -165,7 +165,8 @@ class Work_m extends MY_Model {
 	 * @return [type]       [description]
 	 */
 	public function removeTempItem($item) {
-
+		$this->em->remove($item);
+		$this->em->flush();
 	}
 
 	public function updateTempItem($item, $val, $is_complete = FALSE, $is_scan = FALSE) {
