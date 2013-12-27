@@ -184,7 +184,7 @@ class Enter extends CI_Controller
 			$temp_obj = $this->work_model->em->getReference('Entity\OperationTempPart', $_POST['temp_id']);
 			$this->work_model->removeTempItem($temp_obj);
 
-			echo 'OK';
+			echo 'temp_delete action is done';
 		} 
 		// 출고 완료
 		elseif( $action == 'delivery') {

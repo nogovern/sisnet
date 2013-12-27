@@ -57,7 +57,7 @@ endforeach;
       </div>
       <div class="row">
         <div class="col-md-12">
-          <button id="btn_cancel" class="btn btn-default" type="button">리스트</button>
+          <a href="/work/enter"><span class="btn btn-default" type="button">리스트</span></a>
 <?php
 if($work->status == 1):
 ?>
@@ -227,8 +227,7 @@ endif;
           .done(function(html) {
             $tr.remove();     // 현재 행 삭제
             item_count--;
-            checkDeliveryStatus
-            alert(html);
+            checkDeliveryStatus();
           })
           .fail(function(xhr, textStatus){
             alert("Request failed: " + textStatus);

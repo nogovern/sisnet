@@ -29,7 +29,8 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <th>장비종류</th>
                 <th>모 델</th>
                 <th>납품처</th>
-                <th>수량</th>
+                <th>요청수량</th>
+                <th>입고수량</th>
                 <th>등록일</th>
                 <th>요청일</th>
                 <th>상태</th>
@@ -41,6 +42,14 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
             <tbody>
   <?php
   foreach($rows as $row):
+    switch($row->status) {
+      case '1': $label_color = 'label-default';break;
+      case '2': $label_color = 'label-info';break;
+      case '3': $label_color = 'label-warning';break;
+      case '4': $label_color = 'label-success';break;
+      default : $label_color = 'label-default';break;
+    }
+
   ?>
               <tr class="">
                 <td><?=$row->id?></td>
@@ -52,9 +61,12 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <td><?=$row->items[0]->part->name?></td>
                 <td><?=@$row->location_object->name;?></td>
                 <td><?=$row->items[0]->qty_request?></td>
+                <td><?=($row->status == '4') ? $row->items[0]->qty_complete : '';?></td>
                 <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d'): '';?></td>
                 <td><?=(is_object($row->date_request)) ? $row->date_request->format('Y-m-d'): '';?></td>
-                <td><?=constant("GS2_OP_ENTER_STATUS_" .$row->status)?></td>
+                <td>
+                  <span class="label <?=$label_color?>"><?=constant("GS2_OP_ENTER_STATUS_" .$row->status)?></span>
+                </td>
                 <td><?=(mb_strlen($row->memo) > 20) ? mb_substr($row->memo, 0, 20) . '...' : $row->memo;?></td>
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/enter/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>

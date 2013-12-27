@@ -64,7 +64,7 @@ endforeach;
       </div>
       <div class="row">
         <div class="col-md-12">
-          <button id="btn_cancel" class="btn btn-default" type="button">리스트</button>
+          <a href="/work/enter"><span class="btn btn-default" type="button">리스트</span></a>
 <?php
 if($work->status == 3):
   if($work->getItem()->part->type == '1'){
@@ -326,8 +326,6 @@ endif;
             });
         }// end of if
       });
-
-      
 
     });
     </script>
