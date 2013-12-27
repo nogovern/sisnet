@@ -18,7 +18,7 @@ class Work_m extends MY_Model {
 
 	// 작업번호 생성
 	public function makeOperationNo() {
-		$prefix = 'SYS';
+		$prefix = 'ON';
 
 		$idx = mt_rand(1, 9999);
 		$no = $prefix . date('Ymd') . sprintf("%05d", $idx);

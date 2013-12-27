@@ -18,7 +18,7 @@ $this->load->view('_work_view_header', $work);
         <div class="col-md-12">
           <!-- start: ALERTS PANEL -->
           <div class="panel panel-primary">
-            <div class="panel-heading"><i class="fa fa-tags"></i>출고 대기 리스트</div>
+            <div class="panel-heading"><i class="fa fa-tags"></i>  출고 대기 리스트</div>
             <div class="panel-body" style="padding:0 15px;">
               <table class="table table-hover" id="part_table">
                 <thead>
@@ -34,22 +34,22 @@ $this->load->view('_work_view_header', $work);
                 <tbody>
 <?php
 $i = 1;
-$item_count = count($items);
+$item_count = count($temp_items);
 $scan_count = 0;
-foreach($items as $item):
+foreach($temp_items as $temp_item):
   // 스캔 완료된 장비
-  if($item->isScan()) {
+  if($temp_item->isScan()) {
     $scan_count++;
   }
 ?>                  
-                  <tr data-temp_id="<?=$item->id?>">
+                  <tr data-temp_id="<?=$temp_item->id?>">
                     <td><?=$i++?></td>
-                    <td><?=$item->part->name?></td>
-                    <td><?=($item->part->type == '1') ? $item->serial_number : ''?></td>
-                    <td><?=$item->qty?></td>
+                    <td><?=$temp_item->part->name?></td>
+                    <td><?=($temp_item->part->type == '1') ? $temp_item->serial_number : ''?></td>
+                    <td><?=$temp_item->qty?></td>
                     <td>0</td>
                     <td style="width:150px;">
-                      <i class="fa fa-check scan_status <?=($item->isScan()) ? '' : 'hide'?>" style="color:green;font-size:20px;"></i>
+                      <i class="fa fa-check scan_status <?=($temp_item->isScan()) ? '' : 'hide'?>" style="color:green;font-size:20px;"></i>
                     </td>
                   </tr>
 <?php
@@ -67,10 +67,16 @@ endforeach;
           <button id="btn_cancel" class="btn btn-default" type="button">리스트</button>
 <?php
 if($work->status == 3):
+  if($work->getItem()->part->type == '1'){
 ?>
           <button id="btn_scan" class="btn btn-danger" type="button" data-toggle="modal" data-target="#myModal">장비 스캔</button>
+<?php
+  } else {
+?>          
+          <button id="btn_count" class="btn btn-danger" type="button" data-toggle="modal" data-target="#myCountModal">수량 등록</button>
           <button id="btn_complete" class="btn btn-success" type="button" disabled>입고 완료</button>
 <?php
+  }
 endif;
 ?>
         </div>
@@ -89,13 +95,13 @@ endif;
       </div>
     </div>
 
-    <!-- modal dialog -->
+    <!-- 시리얼장비 modal dialog -->
     <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Modal title</h4>
+            <h4 class="modal-title">장비 등록</h4>
           </div>
           <div class="modal-body">
             <form id="form_scan" role="form" class="form form-horizontal">
@@ -120,6 +126,36 @@ endif;
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <!-- 수량장비 용 modal dialog -->
+    <div class="modal fade" id="myCountModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">장비 등록</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form_count" role="form" class="form form-horizontal">
+              <div class="form-group">
+                <label class="form-label col-sm-3">수  량</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" name="cnt" value="0">
+                </div>
+                <div class="col-sm-4"><button id="btn_register" type="submit" class="btn btn-default">검색</button></div>
+              </div>
+            </form>
+            <div class="well text-center" style="font-size:34px;">
+              <span><?=$work->getItem()->qty_request?></span>/<span id="count_count">0</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+            <button id="btn_count_save" type="button" class="btn btn-primary">저장</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <!-- jquery form validation -->
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -139,9 +175,8 @@ endif;
       } else {
         $("#btn_complete").attr('disabled', false);
       }
-      
 
-      // 검색
+      // 시리얼 장비 검색
       $("#form_scan").submit(function(e) {
         e.preventDefault();
         var $input = $(":input[name=q]");
@@ -186,19 +221,6 @@ endif;
         $input.val('').focus();
       });
 
-      // 스캔 초기화
-      $("#btn_reset").click(function(){
-        var ok = confirm("재입력을 위해 입력된 정보를 초기화합니다.");
-        if(ok === true) {
-          scan_count = 0;
-          scanned_serials = [];     // empty array
-          $("#scan_count").text(scan_count);
-          $(".scan_status").addClass('hide');
-          $(":input[name=q]").attr('disabled', false);
-          $("#btn_search").attr('disabled', false);
-        }
-      });
-
       // 스캔 저장
       $("#btn_scan_save").click(function(){
         var ok = confirm('스캔 결과를 저장합니다.\n 진행할까요?');
@@ -222,7 +244,65 @@ endif;
             });
         }
       });
-      
+
+      // 스캔 초기화
+      $("#btn_reset").click(function(){
+        var ok = confirm("재입력을 위해 입력된 정보를 초기화합니다.");
+        if(ok === true) {
+          scan_count = 0;
+          scanned_serials = [];     // empty array
+          $("#scan_count").text(scan_count);
+          $(".scan_status").addClass('hide');
+          $(":input[name=q]").attr('disabled', false);
+          $("#btn_search").attr('disabled', false);
+        }
+      });
+
+      /////////////////
+      /// 수량장비 
+      /////////////////
+      $("#form_count").submit(function(e){
+        e.preventDefault();
+
+        var $el = $(":input[name=cnt]"); 
+        var v = parseInt($el.val(), 10);
+
+        if( v <= 0) {
+          alert('입력 수량을 확인하세요');
+          $el.val('0').focus();
+          return false;
+        }
+        $("#count_count").text(v).css('color', 'red');
+      });
+
+      // 수량 popup 내 저장
+      $("#btn_count_save").click(function(e){
+
+        $.ajax({
+          url: "/work/enter/ajax/save_count",
+          type: "POST",
+          data: {
+            id : <?=$work->id?>,
+            cnt: $(":input[name=cnt]").val(),
+            "csrf_test_name": $.cookie("csrf_cookie_name")
+          },
+          dataType: "html",
+        })
+          .done(function(html) {
+            alert(html);
+          })
+          .fail(function(xhr, textStatus){
+            alert("Request failed: " + textStatus);
+          });
+
+        // 완료 버튼 활성화
+        $("#btn_complete").attr('disabled', false);
+        
+        $("#part_table tr td:nth-child(5)").text($(":input[name=cnt]").val());
+        $(".scan_status").removeClass('hide');
+        $("#myCountModal").modal('hide');
+      });
+
       // 요청 확정
       $("#btn_complete").click(function(){
         var is_ok = confirm("요청 하시겠습니까?\n그리고 입고예정일 확인해야함.");
@@ -239,6 +319,7 @@ endif;
           })
             .done(function(html) {
               alert(html);
+              location.reload();
             })
             .fail(function(xhr, textStatus){
               alert("Request failed: " + textStatus);

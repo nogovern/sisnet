@@ -70,7 +70,7 @@ class Enter extends CI_Controller
 		$this->load->helper('form');
 
 		$data['form_hiddens'] = array(
-				'work_type'	=> GS2_OPERATION_TYPE_ENTER,
+				'work_type'	=> GS2_OP_TYPE_ENTER,
 				'user_id'	=> '8',
 				'part_id'	=> $part_id,
 				'office_id'	=> $office_id
@@ -98,7 +98,7 @@ class Enter extends CI_Controller
 			var_dump($_POST);
 
 			// 100 - 입고업무
-			$this->work_model->register(GS2_OPERATION_TYPE_ENTER, $this->input->post());
+			$this->work_model->register(GS2_OP_TYPE_ENTER, $this->input->post());
 			echo 'done';
 			exit;
 		}
@@ -121,7 +121,7 @@ class Enter extends CI_Controller
 
 		$work = $this->work_model->get($work_id);
 		$data['work'] = $work;
-		$data['items'] = $em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
+		$data['temp_items'] = $em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
 
 		if($work->status >= "3") {
 			$this->load->view('work_enter_scan_view', $data);
@@ -214,9 +214,24 @@ class Enter extends CI_Controller
 
 			echo '스캔 결과 저장';
 		}
-		// 장비 확인
-		elseif($action == 'inspect') {
-			echo '받은 장비 확인중';
+		// 수량 확인 저장
+		elseif($action == 'save_count') {
+			
+			$work->setStatus('4');
+			$work->setDateModify();
+
+			$temps = $this->work_model->em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
+			foreach($temps as $temp) {
+				$temp->setScanFlag(TRUE);
+				$temp->setQuantity($_POST['cnt']);
+
+				$this->work_model->_add($temp);
+			}
+
+			$this->work_model->_add($work);
+			$this->work_model->_commit();
+
+			echo '수량 : ' . $_POST['cnt'];
 		}
 		// 업무 종료
 		elseif($action == 'complete') {
@@ -255,6 +270,12 @@ class Enter extends CI_Controller
 						'memo'	=> '입고 업무로 들어 왔어',
 						);
 					$new = $this->part_model->addSerialPart($data);
+				} 
+				// 수량, 소모품 재고 변경
+				else 
+				{
+					$stock = $work->office->in($temp->part, $temp->qty, 'new');
+					$this->work_model->_add($stock);
 				}				 
 			}
 
@@ -271,7 +292,7 @@ class Enter extends CI_Controller
 			////////////
 			$this->work_model->_commit();
 			
-			echo  '완료 : '. $complete_count .'\n입고 업무를 종료함';
+			echo  '완료 : '. $complete_count .'\\n입고 업무를 종료함';
 
 		} else {
 			echo '[error] 등록되지 않은 요청임다!';

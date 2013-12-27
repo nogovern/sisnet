@@ -33,14 +33,14 @@ $this->load->view('_work_view_header', $work);
                 <tbody>
 <?php
 $i = 1;
-$item_count = count($items);
-foreach($items as $item):
+$item_count = count($temp_items);
+foreach($temp_items as $temp_item):
 ?>                  
-                  <tr data-temp_id="<?=$item->id?>">
+                  <tr data-temp_id="<?=$temp_item->id?>">
                     <td><?=$i++?></td>
-                    <td><?=$item->part->name?></td>
-                    <td><?=($item->part->type == '1') ? $item->serial_number : ''?></td>
-                    <td><?=$item->qty?></td>
+                    <td><?=$temp_item->part->name?></td>
+                    <td><?=($temp_item->part->type == '1') ? $temp_item->serial_number : ''?></td>
+                    <td><?=$temp_item->qty?></td>
                     <td style="width:150px;">
                       <button class="btn btn-danger btn-xs btn_delete" type="button">X</button>
                     </td>
