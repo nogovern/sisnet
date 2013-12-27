@@ -32,9 +32,10 @@ class User extends CI_Controller {
 	public function view($id) {
 		$user = $this->user_model->get($id);
 
-		echo '<pre>';
-		var_dump($user);
-		echo '</pre>';
+		$data['title'] = "사용자 정보";
+		$data['current'] = 'page-user';
+
+		echo ' 제 이름은 ' . $user->name;
 	}
 	
 	public function add() {

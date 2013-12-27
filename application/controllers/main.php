@@ -25,8 +25,8 @@ class Main extends CI_Controller
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		// auth liabrary
-		$this->load->library('auth');
+		// auth liabrary - 자동 로드됨
+		// $this->load->library('auth');
 
 		$this->form_validation->set_rules('username', 'username', 'required');
 
@@ -52,7 +52,7 @@ class Main extends CI_Controller
 
 	// 로그아웃
 	public function logout() {
-		$this->load->library('auth');
+		// $this->load->library('auth');			// 자동 로드됨
 		$this->load->helper('alert');
 
 		if($this->auth->isLoggedIn()) {

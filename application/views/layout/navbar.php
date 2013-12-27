@@ -1,3 +1,10 @@
+<?php
+if(0) {
+  echo '<pre>';
+  var_dump($this->session->userdata);
+  echo '</pre>';
+}
+?>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -53,13 +60,32 @@
 
           <ul class="nav navbar-nav navbar-right navbar-user">
             <li class="dropdown user-dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> John Smith <b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
+<?php 
+if($this->auth->isLoggedIn()) {
+  echo $this->session->userdata('name') ;
+  echo ' (';
+  echo  $this->session->userdata('office_name');
+  echo  $this->session->userdata('company_name');
+  echo ')';
+
+} else {
+  echo 'John Smith';
+}
+?>
+                <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-inbox"></span> Inbox <span class="badge">7</span></a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+<?php
+if($this->auth->isLoggedIn()):
+?>                
                 <li class="divider"></li>
-                <li><a href="#"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>
+                <li><a href="/main/logout"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>
+<?php
+endif;
+?>                
               </ul>
             </li>
           </ul>

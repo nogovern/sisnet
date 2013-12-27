@@ -12,8 +12,12 @@ class Stock extends CI_Controller
 
 		$this->load->model('stock_m', 'stock_model');
 
-		// 프로파일링
-		// $this->output->enable_profiler(TRUE);
+		// 로그인 확인
+		$this->load->library('auth');
+		if(!$this->auth->isLoggedIn()) {
+			$this->load->helper('alert');
+			alert('로그인 하셔야 합니다', site_url('/'));
+		}
 	}
 
 	public function index() {
