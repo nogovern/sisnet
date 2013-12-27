@@ -10,7 +10,12 @@
     <!-- bootstrap 3.x -->
     <link href="/assets/css/bootstrap.css" rel="stylesheet">
     <link href="/assets/css/bootstrap-theme.min.css" rel="stylesheet">
-
+    <!-- Font Awesome -->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- Colorbox-->
+    <link href="/assets/css/colorbox.css" rel="stylesheet">
+    <!-- jquery-ui -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
     <!--<link href="/assets/css/main.css" rel="stylesheet">-->
     <style type="text/css">
@@ -41,18 +46,10 @@
     <![endif]-->
     
     <!-- Latest compiled and minified JavaScript -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/assets/js/jquery-1.10.2.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
-    
-    <!-- jQuery Cookie -->
     <script src="/assets/js/jquery.cookie.js"></script>
-
-    <!-- Colorbox-->
-    <link href="/assets/css/colorbox.css" rel="stylesheet">
     <script src="/assets/js/jquery.colorbox.js"></script>
-    
-    <!-- Font Awesome -->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   </head>
 
   <body>

@@ -80,10 +80,7 @@ if(!isset($popup) || $popup === FALSE) {
     </div>
 
     <!-- jquery form validation -->
-
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
     <script type="text/javascript">
