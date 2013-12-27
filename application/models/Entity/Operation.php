@@ -143,15 +143,19 @@ class Operation
 		return $this->$key;
 	}
 
-	public function getDateRegister() {
-		return ($this->date_register) ? $this->date_register->format('Y-m-d H:i:s') : '';
+	public function getDateRegister($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_register) ? $this->date_register->format($format) : '';
 	}
 
-	public function getDateModify() {
-		if(empty($this->date_modify))
-			return '';
-		else 
-			return $this->date_modify->format('Y-m-d H:i:s');
+	public function getDateRequest($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_request) ? $this->date_request->format($format) : '';
+	}
+
+	public function getDateModify($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_modify) ? $this->date_modify->format($format) : '';
 	}
 
 	public function getWorkLocation() {

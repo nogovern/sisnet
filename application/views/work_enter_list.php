@@ -33,6 +33,7 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <th>입고수량</th>
                 <th>등록일</th>
                 <th>요청일</th>
+                <th>수정일</th>
                 <th>상태</th>
                 <th>메모</th>
                 <th>&nbsp;</th>
@@ -62,12 +63,13 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <td><?=@$row->location_object->name;?></td>
                 <td><?=$row->items[0]->qty_request?></td>
                 <td><?=($row->status == '4') ? $row->items[0]->qty_complete : '';?></td>
-                <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d'): '';?></td>
-                <td><?=(is_object($row->date_request)) ? $row->date_request->format('Y-m-d'): '';?></td>
+                <td><?=$row->getDateRegister();?></td>
+                <td><?=$row->getDateRequest();?></td>
+                <td><?=$row->getDateModify();?></td>
                 <td>
                   <span class="label <?=$label_color?>"><?=constant("GS2_OP_ENTER_STATUS_" .$row->status)?></span>
                 </td>
-                <td><?=(mb_strlen($row->memo) > 20) ? mb_substr($row->memo, 0, 20) . '...' : $row->memo;?></td>
+                <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/enter/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php
@@ -102,6 +104,12 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
         location.href = href;
         return false;
       });
+
+      /////////////////////////
+      // bootstrap 3 popover //
+      /////////////////////////
+      $(".popover_memo").popover({trigger: 'hover', placement: 'left'});
+      $(".popover").click(function(e){e.preventDefault();});
     });
 
 
