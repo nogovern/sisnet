@@ -27,20 +27,34 @@ class Store extends CI_Controller {
 		$data['title'] = '거래처 등록';
 
 		// 규칙 설정
-		$this->form_validation->set_rules('type', '거래처 타입', 'required');
+		$this->form_validation->set_rules('code', '점포코드', 'required');
+		$this->form_validation->set_rules('name', '점포명', 'required');
 
 		if($this->form_validation->run() === FALSE){
 			$this->load->view('store_add_form', $data);
 
 		} else {
-			$new = new Entity\Store();
+			var_dump($_POST);
+			
+			$store = new Entity\Store();
 
-			$new->code = $this->input->post('code');
-			$new->date_register = new DateTime("now");		// 현재 시간
-			$new->status = 'Y';
+			$store->code 		= $this->input->post('code');
+			$store->name 		= $this->input->post('name');
+			$store->owner_name 	= $this->input->post('ower_name');
+			$store->tel 		= $this->input->post('tel');
+			$store->address 	= $this->input->post('address');
+			$store->tel_rfc 	= $this->input->post('tel_rfc');
+			$store->tel_ofc 	= $this->input->post('tel_ofc');
+			$store->scale 		= $this->input->post('scale');
+			$store->join_type 	= $this->input->post('join_type');
+			$store->has_postbox = $this->input->post('has_postbox');
+			$store->status 		= $this->input->post('status');
+			$store->date_register = new DateTime("now");		// 현재 시간
 
-			// user_id 가 있으면 
-			// $new->user = $user;
+			$this->store_model->_add($store);
+			$this->store_model->_commit();
+
+			// exit;
 
 			redirect('/admin/store');
 		}
