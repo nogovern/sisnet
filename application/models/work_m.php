@@ -43,9 +43,20 @@ class Work_m extends MY_Model {
 
 	// 설치 목록
 	public function getInstallList() {
-		$criteria = array('type' => '200');
-		$rows = $this->repo->findBy($criteria);
+		// $criteria = array('type' => '200');
+		// $rows = $this->repo->findBy($criteria);
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('\Entity\Operation', 'w')
+			->where('w.type >= 200')
+			->andWhere('w.type < 300');
 
+		$rows = $qb->getQuery()->getResult();
+
+		// 설치 업무의 작업 장소는 "점포"
+		foreach($rows as $row) {
+			$row->store = $this->parseLocation($row->work_location);
+		}
 		return $rows;
 	}
 

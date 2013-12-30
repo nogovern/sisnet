@@ -35,7 +35,7 @@ if(0) {
             <li id="page-schedule"><a href="/schedule">일정</a></li>
             <li id="page-stock"><a href="/stock">재고</a></li>
 
-            <li id="page-enter" class="dropdown">
+            <li class="dropdown" id="page-enter">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">입고 <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="/work/enter/">입고 목록 보기</a></li>
@@ -44,12 +44,13 @@ if(0) {
               </ul>
             </li>
 
-            <li class="dropdown">
+            <li class="dropdown" id="page-install">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">설치 <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="/install/new">신규</a></li>
-                <li><a href="/install/hujum_s">휴점S(매장 장비)</a></li>
-                <li><a href="/install/hujum_c">휴점C</a></li>
+                <li><a href="/work/install">목록 보기</a></li>
+                <li><a href="/work/install/new">신규</a></li>
+                <li><a href="/work/install/hujum_s">휴점S(매장 장비)</a></li>
+                <li><a href="/work/install/hujum_c">휴점C</a></li>
                 <li class="divider"></li>
                 <li class="nav-header">Nav header</li>
                 <li><a href="#">Separated link</a></li>

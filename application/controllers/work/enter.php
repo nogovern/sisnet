@@ -11,9 +11,6 @@ class Enter extends CI_Controller
 		parent::__construct();
 
 		$this->load->model('work_m', 'work_model');
-		$this->em = $this->work_model->getEntityManager();
-
-		$this->load->library('auth');
 	}
 
 	public function index() {

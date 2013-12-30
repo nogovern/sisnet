@@ -158,6 +158,16 @@ class Operation
 		return ($this->date_modify) ? $this->date_modify->format($format) : '';
 	}
 
+	public function getDateWork($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_work) ? $this->date_work->format($format) : '';
+	}
+
+	public function getDateFinish($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_finish) ? $this->date_finish->format($format) : '';
+	}
+
 	public function getWorkLocation() {
 		return $this->work_location;
 	}
