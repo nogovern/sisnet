@@ -52,13 +52,14 @@ endforeach;
     $(document).ready(function(){
       $(".select_me").click(function(e){
         e.preventDefault();
-        var target = window.parent.document.getElementById('store_name');
-        var target_id = $(":hidden[name=store_id]", window.parent.document);    // 이렇게 해도 되네요
         
-        // 부모창 element 에 설정
-        target_id.val($(this).closest('tr').find('td:eq(0)').text());
-        target.value = $(this).closest('tr').find('td:eq(1)').text();
+        // 상점 id, name
+        var store_id = $(this).closest('tr').find('td:eq(0)').text();
+        var store_name = $(this).closest('tr').find('td:eq(1)').text();
 
+        // callback 함수 사용하여 부모창 element 에 설정
+        parent.callback_store_info(store_id, store_name);
+        // colorbox close
         parent.jQuery.fn.colorbox.close();
       });
       

@@ -43,7 +43,7 @@ class Install extends CI_Controller
 		}
 
 		// selectbox 생성
-		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
+		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control required"');
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('work_install_add_form', $data);

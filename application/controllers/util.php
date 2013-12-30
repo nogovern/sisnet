@@ -23,7 +23,8 @@ class Util extends CI_Controller
 
 		$this->load->model('store_m', "store_model");
 
-		// colorbox 프레임 방식 로드
+		// colorbox 프레임 방식 로드함
+		// 점포명으로 검색하여 리턴 함
 		if($func == 'search') {
 			// 점포명
 			$q = $this->uri->segment(4);
@@ -32,6 +33,8 @@ class Util extends CI_Controller
 			}
 
 			$data['title'] = "점포명으로 검색";
+			// javascript encodeURIComponent() 했으므로 decode 해야지 한글 검색 가능함!
+			$q = urldecode($q);		
 
 			$rows = $this->store_model->findByName($q);
 			if(!count($rows)) {

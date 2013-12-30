@@ -13,7 +13,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         echo validation_errors();
         echo form_open('', 'role="form" class="form-horizontal" ');
         echo form_hidden('store_id', '', ' id="store_id"');
-  ?>
+?>
           <h2><span class="fa fa-pencil-square-o"></span> 설치 요청 양식</h2>
             <fieldset class="col-sm-7">
               <legend>설치 양식</legend>
@@ -21,7 +21,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">설치 점포명</label>
                 <div class="col-sm-5">
-                  <input type="text" class="form-control" id="store_name" name="store_name">
+                  <input type="text" class="form-control" id="store_name" name="store_name" required>
                 </div>
                 <div class="col-sm-4" style="padding-top:1px;">
                   <button type="button" id="btn_search" class="btn btn-info">검 색</button>
@@ -31,7 +31,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">점포 개점일</label>
                 <div class="input-group col-sm-6">
-                    <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly>
+                    <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly required>
                     <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
                 </div>
               </div>
@@ -39,7 +39,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">설치 일시</label>
                 <div class="input-group col-sm-6">
-                  <input type="text" id="date_work" name="date_work" class="form-control date-picker" readonly>
+                  <input type="text" id="date_work" name="date_work" class="form-control date-picker" readonly required>
                   <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
                 </div>
                 <div class="col-sm-3">
@@ -54,7 +54,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">설치 형태</label>
                 <div class="col-sm-5">
-                  <select class="form-control" name="install_type" id="install_type">
+                  <select class="form-control" name="install_type" id="install_type" required>
                     <option value="201">신규</option>
                     <option value="202">휴점S</option>
                     <option value="203">휴점C</option>
@@ -140,7 +140,6 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         }
         var url = '<?=site_url("/util/store/search")?>';
         var request_uri = url + '/' + encodeURIComponent(query);
-        console.log(request_uri);
 
         $.colorbox({
           'href'  : request_uri,
@@ -150,7 +149,25 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
           'height'  : '90%'
         });
       });
-    });
+
+      $("form").validate({
+
+      });
+
+      $("form").submit(function(e){
+        e.preventDefault();
+        
+        $(this).submit();
+      });
+    }); //end of jQuery ready
+    
+    ///////////////////////////////////
+    // 점포 검색용 callback function
+    ///////////////////////////////////
+    function callback_store_info(id, name) {
+      $(":hidden[name=store_id]").val(id);
+      $("#store_name").val(name).attr('readonly', true);
+    }
     </script>
 <?php
 $this->load->view('layout/footer');
