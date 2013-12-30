@@ -28,8 +28,7 @@ class Install extends CI_Controller
 		$data['title'] = '설치 업무';
 
 		// 규칙 설정
-		$this->form_validation->set_rules('store_selected', '설치 점포 선택 여부', 'required');
-		$this->form_validation->set_rules('store', '설치 점포', 'required|greater_than[0]');
+		$this->form_validation->set_rules('store_name', '설치 점포', 'required');
 		$this->form_validation->set_rules('date_open', '점포 개점일', 'required');
 		$this->form_validation->set_rules('date_install', '설치 일시', 'required');
 		$this->form_validation->set_rules('office_id', '설치 사무소', 'required|greater_than[0]');
