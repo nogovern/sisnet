@@ -40,6 +40,7 @@
             </tbody>
           </table>
         </div>
+<?php if($work->type == '100'): ?>
         <div class="col-sm-4">
           <table class="table table-condensed table-hover">
             <thead>
@@ -71,7 +72,6 @@
             </tbody>
           </table>
         </div>
-
         <div class="col-sm-4">
           <table class="table table-condensed table-hover">
             <thead>
@@ -108,4 +108,77 @@
             </tbody>
           </table>
         </div>
+<?php endif; ?>
+
+<?php if($work->type >= '200' && $work->type < '300'): ?>
+        <div class="col-sm-4">
+          <table class="table table-condensed table-hover">
+            <thead>
+              <tr>
+                <th class="col-md-4">설치 정보</th>
+                <th class="col-md-8">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>개점일 </td>
+                <td><?=$work->getDateWork();?></td>
+              </tr>
+              <tr>
+                <td>방문직원</td>
+                <td><?=$work->getWorkerInfo();?></td>
+              </tr>
+              <tr>
+                <td>점포명</td>
+                <td><?=$store->name;?></td>
+              </tr>
+              <tr>
+                <td>점포 코드</td>
+                <td><?=$store->code;?></td>
+              </tr>
+              <tr>
+                <td>점주 이름</td>
+                <td><?=$store->owner_name;?></td>
+              </tr>
+              <tr>
+                <td>가맹형태</td>
+                <td><?=$store->join_type?></td>
+              </tr>
+              <tr>
+                <td>점포 규모</td>
+                <td><?=$store->scale?></td>
+              </tr>
+              <tr>
+                <td>점포 전화</td>
+                <td><?=$store->tel?></td>
+              </tr>
+              <tr>
+                <td>주소</td>
+                <td><?=$store->address?></td>
+              </tr>
+              <tr>
+                <td>무인택배</td>
+                <td><?=$store->has_postbox?></td>
+              </tr>
+              <tr>
+                <td>RFC</td>
+                <td><?=$store->tel_rfc?></td>
+              </tr>
+              <tr>
+                <td>OFC</td>
+                <td><?=$store->tel_ofc?></td>
+              </tr>
+              <tr>
+                <td>작업메모</td>
+                <td><?=$work->memo?></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><?=''?></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+<?php endif; ?>        
+
       </div><!-- end of row -->

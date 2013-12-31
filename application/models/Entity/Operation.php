@@ -193,6 +193,13 @@ class Operation
 		$this->items[] = $item;				// OperationPart
 	}
 
+	public function getWorker() {
+		return $this->worker;
+	}
+
+	public function getWorkerInfo() {
+		return ($this->worker) ? $this->worker->name : '';
+	}
 
 	
 }

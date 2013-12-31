@@ -13,12 +13,37 @@ class Install extends CI_Controller
 	}
 
 	public function index() {
-		$data['title'] = '설치 업무';
+		$this->lists();
+	}
+
+	public function lists() {
+		$data['title'] = '설치';
 		$data['type'] = '';
 		$data['rows'] = $this->work_model->getInstallList();
 
 
 		$this->load->view('work_install_list', $data);
+	}
+
+	/**
+	 * 업무 내용 상세보기
+	 *
+	 * @param  integer $work_id 업무 UID
+	 * @return void        
+	 */
+	public function view($work_id = 0) {
+		if($work_id == 0) {
+			die('에러! 업무 번호는 필수입니다');
+		}
+
+		$data['title'] = '설치';
+
+		$work = $this->work_model->get($work_id);
+		$data['work'] = $work;
+		$data['store'] = $this->work_model->parseLocation($work->work_location);	// 점포 
+		$data['items'] = $work->getItemList();
+
+		$this->load->view('work_install_view', $data);
 	}
 
 	public function add() {

@@ -109,6 +109,11 @@ class Work_m extends MY_Model {
 		return $op;
 	}
 
+	// 철수 업무 생성
+	public function create_evacuate_operation($type, $post) {
+		
+	}
+
 	// 업무 메인 생성
 	public function add_operatoin($type, $post) {
 		$user = $this->em->getReference('Entity\User', $post['user_id']);
