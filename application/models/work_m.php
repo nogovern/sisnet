@@ -17,7 +17,7 @@ class Work_m extends MY_Model {
 	}
 
 	// 작업번호 생성
-	public function makeOperationNo() {
+	private function makeOperationNumber() {
 		$prefix = 'ON';
 
 		$idx = mt_rand(1, 9999);
@@ -26,7 +26,21 @@ class Work_m extends MY_Model {
 		return $no;
 	}
 
-	// 입고 목록
+	/**
+	 * 업무 완료
+	 * 
+	 * @param  [type] $operation [description]
+	 * @return [type]            [description]
+	 */
+	public function close($operation) {
+		;
+	}
+
+	/**
+	 * 입고 목록
+	 * 
+	 * @return [type] [description]
+	 */
 	public function getEnterList() {
 		$criteria = array('type' => GS2_OP_TYPE_ENTER);
 		$rows = $this->repo->findBy($criteria);
@@ -41,10 +55,12 @@ class Work_m extends MY_Model {
 		return $rows;
 	}
 
-	// 설치 목록
+	/**
+	 * 설치 업무 목록 - doctrine query builder 사용
+	 * 
+	 * @return  array of objects [description]
+	 */
 	public function getInstallList() {
-		// $criteria = array('type' => '200');
-		// $rows = $this->repo->findBy($criteria);
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
 			->from('\Entity\Operation', 'w')
@@ -60,15 +76,6 @@ class Work_m extends MY_Model {
 		return $rows;
 	}
 
-	/**
-	 * 해당 업무 완료
-	 * 
-	 * @return [type] [description]
-	 */
-	public function close($operation) {
-
-	}
-
 	// 철수 목록
 	public function getEvaucationList() {
 		$criteria = array('type' => '300');
@@ -76,19 +83,42 @@ class Work_m extends MY_Model {
 
 		return $rows;
 	}
+	
+	///////////////
+	// 설치 업무 생성
+	///////////////
+	public function create_install_operation($type, $post) {
+		$op = $this->add_operatoin($type, $post);
+		$this->em->flush();
 
-	// 입고 업무 등록
-	public function register($type, $post) {
-		
+		return $op;
+	}
+
+	///////////////
+	// 입고 업무 생성
+	///////////////
+	public function create_enter_operation($type, $post) {
+		$op = $this->add_operatoin($type, $post);
+
+		// 장비
+		$extra = array('is_new'	=> TRUE);
 		$part = $this->em->getReference('Entity\Part', $post['part_id']);
+		$item = $this->add_op_item($op, $part, $post['qty'], $extra);
+		$this->em->flush();
+
+		return $op;
+	}
+
+	// 업무 메인 생성
+	public function add_operatoin($type, $post) {
 		$user = $this->em->getReference('Entity\User', $post['user_id']);
 		$office = $this->em->getReference('Entity\Office', $post['office_id']);
 		
 		// 새로운 업무 객체
-		$new = new Entity\Operation($this->em);
+		$new = new Entity\Operation;
 
-		$new->setType($post['work_type']);
-		$new->setOperationNumber('SYS' . date("Ymd"));		// 새로운 O/N
+		$new->setType($post['op_type']);
+		$new->setOperationNumber($this->makeOperationNumber());		
 		$new->setDateRegister();
 		$new->setDateRequest($post['date_request']);
 		$new->setStatus('1');
@@ -97,29 +127,52 @@ class Work_m extends MY_Model {
 		$new->setOffice($office);
 		$new->setUser($user);
 
-		// 납품처 지정
-		$new->setWorkLocation($part->company->id, GS2_LOCATION_TYPE_COMPANY);
+		// 입고 업무시 납품처 지정
+		if($type >= '100' && $type < '200') {
+			$part = $this->em->getReference('Entity\Part', $post['part_id']);
+			$new->setWorkLocation(GS2_LOCATION_TYPE_COMPANY, $part->company->id);
+		} else if( $type >= '200' && $type < '300') {
+			$store = $this->em->getReference('Entity\Store', $post['store_id']);
+			$new->setWorkLocation(GS2_LOCATION_TYPE_STORE, $store->id);
+			var_dump($store->id);
+		}
 
-
-		$this->work_model->_add($new);
-
-		// $new_id = $new->id;		// 새로운 operation.id
-		
-		// 업무 대상 장비 리스트
-		$item = new Entity\OperationPart;
-		$item->setOperation($new);
-
-		$item->setPart($part);
-		$item->setType($post['work_type']);
-		$item->setQtyRequest($post['qty']);		// 요청수량
-		$item->setDateRegister();
-		$item->setNewFlag(TRUE);						// 신품
-
-		$this->work_model->_add($item);
-
-		// apply to db
-		$this->work_model->_commit();
+		$this->em->persist($new);
+		return $new;
 	}
+
+	// 업무-장비 목록 생성(필요시)
+	public function add_op_item($op, $part, $qty=1, $extra = array()) {
+		$item = new Entity\OperationPart;
+
+		$item->setOperation($op);
+		$item->setPart($part);
+		$item->setType($op->type);
+		$item->setQtyRequest($qty);						// 요청수량
+		$item->setNewFlag($extra['is_new']);			// 신품 or 중고
+		$item->setDateRegister();
+
+		$this->em->persist($item);
+
+		return $item;
+	}
+
+	// 업무-파일 생성(필요시)
+	public function add_op_file($op, $data) {
+
+	}
+
+	// 업무-메모 생성
+	public function add_op_comment($op, $data) {
+
+	}
+	
+
+	// 업무-로그 생성
+	public function add_op_log($op, $data) {
+
+	}
+
 
 	/**
 	 * 작업 처리용 장비 임시 테이블
