@@ -67,7 +67,7 @@ class Enter extends CI_Controller
 		$this->load->helper('form');
 
 		$data['form_hiddens'] = array(
-				'work_type'	=> GS2_OP_TYPE_ENTER,
+				'op_type'	=> GS2_OP_TYPE_ENTER,	// 업무 종류
 				'user_id'	=> '8',
 				'part_id'	=> $part_id,
 				'office_id'	=> $office_id
@@ -89,14 +89,15 @@ class Enter extends CI_Controller
 			$data['office_name'] = $office->name;
 			$data['part_name'] = $part->name;
 
-			$this->load->view('popup_request_enter_form', $data);
+			$this->load->view('work_enter_popup_form', $data);
 
 		} else {
 			var_dump($_POST);
 
 			// 100 - 입고업무
-			$this->work_model->register(GS2_OP_TYPE_ENTER, $this->input->post());
+			$this->work_model->create_enter_operation(GS2_OP_TYPE_ENTER, $this->input->post());
 			echo 'done';
+
 			exit;
 		}
 	}

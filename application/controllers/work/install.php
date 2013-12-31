@@ -30,7 +30,7 @@ class Install extends CI_Controller
 		// 규칙 설정
 		$this->form_validation->set_rules('store_name', '설치 점포', 'required');
 		$this->form_validation->set_rules('date_open', '점포 개점일', 'required');
-		$this->form_validation->set_rules('date_install', '설치 일시', 'required');
+		$this->form_validation->set_rules('date_request', '설치 일시', 'required');
 		$this->form_validation->set_rules('office_id', '설치 사무소', 'required|greater_than[0]');
 
 		// 재고 사무소 목록
@@ -48,7 +48,15 @@ class Install extends CI_Controller
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('work_install_add_form', $data);
 		} else {
-
+			// var_dump($_POST);
+			$post = $this->input->post();
+			$post['date_work'] = $this->input->post('date_open');
+			
+			$this->work_model->create_install_operation($this->input->post('op_type'), $post);
+			alert('설치 요청을 등록하였습니다.', site_url('/work/install'));
+			
+			// redirect(site_url('/work/install'));
+			exit;
 		}
 
 	}

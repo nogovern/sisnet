@@ -80,7 +80,7 @@ class OperationPart {
 	}
 
 	// 등록일시
-	public function setDateRegister() {
+	public function setDateRegister($when = 'now') {
 		$this->date_register = new \DateTime($when);
 	}
 

@@ -13,6 +13,9 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         echo validation_errors();
         echo form_open('', 'role="form" class="form-horizontal" ');
         echo form_hidden('store_id', '', ' id="store_id"');
+
+        // test 용 
+        echo form_hidden('user_id', '8', ' id="user_id"');        
 ?>
           <h2><span class="fa fa-pencil-square-o"></span> 설치 요청 양식</h2>
             <fieldset class="col-sm-7">
@@ -21,7 +24,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">설치 점포명</label>
                 <div class="col-sm-5">
-                  <input type="text" class="form-control" id="store_name" name="store_name" required>
+                  <input type="text" class="form-control required" id="store_name" name="store_name">
                 </div>
                 <div class="col-sm-4" style="padding-top:1px;">
                   <button type="button" id="btn_search" class="btn btn-info">검 색</button>
@@ -31,7 +34,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">점포 개점일</label>
                 <div class="input-group col-sm-6">
-                    <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly required>
+                    <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly>
                     <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
                 </div>
               </div>
@@ -39,11 +42,11 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">설치 일시</label>
                 <div class="input-group col-sm-6">
-                  <input type="text" id="date_work" name="date_work" class="form-control date-picker" readonly required>
+                  <input type="text" id="date_request" name="date_request" class="form-control date-picker" readonly>
                   <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
                 </div>
                 <div class="col-sm-3">
-                  <select class="form-control" name="date_work_hour">
+                  <select class="form-control" name="date_request_hour">
                     <?php for($i=0; $i < 25; $i++):?>
                     <option value="<?=$i?>"><?=$i?>시</option>
                     <?php endfor; ?>
@@ -54,7 +57,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">설치 형태</label>
                 <div class="col-sm-5">
-                  <select class="form-control" name="install_type" id="install_type" required>
+                  <select class="form-control" name="op_type" id="op_type">
                     <option value="201">신규</option>
                     <option value="202">휴점S</option>
                     <option value="203">휴점C</option>
@@ -74,7 +77,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               <div class="form-group">
                 <label class="control-label col-sm-3">메  모</label>
                 <div class="col-sm-9">
-                  <textarea class="form-control" name="name"></textarea>
+                  <textarea class="form-control" name="memo"></textarea>
                 </div>
               </div>
 
@@ -150,14 +153,15 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         });
       });
 
-      $("form").validate({
-
-      });
+      // $("form").validate({
+      // });
 
       $("form").submit(function(e){
-        e.preventDefault();
-        
-        $(this).submit();
+        if($("#store_name").val() === '') {
+          alert('필수 항목!');
+          $("#store_name").focus();
+          return false;
+        }
       });
     }); //end of jQuery ready
     

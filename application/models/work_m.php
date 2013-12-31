@@ -83,7 +83,7 @@ class Work_m extends MY_Model {
 
 		return $rows;
 	}
-	
+
 	///////////////
 	// 설치 업무 생성
 	///////////////
@@ -123,6 +123,9 @@ class Work_m extends MY_Model {
 		$new->setDateRequest($post['date_request']);
 		$new->setStatus('1');
 		$new->setMemo($post['memo']);
+		if(isset($post['date_work'])) {
+			$new->setDateWork($post['date_work']);
+		}
 
 		$new->setOffice($office);
 		$new->setUser($user);
@@ -134,7 +137,6 @@ class Work_m extends MY_Model {
 		} else if( $type >= '200' && $type < '300') {
 			$store = $this->em->getReference('Entity\Store', $post['store_id']);
 			$new->setWorkLocation(GS2_LOCATION_TYPE_STORE, $store->id);
-			var_dump($store->id);
 		}
 
 		$this->em->persist($new);

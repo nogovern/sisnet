@@ -19,7 +19,7 @@ echo form_open('', 'role="form"');
   hidden 값은 로그인 session 을 사용 해야 함!
  *=============================================
  */
-echo form_hidden('work_type', $form_hiddens['work_type']);
+echo form_hidden('op_type', $form_hiddens['op_type']);
 echo form_hidden('user_id', $form_hiddens['user_id']);        // 사용자
 echo form_hidden('office_id', $form_hiddens['office_id']);      // 사무소
 echo form_hidden('part_id', $form_hiddens['part_id']);

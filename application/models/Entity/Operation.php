@@ -76,7 +76,7 @@ class Operation
 	//////////
 	// 생성자 //
 	//////////
-	public function __construct($em = NULL) {
+	public function __construct() {
 		$this->items = new ArrayCollection();
 	}
 
@@ -104,30 +104,36 @@ class Operation
 		$this->worker = $ref;
 	}
 
-	public function setWorkLocation($location_id, $type) {
+	public function setWorkLocation($type, $location_id) {
 		$this->work_location = $type . '@' . $location_id;
 	}
 
 	// 등록일시
-	public function setDateRegister() {
-		$num_args = func_num_args();
-		$argv = ($num_args == 0 ) ? 'now' : func_get_arg(0);
-
-		$this->date_register = new \DateTime($argv);
+	public function setDateRegister($date = 'now') {
+		if(!empty($date))
+			$this->date_register = new \DateTime($date);
 	}
 
 	// 변경일시
 	public function setDateModify($date = 'now') {
 		if(!empty($date))
-			$this->date_register = new \DateTime($date);
+			$this->date_modify = new \DateTime($date);
 	}
 
 	// 업무 요청 일시
-	public function setDateRequest() {
-		$num_args = func_num_args();
-		$argv = ($num_args == 0 ) ? 'now' : func_get_arg(0);
+	public function setDateRequest($date = 'now') {
+		if(!empty($date))
+			$this->date_request = new \DateTime($date);
+	}
 
-		$this->date_request = new \DateTime("$argv");
+	public function setDateWork($date = 'now') {
+		if(!empty($date))
+			$this->date_work = new \DateTime($date);
+	}
+
+	public function setDateFinish($date = 'now') {
+		if(!empty($date))
+			$this->date_finish = new \DateTime($date);
 	}
 
 	public function setMemo($memo) {
