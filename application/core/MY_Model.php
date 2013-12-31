@@ -103,26 +103,6 @@ class MY_Model extends CI_Model {
 		return $rows;	
 	} 
 
-	///////////////////////////////////
-	// 장비 카테고리 가져오기
-	public function getCategory() {
-		$cats = $this->_getCetegoryFromConfig();
-		return $cats;
-	}
-
-	// sisnet config 파일내 배열에서 장비 카테고리 가져오기
-	public function _getCetegoryFromConfig() {
-		$this->load->config('sisnet');
-		$cats = $this->config->item('gs2_categories');
-		
-		return $cats;		
-	}
-
-	// DB 에서 장비 카테고리 가져오기 (미구현)
-	public function _getCategoryFromDB() {
-		return FALSE;
-	}
-
 	/**
 	 * location 문자열을 해석하여 적절한 객체로 반환
 	 * @param  [string] $location_str x@ID 형태의 문자열
