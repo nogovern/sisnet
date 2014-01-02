@@ -1,4 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
 * 	Util 컨트롤러
@@ -46,5 +49,29 @@ class Util extends CI_Controller
 			$this->load->view('util/store_search_result', $data);
 
 		}
+	}
+
+	// 장비
+	public function part($action = '') {
+		if(empty($action)) {
+			alert('에러!');
+		}
+
+		$this->load->model('part_m', 'part_model');
+
+		if($action == 'get') {
+
+			$part = $this->part_model->get($_POST['part_id']);
+			
+			$json = new stdClass;
+			$json->name = $part->name;
+			$json->type = $part->type;
+			$json->id = $part->id;
+
+			echo json_encode($json);
+
+			exit;
+		}
+
 	}
 }
