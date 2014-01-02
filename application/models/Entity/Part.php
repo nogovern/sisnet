@@ -165,27 +165,44 @@ class Part
 		$this->stock_list[] = $stock;
 	}
 
-	// 신품 재고 합계 
-	public function getNewTotal() {
+	/**
+	 * 신품 재고 합계
+	 * master 사무소 가 아닐 경우, master 사무소의 재고까지 사용 가능 (도메인 개념)
+	 * 
+	 * @param  integer $office_id NULL 이 아니면 사무소의 재고량 합계 
+	 * @return integer            
+	 */
+	public function getNewTotal($office_id = NULL) {
 		$sum = 0;
 
 		foreach($this->stock_list as $stock) {
+			if($office_id && $stock->office->id != $office_id) {
+				continue;
+			}
 			$sum += $stock->qty_new;
 		}
 
 		return $sum;
 	}
 
-	// 중고 재고 합계 
-	public function getUsedTotal() {
+	/**
+	 * 중고 재고 합계 
+	 * master 사무소 가 아닐 경우, master 사무소의 재고까지 사용 가능 (도메인 개념)
+	 * 
+	 * @param  integer $office_id NULL 이 아니면 사무소의 재고량 합계 
+	 * @return integer            
+	 */
+	public function getUsedTotal($office_id = NULL) {
 		$sum = 0;
 
 		foreach($this->stock_list as $stock) {
+			if($office_id && $stock->office->id != $office_id) {
+				continue;
+			}
 			$sum += $stock->qty_used;
 		}
 
 		return $sum;
 	}
-
 }
 
