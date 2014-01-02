@@ -49,7 +49,7 @@ class Ajax extends CI_Controller
 
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 		if(count($parts)){
-			echo '<option vlaue="0">--선택하세요--</option>';
+			echo '<option value="0">--선택하세요--</option>';
 			foreach($parts as $p) {
 				echo '<option value="' . $p->id . '">'.  $p->name.'</option>';
 			}
