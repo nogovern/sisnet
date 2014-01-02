@@ -83,7 +83,7 @@ class Operation
 
 	// ---------- set -------------
 	public function setOperationNumber($no) {
-		$this->no = $no;
+		$this->operation_number = $no;
 	}
 
 	public function setType($type) {
