@@ -87,8 +87,8 @@ class Work_m extends MY_Model {
 	///////////////
 	// 설치 업무 생성
 	///////////////
-	public function create_install_operation($type, $post) {
-		$op = $this->add_operatoin($type, $post);
+	public function createInstallOperation($type, $post) {
+		$op = $this->addOperation($type, $post);
 		$this->em->flush();
 
 		return $op;
@@ -97,25 +97,25 @@ class Work_m extends MY_Model {
 	///////////////
 	// 입고 업무 생성
 	///////////////
-	public function create_enter_operation($type, $post) {
-		$op = $this->add_operatoin($type, $post);
+	public function createEnterOperation($type, $post) {
+		$op = $this->addOperation($type, $post);
 
 		// 장비
 		$extra = array('is_new'	=> TRUE);
 		$part = $this->em->getReference('Entity\Part', $post['part_id']);
-		$item = $this->add_op_item($op, $part, $post['qty'], $extra);
+		$item = $this->addItem($op, $part, $post['qty'], $extra);
+		
 		$this->em->flush();
-
 		return $op;
 	}
 
 	// 철수 업무 생성
-	public function create_evacuate_operation($type, $post) {
+	public function createEvacuateOperation($type, $post) {
 		
 	}
 
 	// 업무 메인 생성
-	public function add_operatoin($type, $post) {
+	public function addOperation($type, $post) {
 		$user = $this->em->getReference('Entity\User', $post['user_id']);
 		$office = $this->em->getReference('Entity\Office', $post['office_id']);
 		
@@ -149,7 +149,7 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무-장비 목록 생성(필요시)
-	public function add_op_item($op, $part, $qty=1, $extra = array()) {
+	public function addItem($op, $part, $qty=1, $extra = array()) {
 		$item = new Entity\OperationPart;
 
 		$item->setOperation($op);
@@ -165,18 +165,18 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무-파일 생성(필요시)
-	public function add_op_file($op, $data) {
+	public function addFile($op, $data) {
 
 	}
 
 	// 업무-메모 생성
-	public function add_op_comment($op, $data) {
+	public function addComment($op, $data) {
 
 	}
 	
 
 	// 업무-로그 생성
-	public function add_op_log($op, $data) {
+	public function addLog($op, $data) {
 
 	}
 

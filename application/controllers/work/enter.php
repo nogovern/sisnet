@@ -95,7 +95,7 @@ class Enter extends CI_Controller
 			var_dump($_POST);
 
 			// 100 - 입고업무
-			$this->work_model->create_enter_operation(GS2_OP_TYPE_ENTER, $this->input->post());
+			$this->work_model->createEnterOperation(GS2_OP_TYPE_ENTER, $this->input->post());
 			echo 'done';
 
 			exit;
