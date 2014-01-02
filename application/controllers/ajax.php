@@ -51,7 +51,7 @@ class Ajax extends CI_Controller
 		if(count($parts)){
 			echo '<option vlaue="0">--선택하세요--</option>';
 			foreach($parts as $p) {
-				echo '<option vlaue="' . $p->id . '">'.  $p->name.'</option>';
+				echo '<option value="' . $p->id . '">'.  $p->name.'</option>';
 			}
 		} else {
 			echo '1000';
