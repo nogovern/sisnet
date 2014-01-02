@@ -14,4 +14,10 @@ class Category_m extends MY_Model
 		$this->setTableName('gs2_categories');
 		$this->setEntityName('Category');
 	}
+
+	// 하위 카테고리 목록
+	public function getSubCategories($parent_id) {
+		$rows = $this->repo->findBy(array('parent' => $parent_id), array('id' => 'asc'));
+		return $rows;
+	}
 }
