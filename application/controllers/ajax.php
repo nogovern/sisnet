@@ -47,16 +47,19 @@ class Ajax extends CI_Controller
 		$category = $em->getReference("Entity\Category", $id);
 		$parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
 
-		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
+		$output = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 		if(count($parts)){
-			echo '<option value="0">--선택하세요--</option>';
+			$output .= '<option value="0">--선택하세요--</option>';
 			foreach($parts as $p) {
-				echo '<option value="' . $p->id . '">'.  $p->name.'</option>';
+				$disabled = ( $p->getNewTotal() == 0 && $p->getUsedTotal() == 0) ? 'disabled' : '';
+				$tpl =  '<option value="%d" %s>%s (%d/%d)</option>';
+				$output .= sprintf($tpl, $p->id, $disabled, $p->name, $p->getNewTotal(), $p->getUsedTotal());
 			}
+
+			echo $output;
 		} else {
 			echo '1000';
 		}
-
 	}
 
 	// 창고의 장비 재고 목록
