@@ -159,4 +159,18 @@ class MY_Model extends CI_Model {
 		return $this->makeLocationString($obj);
 	}
 
+	////////////////////////////////////
+	// select-option 용 array 로 변환 
+	/////////////////////////////////////
+	public function convertForSelect($rows) {
+		$array = array();
+		$array[0] = '-- 선택하세요 --';
+
+		foreach($rows as $row) {
+			$array[$row->id] = $row->name;
+		}
+
+		return $array;
+	}
+
 }
