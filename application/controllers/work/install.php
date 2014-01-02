@@ -42,6 +42,19 @@ class Install extends CI_Controller
 		$data['work'] = $work;
 		$data['store'] = $this->work_model->parseLocation($work->work_location);	// 점포 
 		$data['items'] = $work->getItemList();
+		
+		////////////////
+		// 요청확정용 
+		////////////////
+		$this->load->helper('form');
+		$this->load->model('office_m', 'office_model');
+		$arr_office = $this->work_model->convertForSelect($this->office_model->getList());
+		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
+
+		$this->load->model('user_m', 'user_model');
+		$arr_user = $this->work_model->convertForSelect($this->user_model->getListByType(1));
+		$data['select_user'] = form_dropdown('worker_id', $arr_user, 0, 'id="worker_id" class="form-control required"');
+
 
 		$this->load->view('work_install_view', $data);
 	}
@@ -77,7 +90,7 @@ class Install extends CI_Controller
 			$post = $this->input->post();
 			$post['date_work'] = $this->input->post('date_open');
 			
-			$this->work_model->create_install_operation($this->input->post('op_type'), $post);
+			$this->work_model->createInstallOperation($this->input->post('op_type'), $post);
 			alert('설치 요청을 등록하였습니다.', site_url('/work/install'));
 			
 			// redirect(site_url('/work/install'));
@@ -92,6 +105,79 @@ class Install extends CI_Controller
 
 	public function close() {
 		echo '설치 업무를 종료합니다';
+	}
+
+	public function ajax($action) {
+		if(empty($action)){
+			echo 'error - $actin 이 비어있음!!!';
+		}
+
+		$em = $this->work_model->getEntityManager();
+
+		$id = $_REQUEST['id'];
+		$op = $this->work_model->get($id);
+
+		if($action == 'request_ok') {
+			// var_dump($_POST);
+			
+			$worker = $em->getReference('Entity\User', $this->input->post('worker_id'));
+			
+			$op->setWorker($worker);
+			$op->setDateWork($this->input->post('date_work'));
+			$op->setStatus('2');
+			$op->setDateModify();
+			$op->setMemo($this->input->post('memo'));
+
+			$em->persist($op);
+			$em->flush();
+
+			echo 'success';
+		}
+		// 장비 등록
+		elseif( $action == 'add_item') {
+			$part = $work->getItem()->part;
+			$val = $_POST['val'];
+			$temp = $this->work_model->addItem($work, $part, $val);
+			if(!$temp){
+				echo 'error!';
+				exit;
+			}
+
+			// 수량 비교용 
+			$request_qty = $work->getItem()->qty_request;
+
+			$tpl = '<tr data-temp_id="%d">
+                    <td>-</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%d</td>
+                    <td style="width:150px;">
+                      <button class="btn btn-danger btn-xs btn_delete" type="button">X</button>
+                    </td>
+                  </tr>';
+            echo sprintf($tpl, $temp->id, $part->name, $temp->getSerialNumber(), $temp->qty);
+            exit;
+		}
+		// 장비 목록에서 삭제
+		elseif( $action == 'remove_item') {
+			$item = $em->getReference('Entity\OperationPart', $_POST['part_id']);
+			$this->work_model->removeItem($item);
+
+			echo '[Install] remove_item action is done';
+		} 
+
+	}
+
+	// 설치 - 장비 등록 modal content load...
+	public function loadModalContent() {
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getSubCategories(1);
+		$cats = $this->category_model->convertForSelect($cats);
+		
+		$this->load->helper('form');
+		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
+
+		$this->load->view('util/modal_part_register', $data);
 	}
 
 }

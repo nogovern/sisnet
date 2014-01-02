@@ -26,6 +26,7 @@ $this->load->view('_work_view_header', $work);
                     <th>#</th>
                     <th>장비명</th>
                     <th>S/N</th>
+                    <th>직전위치</th>
                     <th>등록수량</th>
                     <th>삭제</th>
                   </tr>
@@ -83,18 +84,6 @@ endif;
       </div>
     </div><!-- end of div.container -->
     
-    <!-- dialog form -->
-    <div id="dialog-form" title="장비 등록">
-      <div class="row col-xs-10">
-      <form id="my_form" role="form" class="form">
-        <div class="form-group">
-          <label class="form-label">장비등록</label>
-          <input id="my_val" class="form-control" name="value" id="value">
-        </div>
-      </form>
-      </div>
-    </div>
-
     <!-- modal dialog -->
     <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -105,22 +94,31 @@ endif;
           </div>
           <div class="modal-body">
             <form id="inner_form" role="form" class="form form-horizontal">
+              <input type="hidden" name="mode" value="install_request_ok">
               <div class="form-group">
                 <label class="form-label col-sm-4">설치 사무소</label>
-                <div class="col-sm-7">
-                  <input type="text" class="form-control" name="office_id">
+                <div class="col-sm-5">
+<?php
+echo $select_office;
+?>
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-info" type="button">사무소 변경</button>
                 </div>
               </div>
               <div class="form-group">
                 <label class="form-label col-sm-4">담당직원선택</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" name="worker_id">
+<?php
+echo $select_user;
+?>      
                 </div>
               </div>
               <div class="form-group">
                 <label class="form-label col-sm-4">설치 예정일</label>
-                <div class="col-sm-7">
-                  <input type="text" class="form-control" name="date_work">
+                <div class="input-group col-sm-6">
+                  <input type="text" id="date_work" name="date_work" class="form-control date-picker" readonly>
+                  <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
                 </div>
               </div>
               <div class="form-group">
@@ -132,8 +130,8 @@ endif;
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button id="btn_request_ok" type="button" class="btn btn-success">스캔 계속</button>
+            <button id="btn_request_ok" type="button" class="btn btn-primary">요청 확정</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -149,63 +147,61 @@ endif;
     // 등록된 장비 갯수
     var item_count = <?=$item_count?>;
 
-    function checkDeliveryStatus() {
-      $("#btn_delivery").attr('disabled', (item_count > 0) ? false : true);
-    }
-
     $(document).ready(function(){
-      checkDeliveryStatus();
-      
-      // open jquery ui modal dialog
-      $("#dialog-form").dialog({
-        autoOpen:false,
-        modal: true,
-        width: '350px',
-        buttons: {
-          "저장": function() {
-            $.ajax({
-              url: "/work/enter/ajax/temp_add",
-              type: "POST",
-              data: {
-                id : <?=$work->id?>,
-                val: $("#my_val").val(),
-                "csrf_test_name": $.cookie("csrf_cookie_name")
-              },
-              dataType: "html",
-            })
-              .done(function(html) {
-                $("#part_table tbody").append(html);
-                item_count++;
-                checkDeliveryStatus();
-              })
-              .fail(function(xhr, textStatus){
-                alert("Request failed: " + textStatus);
-              });
-            $(this).dialog("close");
-          },
-          "닫기": function() {
-            $(this).dialog("close");
-          }
-        }
+      // datepicker...
+      $(".date-picker").each(function(){
+        $(this).datepicker({
+          dateFormat: "yy-mm-dd",
+          minDate: new Date(),
+          changeMonth: true,
+          changeYear: true
+        });
       });
+
+      // datepicke 아이콘 이벤트
+      $(".btn_date").click(function(e){
+        $(".date-picker", $(this).parent()).datepicker("show");
+      });
+
+      //--------------------------------------
 
       // 요청 확정
       $("#btn_request_ok").click(function(){
+        var $form = $("#myModal form");
+        var $worker_id = $("#worker_id");
+        var $date_work = $("#date_work");
+
+        if($worker_id.val() < 1) {
+          alert('필수 항목 입니다');
+          $worker_id.focus();
+          return false;
+        }
+
+        if($date_work.val() == '') {
+          alert('필수 항목 입니다');
+          $date_work.focus();
+          return false;
+        }
+
         var is_ok = confirm("확정 하시겠습니까?\n그리고 설치예정일 확인해야함.");
 
         if(is_ok == true){
           $.ajax({
-            url: "/work/enter/ajax/request_ok",
+            url: "/work/install/ajax/request_ok",
             type: "POST",
             data: {
               id : <?=$work->id?>,
+              office_id: $("#office_id").val(),
+              worker_id: $worker_id.val(),
+              date_work: $date_work.val(),
+              memo: $("#memo").val(),
               "csrf_test_name": $.cookie("csrf_cookie_name")
             },
             dataType: "html",
           })
             .done(function(html) {
               alert(html);
-              location.reload();
+              // location.reload();
             })
             .fail(function(xhr, textStatus){
               alert("Request failed: " + textStatus);
@@ -213,8 +209,11 @@ endif;
         }// end of if
       });
 
-      $(".btn_add").click(function(){
-          $("#dialog-form").dialog('open');
+      // 장비 등록
+      $("#btn_register").click(function(){
+          $("#myModal .modal-content").html('').load('/work/install/loadModalContent', function(result){
+            $("#myModal").modal({show:true});
+          });
       });
 
       // 리스트 장비 삭제
@@ -229,7 +228,7 @@ endif;
         var $tr = $(this).parent().parent();
 
         $.ajax({
-          url: "/work/enter/ajax/temp_delete",
+          url: "/work/install/ajax/temp_delete",
           type: "POST",
           data: {
             id : <?=$work->id?>,
@@ -241,45 +240,48 @@ endif;
           .done(function(html) {
             $tr.remove();     // 현재 행 삭제
             item_count--;
-            checkDeliveryStatus();
           })
           .fail(function(xhr, textStatus){
             alert("Request failed: " + textStatus);
           });
       });
-      
-      // 출고
-      $("#btn_delivery").click(function(){
-        if(item_count <= 0) {
-          alert('최소 1개 이상의 장비 정보를 입력해야 합니다');
-          return false;
-        }
 
-        var msg = '정말로 \n출고진행?';
-        if(!confirm(msg)) {
-          return false;
-        }
+      /////////
+      // 태스트 
+      /////////
+      callback_insert_row(999, 'test', 'test', 'test', 5);
 
-        $.ajax({
-            url: "/work/enter/ajax/delivery",
-            type: "POST",
-            data: {
-              id : <?=$work->id?>,
-              // items : items.toString(),
-              "csrf_test_name": $.cookie("csrf_cookie_name")
-            },
-            dataType: "html",
-          })
-            .done(function(html) {
-              alert(html);
-              location.reload();
-            })
-            .fail(function(xhr, textStatus){
-              alert("Request failed: " + textStatus);
-            });
+      $(document).on('click', '.remove_item', function(e){
+        callback_remove_row(this);
       });
-
     });
+    
+    //  장비리스트에 행 추가
+    function callback_insert_row(id, name, sn, prev, qty) {
+    // function callback_insert_row(options) {
+      // var obj = options || {};
+      // if($.isEmptyObject(obj)){
+      //   return false;
+      // }
+
+      var tr = $("<tr/>").attr('data-item_id', id);
+      tr.append($("<td/>").text(id));
+      tr.append($("<td/>").text(name));
+      tr.append($("<td/>").text(sn));
+      tr.append($("<td/>").text(prev));
+      tr.append($("<td/>").text(qty));
+      tr.append($("<td/>").html('<button class="btn btn-danger btn-xs remove_item" type="button">X</button>'));
+      $("#part_table tbody").append(tr);
+    }
+
+    // 행 삭제
+    function callback_remove_row(what) {
+      var this_id = $(what).closest('tr').data('item_id');
+      if(confirm(this_id + ' 를 목록에서 삭제하시겠습니까?')) {
+        $(what).closest('tr').fadeOut('slow');
+      }
+    }
+
     </script>
 <?php
 $this->load->view('layout/footer');

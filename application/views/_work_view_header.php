@@ -8,7 +8,7 @@
             </thead>
             <tbody>
               <tr>
-                <td>주문번호</td>
+                <td>업무번호</td>
                 <td><?=$work->operation_number?></td>
                 <td>&nbsp;</td>
               </tr>

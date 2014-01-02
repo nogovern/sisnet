@@ -24,6 +24,7 @@ class User_m extends MY_Model {
 		return $repo->findOneBy(array('username' => $value));
 	}
 
+	// user type 별 목록
 	public function getListByType($type) {
 		$repo = $this->em->getRepository($this->getEntityName());
 		$options = array(
@@ -33,7 +34,7 @@ class User_m extends MY_Model {
 
 		return $rows;
 	}
-
+	
 }
 
 
