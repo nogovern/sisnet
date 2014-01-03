@@ -48,7 +48,7 @@ class Part
 	protected $date_register;
 
 	/** @Column(type="string", length=1) */
-	protected $status;
+	protected $status = '1';
 
 	/** @OneToMany(targetEntity="Stock", mappedBy="part") */
 	protected $stock_list;
@@ -64,8 +64,9 @@ class Part
 	/*
 	 상태 정의
 	 */
-	const STATUS_DISABLE 	= 0;
-	const STATUS_ENABLE 	= 1;
+	const STATUS_DISABLE 	= 0;	// 단종
+	const STATUS_ENABLE 	= 1;	// 정상
+	const STATUS_OUTOFSTOCK = 2;	// 
 
 	/* ------------------------------ */
 	public function __construct() {
@@ -128,7 +129,7 @@ class Part
 		return $this;
 	}
 
-	public function setStatus($val='') {
+	public function setStatus($val='0') {
 		$this->status = $val;
 	}
 

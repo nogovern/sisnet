@@ -78,13 +78,14 @@ class Part extends CI_Controller {
 		{
 			var_dump($_POST);
 
-			// 새로운 사용자 등록
+			// 새로운 장비 등록
 
 			$part = new Entity\Part();
 			$part->setName($this->input->post('name'));
 			$part->setType($this->input->post('type'));
 			$part->setManufacturer($this->input->post('manufacturer'));
 			$part->setRegisterDate();
+			$part->setStatus('1');
 
 			$category = $em->getReference('Entity\Category', $this->input->post('category_id'));
 			$part->setCategory($category);
