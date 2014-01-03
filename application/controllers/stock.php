@@ -27,37 +27,29 @@ class Stock extends CI_Controller
 	// 전체 장비 재고 리스트
 	public function lists($id = '') {
 
-		$data['title'] = '재고------------------^';
+		$data['title'] = '재고 현황';
 
-		$data['type'] = '';
-
-		if($id) {
-			$this->load->model('office_m', 'office_model');
-			$office = $this->office_model->get($id);	
+		$office  = NULL;
+		
+		$this->load->model('office_m', 'office_model');
+		// 창고별 재고 를 볼경우
+		if($id && is_numeric($id)) {
+			$office = $this->office_model->get($id);
+			$stocks = $office->getStockList();
+			$parts = array();
+			foreach( $stocks as $stock) {
+				$parts[] = $stock->part;
+			}
+			$data['rows'] = $parts;
 		} else {
-			$office = new stdClass;
-			$office->id = '';
+			$em = $this->stock_model->getEntityManager();
+			$data['rows'] = $em->getRepository('Entity\Part')->findAll();
 		}
 
-		$data['office'] = $office;
-
-		$em = $this->stock_model->getEntityManager();
-		$data['rows'] = $em->getRepository('Entity\Part')->findAll();
+		$data['this_office'] = $office;
+		$data['office_list'] = $this->office_model->getList();
 
 		$this->load->view('stock_list', $data);
-	}
-
-	// 사무소별 장비 재고
-	public function listByOffice($id) {
-		$data['title'] = '사무소별 재고 상황';
-		$data['current'] = 'page-stock';
-
-		$this->load->model('office_m', 'office_model');
-		$office =  $this->office_model->get($id);
-		$data['office'] = $office;				// office 객체
-		$data['rows'] = $office->getStockList();
-
-		$this->load->view('stock_list_by_office', $data);
 	}
 
 	public function add() {

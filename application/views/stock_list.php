@@ -7,70 +7,93 @@ $this->load->view('layout/navbar', array('current' => 'page-stock'));
     <div class="container">
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="page-header">
-        <h1>재고</h1>
+        <h1>재고 현황</h1>
       </div>
 
       <!-- Example row of columns -->
       <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
 
         <ul class="nav nav-pills">
-          <li class="<?=($office->id=='')?'active':''?>"><a href="<?=site_url()?>stock/lists">전체</a></li>
-          <li class="<?=($office->id==1)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/1">서울-가산</a></li>
-          <li class="<?=($office->id==2)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/2">대전</a></li>
-          <li class="<?=($office->id==3)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/3">부산</a></li>
-          <li class="<?=($office->id==4)?'active':''?>"><a href="<?=site_url()?>stock/listByOffice/4">제주</a></li>
+          <li class="<?=is_null($this_office) ?'active':''?>"><a href="<?=site_url()?>stock/lists">전체</a></li>
+<?php
+foreach($office_list as $o):
+?>
+          <li class="<?=(!is_null($this_office) && $o->id == $this_office->id)?'active':''?>"><a href="<?=site_url()?>stock/lists/<?=$o->id?>"><?=$o->name?></a></li>
+<?php
+endforeach;
+?>          
         </ul>
           
-        <table class="table table-responsive table-hover" id="stock_list">
+        <table class="table table-responsive table-hover " id="stock_list">
           <thead>
             <tr>
-              <th>No</th>
-              <th>장비 타입</th>
-              <th>장비 종류</th>
-              <th>장비명</th>
-              <th>상태</th>
-              <th>신품 합계</th>
-              <th>중고 합계</th>
-              <th>재고</th>
+              <th rowspan="2">No</th>
+              <th rowspan="2">장비 타입</th>
+              <th rowspan="2">장비 종류</th>
+              <th rowspan="2">장비명</th>
+              <th rowspan="2">상태</th>
+              <th colspan="2">합계</th>
+              <th class="col-xs-6">사무소별 현황</th>
+            </tr>
+            <tr>
+              <th>신품</th>
+              <th>중고</th>
+              <!-- 사무소별 -->
+              <th style="padding:0;margin:0;">
+                <table class="table" style="margin:0;">
+                  <tbody>
+                    <td class="col-xs-3">사무소명</td>
+                    <td class="col-xs-2">기준수량</td>
+                    <td class="col-xs-1">신품</td>
+                    <td class="col-xs-1">중고</td>
+                    <td class="col-xs-1" style="background-color: #CCC;">설치</td>
+                    <td class="col-xs-1" style="background-color: #CCC;">점검</td>
+                    <td class="col-xs-1" style="background-color: #CCC;">수리</td>
+                    <td class="col-xs-1" style="background-color: #CCC;">페기</td>
+                    <td class="col-xs-1">기능</td>
+                  </tbody>
+                </table>
+              </th>
             </tr>
           </thead>
 
           <tbody>
 <?php
 $arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
-$arr_type_class= array('1' => 'label-success', '2'=>'label-warning', '3'=>'label-default');
+$arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-info');
+$arr_status_text = array('단종', '정상');
 foreach($rows as $row):
 ?>
             <tr class="">
               <td><?=$row->id?></td>
               <td>
-                <span class="label <?=$arr_type_class[$row->type]?>">
-<?php
-                echo $arr_type_text[$row->type];
-?>
-                </span>
+                <span class="label <?=$arr_type_class[$row->type]?>"> <?=$arr_type_text[$row->type];?> </span>
               </td>
               <td><?=$row->category->name?></td>
               <td><?=$row->name?></td>
-              <td><?=$row->status?></td>
+              <td><?=$arr_status_text[$row->status]?></td>
               <td><?=intval($row->getNewTotal())?></td>
               <td><?=intval($row->getUsedTotal())?></td>
-              <td>
+              <td colspan="9" style="padding:0;">
 <?php
 if(count($row->getStockList())):
 ?>
-<table class="table table-hover" style="margin-bottom:0;">
+<table class="table table-hover table-bordered" style="margin:0;">
   <tbody>
 <?php
   foreach($row->getStockList() as $stock):
 ?>
-    <tr class="success">
-      <td class="col-sm-4"><?=$stock->office->name?></td>
-      <td class="col-sm-2"><?=$stock->qty_minimum?></td>
-      <td class="col-sm-2"><?=number_format($stock->qty_new)?></td>
-      <td class="col-sm-2"><?=number_format($stock->qty_used)?></td>
-      <td class="col-sm-2">
+    <tr class="default">
+      <td class="col-xs-3"><?=$stock->office->name?></td>
+      <td class="col-xs-2"><?=$stock->qty_minimum?></td>
+      <td class="col-xs-1"><?=number_format($stock->qty_new)?></td>
+      <td class="col-xs-1"><?=number_format($stock->qty_used)?></td>
+      <td class="col-xs-1">0</td>
+      <td class="col-xs-1">0</td>
+      <td class="col-xs-1">0</td>
+      <td class="col-xs-1">0</td>
+      <td class="col-xs-1">
 <?php
     if($stock->office->isMaster() === TRUE):
 ?>
@@ -79,9 +102,6 @@ if(count($row->getStockList())):
     endif;
 ?>
       </td>
-      <!--
-      <td class="col-sm-2"><button class="btn btn-info btn-xs btn_order" type="button" data-part="work/enter/order_part/<?=$row->id?>">Order</button></td>
-      -->
     </tr>
 <?php
 endforeach;

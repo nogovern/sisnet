@@ -52,9 +52,9 @@ define('GS2_OP_TYPE_INSTALL_3', 	202);		// 설치 - 휴점C
 define('GS2_OP_TYPE_CHANGE', 	300);		// 교체
 define('GS2_OP_TYPE_WITHDRAW',	400);		// 철수
 define('GS2_OP_TYPE_REPAIR', 	500);		// 수리
-define('GS2_OP_TYPE_DESTROY', 	510);		// 폐기
-define('GS2_OP_TYPE_MOVE', 		520);		// 이동
-define('GS2_OP_TYPE_TRANS', 		530);		// 이관 (정확한 개념???)
+define('GS2_OP_TYPE_DESTROY', 	600);		// 폐기
+define('GS2_OP_TYPE_MOVE', 		700);		// 이동
+define('GS2_OP_TYPE_TRANS', 	800);		// 이관 (정확한 개념???)
 define('GS2_OP_TYPE_ETC', 		900);		// 상태 변경
 
 // 입고
