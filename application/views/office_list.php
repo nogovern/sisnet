@@ -35,7 +35,7 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
   ?>
               <tr>
                 <td><?=$row->id?></td>
-                <td><?=$row->type?></td>
+                <td><?=($row->type == 'O') ? '사무소' : '창고'?></td>
                 <td><?=$row->name?></td>
                 <td><?=($row->is_master == 'Y') ? '' : $row->master->name ?></td>
                 <td>
@@ -50,7 +50,7 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
                 <td><?=$row->phone?></td>
                 <td><?=$row->address?></td>
                 <td><?=$row->memo?></td>
-                <td><?=$row->status?></td>
+                <td><?=($row->status == '1') ? '활성' : '비활성' ?></td>
                 <td><?=''?></td>
               </tr>
   <?php

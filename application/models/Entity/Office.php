@@ -46,7 +46,7 @@ class Office
 	protected $memo;
 
 	/** @Column(type="string", length=1) */
-	protected $status;
+	protected $status = '1';
 
 	/**
 	 * 

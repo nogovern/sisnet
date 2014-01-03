@@ -29,6 +29,7 @@ class Office_m extends MY_Model {
 		$new->setPhone($post_array['phone']);
 		$new->setAddress($post_array['address']);
 		$new->setmemo($post_array['memo']);
+		$new->setStatus($post_array['status']);
 
 		// 담당자
 		if($post_array['user_id'] != '0') {
