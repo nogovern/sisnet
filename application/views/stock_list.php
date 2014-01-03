@@ -61,8 +61,8 @@ endforeach;
           <tbody>
 <?php
 $arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
-$arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-info');
-$arr_status_text = array('단종', '정상');
+$arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
+$arr_status_text = array('단종', '정상', '일시품절');
 foreach($rows as $row):
 ?>
             <tr class="">

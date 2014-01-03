@@ -31,18 +31,24 @@ $this->load->view('layout/navbar', array('current' => 'page-admin'));
 
           <tbody>
 <?php
+$arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
+$arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
+$arr_status_text = array('단종', '정상', '일시품절');
+
 foreach($rows as $row):
 ?>
             <tr class="">
               <td><?=$row->id?></td>
-              <td><?=$row->type?></td>
+              <td>
+                <span class="label <?=$arr_type_class[$row->type]?>"> <?=$arr_type_text[$row->type];?> </span>
+              </td>
               <td><?=$row->category->name?></td>
               <td><?=$row->manufacturer?></td>
               <td><?=$row->name?></td>
               <td><?=$row->getCompany()?></td>
               <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d'): '';?></td>
               <td><?=$row->getNewTotal()?>/<?=$row->getUsedTotal()?></td>
-              <td><?=$row->status?></td>
+              <td><?=$arr_status_text[$row->status]?></td>
             </tr>
 <?php
 endforeach;
