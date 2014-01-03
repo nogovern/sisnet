@@ -149,19 +149,39 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무-장비 목록 생성(필요시)
-	public function addItem($op, $part, $qty=1, $extra = array()) {
+	public function addItem($op, $part, $qty=1, $is_new='Y', $extra = array()) {
 		$item = new Entity\OperationPart;
 
 		$item->setOperation($op);
 		$item->setPart($part);
 		$item->setType($op->type);
 		$item->setQtyRequest($qty);						// 요청수량
-		$item->setNewFlag($extra['is_new']);			// 신품 or 중고
+		$item->setNewFlag($is_new == 'Y' ? TRUE: FALSE);						// 신품 or 중고
 		$item->setDateRegister();
+
+		// 시리얼넘버 장비일 경우
+		if(isset($extra['serial_part_id']) && !empty($extra['serial_part_id'])) {
+			;
+		}
+
+		// 직전위치
+		if(isset($extra['previous_location']) && !empty($extra['previous_location'])) {
+			;
+		}
 
 		$this->em->persist($item);
 
 		return $item;
+	}
+
+	// 업무-장비 목록 삭제
+	public function removeItem($item) {
+		$this->em->remove($item);
+	}
+
+	// 업무-장비 수정
+	public function updateItem($item, $qty) {
+		$this->em->persist($item);
 	}
 
 	// 업무-파일 생성(필요시)

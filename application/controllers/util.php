@@ -51,7 +51,7 @@ class Util extends CI_Controller
 		}
 	}
 
-	// 장비
+	// 장비 정보 및 재고량
 	public function part($action = '') {
 		if(empty($action)) {
 			alert('에러!');
@@ -64,9 +64,11 @@ class Util extends CI_Controller
 			$part = $this->part_model->get($_POST['part_id']);
 			
 			$json = new stdClass;
+			$json->id = $part->id;
 			$json->name = $part->name;
 			$json->type = $part->type;
-			$json->id = $part->id;
+			$json->qty_new = $part->getNewTotal($_POST['office_id']);		// 설치 사무소 신품 재고 수량
+			$json->qty_used = $part->getUsedTotal($_POST['office_id']);		// 설치 사무소 중고 재고 수량
 
 			echo json_encode($json);
 

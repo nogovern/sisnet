@@ -82,7 +82,7 @@ echo $select_category;
   </form>
 </div>
 <div class="modal-footer">
-  <button id="btn_part_add" type="button" class="btn btn-primary" disabled>장비 등록</button>
+  <button type="button" class="btn btn-primary" id="btn_part_add" disabled>장비 등록</button>
   <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 </div>
 
@@ -107,6 +107,7 @@ $(document).on('change', "#category_id", function(){
     type: "POST",
     data: {
       "category_id": cat,
+      "office_id": operation.office_id,
       "extra": "test",
       "csrf_test_name": $.cookie("csrf_cookie_name")
     },
@@ -138,22 +139,70 @@ $(document).on("change", "#select_part", function(e){
     type: "POST",
     data: {
       "part_id": part_id,
+      "office_id": operation.office_id,   
       "extra": "test",
       "csrf_test_name": $.cookie("csrf_cookie_name")
     },
     dataType: "json",
   })
     .done(function(html) {
-      var obj = html;
-      console.log(obj.type);
+      item = {};      // empty item
+      item = html;
+      console.log(item);
     })
     .fail(function(xhr, textStatus){
       alert("Request failed: " + textStatus);
     });
 });
 
+// 장비 등록
 $(document).on("click", "#btn_part_add", function(e){
-  callback_insert_row(2, '333', '333', '저기', 5);
+  e.stopPropagation();
+  
+  var qty = parseInt($("#part_qty").val(), 10);
+  if(!qty || qty < 1) {
+    alert('수량을 입력하세요');
+    $("#part_qty").focus();
+    return false;
+  }
+
+  // 신품 or 중고(Y/N)
+  var is_new = $(":radio[name=is_new]:checked").val();
+  if(is_new === undefined) {
+    alert('장비 신품 여부를 선택하세요');
+    $(":radio[name=is_new]").focus();
+    return false;
+  }
+
+  $.ajax({
+    url: "/work/install/ajax/add_item",
+    type: "POST",
+    data: {
+      "id": operation.id,         
+      "part_id": item.id,
+      "serial_part_id": '',
+      'is_new': is_new,
+      "qty": qty,   
+      "extra": "add_item_for_install_op",
+      "csrf_test_name": $.cookie("csrf_cookie_name")
+    },
+    dataType: "json",
+  })
+    .done(function(response) {
+      if(response.result === 'success') {
+        callback_insert_row(response.id, item.type, item.name, '', '', qty, is_new);
+      } else {
+        alert('에러!');
+      }
+      console.log(response);
+    })
+    .fail(function(xhr, textStatus){
+      alert("Request failed: " + textStatus);
+    });
+
+  // 버튼 비활성
+  // 선택 초기화해야 함!
+  $("#btn_part_add").prop("disabled", true);
 });
 
 $(document).on('change', ":radio[name=search_method]", function(e){

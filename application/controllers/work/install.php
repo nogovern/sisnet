@@ -107,6 +107,21 @@ class Install extends CI_Controller
 		echo '설치 업무를 종료합니다';
 	}
 
+	// 설치 - 장비 등록 modal content load...
+	public function loadModalContent() {
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getSubCategories(1);
+		$cats = $this->category_model->convertForSelect($cats);
+		
+		$this->load->helper('form');
+		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
+
+		$this->load->view('util/modal_part_register', $data);
+	}
+
+	/////////////////
+	// ajax 요청 처리
+	/////////////////
 	public function ajax($action) {
 		if(empty($action)){
 			echo 'error - $actin 이 비어있음!!!';
@@ -135,49 +150,31 @@ class Install extends CI_Controller
 		}
 		// 장비 등록
 		elseif( $action == 'add_item') {
-			$part = $work->getItem()->part;
-			$val = $_POST['val'];
-			$temp = $this->work_model->addItem($work, $part, $val);
-			if(!$temp){
-				echo 'error!';
-				exit;
+			$result = new stdClass;	// 결과
+
+			$part = $em->getReference('Entity\Part', $_POST['part_id']);
+			$item = $this->work_model->addItem($op, $part, $_POST['qty'], $_POST['is_new']);
+			if(!$item) {
+				$result->result = 'failure';
+			} else {
+				$em->flush();
+
+				$result->id = $item->id;			// 새로운 opertaion_parts.id
+				$result->result = 'success';
 			}
 
-			// 수량 비교용 
-			$request_qty = $work->getItem()->qty_request;
-
-			$tpl = '<tr data-temp_id="%d">
-                    <td>-</td>
-                    <td>%s</td>
-                    <td>%s</td>
-                    <td>%d</td>
-                    <td style="width:150px;">
-                      <button class="btn btn-danger btn-xs btn_delete" type="button">X</button>
-                    </td>
-                  </tr>';
-            echo sprintf($tpl, $temp->id, $part->name, $temp->getSerialNumber(), $temp->qty);
+			echo json_encode($result);
             exit;
 		}
 		// 장비 목록에서 삭제
 		elseif( $action == 'remove_item') {
-			$item = $em->getReference('Entity\OperationPart', $_POST['part_id']);
+			$item = $em->getReference('Entity\OperationPart', $_POST['item_id']);
 			$this->work_model->removeItem($item);
+			$em->flush();			
 
 			echo '[Install] remove_item action is done';
 		} 
 
-	}
-
-	// 설치 - 장비 등록 modal content load...
-	public function loadModalContent() {
-		$this->load->model('category_m', 'category_model');
-		$cats = $this->category_model->getSubCategories(1);
-		$cats = $this->category_model->convertForSelect($cats);
-		
-		$this->load->helper('form');
-		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
-
-		$this->load->view('util/modal_part_register', $data);
 	}
 
 }

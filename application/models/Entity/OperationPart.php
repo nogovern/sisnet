@@ -88,11 +88,11 @@ class OperationPart {
 		$this->date_modify = new \DateTime($when);
 	}
 
-	public function setNewFlag($is_new) {
+	public function setNewFlag($is_new=TRUE) {
 		$this->is_new = ($is_new) ? 'Y' : 'N';
 	}
 
-	public function setCompleteFlag($is_complete) {
+	public function setCompleteFlag($is_complete=TRUE) {
 		$this->is_complete = ($is_complete) ? 'Y' : 'N';
 	}
 

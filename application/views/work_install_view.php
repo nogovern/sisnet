@@ -24,7 +24,9 @@ $this->load->view('_work_view_header', $work);
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>종류</th>
                     <th>장비명</th>
+                    <th>상태</th>
                     <th>S/N</th>
                     <th>직전위치</th>
                     <th>등록수량</th>
@@ -37,13 +39,16 @@ $i = 1;
 $item_count = count($items);
 foreach($items as $item):
 ?>                  
-                  <tr data-temp_id="<?=$item->id?>">
-                    <td><?=$i++?></td>
+                  <tr data-item_id="<?=$item->id?>">
+                    <td><?=$item->id?></td>
+                    <td><?=$item->part->type?></td>
                     <td><?=$item->part->name?></td>
-                    <td><?=($item->part->type == '1') ? $item->serial_number : ''?></td>
-                    <td><?=$item->qty?></td>
+                    <td><?=($item->is_new == 'Y')? '신품' : '중고'?></td>
+                    <td><?=($item->part->type == '1') ? '' : ''?></td>
+                    <td><?=''?></td>
+                    <td><?=$item->qty_request?></td>
                     <td style="width:150px;">
-                      <button class="btn btn-danger btn-xs btn_delete" type="button">X</button>
+                      <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
                     </td>
                   </tr>
 <?php
@@ -69,7 +74,7 @@ endif;
 if($work->status == 2):
 ?>
           <button id="btn_register" class="btn btn-warning btn_add" type="button" >장비 등록</button>
-          <button id="btn_delivery" class="btn btn-success btn_delivery" type="button"  disabled>출고</button>
+          <button id="btn_delivery" class="btn btn-success btn_delivery" type="button" disabled>출고</button>
 <?php
 endif;
 
@@ -142,10 +147,15 @@ echo $select_user;
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
     <script type="text/javascript">
+    // 작업 정보 객체
+    var operation = {
+      'id' : <?=$work->id?>,
+      'office_id' : <?=$work->office->id?>
+    };
+
     // 장비 목록
-    var items = [];
-    // 등록된 장비 갯수
-    var item_count = <?=$item_count?>;
+    var items = [];     // array of item object
+    var item = {};
 
     $(document).ready(function(){
       // datepicker...
@@ -209,64 +219,52 @@ echo $select_user;
         }// end of if
       });
 
-      // 장비 등록
+      // 장비 등록 모달 open
       $("#btn_register").click(function(){
           $("#myModal .modal-content").html('').load('/work/install/loadModalContent', function(result){
             $("#myModal").modal({show:true});
           });
       });
 
-      // 리스트 장비 삭제
-      $(document).on("click", ".btn_delete", function(e){
-        // console.log($(this).parent().parent().data('temp_id'));
-
-        // 삭제 전 확인
-        if(!confirm('목록에서 삭제 할까요?')){
+      // 장비 삭제 이벤트 등록
+      $(document).on('click', '.remove_item', function(e){
+        var item_id = $(this).closest('tr').data('item_id');
+        var that = this;
+        if(!confirm(item_id + ' 를 목록에서 삭제하시겠습니까?')) {
           return false;
         }
 
-        var $tr = $(this).parent().parent();
-
         $.ajax({
-          url: "/work/install/ajax/temp_delete",
-          type: "POST",
-          data: {
-            id : <?=$work->id?>,
-            temp_id: $tr.data('temp_id'),
-            "csrf_test_name": $.cookie("csrf_cookie_name")
-          },
-          dataType: "html",
-        })
-          .done(function(html) {
-            $tr.remove();     // 현재 행 삭제
-            item_count--;
+            url: "/work/install/ajax/remove_item",
+            type: "POST",
+            data: {
+              id : <?=$work->id?>,
+              item_id: item_id,
+              "csrf_test_name": $.cookie("csrf_cookie_name")
+            },
+            dataType: "html",
           })
-          .fail(function(xhr, textStatus){
-            alert("Request failed: " + textStatus);
-          });
-      });
-
-      /////////
-      // 태스트 
-      /////////
-      callback_insert_row(999, 'test', 'test', 'test', 5);
-
-      $(document).on('click', '.remove_item', function(e){
-        callback_remove_row(this);
+            .done(function(html) {
+              callback_remove_row(that);
+            })
+            .fail(function(xhr, textStatus){
+              alert("Request failed: " + textStatus);
+            });
       });
     });
     
     //  장비리스트에 행 추가
-    function callback_insert_row(id, name, sn, prev, qty) {
-    // function callback_insert_row(options) {
-      // var obj = options || {};
-      // if($.isEmptyObject(obj)){
-      //   return false;
-      // }
+    function callback_insert_row(id, type, name, sn, prev, qty, is_new) {
+      var type_text = '';
+      if( type == '1') type_text = '시리얼';
+      if( type == '2') type_text = '수량';
+      if( type == '3') type_text = '소모품';
 
       var tr = $("<tr/>").attr('data-item_id', id);
       tr.append($("<td/>").text(id));
+      tr.append($("<td/>").text(type_text));
       tr.append($("<td/>").text(name));
+      tr.append($("<td/>").text((is_new == 'Y') ? '신품' : '중고'));
       tr.append($("<td/>").text(sn));
       tr.append($("<td/>").text(prev));
       tr.append($("<td/>").text(qty));
@@ -276,10 +274,7 @@ echo $select_user;
 
     // 행 삭제
     function callback_remove_row(what) {
-      var this_id = $(what).closest('tr').data('item_id');
-      if(confirm(this_id + ' 를 목록에서 삭제하시겠습니까?')) {
-        $(what).closest('tr').fadeOut('slow');
-      }
+      $(what).closest('tr').fadeOut('slow');
     }
 
     </script>

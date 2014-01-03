@@ -33,7 +33,7 @@ class Ajax extends CI_Controller
 		$this->load->view('popup_request_enter_form', $data);
 	}
 
-	// 전체 장비 목록
+	// 장비 목록
 	public function response($id) {
 		// 주의 
 		// isset($_POST) 하면 항상 TRUE 를 리턴한다.
@@ -47,13 +47,16 @@ class Ajax extends CI_Controller
 		$category = $em->getReference("Entity\Category", $id);
 		$parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
 
+		// 특정 사무소의 재고 수량을 얻을 경우
+		$office_id  = (isset($_POST['office_id']) && !empty($_POST['office_id'])) ? $_POST['office_id'] : NULL;
+
 		$output = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 		if(count($parts)){
 			$output .= '<option value="0">--선택하세요--</option>';
 			foreach($parts as $p) {
-				$disabled = ( $p->getNewTotal() == 0 && $p->getUsedTotal() == 0) ? 'disabled' : '';
+				$disabled = ( $p->getNewTotal($office_id) == 0 && $p->getUsedTotal($office_id) == 0) ? 'disabled' : '';
 				$tpl =  '<option value="%d" %s>%s (%d/%d)</option>';
-				$output .= sprintf($tpl, $p->id, $disabled, $p->name, $p->getNewTotal(), $p->getUsedTotal());
+				$output .= sprintf($tpl, $p->id, $disabled, $p->name, $p->getNewTotal($office_id), $p->getUsedTotal($office_id));
 			}
 
 			echo $output;
