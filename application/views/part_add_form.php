@@ -7,79 +7,93 @@ $this->load->view('layout/navbar', array('current' => 'page_admin'));
     
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-md-8">
-            <h2>장비 등록 양식</h2>
+        <div class="col-md-10">
+          <div class="page-header">
+            <h2><span class="fa fa-pencil-square-o"></span> 장비 등록</h2>
+          </div>
 <?php
 echo validation_errors();             // 에러 출력
 ?>
  
-          <?php echo form_open('', 'role="form"');?>
+          <?php echo form_open('', 'role="form" class="form-horizontal" ');?>
           <!-- <form role="form"> -->
             
             <input type="hidden" name="category_name" id="category_name" value="">
+
             <div class="form-group">
-              <label>장비 타입을 선택하세요</label>
-              <div class="radio">
-                <label>
-                  <input type="radio" id="type1" name="type" value="1" checked>
-                  시리얼 관리 장비
+              <label class="form-label col-sm-3">장비 타입을 선택하세요</label>
+              <div class="col-sm-7">
+                <label class="radio-inline">
+                  <input type="radio" id="type1" name="type" value="1" required> 시리얼 관리 장비
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" id="type2" name="type" value="2"> 수량 관리 장비
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" id="type3" name="type" value="3"> 소모품
                 </label>
               </div>
-
-              <div class="radio">
-                <label>
-                  <input type="radio" id="type2" name="type" value="2">
-                  수량 관리 장비
-                </label>
-              </div>
-
-              <div class="radio">
-                <label>
-                  <input type="radio" id="type3" name="type" value="3">
-                  소모품
-                </label>
-              </div>
-
             </div>
 
             <div class="form-group">
-              <label for="category_id" class="control-label">장비 종류</label>
+              <label for="category_id" class="form-label col-sm-3">장비 종류</label>
+              <div class="col-sm-7">
 <?php
 echo $select_category;
 ?>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label for="part_no" >장비 식별자 입력 (자동입력)</label>
-              <input type="text" class="form-control" id="part_no" name="part_no" placeholder="Enter...">
+            <div class="form-group" >
+              <label for="part_no" class="form-label col-sm-3">장비 식별자 입력 (자동입력)</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="part_no" name="part_no" placeholder="Enter...">
+              </div>
             </div>
 
             <div class="form-group has-success">
-              <label for="name" class="control-label">모델명</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Enter...">
+              <label for="name" class="form-label col-sm-3">모델명</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter...">
+              </div>
             </div>
 
             <div class="form-group">
-              <label for="manufacturer" class="control-label">제조사명</label>
-              <input type="text" class="form-control" id="manufacturer" name="manufacturer" placeholder="Enter...">
+              <label for="manufacturer" class="form-label col-sm-3">제조사명</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="manufacturer" name="manufacturer" placeholder="Enter...">
+              </div>
             </div>
             
             <div class="form-group">
-              <label for="company_id" class="control-label">납품처</label>
+              <label for="company_id" class="form-label col-sm-3">납품처</label>
+              <div class="col-sm-7">
 <?php
 echo $select_company;
 ?>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label col-sm-3">장비 취급 여부</label>
+              <div class="col-sm-7">
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="1" required> 정상
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="0"> 단종
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="2"> 임시 품절
+                </label>
+              </div>
             </div>
 
             <p class="form-actions">
               <button class="btn btn-primary" type="submit">입력완료</button>
-              <button id="ajax" class="btn btn-default" type="button">팝업 띄우기</button>
-              <button id="ajax" class="btn btn-danger" type="button">다른 종류</button>
             </p>
           </form>
         </div>
-        <div class="col-md-4"></div>
-
       </div><!-- end of row -->
     </div><!-- start of div.container -->
 

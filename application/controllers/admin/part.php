@@ -68,8 +68,8 @@ class Part extends CI_Controller {
 		// 규칙 설정
 		$this->form_validation->set_rules('type', '장비 타입', 'required');
 		$this->form_validation->set_rules('name', '장비 모델명', 'required');
-		$this->form_validation->set_rules('category_id', '장비 종류', 'required');
-		$this->form_validation->set_rules('company_id', '납품처', 'required');
+		$this->form_validation->set_rules('category_id', '장비 종류', 'required|greater_than[0]');
+		$this->form_validation->set_rules('company_id', '납품처', 'required|greater_than[0]');
 
 		if($this->form_validation->run() === FALSE){
 			$this->load->view('part_add_form', $data);
@@ -85,7 +85,7 @@ class Part extends CI_Controller {
 			$part->setType($this->input->post('type'));
 			$part->setManufacturer($this->input->post('manufacturer'));
 			$part->setRegisterDate();
-			$part->setStatus('1');
+			$part->setStatus($this->input->post('status'));
 
 			$category = $em->getReference('Entity\Category', $this->input->post('category_id'));
 			$part->setCategory($category);
