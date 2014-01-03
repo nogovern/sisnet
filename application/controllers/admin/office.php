@@ -66,8 +66,8 @@ class Office extends CI_Controller
 		} else {
 			$post = $this->input->post();
 			
-			$this->office_model->_add($post);
-			$this->office_model->_commit();
+			$this->office_model->add($post);
+			// $this->office_model->_commit();
 
 			redirect('admin/office');
 			exit;
