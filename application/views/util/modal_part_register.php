@@ -34,6 +34,7 @@
           <button class="btn btn-info btn-sm btn_search" type="button">검색</button>
       </div>
     </div>
+    
     <!--
     <div class="form-group" class="search_block">
       <label class="form-label col-sm-4">직전 위치 검색</label>
