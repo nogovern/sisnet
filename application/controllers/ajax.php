@@ -15,10 +15,6 @@ class Ajax extends CI_Controller
 		show_404();
 	}
 
-	public function part_select() {
-
-	}
-
 	public function request_enter_form($part_id) {
 		if(empty($part_id)){
 			trigger_error("장비 ID는 필수입니다.");
@@ -65,9 +61,24 @@ class Ajax extends CI_Controller
 		}
 	}
 
-	// 창고의 장비 재고 목록
-	public function response_1() {
+	// 시리얼로  장비 검색
+	public function search_part_by_serial($query) {
+		if(empty($query)) {
+			die('검색어가 없음!');
+		}
 
+		$sn = urldecode($query);
+
+		$this->load->model('part_m', 'part_model');
+		$em = $this->part_model->getEntityManager();
+
+		$s_part = $em->getRepository('Entity\SerialPart')->findBy(array('serial_number' => $sn));
+
+		echo ($s_part) ? '성공' : '실패!!!!!!!!'; 
 	}
 
+	// 직전위치로 장비 검색
+	public function search_part_by_previous_location($query) {
+
+	}
 }

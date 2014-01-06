@@ -33,7 +33,7 @@
                 <input class="form-control" type="text" name="query" id="query">
               </div>
               <div class="col-sm-3">
-                  <button class="btn btn-info btn-sm btn_search" type="button">검색</button>
+                  <button id="btn_search_serial" class="btn btn-info btn-sm" type="button">검색</button>
               </div>
             </div>
 
@@ -97,15 +97,78 @@ echo $select_category;
       // 검색 숨기기
       $("#search_block").hide();
 
+      // 장비 종류 선택 
       $(document).on('change', ":radio[name=search_method]", function(e){
         var sm = $(":radio[name=search_method]:checked").val();
         if(sm == '0') {
           $("#search_block").hide();
           $("#part_qty").val(1).attr('readonly', false);
-        }   else {
+
+          // 수량 선택 가능
+          $("#category_id option").attr('disabled', false);
+          $("#part_id option").attr('disabled', false);
+          $("#part_qty").val(1).attr('readonly', false);
+
+        } else {
           $("#search_block").slideDown();
+
+          // 수량 선택 불가
+          $("#category_id option").attr('disabled', true);
+          $("#part_id option").attr('disabled', true);
           $("#part_qty").val(1).attr('readonly', true);
         }
+      });
+
+      function search_serial() {
+
+      }
+
+      $("#query").keypress(function(e){
+        // e.preventDefault();
+
+        if(e.keyCode == 13)
+          $("#btn_search_serial").click();
+      });
+
+      // 시리얼 장비 검색
+      $("#btn_search_serial").click(function(e){
+        var q = $.trim($("#query").val());
+        if( q == '') {
+          alert('검색할 장비 텍스트를 입력하세요');
+          $("#query").focus();
+          return false;
+        }
+
+        // 검색 방법 (1:시리얼, 2:직전위치)
+        var sm = $(":radio[name=search_method]:checked").val();
+        var target_url = '';
+
+        if(sm == '1') {
+          target_url = '/ajax/search_part_by_serial/' + encodeURIComponent(q);
+        } else if(sm == '2') {
+          target_url = '/ajax/search_part_by_previos_location/' + encodeURIComponent(q);
+        } else {
+          alert('잘못된 검색 방법입니다.');
+          return false;
+        }
+
+        $.ajax({
+          url: target_url,
+          type: "POST",
+          data: {
+            "office_id": operation.office_id,
+            "qeury": encodeURIComponent(q),
+            "extra": "test",
+            "csrf_test_name": $.cookie("csrf_cookie_name")
+          },
+          dataType: "html",
+        })
+          .done(function(html) {
+            alert(html);
+          })
+          .fail(function(xhr, textStatus){
+            alert("Request failed: " + textStatus);
+          });
       });
 
       // 장비 종류 선택 시 장비 목록 가져오기
@@ -144,6 +207,7 @@ echo $select_category;
           });
       });
 
+      // 장비 모델 선택
       $(document).on("change", "#select_part", function(e){
         var part_id = $(":selected", this).val();
         part_id = parseInt(part_id, 10);
