@@ -49,6 +49,7 @@ class Stock extends CI_Controller
 			$data['rows'] = $em->getRepository('Entity\Part')->findAll();
 		}
 
+
 		$this->load->view('stock_list', $data);
 	}
 

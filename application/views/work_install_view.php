@@ -78,15 +78,14 @@ if($work->status == 2):
 ?>
           <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
           <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
-          <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_memo">작업 메모</button>
-          <button id="btn_store_end" class="btn btn-success" type="button" disabled>점포 종료</button>
-          <button class="btn btn-danger" type="button">업무 종료</button>
+          <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
+          <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete" <?=($item_count==0) ? 'disabled' : '' ?> >점포 완료</button>
 <?php
 endif;
 
 if($work->status == 3):
 ?>
-          <button id="btn_scan" class="btn btn-danger" type="button" data-toggle="modal" data-target="#myModal">장비 스캔</button>
+          <button class="btn btn-danger" type="button">작업 완료</button>
           <button id="btn_complete" class="btn btn-success" type="button" disabled>설치 완료</button>
 <?php
 endif;
@@ -103,6 +102,8 @@ endif;
     $this->load->view('common/modal_request_ok');           // 요청 확정
     $this->load->view('common/modal_memo');                 // 작업자 메모
     $this->load->view('common/modal_change_worker');        // 방문자 변경
+    $this->load->view('common/modal_store_complete');       // 점포 완료
+    // 작업 완료
 ?>
 
     <!-- jquery form validation -->
@@ -121,6 +122,7 @@ endif;
     // 장비 목록
     var items = [];     // array of item object
     var item = {};
+    var count_item = <?=$item_count?>;
 
     $(document).ready(function(){
       // datepicker...
@@ -138,9 +140,12 @@ endif;
         $(".date-picker", $(this).parent()).datepicker("show");
       });
 
+      // modal 공통 설정
+      $(".modal").modal({backdrop: 'static', show: false});
+
       //--------------------------------------
 
-      // 장비 등록 모달 open
+      // 장비 등록 모달 open (deprecated)
       $("#btn_register").click(function(){
           $("#myModal .modal-content").html('').load('/work/install/loadModalContent', function(result){
             $("#myModal").modal({show:true});
@@ -165,11 +170,19 @@ endif;
       tr.append($("<td/>").text(qty));
       tr.append($("<td/>").html('<button class="btn btn-danger btn-xs remove_item" type="button">X</button>'));
       $("#part_table tbody").append(tr);
+
+      $("button[data-target=#modal_store_complete]").attr('disabled', false);
     }
 
     // 행 삭제
     function callback_remove_row(what) {
-      $(what).closest('tr').fadeOut('slow');
+      $(what).closest('tr').fadeOut('slow').remove();
+
+      // 등록 장비 없을 시 점포완료 비활성
+      var len = $("#part_table tbody tr").length;
+      if(len == 0) {
+        $("button[data-target=#modal_store_complete]").attr('disabled', true);
+      }
     }
 
     </script>

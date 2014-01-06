@@ -95,16 +95,16 @@ if(count($row->getStockList())):
       <td class="col-xs-1"><?=$stock->qty_s600?></td>
       <td class="col-xs-1">
 <?php
-    if($stock->office->isMaster() === TRUE):
+      if($stock->office->isMaster() === TRUE):
 ?>
         <button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$row->id, $stock->office->id)?>">입고</button>
 <?php
-    endif;
+      endif;
 ?>
       </td>
     </tr>
 <?php
-endforeach;
+  endforeach;
 ?>
   </tbody>
 </table>

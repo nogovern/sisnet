@@ -30,7 +30,7 @@
     $("#modal_memo form").submit(function(e){
       e.preventDefault();
 
-      alert($("textarea[name=memo]", this).val());
+      alert('Sorry, 아직 구현되지 않음');
     });
   });
 </script>

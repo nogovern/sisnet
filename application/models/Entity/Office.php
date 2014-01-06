@@ -61,7 +61,15 @@ class Office
 	}
 
 	public function getStockList() {
-		return $this->stock_list;
+		$filtered_list = array();
+
+		foreach($this->stock_list as $stock) {
+			if($stock->office->id === $this->id) {
+				$filtered_list[] = $stock;
+			}
+		}
+
+		return $filtered_list;
 	}
 
 	public function isMaster() {

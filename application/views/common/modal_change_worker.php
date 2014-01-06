@@ -47,7 +47,7 @@
       e.preventDefault();
 
       var changer = $("select", this).val();
-      alert(changer);
+      alert('debug: ' + changer + '\nSorry, 아직 구현되지 않음');
     });
   });
 </script>
