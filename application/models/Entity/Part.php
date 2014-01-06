@@ -205,5 +205,18 @@ class Part
 
 		return $sum;
 	}
+
+	public function getStock($office_id) {
+		if(is_null($office_id)) {
+			trigger_error('office_id 는 필수입니다!');
+		}
+
+		foreach($this->stock_list as $stock) {
+			if($office_id == $stock->office->id) {
+				return $stock;
+			}
+		}
+		return NULL;
+	}
 }
 

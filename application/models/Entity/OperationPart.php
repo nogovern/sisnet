@@ -27,7 +27,15 @@ class OperationPart {
 	 * @OneToOne(targetEntity="Part")
 	 * @JoinColumn(name="part_id", referencedColumnName="id")
 	 */
-	protected $part; 
+	protected $part;
+
+	/**
+	 * 시리얼관리장비
+	 * 
+	 * @OneToOne(targetEntity="SerialPart")
+	 * @JoinColumn(name="part_serial_id", referencedColumnName="id")
+	 */
+	protected $serial_part;  
 
 	/** @Column(type="integer") */
 	protected $qty_request = 0; 

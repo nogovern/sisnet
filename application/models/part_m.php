@@ -114,8 +114,8 @@ class Part_m extends MY_Model
 		$stock = $office->in($part, $qty, $type);
 
 		// doctrine persist() 
-		$this->_add($new);
-		$this->_add($stock);
+		$this->persist($new);
+		$this->persist($stock);
 
 		// doctrine flush() -- flush 는 호출하는 쪽에서
 		//$this->_commit();

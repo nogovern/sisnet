@@ -212,7 +212,7 @@ echo $select_category;
             } else {
               alert('에러!');
             }
-            console.log(response);
+            // console.log(response);
           })
           .fail(function(xhr, textStatus){
             alert("Request failed: " + textStatus);
