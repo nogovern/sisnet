@@ -11,10 +11,10 @@ class Stock
 {
 	const QTY_TYPE_NEW 		= 'new';
 	const QTY_TYPE_USED 	= 'used';
-	const QTY_TYPE_S100 	= 's100';
 	const QTY_TYPE_S200 	= 's200';
-	const QTY_TYPE_S300 	= 's300';
-	const QTY_TYPE_S400 	= 's400';
+	const QTY_TYPE_S500 	= 's500';
+	const QTY_TYPE_S600 	= 's600';
+	const QTY_TYPE_S900 	= 's900';
 	
 	/**
 	 * @Id
@@ -46,10 +46,16 @@ class Stock
 	protected $qty_used = 0;
 
 	/** @Column(type="integer") */
-	protected $qty_s100 = 0;
+	protected $qty_s200 = 0;
 
 	/** @Column(type="integer") */
-	protected $qty_s400 = 0;
+	protected $qty_s500 = 0;
+
+	/** @Column(type="integer") */
+	protected $qty_s600 = 0;
+
+	/** @Column(type="integer") */
+	protected $qty_s900 = 0;
 
 	/**
 	 * 매직 메소드 (테스트용)
@@ -98,12 +104,20 @@ class Stock
 	//////////////////
 	// 비가용 수량 //
 	//////////////////
-	public function setQtyS100($qty) {
-		$this->qty_s100 = $qty;
+	public function setQtyS200($qty) {
+		$this->qty_s200 = $qty;
 	}
 
-	public function setQtyS400($qty) {
-		$this->qty_s400 = $qty;
+	public function setQtyS500($qty) {
+		$this->qty_s500 = $qty;
+	}
+
+	public function setQtyS600($qty) {
+		$this->qty_s600 = $qty;
+	}
+
+	public function setQtyS900($qty) {
+		$this->qty_s900 = $qty;
 	}
 
 	
