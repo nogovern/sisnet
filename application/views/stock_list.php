@@ -89,10 +89,10 @@ if(count($row->getStockList())):
       <td class="col-xs-2"><?=$stock->qty_minimum?></td>
       <td class="col-xs-1"><?=number_format($stock->qty_new)?></td>
       <td class="col-xs-1"><?=number_format($stock->qty_used)?></td>
-      <td class="col-xs-1">0</td>
-      <td class="col-xs-1">0</td>
-      <td class="col-xs-1">0</td>
-      <td class="col-xs-1">0</td>
+      <td class="col-xs-1"><?=$stock->qty_s200?></td>
+      <td class="col-xs-1"><?=$stock->qty_s900?></td>
+      <td class="col-xs-1"><?=$stock->qty_s500?></td>
+      <td class="col-xs-1"><?=$stock->qty_s600?></td>
       <td class="col-xs-1">
 <?php
     if($stock->office->isMaster() === TRUE):
