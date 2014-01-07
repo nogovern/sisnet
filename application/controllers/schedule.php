@@ -8,74 +8,37 @@
  **/
 class Schedule extends CI_Controller
 {
-	public function __construct($foo = null) {
+	public function __construct() {
 		parent::__construct();
+
+		$this->load->model('calendar_m');
 	}
 
 	public function index()
 	{
-		$data['title'] = '일정';
-
-		$this->load->library('calendar', $this->_setting());
-		$data['calendar'] = $this->calendar->generate();
-		
-		$this->load->view('calendar', $data);
+		$this->calendar();
 	}
 
-	public function month($year= null, $month=null, $day=null) {
-		$year  = (empty($year) || !is_numeric($year))?  date('Y') :  $year;
-		$month = (is_numeric($month) &&  $month > 0 && $month < 13)? $month : date('m');
-		$day   = (is_numeric($day) &&  $day > 0 && $day < 31)?  $day : date('d');
+	public function calendar($year= null, $month=null) {
+		if(!$year) {
+			$year = date('Y');
+		}
+
+		if(!$month) {
+			$month = date('m');
+		}
+
+		if(!$day = $this->input->post('day')) {
+			;
+		}
 
 		$data['title'] = '일정';
-		
-		$this->load->library('calendar', $this->_setting());
-		$data['calendar'] = $this->calendar->generate($year, $month, $day);
+
+		$this->load->model('calendar_m');
+		$data['calendar'] = $this->calendar_m->generate($year, $month);
 
 		$this->load->view('calendar', $data);	
 
-	}
-
-	private function _setting()
-	{
-		$prefs = array(
-			'start_day'	=> 'sunday',
-			'show_next_prev'	=> TRUE,
-			'next_prev_url'		=> site_url('schedule/month/'),
-			'month_type'		=> 'long',
-			'day_type'			=> 'short',
-			'template' => '
-		   {table_open}<table class="table table-bordered">{/table_open}
-
-		   {heading_row_start}<tr>{/heading_row_start}
-
-		   {heading_previous_cell}<th><a href="{previous_url}">&lt;&lt;</a></th>{/heading_previous_cell}
-		   {heading_title_cell}<th colspan="{colspan}">{heading}</th>{/heading_title_cell}
-		   {heading_next_cell}<th><a href="{next_url}">&gt;&gt;</a></th>{/heading_next_cell}
-
-		   {heading_row_end}</tr>{/heading_row_end}
-
-		   {week_row_start}<tr>{/week_row_start}
-		   {week_day_cell}<th>{week_day}</th>{/week_day_cell}
-		   {week_row_end}</tr>{/week_row_end}
-
-		   {cal_row_start}<tr>{/cal_row_start}
-		   {cal_cell_start}<td>{/cal_cell_start}
-
-		   {cal_cell_content}<a href="{content}">{day}</a>{/cal_cell_content}
-		   {cal_cell_content_today}<div class="highlight"><a href="{content}">{day}</a></div>{/cal_cell_content_today}
-
-		   {cal_cell_no_content}{day}{/cal_cell_no_content}
-		   {cal_cell_no_content_today}<div class="highlight">{day}</div>{/cal_cell_no_content_today}
-
-		   {cal_cell_blank}&nbsp;{/cal_cell_blank}
-
-		   {cal_cell_end}</td>{/cal_cell_end}
-		   {cal_row_end}</tr>{/cal_row_end}
-
-		   {table_close}</table>{/table_close}
-		');
-		return $prefs;
 	}
 
 } // END class Schedule extends CI_Controller
