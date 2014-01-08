@@ -120,8 +120,8 @@ class Stock extends CI_Controller
 					$this->input->post('qty_minimum') == 0  
 					&& $this->input->post('qty_new') == 0  
 					&& $this->input->post('qty_used') == 0  
-					&& $this->input->post('qty_s100') == 0  
-					&& $this->input->post('qty_s400') == 0 )
+					&& $this->input->post('qty_s200') == 0  
+					&& $this->input->post('qty_s500') == 0 )
 				{
 					trigger_error('수량이 모두 0 일수 없습니다');
 					exit;
@@ -138,13 +138,15 @@ class Stock extends CI_Controller
 				$stock->setQtyMinimum((int)$this->input->post('qty_minimum'));
 				$stock->setQtyNew((int)$this->input->post('qty_new'));
 				$stock->setQtyUsed((int)$this->input->post('qty_used'));
-				$stock->setQtyS100((int)$this->input->post('qty_s100'));
-				$stock->setQtyS400((int)$this->input->post('qty_s400'));
+				$stock->setQtyS200((int)$this->input->post('qty_s200'));
+				$stock->setQtyS500((int)$this->input->post('qty_s500'));
 
 				$em->persist($stock);
 				$em->flush();
 
 				redirect('/stock');
+			} else {
+				alert("재고 등록되어 있으면 안됨", '/stock');
 			}
 		}
 

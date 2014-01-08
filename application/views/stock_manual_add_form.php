@@ -80,17 +80,17 @@
                         설치중
                       </label>
                       <div class="col-sm-3">
-                        <input type="text" placeholder="0" id="qty_s100" name="qty_s100" class="form-control">
+                        <input type="text" placeholder="0" id="qty_s500" name="qty_s200" class="form-control">
                       </div>
                       <span class="help-inline col-sm-7"> <i class="fa fa-info-circle"></i> 수량을 입력하세요 </span>
                   </div>
 
                   <div class="form-group">
-                      <label class="col-sm-2 control-label" for="qty_s400">
-                        폐기중
+                      <label class="col-sm-2 control-label" for="qty_s500">
+                        수리중
                       </label>
                       <div class="col-sm-3">
-                        <input type="text" placeholder="0" id="qty_s400" name="qty_s400" class="form-control">
+                        <input type="text" placeholder="0" id="qty_s500" name="qty_s500" class="form-control">
                       </div>
                       <span class="help-inline col-sm-7"> <i class="fa fa-info-circle"></i> 수량을 입력하세요 </span>
                   </div>

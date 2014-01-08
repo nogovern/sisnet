@@ -148,7 +148,7 @@ endforeach;
           var query = $(this).data('query');
           var request_uri = url + '/' + query;
 
-          console.log(request_uri);
+          // console.log(request_uri);
 
           $.colorbox({
             'href'  : request_uri,
