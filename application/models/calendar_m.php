@@ -33,18 +33,20 @@ class Calendar_m extends MY_Model
 			{heading_row_end}</tr>{/heading_row_end}
 
 			{week_row_start}<tr>{/week_row_start}
-			{week_day_cell}<th>{week_day}</th>{/week_day_cell}
+			{week_day_cell}<th width="14.28%">{week_day}</th>{/week_day_cell}
 			{week_row_end}</tr>{/week_row_end}
 
 			{cal_row_start}<tr>{/cal_row_start}
 			{cal_cell_start}<td>{/cal_cell_start}
 
 			{cal_cell_content}
-				<div>{day}</div>
-				<div>{content}</div>
+				<div><span class="badge">{day}</span></div>
+				<div class="help-block">{content}</div>
 			{/cal_cell_content}
 
-			{cal_cell_content_today}<div class="highlight"><a href="{content}">{day} {content}</a></div>{/cal_cell_content_today}
+			{cal_cell_content_today}
+				<div class="highlight"><a href="{content}">{day}</a></div>
+			{/cal_cell_content_today}
 
 			{cal_cell_no_content}{day}{/cal_cell_no_content}
 			{cal_cell_no_content_today}<div class="highlight">{day}</div>{/cal_cell_no_content_today}
@@ -69,7 +71,7 @@ class Calendar_m extends MY_Model
 	public function generate($year=null, $month=null) {
 		$this->load->library('calendar', $this->config);
 
-		$data = array('6' => 'Smaple day', '10' => 'Todo like this');
+		$data = array('6' => 'Smaple day', '10' => '1. enter<br>2. Install<br/>3. Evacuation', '28' => '1. enter<br>2. Install<br/>3. Evacuation');
 
 		return $this->calendar->generate($year, $month, $data);
 	}
