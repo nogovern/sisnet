@@ -18,7 +18,7 @@ class Auth {
 		// 사용 편하게
 		$session = $this->CI->session;
 		$model = $this->CI->user_model;
-		$dm = $this->CI->doctrine->em;
+		$em = $this->CI->doctrine->em;
 
 		$user = $model->getByUsername($username);
 
@@ -31,10 +31,11 @@ class Auth {
 		// 성공   //
 		////////////
 
-		$session->set_userdata('username', $username);
-		$session->set_userdata('name', $user->name);
-		$session->set_userdata('type', $user->type);
-		$session->set_userdata('type_text', '시스네트');
+		$session->set_userdata('user_id', $user->id);
+		$session->set_userdata('username', $username);			// 회원 ID
+		$session->set_userdata('user_name', $user->name);
+		$session->set_userdata('user_type', $user->type);
+		$session->set_userdata('user_belongto', '시스네트');
 
 		// 소속 사무소 or 소속 거래처
 		$session->set_userdata('office_id', ($user->office) ? $user->office->id : NULL);

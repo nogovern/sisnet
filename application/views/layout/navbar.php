@@ -64,7 +64,7 @@ if(0) {
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
 <?php 
 if($this->auth->isLoggedIn()) {
-  echo $this->session->userdata('name') ;
+  echo $this->session->userdata('user_name') ;
   echo ' (';
   echo  $this->session->userdata('office_name');
   echo  $this->session->userdata('company_name');

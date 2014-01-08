@@ -68,7 +68,7 @@ define('GS2_OP_ENTER_STATUS_6', 	'9');		// 승인
 // 설치
 define('GS2_OP_INSTALL_STATUS_1', 	'요청'); 
 define('GS2_OP_INSTALL_STATUS_2', 	'확정');
-define('GS2_OP_INSTALL_STATUS_3', 	'입력');
+define('GS2_OP_INSTALL_STATUS_3', 	'점포완료');
 define('GS2_OP_INSTALL_STATUS_4', 	'완료');
 define('GS2_OP_INSTALL_STATUS_5', 	'승인');
 
