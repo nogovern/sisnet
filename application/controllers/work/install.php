@@ -9,6 +9,12 @@ class Install extends CI_Controller
 	{
 		parent::__construct();
 
+		// 로그인 확인
+		if(!$this->auth->isLoggedIn()) {
+			$this->load->helper('alert');
+			alert('로그인 하셔야 합니다', site_url('/'));
+		}
+
 		$this->load->model('work_m', 'work_model');
 	}
 
@@ -216,7 +222,53 @@ class Install extends CI_Controller
 
 			echo '[Install] remove_item action is done';
 		} 
+		// 점포 완료
+		elseif( $action == 'store_complete') {
 
-	}
+			// 업무 log 생성
+			$log_data = array(
+				'content' => $this->input->post('memo'),
+				'date_complete' => $this->input->post('date_complete'),
+				'type' => '1',
+				'next_status' => '3',
+				);
 
+			$this->work_model->addLog($op->id, $log_data);
+
+			// 업무 상태 변경 (메소드로 통일 하자);
+			$op->setStatus('3');
+			$op->setDateFinish($this->input->post('date_complete'));
+			$op->setDateModify();
+
+
+			$em->persist($op);
+			$em->flush();
+
+			echo $action . ' is done.';
+			exit;
+		}
+		// 설치 업무 완료
+		elseif( $action == 'operation_complete') {
+			// 업무 log 생성
+			$log_data = array(
+				'content' => '작업을 종료합니다',
+				'date_complete' => $this->input->post('date_complete'),
+				'type' => '1',
+				'next_status' => '4',
+				);
+			$this->work_model->addLog($op->id, $log_data);
+
+			// 업무 상태 변경
+			$this->work_model->nextStatus($op->id);
+			
+			// 장비 출고 후 재고 반영
+			$this->work_model->deliveryItem($op->id);
+
+			// 실제 DB 반영
+			$this->work_model->_commit();
+			
+			echo $action . ' is done.';
+		}
+
+	}// end of ajax
 }

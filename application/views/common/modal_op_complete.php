@@ -1,31 +1,31 @@
 <!-- modal dialog -->
-<div class="modal fade" id="modal_store_complete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_op_complete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">점포 완료</h4>
+        <h4 class="modal-title">작업 완료</h4>
       </div>
       <!-- start form -->
-      <form role="form" class="form form-horizontal">
+      <form enctype="multipart/form-data" role="form" class="form form-horizontal">
       <div class="modal-body">
-        <div class="well well-sm">
-          <span class="text-danger">점포 완료 하려고 합니다.</span>
-        </div>
-        
+        <ul class="well well-md" style="list-style: none;">
+          <li> <span class="text-danger">작업 완료 하려고 합니다.</span></li>
+          <li> <span class="text-danger">(주의) 실제 설치 수량이 재고에 반영됩니다.</span></li>
+        </ul>
+          
         <div class="form-group">
           <label class="form-label col-sm-3">완료일시</label>
           <div class="input-group col-sm-6">
-            <input type="text" name="date_store_complete" class="form-control date-picker">
+            <input type="text" name="date_complete" class="form-control date-picker">
             <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label col-sm-3">메  모</label>
+          <label class="form-label col-sm-3">파일 첨부</label>
           <div class="col-sm-8">
-            <textarea name="memo" class="form-control" rows="5"></textarea>
-            <span class="help-block"><small class="text-info">메모 입력하세요...</small></span>
+            <input type="file" class="form-control" name="file1"></input>
           </div>
         </div>
 
@@ -41,14 +41,14 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#modal_store_complete form").submit(function(e){
+    $("#modal_op_complete form").submit(function(e){
       e.preventDefault();
 
-      var target_url = "<?=site_url("/work/install/ajax/store_complete")?>";
-      var date_complete = $("input[name=date_store_complete]", this).val();
+      var target_url = "<?=site_url("/work/install/ajax/operation_complete")?>";
+      var date_complete = $("input[name=date_complete]", this).val();
       if(date_complete == ''){
-        alert('점포 완료일시를 입력하세요');
-        $("input[name=date_store_complete]", this).focus();
+        alert('작업 완료일시를 입력하세요');
+        $("input[name=date_complete]", this).focus();
         return false;
       }
 

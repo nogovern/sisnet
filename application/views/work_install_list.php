@@ -14,8 +14,10 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
         <div class="col-md-12">
           <ul class="nav nav-pills">
             <li class="<?=($type=='')?'active':''?>"><a href="#">전체</a></li>
-            <li class=""><a href="#">처리중</a></li>
-            <li class=""><a href="#">확인중</a></li>
+            <li class=""><a href="#">요청</a></li>
+            <li class=""><a href="#">요청확정</a></li>
+            <li class=""><a href="#">점포완료</a></li>
+            <li class=""><a href="#">작업완료</a></li>
             <li class=""><a href="#">완료</a></li>
           </ul>
 
@@ -42,9 +44,9 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
   <?php
   foreach($rows as $row):
     switch($row->status) {
-      case '1': $label_color = 'label-default';break;
-      case '2': $label_color = 'label-info';break;
-      case '3': $label_color = 'label-warning';break;
+      case '1': $label_color = 'label-danger';break;
+      case '2': $label_color = 'label-warning';break;
+      case '3': $label_color = 'label-info';break;
       case '4': $label_color = 'label-success';break;
       default : $label_color = 'label-default';break;
     }

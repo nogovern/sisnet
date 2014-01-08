@@ -30,7 +30,7 @@ $this->load->view('_work_view_header', $work);
                     <th>S/N</th>
                     <th>직전위치</th>
                     <th>등록수량</th>
-                    <th>삭제</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -51,7 +51,11 @@ foreach($items as $item):
                     <td><?=''?></td>
                     <td><?=$item->qty_request?></td>
                     <td style="width:150px;">
+                      <?php if($work->getStatus() < '4'):?>
                       <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
+                      <?php else:?>
+                      <i class="fa fa-check scan_status" style="color:green;font-size:20px;"></i>
+                      <?php endif;?>
                     </td>
                   </tr>
 <?php
@@ -85,11 +89,17 @@ endif;
 
 if($work->status == 3):
 ?>
-          <button class="btn btn-danger" type="button">작업 완료</button>
+          <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
           <button id="btn_complete" class="btn btn-success" type="button" disabled>설치 완료</button>
 <?php
 endif;
+if($work->status == 4):
 ?>
+          <button id="btn_confirm" class="btn btn-success" type="button">승인</button>
+<?php
+endif;
+?>
+
         </div>
       </div>
     </div><!-- end of div.container -->
@@ -103,6 +113,7 @@ endif;
     $this->load->view('common/modal_memo');                 // 작업자 메모
     $this->load->view('common/modal_change_worker');        // 방문자 변경
     $this->load->view('common/modal_store_complete');       // 점포 완료
+    $this->load->view('common/modal_op_complete');       // 작업 완료
     // 작업 완료
 ?>
 
