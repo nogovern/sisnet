@@ -2,6 +2,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Work_m extends MY_Model {
+	private $operation;
 
 	public function __construct() {
 		parent::__construct();
@@ -10,6 +11,16 @@ class Work_m extends MY_Model {
 		$this->setTableName('gs2_operations');
 		
 		$this->repo = $this->em->getRepository($this->getEntityName());
+	}
+
+	// CI 에서는 모델 생성할 때 생성 인자를 전달할 수 없으므로
+	// 모델 생성 후 operation entity 를 얻기 위해
+	// 
+	// $this->work_model->get(1) 과 동작은 비슷하지만 
+	// 클래스 변수에 넣는다는 것이 틀리다. 
+	// 안씀!!
+	public function initialize($operation_id) {
+		$this->operation = $this->repo->find($operation_id);
 	}
 
 	public function getByName($value) {
@@ -42,14 +53,18 @@ class Work_m extends MY_Model {
 	 * @return [type] [description]
 	 */
 	public function getEnterList() {
-		$criteria = array('type' => GS2_OP_TYPE_ENTER);
-		$rows = $this->repo->findBy($criteria);
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('\Entity\Operation', 'w')
+			->where('w.type >= 100')
+			->andWhere('w.type < 200')
+			->orderBy('w.id', 'DESC');
 
-		// Location 해석
+		$rows = $qb->getQuery()->getResult();
+
+		// 입고 업무의 작업 장소는 "납품처"
 		foreach($rows as $row) {
-			if($row->getWorkLocation()) {
-				$row->location_object = $this->parseLocation($row->getWorkLocation());
-			}
+			$row->store = $this->parseLocation($row->work_location);
 		}
 
 		return $rows;
@@ -65,7 +80,8 @@ class Work_m extends MY_Model {
 		$qb->select('w')
 			->from('\Entity\Operation', 'w')
 			->where('w.type >= 200')
-			->andWhere('w.type < 300');
+			->andWhere('w.type < 300')
+			->orderBy('w.id', 'DESC');
 
 		$rows = $qb->getQuery()->getResult();
 
@@ -78,9 +94,19 @@ class Work_m extends MY_Model {
 
 	// 철수 목록
 	public function getEvaucationList() {
-		$criteria = array('type' => '300');
-		$rows = $this->repo->findBy($criteria);
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('\Entity\Operation', 'w')
+			->where('w.type >= 300')
+			->andWhere('w.type < 400')
+			->orderBy('w.id', 'DESC');
 
+		$rows = $qb->getQuery()->getResult();
+
+		// 작업 장소는 "점포"
+		foreach($rows as $row) {
+			$row->store = $this->parseLocation($row->work_location);
+		}
 		return $rows;
 	}
 
@@ -152,6 +178,32 @@ class Work_m extends MY_Model {
 		return $new;
 	}
 
+	// 업무 메인 수정
+	public function updateOperation($id, $data) {
+		$op = $this->repo->find($id);
+
+		if(isset($data['date_request'])) {
+			$op->setDateRequest($data['date_request']);
+		}
+
+		if(isset($data['date_work'])) {
+			$op->setDateWork($data['date_work']);
+		}
+
+		if(isset($data['date_finish'])) {
+			$op->setDateFinish($data['date_finish']);
+		}
+
+		// 필수
+		if(isset($data['status'])) {
+			$op->setStatus($data['status']);
+		}
+
+		$op->setDateModify();
+
+		$this->em->persist($op);
+	}
+
 	// 업무-장비 목록 생성(필요시)
 	public function addItem($op, $part, $qty=1, $is_new='Y', $extra = array()) {
 		$item = new Entity\OperationPart;
@@ -178,30 +230,46 @@ class Work_m extends MY_Model {
 		return $item;
 	}
 
+	// 업무 장비 수정
+	public function updateItem($item) {
+		;
+	}
+
 	// 업무-장비 목록 삭제
 	public function removeItem($item) {
 		$this->em->remove($item);
 	}
 
-	// 업무-장비 수정
-	public function updateItem($item, $qty) {
-		$this->em->persist($item);
-	}
-
 	// 업무-파일 생성(필요시)
-	public function addFile($op, $data) {
+	public function addFile($id, $data) {
 
 	}
 
 	// 업무-메모 생성
-	public function addComment($op, $data) {
+	public function addComment($id, $data) {
 
 	}
 	
 
 	// 업무-로그 생성
-	public function addLog($op, $data) {
+	public function addLog($id, $data) {
+		$op = $this->repo->find($id);
+		if(!$op){	
+			die("에러! operation 객체를 얻을 수 없음");
+		}
 
+		$log = new Entity\OperationLog;
+		$writer = $this->em->getReference('Entity\User', $this->session->userdata('user_id'));
+		$log->setUser($writer);
+		$log->setOperation($op);
+		$log->setContent($data['content']);
+		$log->setType($data['type']);			// 로그 타입 (1: 시스템, 2:유저)
+		if(isset($data['next_status'])) {
+			$log->setNextStatus($data['next_status']);
+		}
+		$log->setDateRegister();
+
+		$this->em->persist($log);
 	}
 
 
@@ -270,7 +338,37 @@ class Work_m extends MY_Model {
 
 	}
 
-	
+	public function nextStatus($id) {
+		$op = $this->repo->find($id);
+		if(!$op) {
+			die("에러! operation 객체를 얻을 수 없음");
+		}
+
+		$op_data = array(
+			'status' => $op->getStatus() + 1,
+			);
+
+		$this->updateOperation($id, $op_data);
+	}
+
+	// 장비 출고 
+	public function deliveryItem($id) {
+		$op = $this->repo->find($id);
+
+		$items = $op->getItemList();
+		foreach($items as $item) {
+			$item->setQtyComplete($item->getQtyRequest());
+			$item->setCompleteFlag(TRUE);
+
+			$part = $this->em->getReference('Entity\Part', $item->part->id);
+			$stock = $part->getStock($op->office->id);
+
+			$qty = $item->getQtyRequest();
+			$stock->setQtyS200($stock->qty_s200 - $qty);
+
+			$this->em->persist($stock);
+		}
+	}	
 }
 
 
