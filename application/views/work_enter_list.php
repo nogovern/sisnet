@@ -78,10 +78,13 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
             </tbody>
 
           </table>
-
-          <p>
+          
+          <div class="well well-sm">
+            입고 요청은 "재고" 리스트에서 가능합니다.
+            <!--
             <a href="/work/enter/request"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;입고 요청 등록</span></a>
-          </p>
+            -->
+          </div>
 
         </div>
       </div>
