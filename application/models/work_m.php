@@ -84,6 +84,10 @@ class Work_m extends MY_Model {
 		return $rows;
 	}
 
+	public function getCloseList() {
+		return $this->getEvaucationList();
+	}
+
 	///////////////
 	// 설치 업무 생성
 	///////////////
