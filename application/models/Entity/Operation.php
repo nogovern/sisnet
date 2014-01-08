@@ -149,6 +149,10 @@ class Operation
 		return $this->$key;
 	}
 
+	public function getStatus() {
+		return $this->status;
+	}
+
 	public function getDateRegister($long = FALSE) {
 		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
 		return ($this->date_register) ? $this->date_register->format($format) : '';

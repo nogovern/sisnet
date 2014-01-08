@@ -121,5 +121,13 @@ class OperationPart {
 		return ($this->is_complete == 'Y') ? TRUE : FALSE;
 	}
 
+	public function getQtyRequest(){
+		return $this->qty_request;
+	}
+
+	public function getQtyComplete() {
+		return $this->qty_complete;
+	}
+
 	
 }
