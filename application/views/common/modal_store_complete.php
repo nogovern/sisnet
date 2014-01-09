@@ -1,7 +1,5 @@
 <!-- modal dialog -->
 <div class="modal fade" id="modal_store_complete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">점포 완료</h4>
@@ -35,8 +33,6 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
       </div>
       </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <script type="text/javascript">
