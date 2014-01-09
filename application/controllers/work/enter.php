@@ -10,6 +10,12 @@ class Enter extends CI_Controller
 	{
 		parent::__construct();
 
+		// 로그인 확인
+		if(!$this->auth->isLoggedIn()) {
+			$this->load->helper('alert');
+			alert('로그인 하셔야 합니다', site_url('/'));
+		}
+
 		$this->load->model('work_m', 'work_model');
 	}
 
@@ -68,7 +74,7 @@ class Enter extends CI_Controller
 
 		$data['form_hiddens'] = array(
 				'op_type'	=> GS2_OP_TYPE_ENTER,	// 업무 종류
-				'user_id'	=> '8',
+				'user_id'	=> $this->session->userdata('user_id'),
 				'part_id'	=> $part_id,
 				'office_id'	=> $office_id
 			);

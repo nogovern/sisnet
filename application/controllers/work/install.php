@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* 설치 업무 컨트롤러
+* 설치 컨트롤러
 */
 class Install extends CI_Controller
 {
@@ -78,6 +78,7 @@ class Install extends CI_Controller
 		$this->load->helper('form');
 
 		$data['title'] = '설치 업무';
+		$data['user_id'] = $this->session->userdata('user_id');
 
 		// 규칙 설정
 		$this->form_validation->set_rules('store_name', '설치 점포', 'required');
@@ -85,14 +86,10 @@ class Install extends CI_Controller
 		$this->form_validation->set_rules('date_request', '설치 일시', 'required');
 		$this->form_validation->set_rules('office_id', '설치 사무소', 'required|greater_than[0]');
 
-		// 재고 사무소 목록
-		$arr_office = array();		
-		$arr_office[0] = '-- 선택하세요 --';
+		// 사무소 목록
 		$this->load->model('office_m', 'office_model');
 		$rows = $this->office_model->getList();
-		foreach($rows as $row) {
-			$arr_office[$row->id] = $row->name;
-		}
+		$arr_office = $this->office_model->convertForSelect($rows);
 
 		// selectbox 생성
 		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control required"');
