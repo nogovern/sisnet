@@ -162,6 +162,11 @@ endif;
             $("#myModal").modal({show:true});
           });
       });
+
+      // 승인 버튼
+      $("#btn_confirm").click(function(){
+        alert('승인 합니다... 미구현');
+      });
     });
     
     //  장비리스트에 행 추가

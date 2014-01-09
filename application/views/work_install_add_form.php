@@ -15,7 +15,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         echo form_hidden('store_id', '', ' id="store_id"');
 
         // test 용 
-        echo form_hidden('user_id', '8', ' id="user_id"');        
+        echo form_hidden('user_id', "$user_id", ' id="user_id"');        
 ?>
           <h2><span class="fa fa-pencil-square-o"></span> 설치 요청 양식</h2>
             <fieldset class="col-sm-7">
@@ -33,19 +33,23 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 
               <div class="form-group">
                 <label class="control-label col-sm-3">점포 개점일</label>
-                <div class="input-group col-sm-6">
-                    <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly>
-                    <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                      <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly>
+                      <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
+                  </div>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="control-label col-sm-3">설치 일시</label>
-                <div class="input-group col-sm-6">
-                  <input type="text" id="date_request" name="date_request" class="form-control date-picker" readonly>
-                  <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <input type="text" id="date_request" name="date_request" class="form-control date-picker" readonly>
+                    <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
+                  </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <select class="form-control" name="date_request_hour">
                     <?php for($i=0; $i < 25; $i++):?>
                     <option value="<?=$i?>"><?=$i?>시</option>
