@@ -21,42 +21,42 @@ if(0) {
             <li class="dropdown" id="page-admin">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리자 <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li id="page-admin-user"><a href="/admin/user">사용자</a></li>
-                <li id="page-admin-office"><a href="/admin/office">사무소</a></li>
-                <li id="page-admin-company"><a href="/admin/company">거래처</a></li>
-                <li id="page-admin-store"><a href="/admin/store">점포</a></li>
+                <li id="page-admin-user"><a href="<?=site_url('/admin/user')?>">사용자</a></li>
+                <li id="page-admin-office"><a href="<?=site_url('/admin/office')?>">사무소</a></li>
+                <li id="page-admin-company"><a href="<?=site_url('/admin/company')?>">거래처</a></li>
+                <li id="page-admin-store"><a href="<?=site_url('/admin/store')?>">점포</a></li>
                 <li class="divider"></li>
-                <li id="page-admin-part"><a href="/admin/part">장비</a></li>
-                <li id="page-admin-serialpart"><a href="/admin/part/serial">시리얼관리장비</a></li>
-                <li id="page-admin-category"><a href="/admin/category">장비 카테고리</a></li>
+                <li id="page-admin-part"><a href="<?=site_url('/admin/part')?>">장비</a></li>
+                <li id="page-admin-serialpart"><a href="<?=site_url('/admin/part/serial')?>">시리얼관리장비</a></li>
+                <li id="page-admin-category"><a href="<?=site_url('/admin/category')?>">장비 카테고리</a></li>
               </ul>
             </li>
 
-            <li id="page-schedule"><a href="/schedule">일정</a></li>
-            <li id="page-stock"><a href="/stock">재고</a></li>
+            <li id="page-schedule"><a href="<?=site_url('/schedule')?>">일정</a></li>
+            <li id="page-stock"><a href="<?=site_url('/stock')?>">재고</a></li>
 
             <li class="dropdown" id="page-enter">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">입고 <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="/work/enter/">입고 목록 보기</a></li>
-                <li><a href="/work/enter/request">입고 요청</a></li>
-                <li><a href="/work/enter/check_request">입고 요청 확인</a></li>
+                <li><a href="<?=site_url('/work/enter/')?>">입고 목록 보기</a></li>
+                <li><a href="#">입고 요청 확인</a></li>
               </ul>
             </li>
 
             <li class="dropdown" id="page-install">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">설치 <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="/work/install">목록 보기</a></li>
-                <li><a href="/work/install/new">신규</a></li>
-                <li><a href="/work/install/hujum_s">휴점S(매장 장비)</a></li>
-                <li><a href="/work/install/hujum_c">휴점C</a></li>
+                <li><a href="<?=site_url('/work/install')?>">목록 보기</a></li>
+                <li><a href="<?=site_url('/work/install/new')?>">신규</a></li>
+                <li><a href="<?=site_url('/work/install/hujum_s')?>">휴점S(매장 장비)</a></li>
+                <li><a href="<?=site_url('/work/install/hujum_c')?>">휴점C</a></li>
                 <li class="divider"></li>
-                <li class="nav-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li class="nav-header"> Nav header</li>
+                <li><a href="#">UI 테스트</a></li>
               </ul>
             </li>
+  
+             <li id="page-close"><a href="<?=site_url('/work/close')?>">철수</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">
