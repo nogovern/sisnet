@@ -23,6 +23,7 @@
                 <th>구분</th>
                 <th>아이디</th>
                 <th>이름</th>
+                <th>패스워드(임시)</th>
                 <th>소속/거래처</th>
                 <th>등록일자</th>
                 <th>상태</th>
@@ -39,6 +40,7 @@
                 <td><?=$row->getUserTypeText()?></td>
                 <td><?=$row->username?></td>
                 <td><?=$row->name?></td>
+                <td><?=$row->password?></td>
                 <td>
 <?php
   if($row->type == 1) {
