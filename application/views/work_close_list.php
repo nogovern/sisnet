@@ -14,8 +14,10 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
         <div class="col-md-12">
           <ul class="nav nav-pills">
             <li class="<?=($type=='')?'active':''?>"><a href="#">전체</a></li>
-            <li class=""><a href="#">처리중</a></li>
-            <li class=""><a href="#">확인중</a></li>
+            <li class=""><a href="#">요청</a></li>
+            <li class=""><a href="#">요청확정</a></li>
+            <li class=""><a href="#">점포완료</a></li>
+            <li class=""><a href="#">작업완료</a></li>
             <li class=""><a href="#">완료</a></li>
           </ul>
 
@@ -30,7 +32,7 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
                 <th>진행상태</th>
                 <th>등록일</th>
                 <th>요청일</th>
-                <th>개점일</th>
+                <th>철수일</th>
                 <th>예정일</th>
                 <th>완료일</th>
                 <th>메모</th>
@@ -57,7 +59,7 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
                 <td><?=$row->user->name?></td>
                 <td><?=$row->office->name?></td>
                 <td>
-                  <span class="label <?=$label_color?>"><?=constant("GS2_OP_INSTALL_STATUS_" .$row->status)?></span>
+                  <span class="label <?=$label_color?>"><?=constant("GS2_OP_CLOSE_STATUS_" .$row->status)?></span>
                 </td>
                 <td><?=$row->getDateRegister();?></td>
                 <td><?=$row->getDateRequest();?></td>
@@ -65,7 +67,7 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
                 <td><?=$row->getDateWork();?></td>
                 <td><?=$row->getDateFinish();?></td>
                 <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
-                <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/install/view/') . '/' . $row->id ?>">보기</button></td>
+                <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/close/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php
   endforeach;
@@ -75,7 +77,7 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
           </table>
 
           <p>
-            <a href="/work/install/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청 등록</span></a>
+            <a href="/work/close/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청 등록</span></a>
           </p>
 
         </div>
