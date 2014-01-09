@@ -40,10 +40,6 @@ class Util extends CI_Controller
 			$q = urldecode($q);		
 
 			$rows = $this->store_model->findByName($q);
-			if(!count($rows)) {
-				alert_colorbox_close('해당 점포명으로 검색 결과가 없음\n다시 검색해봐');
-				exit;
-			}
 			$data['rows'] = $rows;
 
 			$this->load->view('util/store_search_result', $data);
