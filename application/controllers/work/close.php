@@ -41,8 +41,8 @@ class Close extends CI_Controller
 
 		// 규칙 설정
 		$this->form_validation->set_rules('office_id', '설치 사무소', 'required|greater_than[0]');
-		$this->form_validation->set_rules('store_name', '설치 점포', 'required');
-		$this->form_validation->set_rules('date_work', '점포 폐점일', 'required');
+		$this->form_validation->set_rules('store_id', '설치 점포', 'required');
+		$this->form_validation->set_rules('date_close', '점포 폐점일', 'required');
 		$this->form_validation->set_rules('date_request', '설치 일시', 'required');
 
 		// 담당 사무소 목록
@@ -56,7 +56,11 @@ class Close extends CI_Controller
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('work_close_add_form', $data);
 		} else {
-			echo '철수 요청 가상 등록. but...';
+			$post = $this->input->post();
+			$post['date_work'] = $this->input->post('date_close');
+			
+			$this->work_model->createCloseOperation($this->input->post('op_type'), $post);
+			alert('철수 요청을 등록하였습니다.', site_url('/work/close'));
 		}
 	}
 

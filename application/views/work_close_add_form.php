@@ -28,7 +28,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
                 </div>
                 <div class="col-sm-4" style="padding-top:1px;">
                   <button type="button" id="btn_search" class="btn btn-info">검색</button>
-                  <button type="button" id="btn_search2" class="btn btn-default">검색 - dialog</button>
+                  <button type="button" id="btn_search2" class="btn btn-default">검색2</button>
                 </div>
               </div>
 
@@ -133,7 +133,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         });
       });
 
-      // datepicke 아이콘 이벤트
+      // datepicker 아이콘 이벤트
       $(".btn_date").click(function(e){
         var pa = $(this).parent();
         $(".date-picker", pa).datepicker("show");
@@ -159,36 +159,37 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         });
       });
 
-      // $("form").validate({
-      // });
-      $("#btn_search2").click(function(e){
-        $("#dialog-form2").dialog("open");
+      $("form").validate({
+        rules: {
+          store_id: {
+            required: true,
+            min: 1
+          },
+          office_id: {
+            required: true,
+            min: 1
+          },
+          store_name: "required",
+          date_close: "required",
+          date_request: "required"
+        }, 
+        submitHandler: function(form) {
+          form.submit();
+        }
       });
 
-      $("#dialog-form2").dialog({
+      //////////
+      // test //
+      //////////
+      $("#btn_search2").click(function(e){
+        $("#dialog-form").dialog("open");
+      });
+
+      $("#dialog-form").dialog({
         autoOpen: false,
         modal: true,
         width: "auto",
-        height: "auto",
-        open: function(ev, ui) {
-          $("#inner_frame").attr('src', '<?=site_url("/admin/store/add")?>');
-        },
-        buttons: {
-          "저장": function() {
-            $(this).dialog('close');
-          },
-          "닫기": function() {
-            $(this).dialog('close');
-          }
-        }
-      });
-
-      $("form").submit(function(e){
-        if($("#store_name").val() === '') {
-          alert('필수 항목!');
-          $("#store_name").focus();
-          return false;
-        }
+        height: "auto"
       });
     }); //end of jQuery ready
     
@@ -203,6 +204,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 <?php
 $this->load->view('layout/footer');
 ?>
+
 <div id="dialog-form" title="Create new user">
   <p class="validateTips">All form fields are required.</p>
   <form class="form">

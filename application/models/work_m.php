@@ -115,16 +115,6 @@ class Work_m extends MY_Model {
 	}
 
 	///////////////
-	// 설치 업무 생성
-	///////////////
-	public function createInstallOperation($type, $post) {
-		$op = $this->addOperation($type, $post);
-		$this->em->flush();
-
-		return $op;
-	}
-
-	///////////////
 	// 입고 업무 생성
 	///////////////
 	public function createEnterOperation($type, $post) {
@@ -139,9 +129,24 @@ class Work_m extends MY_Model {
 		return $op;
 	}
 
-	// 철수 업무 생성
-	public function createEvacuateOperation($type, $post) {
-		
+	///////////////
+	// 설치 업무 생성
+	///////////////
+	public function createInstallOperation($type, $post) {
+		$op = $this->addOperation($type, $post);
+		$this->em->flush();
+
+		return $op;
+	}
+
+	///////////////
+	// 철수 업무 생성 //
+	///////////////
+	public function createCloseOperation($type, $post) {
+		$op = $this->addOperation($type, $post);
+		$this->em->flush();
+
+		return $op;
 	}
 
 	// 업무 메인 생성
@@ -169,7 +174,7 @@ class Work_m extends MY_Model {
 		if($type >= '100' && $type < '200') {
 			$part = $this->em->getReference('Entity\Part', $post['part_id']);
 			$new->setWorkLocation(GS2_LOCATION_TYPE_COMPANY, $part->company->id);
-		} else if( $type >= '200' && $type < '300') {
+		} else if( $type >= '200' && $type < '400') {
 			$store = $this->em->getReference('Entity\Store', $post['store_id']);
 			$new->setWorkLocation(GS2_LOCATION_TYPE_STORE, $store->id);
 		}
