@@ -60,8 +60,9 @@ class OperationLog
 		$this->content = trim($text);
 	}
 
-	public function setDateRegister() {
-		$this->date_register = new \DateTime("now");
+	// 등록일시
+	public function setDateRegister($when = 'now') {
+		$this->date_register = new \DateTime($when);
 	}
 
 	public function setDateView() {
@@ -76,6 +77,11 @@ class OperationLog
 	public function __get($key) {
 		return $this->$key;
 	}
-		
+	
+	// 등록일시 얻기
+	public function getDateRegister($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_register) ? $this->date_register->format($format) : '';
+	}
 }
 
