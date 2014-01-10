@@ -19,6 +19,7 @@ $this->load->view('layout/header_popup', array('title' => "$title"));
           <th>점주</th>
           <th>주소</th>
           <th>연락처</th>
+          <th>상태</th>
           <th>선택</th>
         </tr>
       </thead>
@@ -32,6 +33,7 @@ if(!count($rows)) {
 
 <?php
 } else {
+  $status_text = array('페점', '정상', '휴점C', '휴점S' );
   foreach($rows as $row):
 ?>
         <tr>
@@ -40,6 +42,8 @@ if(!count($rows)) {
           <td><?=$row->owner_name?></td>
           <td><?=$row->address?></td>
           <td><?=$row->tel?></td>
+          <td><?=$status_text[$row->status]?></td>
+
           <td><a href="#" class="select_me">[선택]</a></td>
         </tr>
 <?php
@@ -51,6 +55,7 @@ if(!count($rows)) {
     <button type="button" class="btn btn-primary" id="btn_add_store">점포 신규 등록</button>
     <button type="button" class="btn btn-default" id="btn_colorbox">colorbox</button>
     <button type="button" class="btn btn-default" id="btn_close">닫기</button>
+    <button type="button" class="btn btn-default" remote="<?=site_url("/admin/store/register")?>" data-toggle="modal" data-target="#modal_add_store">모달</button>
   </div>
 <!-- start of div.container -->
 </div>
@@ -76,14 +81,14 @@ $(document).ready(function(){
 
   // colorbox
   $("#btn_colorbox").click(function(){
-    var url = '<?=site_url("/admin/store/add")?>';
+    var url = '<?=site_url("/admin/store/register")?>';
 
     $.colorbox({
       'href'  : url,
       'iframe'  : true,
       'opacity' : 0.5,
-      'width'   : '100%',
-      'height'  : '100%'
+      'width'   : '70%',
+      'height'  : '90%'
     });
   });
 
@@ -97,7 +102,7 @@ $(document).ready(function(){
     width: 600,
     height: "600",
     open: function(ev, ui) {
-      $("#inner_frame").attr('src', '<?=site_url("/admin/store/add")?>');
+      $("#inner_frame").attr('src', '<?=site_url("/admin/store/register")?>');
     },
     buttons: {
       "저장": function() {
@@ -113,9 +118,7 @@ $(document).ready(function(){
 </script>
 
 <!-- modal dialog -->
-<div class="modal fade" id="modal_add_store" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
+<div class="modal fade in" id="modal_add_store" role="dialog" >
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">#example</h4>
@@ -135,8 +138,6 @@ $(document).ready(function(){
         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
       </div>
       </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div id="dialog-form2" title="점포 등록">

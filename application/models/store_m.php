@@ -2,7 +2,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* 
+* Storm 모델
 */
 class Store_m extends MY_Model
 {
@@ -24,5 +24,15 @@ class Store_m extends MY_Model
 
 		$rows = $qb->getQuery()->getResult();
 		return $rows;
+	}
+
+	// 생성
+	function create($post) {
+
+	}
+
+	// 수정
+	public function update($id, $post) {
+
 	}
 }
