@@ -18,6 +18,11 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
     <!--<link href="<?=base_url()?>assets/css/main.css" rel="stylesheet">-->
+
+    <!-- for overlapping modal -->
+    <link href="<?=site_url('/assets/css/bootstrap-modal-bs3patch.css')?>" rel="stylesheet" />
+    <link href="<?=site_url('/assets/css/bootstrap-modal.css')?>" rel="stylesheet" />
+    
     <style type="text/css">
       @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
       /*@import url(http://fonts.googleapis.com/css?family=Lato);*/
