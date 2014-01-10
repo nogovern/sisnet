@@ -15,18 +15,21 @@ class Store
 	 */
 	protected $id;
 
-	/** @column(type="string", length=30) */
-	protected $code;
+	/** @column(type="string", length=20) */
+	protected $code;	// 점포 코드
+
+	/** @column(type="string", length=20) */
+	protected $code2;	// 점포 가변코드
 
 	/**
-	 * 점포명
-	 * 
-	 * @Column(type="string", length=50)
-	 */
+	 * 점포명 @Column(type="string", length=50, nullable=false) */
 	protected $name;				
 	
 	/** @Column(type="string", length=30) */
 	protected $owner_name;
+
+	/** @Column(type="string", length=20) */
+	protected $owner_tel;
 
 	/** @Column(type="string", length=20) */
 	protected $tel;
@@ -34,14 +37,17 @@ class Store
 	/** @Column(type="string", length=100) */
 	protected $address;
 
-	/** @Column(type="string", length=20) */
-	protected $tel_rfc;
+	/** @Column(type="string", length=30) */
+	protected $rfc_name;
 
 	/** @Column(type="string", length=20) */
-	protected $tel_ofc;
+	protected $rfc_tel;
 
 	/** @Column(type="string", length=20) */
-	protected $scale;
+	protected $ofc_tel;
+
+	/** @Column(type="string", length=30) */
+	protected $ofc_name;
 
 	/** @Column(type="string", length=1) */
 	protected $has_postbox;
@@ -55,18 +61,30 @@ class Store
 	/** @Column(type="datetime") */
 	protected $date_register;
 
+	// ==================================================================
 
 	public function __get($key) {
 		return $this->$key;
 	}
 
 	public function __set($key, $val) {
-		if($key == 'id') {
-			trigger_error("ID는 임의로 지정할 수 없음");
-			exit;
+		$invalid_keys = array('id', 'date_register');
+		
+		if(in_array($key, $invalid_keys)) {
+			trigger_error($key . " 는 setter 메서드를 사용하세요");
+		} else {
+			$this->$key = $val;
 		}
+	}
 
-		$this->$key = $val;
+	// 등록일시
+	public function setDateRegister($when = 'now') {
+		$this->date_register = new \DateTime($when);
+	}
+
+	public function getDateRegister($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_register) ? $this->date_register->format($format) : '';
 	}
 
 }
