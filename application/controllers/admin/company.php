@@ -16,6 +16,14 @@ class Company extends CI_Controller {
 		$this->lists();
 	}
 
+	public function lists() {
+
+		$data['page_title'] = '업체 리스트';
+		$data['rows'] = $this->company_model->getList();
+
+		$this->load->view('company_list', $data);
+	}
+
 	public function add() {
 		$this->load->library('Form_Validation');
 		$this->load->helper('form');
@@ -54,17 +62,6 @@ class Company extends CI_Controller {
 			redirect('/admin/company');
 		}
 
-	}
-
-	public function lists() {
-
-		$data['page_title'] = '업체 리스트';
-		$data['rows'] = $this->company_model->getList();
-
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
-		$this->load->view('company_list', $data);
-		$this->load->view('layout/footer');
 	}
 
 	/**

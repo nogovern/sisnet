@@ -1,3 +1,7 @@
+<?php
+$this->load->view('layout/header', array('title' => '관리자 >> GS25 업체 리스트'));
+$this->load->view('layout/navbar', array('current' => 'page-admin-company'));
+?>
     <!-- start of div.container -->
     <div class="container">
       
@@ -69,3 +73,7 @@ endforeach;
         $(".ajax").colorbox({'opacity': '0.6', 'width': '80%'});
     });
     </script>
+
+<?php
+$this->load->view('layout/footer');
+?>
