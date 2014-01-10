@@ -20,9 +20,9 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-store'));
               <th>점포코드</th>
               <th>점포명</th>
               <th>점주명</th>
-              <th>연락처</th>
+              <th>점주 연락처</th>
+              <th>점포 연락처</th>
               <th>주  소</th>
-              <th>규  모</th>
               <th>등록일</th>
               <th>상  태</th>
             </tr>
@@ -30,6 +30,7 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-store'));
 
           <tbody>
 <?php
+$status_text = array('페점', '정상', '휴점C', '휴점S' );
 foreach($rows as $row):
 ?>
             <tr class="">
@@ -37,11 +38,11 @@ foreach($rows as $row):
               <td><?=$row->code?></td>
               <td><?=$row->name?></td>
               <td><?=$row->owner_name?></td>
+              <td><?=$row->owner_tel?></td>
               <td><?=$row->tel?></td>
               <td><?=$row->address?></td>
-              <td><?=$row->scale?></td>
-              <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d'): '';?></td>
-              <td><?=$row->status?></td>
+              <td><?=$row->getDateRegister()?></td>
+              <td><?=$status_text[$row->status]?></td>
             </tr>
 <?php
 endforeach;
