@@ -71,7 +71,11 @@ class Calendar_m extends MY_Model
 	public function generate($year=null, $month=null) {
 		$this->load->library('calendar', $this->config);
 
-		$data = array('6' => 'Smaple day', '10' => '1. enter<br>2. Install<br/>3. Evacuation', '28' => '1. enter<br>2. Install<br/>3. Evacuation');
+		$data = array(
+			'6' => 'Smaple day', 
+			'10' => '1. enter<br>2. Install<br/>3. Evacuation',
+			'28' => '1. enter<br>2. Install<br/>3. Evacuation'
+		);
 
 		return $this->calendar->generate($year, $month, $data);
 	}
