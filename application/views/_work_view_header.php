@@ -144,10 +144,7 @@
                 <td>가맹형태</td>
                 <td><?=$store->join_type?></td>
               </tr>
-              <tr>
-                <td>점포 규모</td>
-                <td><?=$store->scale?></td>
-              </tr>
+              
               <tr>
                 <td>점포 전화</td>
                 <td><?=$store->tel?></td>
@@ -162,11 +159,11 @@
               </tr>
               <tr>
                 <td>RFC</td>
-                <td><?=$store->tel_rfc?></td>
+                <td><?=$store->rfc_tel?></td>
               </tr>
               <tr>
                 <td>OFC</td>
-                <td><?=$store->tel_ofc?></td>
+                <td><?=$store->ofc_tel?></td>
               </tr>
               <tr>
                 <td>작업메모</td>
