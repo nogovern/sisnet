@@ -10,10 +10,9 @@ $(document).ready(function(){
   // 실제 validation 후 submit 구현은
   // doSubmit 함수를 정의한다.
   doSubmit = function(form) {
-    alert('등로할까?');
-    return false;
     form.submit();      
   };
+  
 });
 </script>
 <?php

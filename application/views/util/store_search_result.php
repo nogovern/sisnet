@@ -53,9 +53,10 @@ if(!count($rows)) {
       </tbody>
     </table>
     <button type="button" class="btn btn-primary" id="btn_add_store">점포 신규 등록</button>
-    <button type="button" class="btn btn-default" id="btn_colorbox">colorbox</button>
+    <!--
+    <button type="button" class="btn btn-default" id="btn_dialog_open">점포 신규 등록</button>
+    -->
     <button type="button" class="btn btn-default" id="btn_close">닫기</button>
-    <button type="button" class="btn btn-default" remote="<?=site_url("/admin/store/register")?>" data-toggle="modal" data-target="#modal_add_store">모달</button>
   </div>
 <!-- start of div.container -->
 </div>
@@ -66,6 +67,7 @@ if(!count($rows)) {
 
 <script type="text/javascript">
 $(document).ready(function(){
+
   $(".select_me").click(function(e){
     e.preventDefault();
     
@@ -80,19 +82,16 @@ $(document).ready(function(){
   });
 
   // colorbox
-  $("#btn_colorbox").click(function(){
-    var url = '<?=site_url("/admin/store/register")?>';
-
-    $.colorbox({
-      'href'  : url,
-      'iframe'  : true,
-      'opacity' : 0.5,
-      'width'   : '70%',
-      'height'  : '90%'
-    });
+  $("#btn_add_store").click(function(){
+    parent.callback_store_register();
   });
 
-  $("#btn_add_store").click(function(e){
+  $("#btn_close").click(function(){
+    parent.jQuery.fn.colorbox.close();
+  });
+
+  // jquery-ui dialog 방식
+  $("#btn_dialog_open").click(function(e){
     $("#dialog-form2").dialog("open");
   });
 
@@ -116,29 +115,6 @@ $(document).ready(function(){
   
 });
 </script>
-
-<!-- modal dialog -->
-<div class="modal fade in" id="modal_add_store" role="dialog" >
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">#example</h4>
-      </div>
-      <!-- start form -->
-      <form id="form_modal_memo" role="form" class="form form-horizontal">
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label col-sm-4">작업 메모</label>
-          <div class="col-sm-7">
-            <textarea name="memo" class="form-control"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="modal_memo_ok" type="submit" class="btn btn-primary">입력</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-      </div>
-      </form>
-</div><!-- /.modal -->
 
 <div id="dialog-form2" title="점포 등록">
   <iframe id="inner_frame" src="" style="width:550px;height:580px;"></iframe>

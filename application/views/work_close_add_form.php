@@ -28,7 +28,6 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
                 </div>
                 <div class="col-sm-4" style="padding-top:1px;">
                   <button type="button" id="btn_search" class="btn btn-info">검색</button>
-                  <button type="button" id="btn_search2" class="btn btn-default">검색2</button>
                 </div>
               </div>
 
@@ -147,16 +146,29 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
           $("#store_name").val('').focus();
           return false;
         }
-        var url = '<?=site_url("/util/store/search")?>';
+        var url = '<?=site_url("admin/store/ajax/search")?>';
         var request_uri = url + '/' + encodeURIComponent(query);
 
-        $.colorbox({
-          'href'  : request_uri,
-          'iframe'  : true,
-          'opacity' : 0.5,
-          'width'   : '50%',
-          'height'  : '90%'
-        });
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: {
+              query : encodeURIComponent(query),
+              "csrf_test_name": $.cookie("csrf_cookie_name")
+            },
+            dataType: "html",
+          })
+          .done(function(text) {
+            var modal = $("#modal_store_search_result");
+
+            // clear & fit
+            $("#modal_store_search_result table tbody").html('').html(text);  
+            $("#modal_store_search_result").modal('show');
+          })
+          .fail(function(xhr, textStatus){
+            alert("Request failed: " + textStatus);
+          });
+
       });
 
       $("form").validate({
@@ -177,20 +189,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
           form.submit();
         }
       });
-
-      //////////
-      // test //
-      //////////
-      $("#btn_search2").click(function(e){
-        $("#dialog-form").dialog("open");
-      });
-
-      $("#dialog-form").dialog({
-        autoOpen: false,
-        modal: true,
-        width: "auto",
-        height: "auto"
-      });
+      
     }); //end of jQuery ready
     
     ///////////////////////////////////
@@ -198,24 +197,88 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
     ///////////////////////////////////
     function callback_store_info(id, name) {
       $(":hidden[name=store_id]").val(id);
-      $("#store_name").val(name).attr('readonly', true);
+      $("#store_name").val(name);
+    }
+
+    // 점포 검색 창에서 점포 신규 등록시 
+    // 기존 colorbox 를 닫은 후 colorbox 다시 열기
+    function callback_store_register() {
+      // close() 를 사용하면 이후 colorbox 가 열리지 않음
+      // $.colorbox.close();
+
+      var url = '<?=site_url("/admin/store/register/popup")?>';
+      // alert(url);
+
+      $.colorbox({
+        href  : url,
+        iframe  : true,
+        opacity : 0.5,
+        width   : '70%',
+        height  : '90%',
+        overlayClose: false
+      });
     }
     </script>
+
+<!-- 점포 검색 modal dialog -->
+<div class="modal fade" id="modal_store_search_result" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">점포 검색 리스트</h4>
+      </div>
+      <div class="modal-body">
+        <h5>점포 검색 결과 : <span id="cnt_result"></span> 건</h5>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th></th>
+              <th>점포명</th>
+              <th>점주</th>
+              <th>주소</th>
+              <th>연락처</th>
+              <th>상태</th>
+              <th>선택</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_modal_store_register" type="button" class="btn btn-primary">신규 등록</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+      </div>
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#btn_modal_store_register").click(function(e){
+      $("#modal_store_search_result").modal("hide");
+      callback_store_register();
+    });
+  });
+
+  $(document).on('click', '.select_me', function(e){
+    // 상점 id, name
+    var store_id = $(this).closest('tr').find('td:eq(0)').text();
+    var store_name = $(this).closest('tr').find('td:eq(1)').text();
+
+    // callback 함수 사용하여 부모창 element 에 설정
+    callback_store_info(store_id, store_name);
+
+    $("#modal_store_search_result").modal("hide");
+  });
+</script>
+
 <?php
 $this->load->view('layout/footer');
 ?>
-
-<div id="dialog-form" title="Create new user">
-  <p class="validateTips">All form fields are required.</p>
-  <form class="form">
-  <fieldset>
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
-    <label for="email">Email</label>
-    <input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
-  </fieldset>
-  </form>
-</div>
-
