@@ -34,17 +34,17 @@ class Install extends CI_Controller
 	/**
 	 * 업무 내용 상세보기
 	 *
-	 * @param  integer $work_id 업무 UID
+	 * @param  integer $id 업무 UID
 	 * @return void        
 	 */
-	public function view($work_id = 0) {
-		if($work_id == 0) {
+	public function view($id = 0) {
+		if($id == 0) {
 			die('에러! 업무 번호는 필수입니다');
 		}
 
 		$data['title'] = '설치';
 
-		$work = $this->work_model->get($work_id);
+		$work = $this->work_model->get($id);
 		$data['work'] = $work;
 		$data['store'] = $this->work_model->parseLocation($work->work_location);	// 점포 
 		$data['items'] = $work->getItemList();
