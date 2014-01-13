@@ -3,7 +3,7 @@ $this->load->view('layout/header', array('title' => '철수 >> 철수 요청 보
 $this->load->view('layout/navbar', array('current' => 'page-work-close'));
 
 // 여기서 해줘야지 만 되네요....
-$config= $this->config->item('gs2');
+//$_config= $this->config->item('gs2');
 ?>
 
     <!-- start of div.container -->
@@ -28,7 +28,7 @@ $config= $this->config->item('gs2');
               </tr>
               <tr>
                 <td>작업형태</td>
-                <td><?=$config['op_type'][$work->type]?></td>
+                <td><?=$_config['op_type'][$work->type]?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
@@ -91,7 +91,7 @@ $config= $this->config->item('gs2');
               </tr>
               <tr>
                 <td>가맹형태</td>
-                <td><?=$config['store_join_type'][$store->join_type]?></td>
+                <td><?=$_config['store_join_type'][$store->join_type]?></td>
               </tr>
               
               <tr>
@@ -222,12 +222,12 @@ endif;
     /////////////////////////////
     /// 모달 dialog include
     /////////////////////////////
-    $this->load->view('common/modal_part_register');        // 장비 등록
-    $this->load->view('common/modal_request_ok');           // 요청 확정
-    $this->load->view('common/modal_memo');                 // 작업자 메모
-    $this->load->view('common/modal_change_worker');        // 방문자 변경
-    $this->load->view('common/modal_store_complete');       // 점포 완료
-    $this->load->view('common/modal_op_complete');       // 작업 완료
+    $this->view('common/modal_part_register');        // 장비 등록
+    $this->view('common/modal_request_ok');           // 요청 확정
+    $this->view('common/modal_memo');                 // 작업자 메모
+    $this->view('common/modal_change_worker');        // 방문자 변경
+    $this->view('common/modal_store_complete');       // 점포 완료
+    $this->view('common/modal_op_complete');       // 작업 완료
     // 작업 완료
 ?>
 

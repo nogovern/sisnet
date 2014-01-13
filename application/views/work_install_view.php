@@ -2,6 +2,8 @@
 $this->load->view('layout/header', array('title' => '설치 >> 설치 요청 보기'));
 $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 
+// 여기서 해줘야지 만 되네요....
+$_config= $this->config->item('gs2');
 ?>
 
     <!-- start of div.container -->
@@ -108,12 +110,12 @@ endif;
     /////////////////////////////
     /// 모달 dialog include
     /////////////////////////////
-    $this->load->view('common/modal_part_register');        // 장비 등록
-    $this->load->view('common/modal_request_ok');           // 요청 확정
-    $this->load->view('common/modal_memo');                 // 작업자 메모
-    $this->load->view('common/modal_change_worker');        // 방문자 변경
-    $this->load->view('common/modal_store_complete');       // 점포 완료
-    $this->load->view('common/modal_op_complete');       // 작업 완료
+    $this->view('common/modal_part_register');        // 장비 등록
+    $this->view('common/modal_request_ok');           // 요청 확정
+    $this->view('common/modal_memo');                 // 작업자 메모
+    $this->view('common/modal_change_worker');        // 방문자 변경
+    $this->view('common/modal_store_complete');       // 점포 완료
+    $this->view('common/modal_op_complete');       // 작업 완료
     // 작업 완료
 ?>
 

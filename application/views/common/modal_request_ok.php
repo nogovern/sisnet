@@ -9,14 +9,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">설치 요청서 확정</h4>
+        <h4 class="modal-title"><?=$_config['op_title'][$work->type]?> 요청서 확정</h4>
       </div>
       <!-- start form -->
       <form role="form" class="form form-horizontal">
       <div class="modal-body">
           <input type="hidden" name="mode" value="install_request_ok">
           <div class="form-group">
-            <label class="form-label col-sm-4">설치 사무소</label>
+            <label class="form-label col-sm-4">담당 사무소</label>
             <div class="col-sm-5">
     <?php
     echo $select_office;
@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label col-sm-4">담당직원선택</label>
+            <label class="form-label col-sm-4">담당 직원 선택</label>
             <div class="col-sm-7">
     <?php
     echo $select_user;
@@ -36,7 +36,7 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label col-sm-4">설치 예정일</label>
+            <label class="form-label col-sm-4">작업 예정일</label>
             <div class="col-sm-6">
               <div class="input-group">
                 <input type="text" id="date_work" name="date_work" class="form-control date-picker">
@@ -82,11 +82,11 @@
         return false;
       }
 
-      var is_ok = confirm("확정 하시겠습니까?\n그리고 설치예정일 확인해야함.");
+      var is_ok = confirm("확정 하시겠습니까?\n그리고 작업 예정일 확인 해야 합니다");
 
       if(is_ok == true){
         $.ajax({
-          url: "/work/install/ajax/request_ok",
+          url: "/work/ajax/accept_request",
           type: "POST",
           data: {
             id : operation.id,

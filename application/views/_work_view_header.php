@@ -18,7 +18,7 @@
                 <td>&nbsp;</td>
               </tr>
               <tr>
-                <td>입고장소</td>
+                <td>담당사무소</td>
                 <td><?=$work->office->name?></td>
                 <td>&nbsp;</td>
               </tr>

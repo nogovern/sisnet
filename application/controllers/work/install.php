@@ -43,6 +43,7 @@ class Install extends CI_Controller
 		}
 
 		$data['title'] = '설치';
+		$data['_config'] = $this->config->item('gs2');
 
 		$work = $this->work_model->get($id);
 		$data['work'] = $work;
@@ -144,24 +145,15 @@ class Install extends CI_Controller
 		$id = $_REQUEST['id'];
 		$op = $this->work_model->get($id);
 
-		if($action == 'request_ok') {
-			// var_dump($_POST);
-			
-			$worker = $em->getReference('Entity\User', $this->input->post('worker_id'));
-			
-			$op->setWorker($worker);
-			$op->setDateWork($this->input->post('date_work'));
-			$op->setStatus('2');
-			$op->setDateModify();
-			$op->setMemo($this->input->post('memo'));
+		// ============= 삭제함 ============
+		// 공통 루틴이라 /work/ajax/accept_request 로 변경함
+		// 
+		// if($action == 'request_ok') {
+		// }
+		// ================================
 
-			$em->persist($op);
-			$em->flush();
-
-			echo 'success';
-		}
 		// 장비 등록
-		elseif( $action == 'add_item') {
+		if( $action == 'add_item') {
 			$result = new stdClass;	// 결과
 
 			$part = $em->getReference('Entity\Part', $_POST['part_id']);
@@ -224,7 +216,8 @@ class Install extends CI_Controller
 
 			// 업무 log 생성
 			$log_data = array(
-				'content' => $this->input->post('memo'),
+				'user_id'	=> $this->session->userdata('user_id'),
+				'content' 	=> $this->input->post('memo'),
 				'date_complete' => $this->input->post('date_complete'),
 				'type' => '1',
 				'next_status' => '3',
@@ -248,6 +241,7 @@ class Install extends CI_Controller
 		elseif( $action == 'operation_complete') {
 			// 업무 log 생성
 			$log_data = array(
+				'user_id'	=> $this->session->userdata('user_id'),
 				'content' => '작업을 종료합니다',
 				'date_complete' => $this->input->post('date_complete'),
 				'type' => '1',

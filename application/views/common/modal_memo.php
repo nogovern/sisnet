@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="modal_memo_ok" type="submit" class="btn btn-primary">입력</button>
+        <button id="modal_memo_ok" type="submit" class="btn btn-primary">저장</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
       </div>
       </form>
@@ -30,7 +30,23 @@
     $("#modal_memo form").submit(function(e){
       e.preventDefault();
 
-      alert('Sorry, 아직 구현되지 않음');
+      $.ajax({
+          url: "/work/ajax/write_memo",
+          type: "POST",
+          data: {
+            id : operation.id,
+            memo: $("textarea[name=memo]", this).val(),
+            "csrf_test_name": $.cookie("csrf_cookie_name")
+          },
+          dataType: "html",
+        })
+          .done(function(response) {
+            alert(response);
+            $("#modal_memo").modal("hide");
+          })
+          .fail(function(xhr, textStatus){
+            alert("Request failed: " + textStatus);
+          });
     });
   });
 </script>
