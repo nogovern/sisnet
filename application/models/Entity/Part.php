@@ -206,6 +206,47 @@ class Part
 		return $sum;
 	}
 
+	/**
+	 * 비가용 수량 합계
+	 * 
+	 * @param  [type] $office_id 사무소 ID
+	 * @return [type]            [description]
+	 */
+	public function getDisabledTotal($office_id = NULL) {
+		$sum = 0;
+
+		foreach($this->stock_list as $stock) {
+			if($office_id && $stock->office->id != $office_id) {
+				continue;
+			}
+
+			$sum += ($stock->qty_s200 + $stock->qty_s500 + $stock->qty_s600 + $stock->qty_s900);
+		}
+
+		return $sum;
+	}
+
+	/**
+	 * 가용 수량 합계
+	 * 
+	 * @param  [type] $office_id 사무소 id
+	 * @return [type]            [description]
+	 */
+	public function getUsableTotal($office_id = NULL) {
+		$sum = 0;
+
+		foreach($this->stock_list as $stock) {
+			if($office_id && $stock->office->id != $office_id) {
+				continue;
+			}
+		}
+
+		// 계산 방법
+		// 가용 수량 = 신품 + 중고 - (비가용수량)
+
+		return $sum;
+	}
+
 	public function getStock($office_id) {
 		if(is_null($office_id)) {
 			trigger_error('office_id 는 필수입니다!');
