@@ -222,6 +222,8 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 
 <!-- 점포 검색 modal dialog -->
 <div class="modal fade" id="modal_store_search_result" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">점포 검색 리스트</h4>
@@ -257,6 +259,8 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         <button id="btn_modal_store_register" type="button" class="btn btn-primary">신규 등록</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
       </div>
+    </div>
+  </div>
 </div><!-- /.modal -->
 
 <script type="text/javascript">

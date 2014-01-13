@@ -3,6 +3,8 @@
 ?>
 <!-- modal dialog -->
 <div class="modal fade" id="modal_part_register" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
       <!-- start form -->
       <form role="form" class="form form-horizontal">
       <div class="modal-header">
@@ -86,6 +88,8 @@ echo $select_category;
         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
       </div>
       </form>
+    </div>
+  </div>
 </div><!-- /.modal -->
 
 <script type="text/javascript">

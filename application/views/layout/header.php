@@ -21,9 +21,10 @@
     <link href="<?=base_url()?>assets/css/main.css" rel="stylesheet">
     -->
 
-    <!-- for overlapping modal -->
-    <link href="<?=site_url('/assets/css/bootstrap-modal-bs3patch.css')?>" rel="stylesheet" />
+    <!-- for overlapping modal 
     <link href="<?=site_url('/assets/css/bootstrap-modal.css')?>" rel="stylesheet" />
+    <link href="<?=site_url('/assets/css/bootstrap-modal-bs3patch.css')?>" rel="stylesheet" />
+    -->
 
     <style type="text/css">
       @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
