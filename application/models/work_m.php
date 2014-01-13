@@ -251,20 +251,20 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무-메모 생성
-	public function addComment($id, $data) {
+	public function addMemo($id, $data) {
 
 	}
 	
 
 	// 업무-로그 생성
-	public function addLog($id, $data) {
+	public function addLog($id, $data, $do_flush = FALSE) {
 		$op = $this->repo->find($id);
 		if(!$op){	
 			die("에러! operation 객체를 얻을 수 없음");
 		}
 
 		$log = new Entity\OperationLog;
-		$writer = $this->em->getReference('Entity\User', $this->session->userdata('user_id'));
+		$writer = $this->em->getReference('Entity\User', $data['user_id']);
 		$log->setUser($writer);
 		$log->setOperation($op);
 		$log->setContent($data['content']);
@@ -275,6 +275,10 @@ class Work_m extends MY_Model {
 		$log->setDateRegister();
 
 		$this->em->persist($log);
+		if($do_flush) {
+			$this->em->flush();
+		}
+		return $log;
 	}
 
 
@@ -373,6 +377,32 @@ class Work_m extends MY_Model {
 
 			$this->em->persist($stock);
 		}
+	}
+
+	/**
+	 * [공통] 작업 요청 확정
+	 * 
+	 * @param  integer $id   	[description]
+	 * @param  array  $data 	[description]
+	 * @return object       	Operation Entity Object
+	 */
+	public function acceptRequest($id, $data = array()) {
+		$op = $this->repo->find($id);
+
+		$worker = $this->em->getReference('Entity\User', $data['worker_id']);
+		$office = $this->em->getReference('Entity\Office', $data['office_id']);
+
+		$op->setWorker($worker);
+		$op->setOffice($office);
+		$op->setDateWork($data['date_work']);
+		$op->setMemo($data['memo']);
+		$op->setDateModify();
+		$op->setStatus('2');
+
+		$this->em->persist($op);
+		$this->em->flush();
+
+		return $op;
 	}	
 }
 
