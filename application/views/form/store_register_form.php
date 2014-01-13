@@ -1,8 +1,11 @@
 <div class="container">
 <?php 
 echo form_open('', 'id="store_register_form" role="form" class="form-horizontal" ');
+
+if(isset($form_saved)) {
+  echo '<input type="hidden" name="form_saved" id="form_saved" value="' . $form_saved . '">';
+}
 ?>
-  <input type="hidden" name="form_saved" id="form_saved" value="<?=$form_saved?>">
   <div class="page-header">
     <h2><span class="fa fa-home"></span> 점포 등록</h2>
   </div>
@@ -126,10 +129,11 @@ echo form_open('', 'id="store_register_form" role="form" class="form-horizontal"
 
   <div class="row col-xs-offset-9">
     <button class="btn btn-primary" type="submit">저장</button>
-    <button class="btn btn-default" type="button">취소</button>
+    <button class="btn btn-default btn_colorbox_close" type="button">취소</button>
   </div>
 </form>
 </div>
+<br>
       
 <!-- jquery form validation -->
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -137,23 +141,26 @@ echo form_open('', 'id="store_register_form" role="form" class="form-horizontal"
 
 <script type="text/javascript">
 $(document).ready(function(){
-  // 저장이 성공적으로 되었을 경우 처
-  if($("#form_saved").val() == '1') {
-    var store_id = "<?=$new_store_id?>";
-    var store_name = "<?=$new_store_name?>";
+<?php
+// 저장이 성공적으로 되었을 경우 처리
+if(isset($form_saved) && $form_saved == TRUE):
+?>
+  var store_id = "<?=$new_store_id?>";
+  var store_name = "<?=$new_store_name?>";
 
-    // console.log('after save store...');
-    alert('신규 점포 등록 완료.');
+  // console.log('after save store...');
+  alert('신규 점포 등록 완료.');
 
-    // callback 함수 사용하여 부모창 element 에 설정
-    parent.callback_store_info(store_id, store_name);
+  // callback 함수 사용하여 부모창 element 에 설정
+  parent.callback_store_info(store_id, store_name);
 
-    // colorbox close
-    parent.jQuery.fn.colorbox.close();
-    
-    return false;
-  }
-
+  // colorbox close
+  parent.jQuery.fn.colorbox.close();
+  
+  return false;
+<?php
+endif;
+?>
   // form validation
   $("#store_register_form").validate({
     rules: {
@@ -173,6 +180,11 @@ $(document).ready(function(){
       changeMonth: true,
       changeYear: true
     });
+  });
+
+  $(".btn_colorbox_close").click(function(){
+    // colorbox close
+    parent.jQuery.fn.colorbox.close();
   });
 });
 </script>
