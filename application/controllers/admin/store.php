@@ -20,65 +20,39 @@ class Store extends CI_Controller {
 		$this->lists();
 	}
 
-	public function add() {
-		$this->load->library('form_validation');
-		$this->load->helper('form');
-
-		$data['title'] = '점포 등록';
-		// DB에 저장 후 행동을 하기 위해 추가
-		$data['form_saved'] = FALSE;
-
-		// 규칙 설정
-		$this->form_validation->set_rules('name', '점포명', 'required');
-
-		if($this->form_validation->run() === FALSE){
-			$this->load->view('store_add_form', $data);
-
-		} else {
-			var_dump($_POST);
-			
-			$store = new Entity\Store();
-
-			$store->code 		= $this->input->post('code');
-			$store->code2 		= $this->input->post('code2');
-			$store->name 		= $this->input->post('name');
-			$store->owner_name 	= $this->input->post('owner_name');
-			$store->owner_tel 	= $this->input->post('owner_tel');
-			$store->tel 		= $this->input->post('tel');
-			$store->address 	= $this->input->post('address');
-			$store->rfc_name 	= $this->input->post('rfc_name');
-			$store->rft_tel 	= $this->input->post('rft_tel');
-			$store->ofc_name 	= $this->input->post('ofc_name');
-			$store->ofc_tel 	= $this->input->post('ofc_tel');
-			$store->join_type 	= $this->input->post('join_type');
-			$store->has_postbox = $this->input->post('has_postbox');
-			$store->status 		= $this->input->post('status');
-			$store->setDateRegister();
-
-			$this->store_model->_add($store);
-			$this->store_model->_commit();
-
-			// exit;
-			redirect('/admin/store');
-		}
+	// 신규 점포 등록 alias
+	public function add($mode = NULL) {
+		$this->register($mode);
 	}
 
-	public function register($mode=NULL){
+	/**
+	 * 신규 점포 등록
+	 * 
+	 * @param  string $mode 	popup 이면 팝업 형태 등록 폼 처리
+	 * @return void
+	 */
+	public function register($mode = NULL){
 		$this->load->library('form_validation');
 		$this->load->helper('form');
 
 		$data['title'] = '점포 등록';
 
-		// DB에 저장 후 행동을 하기 위해 추가
-		$data['form_saved'] = FALSE;
-		$data['new_store_id'] 	= NULL;
-		$data['new_store_name'] = NULL;
+		// popup창에서 등록 시 DB에 저장 후 행동을 하기 위해 추가
+		if($mode == 'popup') {
+			$data['form_saved'] = FALSE;
+			$data['new_store_id'] 	= NULL;
+			$data['new_store_name'] = NULL;
+		}
 
 		// 규칙 설정
 		$this->form_validation->set_rules('name', '점포명', 'required');
 
 		if($this->form_validation->run() === FALSE){
-			$this->load->view('store_add_popup_form', $data);
+			if($mode == 'popup') {
+				$this->load->view('store_add_popup_form', $data);
+			} else {
+				$this->load->view('store_add_form', $data);
+			}
 
 		} else {
 			// var_dump($_POST);

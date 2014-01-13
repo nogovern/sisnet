@@ -163,7 +163,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 
             // clear & fit
             $("#modal_store_search_result table tbody").html('').html(text);  
-            $("#modal_store_search_result").modal('show');
+            $("#modal_store_search_result").css('top', '20%').modal('show');
           })
           .fail(function(xhr, textStatus){
             alert("Request failed: " + textStatus);

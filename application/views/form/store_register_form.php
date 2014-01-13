@@ -95,7 +95,17 @@ if(isset($form_saved)) {
   <div class="form-group">
     <label class="control-label col-sm-3">가입 형태</label>
     <div class="col-sm-6">
-      <input type="text" class="form-control" id="join_type" name="join_type" placeholder="입력하세요">
+      <select name="join_type" class="form-control" >
+        <option value="">-- 선택하세요 --</option>
+        <option value="1">가맹1종A (순수)</option>
+        <option value="2">가맹1종C (전대)</option>
+        <option value="3">직영A (일반)</option>
+        <option value="4">직영B</option>
+        <option value="5">C타입</option>
+        <option value="6">G타입</option>
+        <option value="7">K타입</option>
+        <option value="8">S타입</option>
+      </select>
     </div>
   </div>
 
@@ -122,7 +132,7 @@ if(isset($form_saved)) {
         </label> /
         <label class="radio-inline">
           <input type="radio" name="status" value="9"> 폐점
-        </label>록
+        </label>
     </div>
   </div>
   <hr>
