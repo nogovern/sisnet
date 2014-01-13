@@ -185,6 +185,7 @@ endforeach;
       <div class="row">
         <div class="col-md-12">
           <a href="/work/close"><span class="btn btn-default" type="button">리스트</span></a>
+          <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
 <?php
 if($work->status == 1):
 ?>
@@ -194,17 +195,16 @@ endif;
 
 if($work->status == 2):
 ?>
-          <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
           <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
-          <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
-          <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete" <?=($item_count==0) ? 'disabled' : '' ?> >점포 완료</button>
+          <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete">점포 완료</button>
 <?php
 endif;
 
 if($work->status == 3):
 ?>
+          <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
           <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
-          <button id="btn_complete" class="btn btn-success" type="button" disabled>철수 완료</button>
+          <button id="btn_approve" class="btn btn-success" type="button" disabled>승인</button>
 <?php
 endif;
 if($work->status == 4):
@@ -222,12 +222,12 @@ endif;
     /////////////////////////////
     /// 모달 dialog include
     /////////////////////////////
-    $this->view('common/modal_part_register');        // 장비 등록
-    $this->view('common/modal_request_ok');           // 요청 확정
-    $this->view('common/modal_memo');                 // 작업자 메모
-    $this->view('common/modal_change_worker');        // 방문자 변경
-    $this->view('common/modal_store_complete');       // 점포 완료
-    $this->view('common/modal_op_complete');       // 작업 완료
+    $this->view('common/modal_request_ok');           	// 요청 확정
+    $this->view('common/modal_memo');                 	// 작업자 메모
+    $this->view('common/modal_change_worker');        	// 방문자 변경
+    $this->view('common/modal_store_complete');       	// 점포 완료
+    $this->view('common/modal_op_complete');       		// 작업 완료
+    $this->view('common/modal_close_part_register');   	// 장비 등록 (설치/철수 다름)
     // 작업 완료
 ?>
 
@@ -308,10 +308,10 @@ endif;
     function callback_remove_row(what) {
       $(what).closest('tr').fadeOut('slow').remove();
 
-      // 등록 장비 없을 시 점포완료 비활성
+      // 등록 장비 없을 시 작업완료 비활성
       var len = $("#part_table tbody tr").length;
       if(len == 0) {
-        $("button[data-target=#modal_store_complete]").attr('disabled', true);
+        $("button[data-target=#modal_op_complete]").attr('disabled', true);
       }
     }
 

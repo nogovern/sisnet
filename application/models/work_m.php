@@ -184,29 +184,50 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무 메인 수정
-	public function updateOperation($id, $data) {
+	public function updateOperation($id, $data, $do_flush = FALSE) {
 		$op = $this->repo->find($id);
 
+		// 요청일 
 		if(isset($data['date_request'])) {
 			$op->setDateRequest($data['date_request']);
 		}
 
+		// 점포 작업일 
 		if(isset($data['date_work'])) {
 			$op->setDateWork($data['date_work']);
 		}
 
+		// 작업 완료일
 		if(isset($data['date_finish'])) {
 			$op->setDateFinish($data['date_finish']);
 		}
 
-		// 필수
+		// 상태 변경
 		if(isset($data['status'])) {
 			$op->setStatus($data['status']);
 		}
 
+		// 담당자 변경
+		if(isset($data['woker_id'])) {
+			$worker = $this->em->getReference('Entity\User', $data['worker_id']);
+			$op->setWorker($worker);
+		}
+
+		// 사무소 변경
+		if(isset($data['office_id'])) {
+			$office = $this->em->getReference('Entity\Office', $data['office_id']);
+			$op->setOffice($office);
+		}
+
 		$op->setDateModify();
 
+		// save & apply
 		$this->em->persist($op);
+		if($do_flush) {
+			$this->em->flush();
+		}
+
+		return $op;
 	}
 
 	// 업무-장비 목록 생성(필요시)

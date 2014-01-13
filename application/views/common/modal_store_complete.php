@@ -16,7 +16,7 @@
         <div class="form-group">
           <label class="form-label col-sm-3">완료일시</label>
           <div class="input-group col-sm-6">
-            <input type="text" name="date_store_complete" class="form-control date-picker">
+            <input type="text" name="store_complete_date" id="store_complete_date" class="form-control date-picker">
             <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
           </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="form-group">
           <label class="form-label col-sm-3">메  모</label>
           <div class="col-sm-8">
-            <textarea name="memo" class="form-control" rows="5"></textarea>
+            <textarea name="store_complete_memo" id="store_complete_memo" class="form-control" rows="5"></textarea>
             <span class="help-block"><small class="text-info">메모 입력하세요...</small></span>
           </div>
         </div>
@@ -40,37 +40,32 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("#modal_store_complete form").submit(function(e){
-      e.preventDefault();
-
-      var target_url = "<?=site_url("/work/install/ajax/store_complete")?>";
-      var date_complete = $("input[name=date_store_complete]", this).val();
-      if(date_complete == ''){
-        alert('점포 완료일시를 입력하세요');
-        $("input[name=date_store_complete]", this).focus();
-        return false;
-      }
-
+$(document).ready(function(){
+  $("#modal_store_complete form").validate({
+    rules : {
+      store_complete_date: 'required',
+      store_complete_memo: 'required'
+    },
+    submitHandler: function(form) {
       $.ajax({
-        url: target_url,
+        url: "<?=site_url("/work/ajax/store_complete")?>",
         type: "POST",
         data: {
           id : operation.id,
-          office_id: $("#office_id").val(),
-          date_complete: date_complete,
-          memo: $("textarea[name=memo]", this).val(),
+          date_complete:  $("#store_complete_date", this).val(),
+          memo:           $("#store_complete_memo", this).val(),
           "csrf_test_name": $.cookie("csrf_cookie_name")
         },
         dataType: "html",
       })
-        .done(function(html) {
-          alert(html);
-          location.reload();
+        .done(function(response) {
+          alert(response);
+          //location.reload();
         })
         .fail(function(xhr, textStatus){
           alert("Request failed: " + textStatus);
         });
-    });
+    }
   });
+});
 </script>

@@ -61,8 +61,27 @@ class Ajax extends CI_Controller
 	}
 
 	public function store_complete() {
+		$id = $this->input->post('id');
+		
+		// 업무 log 생성
+		$log_data = array(
+			'user_id'		=> $this->session->userdata('user_id'),
+			'content' 		=> $this->input->post('memo'),
+			'date_complete' => $this->input->post('date_complete'),
+			'type' 			=> '1',
+			'next_status' 	=> '3',
+		);
+		$this->work_model->addLog($id, $log_data);
 
+		$op_data = array(
+			'status'		=> '3',
+			'date_work'		=> $this->input->post('date_complete'),
+		);
 
+		// 3번째 인자를 TRUE 로 하여 flush 실행
+		$this->work_model->updateOperation($id, $op_data, TRUE);
+
+		echo '점포 작업 완료 로 변경하였음';
 	}
 
 	public function complete() {
