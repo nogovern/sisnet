@@ -45,7 +45,8 @@ class Calendar_m extends MY_Model
 			{/cal_cell_content}
 
 			{cal_cell_content_today}
-				<div class="highlight"><a href="{content}">{day}</a></div>
+				<div class="highlight"><span class="badge">{day}</span></div>
+				<div class="help-block">{content}</div>
 			{/cal_cell_content_today}
 
 			{cal_cell_no_content}{day}{/cal_cell_no_content}
@@ -61,7 +62,33 @@ class Calendar_m extends MY_Model
 	}
 
 	public function getCalnedarData($year, $month) {
-		;
+		$start = new DateTime($year . $month . '01');
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('\Entity\Operation', 'w')
+			->where("w.date_register >= :from")
+			->andWhere("w.date_register < :to")
+			->orderBy('w.id', 'DESC')
+			->setParameter('from', $start->format('Y-m-d'))
+			->setParameter('to', $start->add(new DateInterval("P1M"))->format('Y-m-d'));
+
+		$rows = $qb->getQuery()->getResult();
+
+		// calendar data aary 로 변환
+		$events = array();
+		if(count($rows)) {
+			foreach($rows as $row) {
+				$day = $row->date_register->format("j");
+				$content = sprintf("[%s] %s", $row->office->name, $row->type);
+				if(array_key_exists($day, $events)){
+					$content = $events[$day] . '<br>' . $row->type;
+				}		
+				$events[$day] = $content;
+			}
+		}
+		// var_dump($events);
+
+		return $events;
 	}
 
 	public function addCalendarData($date, $data) {
@@ -71,11 +98,12 @@ class Calendar_m extends MY_Model
 	public function generate($year=null, $month=null) {
 		$this->load->library('calendar', $this->config);
 
-		$data = array(
-			'6' => 'Smaple day', 
-			'10' => '1. enter<br>2. Install<br/>3. Evacuation',
-			'28' => '1. enter<br>2. Install<br/>3. Evacuation'
-		);
+		$data = $this->getCalnedarData($year, $month);
+		// $data = array(
+		// 	'6' => 'Smaple day', 
+		// 	'10' => '1. enter<br>2. Install<br/>3. Evacuation',
+		// 	'28' => '1. enter<br>2. Install<br/>3. Evacuation'
+		// );
 
 		return $this->calendar->generate($year, $month, $data);
 	}
