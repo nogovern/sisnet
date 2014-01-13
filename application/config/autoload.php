@@ -80,7 +80,7 @@ $autoload['helper'] = array('url', 'alert');
 |
 */
 
-$autoload['config'] = array();
+$autoload['config'] = array('sisnet');
 
 
 /*
