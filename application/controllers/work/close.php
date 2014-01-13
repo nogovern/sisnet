@@ -28,7 +28,7 @@ class Close extends CI_Controller
 		$data['type'] = '';
 		$data['rows'] = $this->work_model->getCloseList();
 		
-		$this->load->view('work_close_list', $data);
+		$this->load->view('work/work_close_list', $data);
 	}
 
 	// 철수 요청
@@ -54,7 +54,7 @@ class Close extends CI_Controller
 		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control required"');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('work_close_add_form', $data);
+			$this->load->view('work/work_close_add_form', $data);
 		} else {
 			$post = $this->input->post();
 			$post['date_work'] = $this->input->post('date_close');
@@ -77,7 +77,7 @@ class Close extends CI_Controller
 	 */
 	public function view($id) {
 		$data['title'] = "철수 업무 상세 보기";
-		$this->load->view('work_close_view', $data);
+		$this->load->view('work/work_close_view', $data);
 	}
 
 }
