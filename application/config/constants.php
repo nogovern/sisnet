@@ -58,10 +58,10 @@ define('GS2_OP_TYPE_CLOSE_3',	303);		// 철수 - 휴점C
 
 define('GS2_OP_TYPE_REPAIR', 	400);		// 수리
 define('GS2_OP_TYPE_DESTROY', 	500);		// 폐기
-define('GS2_OP_TYPE_CHANGE', 	600);		// 교체
+define('GS2_OP_TYPE_REPLACE', 	600);		// 교체
 define('GS2_OP_TYPE_MOVE', 		700);		// 이동
 define('GS2_OP_TYPE_TRANS', 	800);		// 이관 (정확한 개념???)
-define('GS2_OP_TYPE_CHECK',		900);		// (상태변경)점검
+define('GS2_OP_TYPE_CHANGE',	900);		// (상태변경)점검
 
 // 입고
 define('GS2_OP_ENTER_STATUS_1', 	'요청');		// 요청

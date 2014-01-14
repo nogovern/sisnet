@@ -57,6 +57,8 @@ if(0) {
             </li>
   
              <li id="page-close"><a href="<?=site_url('/work/close')?>">철수</a></li>
+             <li id="page-close"><a href="<?=site_url('/work/change')?>">상태변경</a></li>
+             <li id="page-close"><a href="<?='#'?>">교체</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">
