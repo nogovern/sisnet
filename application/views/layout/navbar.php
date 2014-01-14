@@ -34,31 +34,11 @@ if(0) {
 
             <li id="page-schedule"><a href="<?=site_url('/schedule')?>">일정</a></li>
             <li id="page-stock"><a href="<?=site_url('/stock')?>">재고</a></li>
-
-            <li class="dropdown" id="page-enter">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">입고 <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?=site_url('/work/enter/')?>">입고 목록 보기</a></li>
-                <li><a href="#">입고 요청 확인</a></li>
-              </ul>
-            </li>
-
-            <li class="dropdown" id="page-install">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">설치 <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?=site_url('/work/install')?>">목록 보기</a></li>
-                <li><a href="<?=site_url('/work/install/new')?>">신규</a></li>
-                <li><a href="<?=site_url('/work/install/hujum_s')?>">휴점S(매장 장비)</a></li>
-                <li><a href="<?=site_url('/work/install/hujum_c')?>">휴점C</a></li>
-                <li class="divider"></li>
-                <li class="nav-header"> Nav header</li>
-                <li><a href="#">UI 테스트</a></li>
-              </ul>
-            </li>
-  
-             <li id="page-close"><a href="<?=site_url('/work/close')?>">철수</a></li>
-             <li id="page-close"><a href="<?=site_url('/work/change')?>">상태변경</a></li>
-             <li id="page-close"><a href="<?='#'?>">교체</a></li>
+            <li id="page-enter"><a href="<?=site_url('/work/enter')?>">입고</a></li>
+            <li id="page-install"><a href="<?=site_url('/work/install')?>">설치</a></li>
+            <li id="page-close"><a href="<?=site_url('/work/close')?>">철수</a></li>
+            <li id="page-changer"><a href="<?=site_url('/work/change')?>">상태변경</a></li>
+            <li id="page-close"><a href="<?='#'?>">교체</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">

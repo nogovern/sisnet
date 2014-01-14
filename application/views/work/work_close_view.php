@@ -14,7 +14,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-close'));
 
       <div class="row">
         <div class="col-sm-4">
-          <table class="table table-condensed table-hover">
+          <table class="table table-condensed">
             <thead>
               <tr>
                 <th colspan="3">작업 정보</th>
@@ -44,6 +44,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-close'));
               <tr>
                 <td>담당직원</td>
                 <td><?=$work->getWorkerInfo();?></td>
+                <td>&nbsp;</td>
               </tr>
               <tr>
                 <td>등록일</td>
@@ -53,6 +54,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-close'));
               <tr>
                 <td>폐점일 </td>
                 <td><?=$work->getDateWork();?></td>
+                <td>&nbsp;</td>
               </tr>
               <tr>
                 <td>작업요청일</td>
@@ -62,6 +64,11 @@ $this->load->view('layout/navbar', array('current' => 'page-work-close'));
               <tr>
                 <td>진행상태</td>
                 <td><?=constant("GS2_OP_CLOSE_STATUS_" . $work->status)?></td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>첨부파일</td>
+                <td></td>
                 <td>&nbsp;</td>
               </tr>
             </tbody>
