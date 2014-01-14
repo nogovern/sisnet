@@ -46,41 +46,49 @@ define('GS2_LOCATION_TYPE_STORE', 	'S');			// 점포
 
 define('GS2_OP_TYPE_ENTER', 	100);		// 입고
 define('GS2_OP_TYPE_INSTALL', 	200);		// 설치
-define('GS2_OP_TYPE_INSTALL_1', 	201);		// 설치 - 신규
-define('GS2_OP_TYPE_INSTALL_2', 	202);		// 설치 - 휴점S
-define('GS2_OP_TYPE_INSTALL_3', 	202);		// 설치 - 휴점C
-define('GS2_OP_TYPE_CHANGE', 	300);		// 교체
-define('GS2_OP_TYPE_WITHDRAW',	400);		// 철수
-define('GS2_OP_TYPE_REPAIR', 	500);		// 수리
-define('GS2_OP_TYPE_DESTROY', 	600);		// 폐기
+define('GS2_OP_TYPE_INSTALL_1', 201);		// 설치 - 신규
+define('GS2_OP_TYPE_INSTALL_2', 202);		// 설치 - 휴점S
+define('GS2_OP_TYPE_INSTALL_3', 202);		// 설치 - 휴점C
+define('GS2_OP_TYPE_INSTALL_4', 203);		// 설치 - 리뉴얼
+
+define('GS2_OP_TYPE_CLOSE',		300);		// 철수
+define('GS2_OP_TYPE_CLOSE_1',	301);		// 철수 - 폐점
+define('GS2_OP_TYPE_CLOSE_2',	302);		// 철수 - 휴점S
+define('GS2_OP_TYPE_CLOSE_3',	303);		// 철수 - 휴점C
+
+define('GS2_OP_TYPE_REPAIR', 	400);		// 수리
+define('GS2_OP_TYPE_DESTROY', 	500);		// 폐기
+define('GS2_OP_TYPE_CHANGE', 	600);		// 교체
 define('GS2_OP_TYPE_MOVE', 		700);		// 이동
 define('GS2_OP_TYPE_TRANS', 	800);		// 이관 (정확한 개념???)
-define('GS2_OP_TYPE_ETC', 		900);		// 점검
+define('GS2_OP_TYPE_CHECK',		900);		// (상태변경)점검
 
 // 입고
 define('GS2_OP_ENTER_STATUS_1', 	'요청');		// 요청
-define('GS2_OP_ENTER_STATUS_2', 	'입력');		// 요청접수
-define('GS2_OP_ENTER_STATUS_3', 	'출고');		// 처리중
-define('GS2_OP_ENTER_STATUS_4', 	'완료');		// 확인중
-define('GS2_OP_ENTER_STATUS_5', 	'--');		// 완료
-define('GS2_OP_ENTER_STATUS_6', 	'9');		// 승인
+define('GS2_OP_ENTER_STATUS_2', 	'확정');		// 요청접수
+define('GS2_OP_ENTER_STATUS_3', 	'입력');		// 납품처 입력
+define('GS2_OP_ENTER_STATUS_4', 	'확인');		// 확인 및 스캔
+define('GS2_OP_ENTER_STATUS_5', 	'완료');		// 완료
 
 // 설치
 define('GS2_OP_INSTALL_STATUS_1', 	'요청'); 
 define('GS2_OP_INSTALL_STATUS_2', 	'확정');
 define('GS2_OP_INSTALL_STATUS_3', 	'점포완료');
-define('GS2_OP_INSTALL_STATUS_4', 	'완료');
-define('GS2_OP_INSTALL_STATUS_5', 	'승인');
+define('GS2_OP_INSTALL_STATUS_4', 	'입력');
+define('GS2_OP_INSTALL_STATUS_5', 	'완료');
+define('GS2_OP_INSTALL_STATUS_6', 	'승인');
 
-// 설치
+// 철수
 define('GS2_OP_CLOSE_STATUS_1', 	'요청'); 
 define('GS2_OP_CLOSE_STATUS_2', 	'확정');
 define('GS2_OP_CLOSE_STATUS_3', 	'점포완료');
-define('GS2_OP_CLOSE_STATUS_4', 	'완료');
-define('GS2_OP_CLOSE_STATUS_5', 	'승인');
+define('GS2_OP_CLOSE_STATUS_4', 	'입력');
+define('GS2_OP_CLOSE_STATUS_5', 	'완료');
+define('GS2_OP_CLOSE_STATUS_6', 	'승인');
 
 // 장비 관련
 define('GS2_PART_TYPE_SERIAL', 	'1');				// 시리얼관리장비
 define('GS2_PART_TYPE_COUNT', 	'2');				// 수량관리장비
 define('GS2_PART_TYPE_SUPPLIES', '3');				// 소모품
+
 
