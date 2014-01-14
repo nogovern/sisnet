@@ -42,7 +42,8 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 			'previous_location'	=> 'O@9'
 		);
 
-		$entry = $this->CI->part_model->addSerialPart($data);		// SerialPart Entity Object
+		// $entry = $this->CI->part_model->addSerialPart($data);		// SerialPart Entity Object
+		$entry = new ArrayObject;
 		$result = ($entry instanceof Entity\SerialPart);
 		$this->assertTrue($result);
 	}
@@ -50,6 +51,36 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 	////////////
 	// 입고 업무 //
 	////////////
+	public function testEnterBefore() {
+		$temp = $this->em->getRepository('Entity\OperationTempPart')->findAll();
+		$this->assertEquals($temp, array());
+	}
+
+	// 납품처 -> 수량장비 등록
+	public function testRegisterCountPartForDelivery() {
+		$this->CI->load->model('work_m', 'work_model');
+		$op = $this->CI->work_model->get(7);
+		$this->assertTrue($op instanceof Entity\Operation);
+
+		$part = $op->getItem()->part;
+
+		// 수량 비교용 
+		$request_qty = $op->getItem()->qty_request;
+
+		$this->CI->work_model->addTempItem($op, $part, 'A4');
+
+	}
+
+	// 납품처 -> 시리얼 장비 등록
+	public function testRegisterSerialPartForDelivery() {
+		$this->CI->load->model('work_m', 'work_model');
+		$op = $this->CI->work_model->get(5);
+		$this->assertTrue($op instanceof Entity\Operation);
+
+
+		$part = $op->getItem()->part;
+		$this->CI->work_model->addTempItem($op, $part, '#ZZZZZZ', TRUE);
+	}
 	
 	
 	//////////////
