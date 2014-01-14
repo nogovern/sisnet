@@ -9,7 +9,7 @@ class Main extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$argv = func_get_args();
+
 	}
 
 	public function index() {
@@ -20,13 +20,17 @@ class Main extends CI_Controller
 		echo "<h1>" . __method__ . "</h1>" ;
 	}
 
-	// 로그인 화면
+	/////////////////
+	// 로그인 화면 //
+	/////////////////
 	public function login() {
+		// 로그인 되어 있으면 페이지 이동  
+		if($this->auth->isLoggedIn()) {
+			redirect('schedule');
+		}
+
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-
-		// auth liabrary - 자동 로드됨
-		// $this->load->library('auth');
 
 		$this->form_validation->set_rules('username', 'username', 'required');
 
@@ -50,17 +54,20 @@ class Main extends CI_Controller
 		$this->load->view('login', $data);
 	}
 
+	/////////////////
 	// 로그아웃
+	/////////////////
 	public function logout() {
 		// $this->load->library('auth');			// 자동 로드됨
-		$this->load->helper('alert');
+		// $this->load->helper('alert');
 
 		if($this->auth->isLoggedIn()) {
 			$this->auth->logout();
 			alert('성공적으로 로그아웃 되었습니다', site_url('/'));
 		} else {
-			alert('로그인 먼저 해라!');
+			alert('로그인 먼저 하셔야 합니다');
 		}
 
+		// redirect('login');
 	}
 }
