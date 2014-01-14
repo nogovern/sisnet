@@ -151,68 +151,9 @@ class Install extends CI_Controller
 		// if($action == 'request_ok') {
 		// }
 		// ================================
-
-		// 장비 등록
-		if( $action == 'add_item') {
-			$result = new stdClass;	// 결과
-
-			$part = $em->getReference('Entity\Part', $_POST['part_id']);
-			$item = $this->work_model->addItem($op, $part, $_POST['qty'], $_POST['is_new']);
-
-			if(!$item) {
-				$result->result = 'failure';
-			} else {
-				// :: 모델쪽으로 이동해야함 ::
-				// 장비 재고량 변경
-				$stock = $part->getStock($op->office->id);
-				$qty = intval($_POST['qty']);
-				$is_new = ($_POST['is_new'] == 'Y') ? TRUE : FALSE;
-
-				// 신품,중고 구별
-				if($is_new) {
-					$stock->setQtyNew($stock->qty_new - $qty);
-				} else {
-					$stock->setQtyUsed($stock->qty_used - $qty);
-				}
-
-				$stock->setQtyS200($stock->qty_s200 + $qty);
-				$em->persist($stock);
-
-				$em->flush();
-
-				$result->id = $item->id;			// 새로운 opertaion_parts.id
-				$result->result = 'success';
-			}
-
-			echo json_encode($result);
-            exit;
-		}
-		// 장비 목록에서 삭제
-		elseif( $action == 'remove_item') {
-			$item = $em->getReference('Entity\OperationPart', $_POST['item_id']);
-			$this->work_model->removeItem($item);
-
-			// 장비 재고량 수정
-			$part = $em->getReference('Entity\Part', $item->part->id);
-			$stock = $part->getStock($op->office->id);
-
-			$qty = $item->qty_request;
-			$stock->setQtyS200($stock->qty_s200 - $qty);
-
-			// 신품,중고 구별
-			if($item->isNew()) {
-				$stock->setQtyNew($stock->qty_new + $qty);
-			} else {
-				$stock->setQtyUsed($stock->qty_used + $qty);
-			}
-			$em->persist($stock);
-
-			$em->flush();			
-
-			echo '[Install] remove_item action is done';
-		} 
+		
 		// 점포 완료
-		elseif( $action == 'store_complete') {
+		if( $action == 'store_complete') {
 
 			// 업무 log 생성
 			$log_data = array(
