@@ -179,7 +179,7 @@ $(document).ready(function(){
       $("#select_part").html('');
       return false;
     } else {
-      var target_url = "<?=site_url('ajax/response/')?>" + '/' + cat;
+      var target_url = "<?=site_url('ajax/get_model_list_for_delivery/')?>" + '/' + cat;
     }
 
     // ajax request
@@ -257,14 +257,14 @@ $(document).ready(function(){
     }
 
     $.ajax({
-      url: "/work/install/ajax/add_item",
+      url: "/work/ajax/add_item",
       type: "POST",
       data: {
         "id": operation.id,         
         "part_id": item.id,
         "serial_part_id": '',
-        'is_new': is_new,
         "qty": qty,   
+        'is_new': is_new,
         "extra": "add_item_for_install_op",
         "csrf_test_name": $.cookie("csrf_cookie_name")
       },
@@ -274,9 +274,9 @@ $(document).ready(function(){
         if(response.result === 'success') {
           callback_insert_row(response.id, item.type, item.name, '', '', qty, is_new);
         } else {
-          alert('에러!');
+          if(window.console) 
+            console.log(response);
         }
-        // console.log(response);
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
@@ -296,10 +296,10 @@ $(document).ready(function(){
     }
 
     $.ajax({
-        url: "/work/install/ajax/remove_item",
+        url: "/work/ajax/remove_item",
         type: "POST",
         data: {
-          id : <?=$work->id?>,
+          id : operation.id,
           item_id: item_id,
           "csrf_test_name": $.cookie("csrf_cookie_name")
         },
@@ -307,6 +307,7 @@ $(document).ready(function(){
       })
         .done(function(html) {
           callback_remove_row(that);
+          alert(html);
         })
         .fail(function(xhr, textStatus){
           alert("Request failed: " + textStatus);

@@ -231,27 +231,37 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무-장비 목록 생성(필요시)
-	public function addItem($op, $part, $qty=1, $is_new='Y', $extra = array()) {
-		$item = new Entity\OperationPart;
+	public function addItem($op, $data, $do_flush = FALSE) {
 
+		$part = $this->em->getReference('Entity\Part', $data['part_id']);
+
+		$item = new Entity\OperationPart;
 		$item->setOperation($op);
 		$item->setPart($part);
+		$item->setQtyRequest($data['qty']);							// 요청수량
+		$item->setNewFlag($data['is_new'] == 'Y' ? TRUE: FALSE);	// 신품 or 중고
 		$item->setType($op->type);
-		$item->setQtyRequest($qty);						// 요청수량
-		$item->setNewFlag($is_new == 'Y' ? TRUE: FALSE);						// 신품 or 중고
 		$item->setDateRegister();
 
 		// 시리얼넘버 장비일 경우
-		if(isset($extra['serial_part_id']) && !empty($extra['serial_part_id'])) {
-			;
+		if(isset($data['serial_part_id']) && !empty($data['serial_part_id'])) {
+			$sp = $this->em->getReference('Entity\SerialPart', $data['serial_part_id']);
+			$item->setSerialPart($sp);
 		}
 
-		// 직전위치
-		if(isset($extra['previous_location']) && !empty($extra['previous_location'])) {
-			;
-		}
+		// 여분 필드 extra 배열이 있을경우
+		if( isset($data['extra']) && count($data['extra'])) {
+			$extra = $data['extra'];
 
-		$this->em->persist($item);
+			// 직전위치
+			if(isset($extra['previous_location']) && !empty($extra['previous_location'])) {
+				;
+			}
+		}	
+
+		if($do_flush) {
+			$this->em->persist($item);
+		}
 
 		return $item;
 	}

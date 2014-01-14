@@ -67,17 +67,23 @@ class OperationPart {
 		$this->$key = $value;
 	}
 
+	public function setOperation($op) {
+		$this->operation = $op;				// Operatino Instance
+	}
+
 	public function setType($type) {
 		$this->type = $type;
 	}
 
+	// 장비
 	public function setPart($part) {
 		$this->part = $part;				// Part Instance
 	}
-
-	public function setOperation($op) {
-		$this->operation = $op;				// Operatino Instance
-	}
+	
+	// 시리얼관리장비
+	public function setSerialPart($obj) {
+		$this->serial_part = $obj;
+	}	
 
 	public function setQtyRequest($qty) {
 		$this->qty_request = $qty;

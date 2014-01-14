@@ -60,7 +60,7 @@ $(document).ready(function(){
       })
         .done(function(response) {
           alert(response);
-          //location.reload();
+          location.reload();
         })
         .fail(function(xhr, textStatus){
           alert("Request failed: " + textStatus);

@@ -17,6 +17,7 @@ class Ajax extends CI_Controller
 		}
 
 		$this->load->model('work_m', 'work_model');
+		$this->em = $this->work_model->getEntityManager();
 	}
 
 	public function index() {
@@ -38,14 +39,102 @@ class Ajax extends CI_Controller
 		echo 'success';
 	}
 
+	////////////
+	// 장비 등록 - 이 시점에서는 실 재고에 반영 안됨
+	////////////
 	public function add_item() {
+		$id = $this->input->post('id');		// 작업 ID
 
+		$op = $this->em->getReference('Entity\Operation', $_POST['id']);
+		if(!$op) {
+			die( __CLASS__ . __METHOD__ . " 작업이 존재하지 않습니다");
+		}
+
+		$post_data = array(
+			'id'		=> $this->input->post('id'),
+			'part_id'	=> $this->input->post('part_id'),
+			'serial_number'	=> $this->input->post('serial_number'),
+			'qty'		=> $this->input->post('qty'),
+			'is_new'	=> $this->input->post('is_new'),
+		);
+
+		// 철수 시 장비 분실 항목 체크 시 처리
+		if(isset($_POST['is_lost']) && $_POST['is_lost'] == 'Y') {
+			echo '분실!';
+		}
+
+		// id를 얻기 위해 일단 flush
+		$item = $this->work_model->addItem($op, $post_data, TRUE);
+		// json 결과 객체
+		$result = new stdClass;	
+
+		if(!$item) {
+			$result->result = 'failure';
+		} else {
+			// :: 모델쪽으로 이동해야함 ::
+
+			// 설치 업무일 경우에만 
+			if( $op->type >= '200' && $op->type < '300') 
+			{
+				$part = $this->em->getReference('Entity\Part', $_POST['part_id']);
+				
+				// 장비 재고량 변경
+				$stock = $part->getStock($op->office->id);
+				$qty = intval($_POST['qty']);
+				$is_new = ($_POST['is_new'] == 'Y') ? TRUE : FALSE;
+
+				// 신품,중고 구별
+				if($is_new) {
+					$stock->setQtyNew($stock->qty_new - $qty);
+				} else {
+					$stock->setQtyUsed($stock->qty_used - $qty);
+				}
+
+				$stock->setQtyS200($stock->qty_s200 + $qty);
+				$this->em->persist($stock);
+			}
+
+			$this->em->flush();
+
+			$result->id = $item->id;			// 새로운 opertaion_parts.id
+			$result->result = 'success';
+		}
+
+		echo json_encode($result);
 	}
 
+	// 등록 된 장비 삭제
 	public function remove_item() {
+		$op = $this->em->getReference('Entity\Operation', $_POST['id']);
+		$item = $this->em->getReference('Entity\OperationPart', $_POST['item_id']);
+			
+		$this->work_model->removeItem($item);
 
+		if($item->operation->type >= '200' && $item->operation->type < '300')
+		{
+			// 장비 재고량 수정
+			$part = $this->em->getReference('Entity\Part', $item->part->id);
+			$stock = $part->getStock($op->office->id);
+
+			$qty = $item->qty_request;
+			$stock->setQtyS200($stock->qty_s200 - $qty);
+
+			// 신품,중고 구별
+			if($item->isNew()) {
+				$stock->setQtyNew($stock->qty_new + $qty);
+			} else {
+				$stock->setQtyUsed($stock->qty_used + $qty);
+			}
+
+			$this->em->persist($stock);
+		}
+		
+		$this->em->flush();			
+
+		echo '[Install] remove_item action is done';
 	}
 
+	// 작업자 메모
 	public function write_memo() {
 		$id = $this->input->post('id');
 		
@@ -60,6 +149,7 @@ class Ajax extends CI_Controller
 		echo '메모를 저장하였습니다';
 	}
 
+	// 점포 완료
 	public function store_complete() {
 		$id = $this->input->post('id');
 		
