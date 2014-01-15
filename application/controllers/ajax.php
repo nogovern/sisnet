@@ -131,4 +131,17 @@ class Ajax extends CI_Controller
 		// username 검색 결과 가 있을 시 false 를 출력해야 함
 		echo ($user) ? 'false' : 'true';
 	}
+
+	// 사무소명 검색
+	public function is_exist_office_name($name = '') {
+
+		// uri 에 검색어가 한글일 경우 urldecode 해줘야 하는군...
+		$office_name = ($name) ? urldecode($name) : $_POST['name'];
+
+		$this->load->model('office_m', 'office_model');
+		$result = $this->office_model->getByName($office_name);
+
+		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+		echo (!$result) ? 'true' : 'false';
+	}
 }

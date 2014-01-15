@@ -11,7 +11,7 @@ class Office_m extends MY_Model {
 	}
 
 	public function getByName($value) {
-		return $this->repo->findBy(array('name' => $value));
+		return $this->repo->findOneBy(array('name' => $value));
 	}
 
 	public function getMasterList() {

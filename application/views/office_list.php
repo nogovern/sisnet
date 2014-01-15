@@ -1,6 +1,6 @@
 <?php
-$this->load->view('layout/header', array('title' => '관리자 >> 사무소 리스트'));
-$this->load->view('layout/navbar', array('current' => 'page-admin-office'));
+$this->view('layout/header');
+$this->view('layout/navbar');
 ?>
     <!-- start of div.container -->
     <div class="container">
@@ -17,14 +17,12 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
             <thead>
               <tr>
                 <th>#</th>
-                <th>Type</th>
-                <th>사무소명</th>
                 <th>Master 사무소</th>
+                <th>사무소명</th>
                 <th>담당자</th>
                 <th>전화번호</th>
                 <th>주소</th>
                 <th>메모</th>
-                <th>상태</th>
                 <th>&nbsp;</th>
               </tr>
             </thead>
@@ -35,9 +33,8 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
   ?>
               <tr>
                 <td><?=$row->id?></td>
-                <td><?=($row->type == 'O') ? '사무소' : '창고'?></td>
+                <td><?=($row->is_master == 'Y') ? '' : $row->master->name; ?></td>
                 <td><?=$row->name?></td>
-                <td><?=($row->is_master == 'Y') ? '' : $row->master->name ?></td>
                 <td>
   <?php
   if($row->user){
@@ -50,8 +47,7 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
                 <td><?=$row->phone?></td>
                 <td><?=$row->address?></td>
                 <td><?=$row->memo?></td>
-                <td><?=($row->status == '1') ? '활성' : '비활성' ?></td>
-                <td><?=''?></td>
+                <td></td>
               </tr>
   <?php
   endforeach;
@@ -73,5 +69,5 @@ $this->load->view('layout/navbar', array('current' => 'page-admin-office'));
     </script>
 
 <?php
-$this->load->view('layout/footer');
+$this->view('layout/footer');
 ?>
