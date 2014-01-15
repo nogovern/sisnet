@@ -58,11 +58,11 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <td><?=$row->user->name?></td>
                 <td><?=$row->office->name?></td>
                 <!-- 장비 -->
-                <td><?=$row->items[0]->part->category->name?></td>
-                <td><?=$row->items[0]->part->name?></td>
+                <td><?=$row->getItem()->part->category->name?></td>
+                <td><?=$row->getItem()->part->name?></td>
                 <td><?=@$row->location_object->name;?></td>
-                <td><?=$row->items[0]->qty_request?></td>
-                <td><?=($row->status == '4') ? $row->items[0]->qty_complete : '';?></td>
+                <td><?=$row->getItem()->qty_request?></td>
+                <td><?=($row->status == '4') ? $row->getItem()->qty_complete : '';?></td>
                 <td><?=$row->getDateRegister();?></td>
                 <td><?=$row->getDateRequest();?></td>
                 <td><?=$row->getDateModify();?></td>

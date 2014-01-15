@@ -118,14 +118,19 @@ class Work_m extends MY_Model {
 	// 입고 업무 생성
 	///////////////
 	public function createEnterOperation($type, $post) {
-		$op = $this->addOperation($type, $post);
-
-		// 장비
-		$extra = array('is_new'	=> TRUE);
-		$part = $this->em->getReference('Entity\Part', $post['part_id']);
-		$item = $this->addItem($op, $part, $post['qty'], $extra);
 		
-		$this->em->flush();
+		// operation.id 를 얻기 위해 flush 를 해야 함
+		$op = $this->addOperation($type, $post, TRUE);
+
+		$post_data = array(
+			'qty'		=> $post['qty'],
+			'part_id'	=> $post['part_id'],
+			'is_new'	=> TRUE,
+		);
+
+		$item = $this->addItem($op, $post_data, TRUE);
+		// echo "Item : " . $item->id . "-" . $item->part->name; 
+
 		return $op;
 	}
 
@@ -150,9 +155,7 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무 메인 생성
-	public function addOperation($type, $post) {
-		$user = $this->em->getReference('Entity\User', $post['user_id']);
-		$office = $this->em->getReference('Entity\Office', $post['office_id']);
+	public function addOperation($type, $post, $do_flush=FALSE) {
 		
 		// 새로운 업무 객체
 		$new = new Entity\Operation;
@@ -167,8 +170,13 @@ class Work_m extends MY_Model {
 			$new->setDateWork($post['date_work']);
 		}
 
-		$new->setOffice($office);
+		// 요청자
+		$user = $this->em->getReference('Entity\User', $this->session->userdata('user_id'));
 		$new->setUser($user);
+
+		// 담당 사무소
+		$office = $this->em->getReference('Entity\Office', $post['office_id']);
+		$new->setOffice($office);
 
 		// 입고 업무시 납품처 지정
 		if($type >= '100' && $type < '200') {
@@ -180,6 +188,10 @@ class Work_m extends MY_Model {
 		}
 
 		$this->em->persist($new);
+		if($do_flush) {
+			$this->em->flush();
+
+		}
 		return $new;
 	}
 
@@ -231,8 +243,7 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무-장비 목록 생성(필요시)
-	public function addItem($op, $data, $do_flush = FALSE) {
-
+	public function addItem($op, $data, $do_flush=FALSE) {
 		$part = $this->em->getReference('Entity\Part', $data['part_id']);
 
 		$item = new Entity\OperationPart;
@@ -259,8 +270,9 @@ class Work_m extends MY_Model {
 			}
 		}	
 
+		$this->em->persist($item);
 		if($do_flush) {
-			$this->em->persist($item);
+			$this->em->flush();
 		}
 
 		return $item;

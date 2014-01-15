@@ -20,14 +20,15 @@ class Enter extends CI_Controller
 	}
 
 	public function index() {
-		$this->main();
+		$this->lists();
 	}
-
-	public function main() {
+	public function lists() {
 		$data['title'] = '입고업무';
+		$data['current'] = 'page-work-enter';
+
 		$data['type'] = '';
 		$data['rows'] = $this->work_model->getEnterList();
-		
+
 		$this->load->view('work_enter_list', $data);
 	}
 
@@ -98,13 +99,11 @@ class Enter extends CI_Controller
 			$this->load->view('work_enter_popup_form', $data);
 
 		} else {
-			var_dump($_POST);
+			// var_dump($_POST);
 
 			// 100 - 입고업무
 			$this->work_model->createEnterOperation(GS2_OP_TYPE_ENTER, $this->input->post());
-			echo 'done';
-
-			exit;
+			alert_colorbox_close('입고 요청 완료');
 		}
 	}
 
