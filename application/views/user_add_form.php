@@ -1,3 +1,8 @@
+<?php
+$this->view('layout/header');
+$this->view('layout/navbar');
+?>
+
 <!-- start of div.container -->
 <div class="container">
 
@@ -32,6 +37,7 @@
                 납품업체
               </label>
             </div>
+            <div class="col-sm-3"></div>
           </div>
 
           <div class="form-group" id="select_office">
@@ -41,6 +47,7 @@
             echo $form_office_select;
             ?>
             </div>            
+            <div class="col-sm-3 error_msg"></div>
           </div>
 
           <!-- 외부 업체 선택-->
@@ -51,6 +58,7 @@
             echo $form_company_select;
             ?>
             </div>
+            <div class="col-sm-3 error_msg"></div>
           </div>
 
           <div class="form-group">
@@ -58,6 +66,7 @@
             <div class="col-sm-6">
               <input type="text" class="form-control" id="username" name="username" placeholder="Enter ID">
             </div>
+            <div class="col-sm-3 error_msg"></div>
           </div>
 
           <div class="form-group">
@@ -65,6 +74,7 @@
             <div class="col-sm-6">
               <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
             </div>
+            <div class="col-sm-3 error_msg"></div>
           </div>
 
           <div class="form-group">
@@ -85,9 +95,10 @@
 
           <div class="form-group">
             <label class="form-label col-sm-3">이메일</label>
-            <div class="col-sm-6">
+            <div class="col-sm-5">
               <input type="text" class="form-control" id="email" name="email" placeholder="입력하세요">
             </div>
+            <div class="col-sm-4 error_msg"></div>
           </div>
           
           <div class="form-group">
@@ -113,13 +124,12 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  var user_type;
 
   $("#select_office").hide();
   $("#select_company").hide();
 
   $(":radio[name=type]").change(function(e){
-    user_type = $(this).val();
+    var user_type = $(this).val();
     
     if(user_type == 1) {
       $("#select_office").fadeIn();
@@ -134,9 +144,32 @@ $(document).ready(function(){
 
   });
 
+  // jquery validate 설정
   $("#register_form").validate({
     debug: true,
     rules: {
+      type: {
+        required: true
+      },
+      office_id: {
+        min: 1,
+        required: {
+          depends: function(el) {
+            return ($(":radio[name=type]:checked").val() === '1');
+          }
+        }
+      },
+      company_id: {
+        min: 1,
+        required: {
+          depends: function(el) {
+            return ($(":radio[name=type]:checked").val() === '3');
+          }
+        }
+      },
+      username : {
+        required: true
+      },
       name : 'required',
       password: {
         required: true,
@@ -146,12 +179,32 @@ $(document).ready(function(){
         required: true,
         equalTo: "#password"
       },
-      phone: 'required'
+      email: {
+        required: false,
+        email: true
+      }
+    },
+    messages: {
+      email: {
+        email: '올바른 email 형식이 아닙니다. ex) abc@sisnet.net'
+      }
+    },
+    errorPlacement: function(error, el) {
+      if( el.is(":radio")) {
+        error.appendTo( el.closest('div').next());
+      } else {
+        error.appendTo( el.parent().next());
+      }
     },
     submitHandler: function(form) {
-      alert('call');
+      alert('새로운 사용자를 등록하였습니다');
+      form.submit();
     }
   });
 
-});
+});// end of $.ready()
 </script>
+
+<?php
+$this->view('layout/footer');
+?>

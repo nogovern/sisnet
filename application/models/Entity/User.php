@@ -55,15 +55,26 @@ class User {
 	 * @JoinColumn(name="company_id", referencedColumnName="id")
 	 */
 	protected $company;			// 거래처 연관
-	
-	/**
-	 * [__get description]
-	 * @param  [type] $key [description]
-	 * @return [type]      [description]
-	 */
+	//==============================================================
+
 	public function __get($key) {
 		return $this->$key;
 	}
+
+	public function getName() {
+		return $this->name;
+	}
+
+	public function getDateRegister($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_register) ? $this->date_register->format($format) : '';
+	}
+
+	// 회원 타입 문자열
+	public function getUserTypeText() {
+		return ($this->type) ? constant('GS2_USER_TYPE_' . $this->type) : '';
+	}
+
 
 	public function setType($val) {
 		$this->type = $val;
@@ -73,16 +84,23 @@ class User {
 		$this->username = $name;
 	}
 
-	public function getName() {
-		return $this->name;
-	}
-
 	public function setName($name) {
 		$this->name = $name;
 	}
 
 	public function setPassword($string) {
 		$this->password = $string;
+	}
+
+	// 연락처
+	public function setPhone($value='')
+	{
+		$this->phone = $value;
+	}
+
+	public function setEmail($value='')
+	{
+		$this->email = $value;
 	}
 
 	// 등록일시 
@@ -102,27 +120,4 @@ class User {
 		$this->office = $reference;
 	}
 
-	// datetime 타입을 문자열로 반환
-	// (주의) datetime 객체 타입의 변수는 직접 접근할 수 없다. (not public) 
-	public function getDateRegister() {
-		$temp = $this->date_register;
-
-		return (is_object($temp)) ? $temp->format('Y-m-d H:i:d') : NULL;
-	}
-
-	public function getUserTypeText($type='') {
-		/*
-		  임시 전역변수 선언
-		 */
-		$_var['user_type'] = array(
-		  1  =>  '시스네트',
-		  2  =>  'GS25',
-		  3  =>  '납품처',
-		);
-
-		if(empty($this->type) || !array_key_exists($this->type, $_var['user_type']))
-			return '';
-
-		return $_var['user_type'][$this->type];
-	}
 }

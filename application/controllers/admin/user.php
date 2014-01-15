@@ -33,7 +33,7 @@ class User extends CI_Controller {
 		$user = $this->user_model->get($id);
 
 		$data['title'] = "사용자 정보";
-		$data['current'] = 'page-user';
+		$data['current'] = 'page-admin-user';
 
 		echo ' 제 이름은 ' . $user->name;
 	}
@@ -42,6 +42,8 @@ class User extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
+		$data['title'] = "사용자 >> 사용자 등록";
+		$data['current'] = 'page-user';
 
 		$em = $this->user_model->getEntityManager();
 		// 사무소 목록
@@ -63,7 +65,6 @@ class User extends CI_Controller {
 		// selectbox 생성
 		$data['form_office_select'] = form_dropdown('office_id', $option_offices, 0, 'id="office_id" class="form-control"');
 		$data['form_company_select'] = form_dropdown('company_id', $option_companies, 0, 'id="company_id" class="form-control"');
-		$data['title'] = "Create a new user";
 
 		// 규칙 설정
 		$this->form_validation->set_rules('username', '사용자 ID', 'required');
@@ -71,10 +72,7 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('type', '사용자 종류', 'required');
 
 		if($this->form_validation->run() === FALSE){
-			$this->load->view('layout/header');
-			$this->load->view('layout/navbar');
 			$this->load->view('user_add_form', $data);
-			$this->load->view('layout/footer');
 		}
 		else 
 		{
@@ -85,6 +83,8 @@ class User extends CI_Controller {
 			$user->setName($this->input->post('name'));
 			$user->setPassword($this->input->post('password'));
 			$user->setType($this->input->post('type'));
+			$user->setPhone($this->input->post('phone'));
+			$user->setEmail($this->input->post('email'));
 			$user->setDateRegister();
 			$user->setStatus(1);
 

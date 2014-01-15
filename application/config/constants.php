@@ -40,10 +40,19 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
 
+// 회원 타입
+define('GS2_USER_TYPE_1',	'시스네트');
+define('GS2_USER_TYPE_2',	'GS25');
+define('GS2_USER_TYPE_3',	'거래처');
+define('GS2_USER_TYPE_9',	'관리자');
+
 define('GS2_LOCATION_TYPE_OFFICE', 	'O');			// 사무소
 define('GS2_LOCATION_TYPE_COMPANY', 'C');			// 거래처
 define('GS2_LOCATION_TYPE_STORE', 	'S');			// 점포
 
+//////////////
+// 작업 관려
+//////////////
 define('GS2_OP_TYPE_ENTER', 	100);		// 입고
 define('GS2_OP_TYPE_INSTALL', 	200);		// 설치
 define('GS2_OP_TYPE_INSTALL_1', 201);		// 설치 - 신규
