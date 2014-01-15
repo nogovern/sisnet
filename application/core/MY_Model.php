@@ -93,7 +93,7 @@ class MY_Model extends CI_Model {
 	
 	// 목록
 	public function getList() {
-		return $this->em->getRepository($this->getEntityName())->findAll();
+		return $this->em->getRepository($this->getEntityName())->findBy(array(), array('id' => 'desc'));
 	}
 
 	// 검색
