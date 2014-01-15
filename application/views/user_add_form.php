@@ -37,7 +37,7 @@ $this->view('layout/navbar');
                 납품업체
               </label>
             </div>
-            <div class="col-sm-3"></div>
+            <div class="col-sm-3 "></div>
           </div>
 
           <div class="form-group" id="select_office">
@@ -123,6 +123,11 @@ $this->view('layout/navbar');
 <!-- jquery form validation -->
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript">
+jQuery.validator.setDefaults({
+  onkeyup: false,
+  debug: true
+});
+
 $(document).ready(function(){
 
   $("#select_office").hide();
@@ -146,7 +151,6 @@ $(document).ready(function(){
 
   // jquery validate 설정
   $("#register_form").validate({
-    debug: true,
     rules: {
       type: {
         required: true
@@ -168,7 +172,14 @@ $(document).ready(function(){
         }
       },
       username : {
-        required: true
+        required: true,
+        remote: {
+          url: "<?=site_url('ajax/is_exist_username')?>",
+          type: "post",
+          data: {
+            "csrf_test_name": $.cookie("csrf_cookie_name")
+          }
+        }
       },
       name : 'required',
       password: {
@@ -187,13 +198,21 @@ $(document).ready(function(){
     messages: {
       email: {
         email: '올바른 email 형식이 아닙니다. ex) abc@sisnet.net'
-      }
+      },
+      username: {
+        remote: '사용할수 없는 ID 입니다. 다시 선택해 주세요'
+      },
+      re_password: "비밀번호가 일치하지 않습니다"
+    },
+    success: function(el) {
+        el.closest(".form-group").removeClass('has-error');
     },
     errorPlacement: function(error, el) {
       if( el.is(":radio")) {
         error.appendTo( el.closest('div').next());
       } else {
         error.appendTo( el.parent().next());
+        el.closest(".form-group").addClass('has-error');
       }
     },
     submitHandler: function(form) {

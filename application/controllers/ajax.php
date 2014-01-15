@@ -119,4 +119,16 @@ class Ajax extends CI_Controller
 	public function search_part_by_previous_location($query) {
 
 	}
+
+	// 사용자 username 검색
+	public function is_exist_username() {
+		$this->load->model('user_m', 'user_model');
+
+		$user = $this->user_model->getByUsername($this->input->post('username'));
+
+		// jquery validate remote 처리시 
+		// false 를 출력해야 error 로 판단
+		// username 검색 결과 가 있을 시 false 를 출력해야 함
+		echo ($user) ? 'false' : 'true';
+	}
 }
