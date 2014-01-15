@@ -65,6 +65,7 @@ class User extends CI_Controller {
 		$data['current'] = 'page-user';
 
 		$em = $this->user_model->getEntityManager();
+		
 		// 사무소 목록
 		$offices = $em->getRepository('Entity\Office')->findAll();
 		$option_offices = array();

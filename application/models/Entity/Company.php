@@ -49,18 +49,65 @@ class Company
 		return $this->$key;
 	}
 
-	public function __set($key, $value) {
-		$this->$key = $value;
+	//==========================================
+
+	// 등록일시 얻기
+	public function getDateRegister($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_register) ? $this->date_register->format($format) : '';
 	}
 
-	public function getRegisterDate() {
-		return ($this->date_register) ? $this->date_register->format('Y-m-d H:i:s') : '';
+	public function getUser(){
+		return ($this->user) ? $this->user : '';
 	}
 
-	public function setUser( $user) {
+	// 담당자 - 링크 
+	public function getUserAnchor() {
+		return ($this->user) ? $this->user->name : '';
+	}
+
+	// 담당자
+	public function setUser($user) {
 		$this->user = $user;
 	}
 
-	
+	public function setCode($value='') {
+		$this->code = $value;
+	}
+
+	public function setType($type) {
+		$this->type = $type;
+	}
+
+	public function setName($value='')
+	{
+		$this->name = $value;
+	}
+
+	public function setTel($value='')
+	{
+		$this->tel = $value;
+	}
+
+	public function setAddress($value='')
+	{
+		$this->address = $value;
+	}
+
+	public function setMemo($value='')
+	{
+		$this->memo = $value;
+	}
+
+	public function setStatus($value='')
+	{
+		$this->status = $value;
+	}
+
+	// 등록일시
+	public function setDateRegister($date = 'now') {
+		if(!empty($date))
+			$this->date_register = new \DateTime($date);
+	}
 }
 

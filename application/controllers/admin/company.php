@@ -24,40 +24,29 @@ class Company extends CI_Controller {
 		$this->load->view('company_list', $data);
 	}
 
+	// 등록
 	public function add() {
-		$this->load->library('Form_Validation');
+		$this->load->library('form_validation');
 		$this->load->helper('form');
 
 		$data['title'] = '거래처 등록';
+		$data['current'] = 'page-admin-company';
+
+		// 직원 담당자 선택 dropdown
+		$this->load->model('user_m', 'user_model');
+		$arr_user = $this->user_model->convertForSelect($this->user_model->getListByType(3));
+		$data['select_user'] = form_dropdown('user_id', $arr_user, 0, 'id="user_id" class="form-control"');
 
 		// 규칙 설정
 		$this->form_validation->set_rules('type', '거래처 타입', 'required');
 		$this->form_validation->set_rules('name', '거래처 업체명', 'required');
-		$this->form_validation->set_rules('code', '거래처 코드', 'required');
 
 		if($this->form_validation->run() === FALSE){
-			$this->load->view('layout/header');
-			$this->load->view('layout/navbar');
 			$this->load->view('company_add_form', $data);
-			$this->load->view('layout/footer');
 
 		} else {
-			$new = new Entity\Company();
-
-			$new->code = $this->input->post('code');
-			$new->type = $this->input->post('type');
-			$new->name = $this->input->post('name');
-			$new->tel = $this->input->post('tel');
-			$new->address = $this->input->post('address');
-			$new->memo = $this->input->post('memo');
-			$new->date_register = new DateTime("now");		// 현재 시간
-			$new->status = 'Y';
-
-			// user_id 가 있으면 
-			// $new->user = $user;
-
-			$this->company_model->_add($new);
-			$this->company_model->_commit();
+			// 바로 flush 한다
+			$new_office = $this->company_model->create($this->input->post(), TRUE);
 
 			redirect('/admin/company');
 		}

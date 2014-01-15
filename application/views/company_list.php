@@ -48,10 +48,10 @@ foreach($rows as $row):
               <td><?=$arr_type[$row->type]?></td>
               <td><?=$row->name?></td>
               <td><?=$row->code?></td>
-              <td><?=($row->user) ? $row->user->getName() : '-- 지정안됨 --'?></td>
+              <td><?=$row->getUserAnchor();?></td>
               <td><?=$row->tel?></td>
               <td><?=$row->address?></td>
-              <td><?=$row->getRegisterDate()?></td>
+              <td><?=$row->getDateRegister()?></td>
               <td><?=$row->status?></td>
               <td><?=$row->memo?></td>
             </tr>
