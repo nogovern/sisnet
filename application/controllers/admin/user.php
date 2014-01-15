@@ -9,24 +9,43 @@ class User extends CI_Controller {
 		$this->load->model('user_m', 'user_model');
 	}
 
-	public function index() {
-		$this->lists();
+	public function index($type='', $page=1) {
+		$this->lists($type, $page);
 	}
 
-	public function lists($type = '') {
+	public function lists($type='', $page=1) {
 		if(!$type) {
 			$rows = $this->user_model->getList();
 		} else {
 			$rows = $this->user_model->getListByType($type);
+			$config['suffix'] = '&type=' . $type;
 		}
+
+		// pagination
+		// ===========
+		// user/lists/?page=1&type=2 식으로 사용하려면 config에 
+		// prefix, suffix 를 설정해야 함
+		// (소스에 보면) $this->prefix.$n.$this->suffix;
+		$this->load->library('pagination');
+		$config = array(
+			'base_url' 		=> base_url() . 'admin/user/lists/',
+			'prefix'		=> '?page=',
+			'total_rows'	=> count($rows),
+			'per_page'		=> 10,
+			'use_page_numbers'	=> TRUE,
+			'page_query_string'	=> FALSE
+		);
+
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['title'] = '관리자 > 사용자 > 리스트';
+		$data['current'] = 'page-admin-user';
 
 		$data['rows'] = $rows;
 		$data['type'] = $type;		// 회원구분
 		
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
-		$this->load->view('user_list.html', $data);
-		$this->load->view('layout/footer');
+		$this->load->view('user_list', $data);
 	}
 
 	public function view($id) {
