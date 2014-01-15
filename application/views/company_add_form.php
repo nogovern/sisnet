@@ -9,7 +9,9 @@ $this->view('layout/navbar');
   <!-- Example row of columns -->
   <div class="row">
     <div class="col-md-8 col-sx-12">
-      <h2>거래처 등록 (관리자 전용)</h2>
+      <div class="page-header">
+        <h2><span class="fa fa-building-o"></span>&nbsp;거래처 신규 등록</h2>
+      </div>
 
       <?php echo form_open('', 'role="form" class="form-horizontal"');?>
       <!-- <form role="form"> -->
