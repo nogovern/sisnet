@@ -16,7 +16,7 @@ class Operation
 	 * @Id
 	 * @Column(type="integer", nullable=false)
 	 * @GeneratedValue(strategy="AUTO")
-	 * @SequenceGenerator(sequenceName="gs2_operation_seq")
+	 * @SequenceGenerator(sequenceName="gs2_op_seq")
 	 */
 	protected $id;
 

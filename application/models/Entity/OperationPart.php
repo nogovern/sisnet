@@ -10,7 +10,7 @@ class OperationPart {
 	 * @Id
 	 * @Column(type="integer", nullable=false)
 	 * @GeneratedValue(strategy="AUTO")
-	 * @SequenceGenerator(sequenceName="gs2_operation_part_seq")
+	 * @SequenceGenerator(sequenceName="gs2_op_part_seq")
 	 */
 	protected $id;
 
@@ -19,9 +19,6 @@ class OperationPart {
 	 * @JoinColumn(name="operation_id", referencedColumnName="id")
 	 */
 	protected $operation;
-
-	/** @Column(type="string", length=1) */
-	protected $type;
 
 	/**
 	 * @OneToOne(targetEntity="Part")
@@ -53,13 +50,59 @@ class OperationPart {
 	protected $is_new = 'Y';
 
 	/** @Column(type="string", length=1) */
-	protected $is_complete = 'N';
+	protected $is_complete = 'N';		// 검검 대기를 위한 필드
 
 	/** @Column(type="string", length=1) */
 	protected $status = "1";
 
 	/** @Column(type="string", length=255) */
-	protected $extra = '';			// 여분 데이타
+	protected $extra;			// 여분 데이타
+
+	//---- 2014.1.16 에 추가된 필드
+
+	/** @Column(type="string", length=10) */
+	protected $prev_location;
+
+	/** @Column(type="string", length=20) */
+	protected $serial_number = "";
+
+	/** @Column(type="string", length=1) */
+	protected $is_scan = "N";
+
+	/** @Column(type="integer") */
+	protected $qty_lost = 0;
+
+	/** @Column(type="string", length=30) */
+	protected $part_name;
+
+	/** @Column(type="string", length=1) */
+	protected $part_type;
+
+	// ---------- get -------------
+	public function __get($key) {
+		return $this->$key;
+	}
+
+	public function isNew() {
+		return ($this->is_new == 'Y') ? TRUE : FALSE;
+	}
+
+	public function isComplete() {
+		return ($this->is_complete == 'Y') ? TRUE : FALSE;
+	}
+
+	public function getQtyRequest(){
+		return $this->qty_request;
+	}
+
+	public function getQtyComplete() {
+		return $this->qty_complete;
+	}
+
+	public function isScan()
+	{
+		retrun ($this->is_scan == 'Y') ? TRUE : FALSE;
+	}
 
 	// ---------- set -------------
 	
@@ -69,10 +112,6 @@ class OperationPart {
 
 	public function setOperation($op) {
 		$this->operation = $op;				// Operatino Instance
-	}
-
-	public function setType($type) {
-		$this->type = $type;
 	}
 
 	// 장비
@@ -114,26 +153,39 @@ class OperationPart {
 		$this->status = $status;
 	}
 
-	// ---------- get -------------
-	public function __get($key) {
-		return $this->$key;
+	public function setSerialNumber($value='')
+	{
+		$this->serial_number = $value;
 	}
 
-	public function isNew() {
-		return ($this->is_new == 'Y') ? TRUE : FALSE;
+	public function setPreviousLocation($value='')
+	{
+		$this->prev_location = $value;
 	}
 
-	public function isComplete() {
-		return ($this->is_complete == 'Y') ? TRUE : FALSE;
+	// 입고 시 장비 스캔 여부
+	public function setScanFlag($value)
+	{
+		$this->is_scan = ($value == TRUE) ? 'Y' : 'N';
 	}
 
-	public function getQtyRequest(){
-		return $this->qty_request;
+	// 분실 수량 할당
+	public function setQtyLost($value)
+	{
+		$this->qty_lost = $value;
 	}
 
-	public function getQtyComplete() {
-		return $this->qty_complete;
+	// part_type, part_name 은 작업 등록 시점의 기록 유지 위해 추가
+	// 장비명
+	public function setPartName($value='')
+	{
+		$this->part_name = $value;
 	}
 
+	// 장비 종류
+	public function setPartType($value='')
+	{
+		$this->part_type = $value;
+	}
 	
 }

@@ -251,14 +251,34 @@ class Work_m extends MY_Model {
 		$item->setPart($part);
 		$item->setQtyRequest($data['qty']);							// 요청수량
 		$item->setNewFlag($data['is_new'] == 'Y' ? TRUE: FALSE);	// 신품 or 중고
-		$item->setType($op->type);
 		$item->setDateRegister();
+		$item->setPartType($part->type);
+		$item->setPartName($part->name);
 
 		// 시리얼넘버 장비일 경우
-		if(isset($data['serial_part_id']) && !empty($data['serial_part_id'])) {
-			$sp = $this->em->getReference('Entity\SerialPart', $data['serial_part_id']);
-			$item->setSerialPart($sp);
+		if($part->type == '1') {
+			if(isset($data['serial_number']) && !empty($data['serial_number'])) {
+				$item->setSerialNumber($data['serial_number']);
+			}
+
+			if(isset($data['serial_part_id']) && !empty($data['serial_part_id'])) {
+				$sp = $this->em->getReference('Entity\SerialPart', $data['serial_part_id']);
+				$item->setSerialPart($sp);
+			}
 		}
+
+		// 직전위치 저장
+		$location = '';
+		if($op->type == '100') {
+			$location = $op->work_location;		// 입고시는 납품처
+		} elseif( $op->type >= '200' && $op->type < '300') {
+			$location = 'O@' . $op->offfice->id;		// 설치시는 사무소
+		} elseif( $op->type >= '300' && $op->type < '400') {
+			$location = $op->work_location;		// 철수시는 점포
+		} else {
+			;
+		}
+		$item->setPreviousLocation($location);
 
 		// 여분 필드 extra 배열이 있을경우
 		if( isset($data['extra']) && count($data['extra'])) {

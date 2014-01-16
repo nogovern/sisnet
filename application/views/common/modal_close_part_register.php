@@ -191,7 +191,7 @@ $(document).ready(function(){
     })
       .done(function(response) {
         if(response.result === 'success') {
-          callback_insert_row(response.id, item.type, item.name, '', '', qty, is_new);
+          callback_insert_row(response.id, item.type, item.name, $("#serial_number").val(), '', qty, is_new);
         } else {
           console.log(response);
           alert('에러!');
