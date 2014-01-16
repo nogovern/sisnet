@@ -101,6 +101,7 @@ class Ajax extends CI_Controller
 
 	// 시리얼로  장비 검색
 	public function search_part_by_serial($query) {
+		$query = (empty($query)) ? $_POST['input_text'] : $query;
 		if(empty($query)) {
 			die('검색어가 없음!');
 		}
@@ -112,7 +113,7 @@ class Ajax extends CI_Controller
 
 		$s_part = $em->getRepository('Entity\SerialPart')->findBy(array('serial_number' => $sn));
 
-		echo ($s_part) ? '성공' : '실패!!!!!!!!'; 
+		echo ($s_part) ? 'false' : 'true';
 	}
 
 	// 직전위치로 장비 검색

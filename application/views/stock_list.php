@@ -95,7 +95,8 @@ if(count($row->getStockList())):
       <td class="col-xs-1"><?=$stock->qty_s600?></td>
       <td class="col-xs-1">
 <?php
-      if($stock->office->isMaster() === TRUE):
+      // 사무소가 master 이고 장비 상태가 정상인 경우만 입고 버튼 보임
+      if($stock->office->isMaster() === TRUE && $row->status > '0'):
 ?>
         <button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$row->id, $stock->office->id)?>">입고</button>
 <?php

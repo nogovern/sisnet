@@ -96,8 +96,8 @@ define('GS2_OP_CLOSE_STATUS_5', 	'완료');
 define('GS2_OP_CLOSE_STATUS_6', 	'승인');
 
 // 장비 관련
-define('GS2_PART_TYPE_SERIAL', 	'1');				// 시리얼관리장비
-define('GS2_PART_TYPE_COUNT', 	'2');				// 수량관리장비
-define('GS2_PART_TYPE_SUPPLIES', '3');				// 소모품
+define('GS2_PART_TYPE_1', 	'시리얼');				// 시리얼관리장비
+define('GS2_PART_TYPE_2', 	'수량');				// 수량관리장비
+define('GS2_PART_TYPE_3', 	'소모품');				// 소모품
 
 

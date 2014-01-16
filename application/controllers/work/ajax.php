@@ -51,16 +51,17 @@ class Ajax extends CI_Controller
 		}
 
 		$post_data = array(
-			'id'		=> $this->input->post('id'),
-			'part_id'	=> $this->input->post('part_id'),
-			'serial_number'	=> $this->input->post('serial_number'),
-			'qty'		=> $this->input->post('qty'),
-			'is_new'	=> $this->input->post('is_new'),
+			'id'				=> $this->input->post('id'),		// 작업 ID
+			'part_id'			=> $this->input->post('part_id'),
+			'serial_number'		=> $this->input->post('serial_number'),
+			'serial_part_id'	=> $this->input->post('serial_part_id'),
+			'qty'				=> $this->input->post('qty'),
+			'is_new'			=> $this->input->post('is_new'),
 		);
 
 		// 철수 시 장비 분실 항목 체크 시 처리
-		if(isset($_POST['is_lost']) && $_POST['is_lost'] == 'Y') {
-			echo '분실!';
+		if(isset($_POST['qty_lost']) && $_POST['qty_lost'] > 0) {
+			$post_data['qty_lost'] = $this->input->post('qty_lost');
 		}
 
 		// id를 얻기 위해 일단 flush
@@ -71,18 +72,22 @@ class Ajax extends CI_Controller
 		if(!$item) {
 			$result->result = 'failure';
 		} else {
-			// :: 모델쪽으로 이동해야함 ::
+			//////////////////////////
+			// :: 모델쪽으로 이동해야함 :: //
+			//////////////////////////
 
-			// 설치 업무일 경우에만 
-			if( $op->type >= '200' && $op->type < '300') 
-			{
-				$part = $this->em->getReference('Entity\Part', $_POST['part_id']);
-				
-				// 장비 재고량 변경
-				$stock = $part->getStock($op->office->id);
-				$qty = intval($_POST['qty']);
-				$is_new = ($_POST['is_new'] == 'Y') ? TRUE : FALSE;
+			$part = $this->em->getReference('Entity\Part', $_POST['part_id']);
+			// 장비 재고량 변경
+			$stock = $part->getStock($op->office->id);
+			$qty = intval($_POST['qty']);
+			$is_new = ($_POST['is_new'] == 'Y') ? TRUE : FALSE;
 
+			// 입고 업무 시
+			if( $op->type == '100') {
+				$stock->setQtyS100($stock->qty_s100 + $qty);	// 발주 수량 update
+			} 
+			// 설치 업무일 경우
+			elseif( $op->type >= '200' && $op->type < '300') {
 				// 신품,중고 구별
 				if($is_new) {
 					$stock->setQtyNew($stock->qty_new - $qty);
@@ -91,9 +96,9 @@ class Ajax extends CI_Controller
 				}
 
 				$stock->setQtyS200($stock->qty_s200 + $qty);
-				$this->em->persist($stock);
 			}
 
+			$this->em->persist($stock);
 			$this->em->flush();
 
 			$result->id = $item->id;			// 새로운 opertaion_parts.id
@@ -174,6 +179,7 @@ class Ajax extends CI_Controller
 		echo '점포 작업 완료 로 변경하였음';
 	}
 
+	// 완료
 	public function complete() {
 
 	}
@@ -182,5 +188,20 @@ class Ajax extends CI_Controller
 	public function approve() {
 
 	}
+
+	// 입고 - 아이템 정보 갱신
+	public function update_item($action=NULL) {
+		$item = $this->em->getReference('Entity\OperationPart', $this->input->post('item_id'));
+
+		if($action == 'register') {
+
+		}
+
+		elseif($action == 'remove') {
+
+		}
+	}
 	
 }
+
+
