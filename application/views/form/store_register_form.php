@@ -131,7 +131,7 @@ if(isset($form_saved)) {
           <input type="radio" name="status" value="2"> 휴점
         </label> /
         <label class="radio-inline">
-          <input type="radio" name="status" value="9"> 폐점
+          <input type="radio" name="status" value="0"> 폐점
         </label>
     </div>
   </div>
