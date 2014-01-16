@@ -46,7 +46,10 @@ class Stock
 	protected $qty_used = 0;
 
 	/** @Column(type="integer") */
-	protected $qty_s200 = 0;
+	protected $qty_s100 = 0;				// 발주 된 수량
+
+	/** @Column(type="integer") */
+	protected $qty_s200 = 0;				// 설치 중 수량
 
 	/** @Column(type="integer") */
 	protected $qty_s500 = 0;
@@ -118,6 +121,12 @@ class Stock
 
 	public function setQtyS900($qty) {
 		$this->qty_s900 = $qty;
+	}
+
+	// 발주 수량 (가용/비가용 도 아님)
+	public function setQtyS100($qty)
+	{
+		$this->qty_s100 = $qty;
 	}
 
 	
