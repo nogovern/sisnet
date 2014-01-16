@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database', 'doctrine', 'session', 'auth');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'alert');
+$autoload['helper'] = array('url', 'alert', 'sisnet');
 
 
 /*
