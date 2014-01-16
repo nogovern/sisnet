@@ -120,7 +120,8 @@ class Enter extends CI_Controller
 
 		$em = $this->work_model->getEntityManager();
 
-		$data['title'] = '입고 요청 보기';
+		$data['title'] = '입고 > 작업 상세 보기';
+		$data['current'] = 'page-enter';
 
 		$work = $this->work_model->get($work_id);
 		$data['work'] = $work;

@@ -118,7 +118,6 @@ class Work_m extends MY_Model {
 	// 입고 업무 생성
 	///////////////
 	public function createEnterOperation($type, $post) {
-		
 		// operation.id 를 얻기 위해 flush 를 해야 함
 		$op = $this->addOperation($type, $post, TRUE);
 
@@ -128,8 +127,32 @@ class Work_m extends MY_Model {
 			'is_new'	=> TRUE,
 		);
 
-		$item = $this->addItem($op, $post_data, TRUE);
-		// echo "Item : " . $item->id . "-" . $item->part->name; 
+		// 장비 정보 다시!
+		$part = $this->em->getRepository('Entity\Part')->find($post['part_id']);
+		// 시리얼장비 수량 만큼 반복
+		if( $part->type == 1) {
+			for($i = 0; $i < intval($_POST['qty']); $i++) {
+				$post_data['qty'] = 1;
+				$this->addItem($op, $post_data);
+			}
+		} else {
+			$item = $this->addItem($op, $post_data);
+		}
+
+		/////////////////
+		// 업무 log 생성
+		/////////////////
+		$log_data = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'content' 	=> '[시스템] 입고 요청 생성',
+			'type' => '2',
+			'next_status' => '1',
+			);
+
+		$this->addLog($op->id, $log_data);
+
+		// 한번에 flush
+		$this->em->flush();
 
 		return $op;
 	}
@@ -299,8 +322,33 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무 장비 수정
-	public function updateItem($item) {
-		;
+	public function updateItem($item, $data, $do_flush=FALSE) {
+		// 시리얼넘버
+		if(isset($data['serial_number'])) {
+			$item->setSerialNumber($data['serial_number']);
+		}
+
+		// 확인 수량
+		if(isset($data['qty_complete'])) {
+			$item->setQtyComplete($data['qty_complete']);
+		}
+
+		// 분실 수량(시리얼장비만 사용할 건가??)
+		if(isset($data['qty_lost'])) {
+			$item->setQtyLost($data['qty_lost']);
+		}
+
+		// 스캔 여부
+		if(isset($data['is_scan'])) {
+			$item->setSacnFlag($data['is_scan']);
+		}
+
+		$this->em->persist($item);
+		if($do_flush) {
+			$this->em->flush();
+		}
+
+		return $item;
 	}
 
 	// 업무-장비 목록 삭제
