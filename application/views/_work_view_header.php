@@ -51,7 +51,7 @@
             <tbody>
               <tr>
                 <td>납품처</td>
-                <td><?=$work->getWorkLocation();?></td>
+                <td><?=gs2_decode_location($work->getWorkLocation())->name;?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>

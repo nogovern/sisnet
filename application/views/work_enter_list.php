@@ -31,11 +31,10 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
                 <th>납품처</th>
                 <th>요청수량</th>
                 <th>입고수량</th>
+                <th>상태</th>
                 <th>등록일</th>
                 <th>요청일</th>
                 <th>수정일</th>
-                <th>상태</th>
-                <th>메모</th>
                 <th>&nbsp;</th>
               </tr>
             </thead>
@@ -54,22 +53,24 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
   ?>
               <tr class="">
                 <td><?=$row->id?></td>
-                <td><?=$row->type?></td>
+                <td><?=gs2_get_work_name($row->type)?></td>
                 <td><?=$row->user->name?></td>
                 <td><?=$row->office->name?></td>
                 <!-- 장비 -->
                 <td><?=$row->getItem()->part->category->name?></td>
                 <td><?=$row->getItem()->part->name?></td>
-                <td><?=@$row->location_object->name;?></td>
+                <td><?=$row->getItem()->part->company->name?></td>
                 <td><?=$row->getItem()->qty_request?></td>
                 <td><?=($row->status == '4') ? $row->getItem()->qty_complete : '';?></td>
-                <td><?=$row->getDateRegister();?></td>
-                <td><?=$row->getDateRequest();?></td>
-                <td><?=$row->getDateModify();?></td>
                 <td>
                   <span class="label <?=$label_color?>"><?=constant("GS2_OP_ENTER_STATUS_" .$row->status)?></span>
                 </td>
+                <td><?=$row->getDateRegister();?></td>
+                <td><?=$row->getDateRequest();?></td>
+                <td><?=$row->getDateModify();?></td>
+                <!--
                 <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
+                -->
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/enter/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php
@@ -114,8 +115,6 @@ $this->load->view('layout/navbar', array('current' => 'page-enter'));
       $(".popover_memo").popover({trigger: 'hover', placement: 'left'});
       $(".popover").click(function(e){e.preventDefault();});
     });
-
-
     </script>
 
 <?php

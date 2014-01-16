@@ -26,8 +26,8 @@ if (!function_exists('gs2_get_work_name')) {
 }
 
 // select-option 용 array로 변환 
-if(!function_exists('gs2_convent_for_dropdown')) {
-    function gs2_convent_for_dropdown($rows) {
+if(!function_exists('gs2_convert_for_dropdown')) {
+    function gs2_convert_for_dropdown($rows) {
         $array = array();
         $array[0] = '-- 선택하세요 --';
 
@@ -96,5 +96,21 @@ if(!function_exists('gs2_decode_location')) {
         return $instance;
     }
 }
+
+// 점포 - 가맹 타입
+if(!function_exists('gs2_get_store_join_type')) {
+    function gs2_get_store_join_type($type) {
+        
+    }
+}
+
+// 점포 - 가맹 타입 리스트
+if(!function_exists('gs2_get_store_join_types')) {
+    function gs2_get_store_join_types() {
+
+    }
+}
+
+
 
 

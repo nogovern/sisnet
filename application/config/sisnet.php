@@ -28,7 +28,7 @@ $config['gs2']['op_type'] = array(
 	'500'	=> '',
 );
 
-// 점포 가맹 타입
+// 점포 가맹 타입 (DB 에서 불러와야 함)
 $config['gs2']['store_join_type'] = array(
 	'1' => '가맹1종A(순수)',
 	'2' => '가맹1종C(전대)',
@@ -39,8 +39,6 @@ $config['gs2']['store_join_type'] = array(
 	'7' => 'K타입',
 	'8' => 'S타입',
 );
-
-
 
 $config['gs2']['close'] = array(
 		

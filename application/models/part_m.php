@@ -108,7 +108,7 @@ class Part_m extends MY_Model
 		$new->setMemo($post['memo']);
 
 		// 입고 사무소 찾기
-		$office = $this->parseLocation($new->current_location);
+		$office = gs2_decode_location($new->current_location);
 		// 재고량 변경
 		$stock = $office->in($part, $qty, $type);
 

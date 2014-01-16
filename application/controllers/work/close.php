@@ -48,7 +48,7 @@ class Close extends CI_Controller
 		// 담당 사무소 목록
 		$this->load->model('office_m', 'office_model');
 		$rows = $this->office_model->getList();
-		$arr_office = $this->office_model->convertForSelect($rows);
+		$arr_office = gs2_convert_for_dropdown($rows);
 
 		// selectbox 생성
 		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control required"');
@@ -81,11 +81,11 @@ class Close extends CI_Controller
 		}
 
 		$data['title'] = "철수 업무 상세 보기";
-		$data['_config']= $this->config->item('gs2');
+		$data['_config'] = $this->config->item('gs2');
 
 		$work = $this->work_model->get($id);
 		$data['work'] = $work;
-		$data['store'] = $this->work_model->parseLocation($work->work_location);	// 점포 
+		$data['store'] = gs2_decode_location($work->work_location);	// 점포 
 		$data['items'] = $work->getItemList();
 		
 		////////////////
@@ -95,18 +95,18 @@ class Close extends CI_Controller
 
 		// 사무소 dropdown
 		$this->load->model('office_m', 'office_model');
-		$arr_office = $this->work_model->convertForSelect($this->office_model->getList());
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
 		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
 
 		// 사용자 dropdown
 		$this->load->model('user_m', 'user_model');
-		$arr_user = $this->work_model->convertForSelect($this->user_model->getListByType(1));
+		$arr_user = gs2_convert_for_dropdown($this->user_model->getListByType(1));
 		$data['select_user'] = form_dropdown('worker_id', $arr_user, 0, 'id="worker_id" class="form-control required"');
 
 		// 장비 카테고리 dropdown
 		$this->load->model('category_m', 'category_model');
 		$cats = $this->category_model->getSubCategories(1);
-		$cats = $this->category_model->convertForSelect($cats);
+		$cats = gs2_convert_for_dropdown($cats);
 		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
 
 		$this->load->view('work/work_close_view', $data);

@@ -64,7 +64,7 @@ class Work_m extends MY_Model {
 
 		// 입고 업무의 작업 장소는 "납품처"
 		foreach($rows as $row) {
-			$row->store = $this->parseLocation($row->work_location);
+			$row->store = gs2_decode_location($row->work_location);
 		}
 
 		return $rows;
@@ -87,7 +87,7 @@ class Work_m extends MY_Model {
 
 		// 설치 업무의 작업 장소는 "점포"
 		foreach($rows as $row) {
-			$row->store = $this->parseLocation($row->work_location);
+			$row->store = gs2_decode_location($row->work_location);
 		}
 		return $rows;
 	}
@@ -105,7 +105,7 @@ class Work_m extends MY_Model {
 
 		// 작업 장소는 "점포"
 		foreach($rows as $row) {
-			$row->store = $this->parseLocation($row->work_location);
+			$row->store = gs2_decode_location($row->work_location);
 		}
 		return $rows;
 	}
@@ -377,7 +377,7 @@ class Work_m extends MY_Model {
 		$temp->setCompleteFlag($is_complete);
 
 		// 임시로
-		$loc = $this->parseLocation($op->getWorkLocation());
+		$loc = gs2_decode_location($op->getWorkLocation());
 		$user = $loc->user;
 		$temp->setuser($user);				// 처리 담당자
 		

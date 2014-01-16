@@ -36,12 +36,12 @@ class Office extends CI_Controller
 
 		// master 사무소 dropdown
 		$this->load->model('office_m', 'office_model');
-		$arr_office = $this->office_model->convertForSelect($this->office_model->getMasterList());
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getMasterList());
 		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
 
 		// 직원 담당자 선택 dropdown
 		$this->load->model('user_m', 'user_model');
-		$arr_user = $this->user_model->convertForSelect($this->user_model->getListByType(1));
+		$arr_user = gs2_convert_for_dropdown($this->user_model->getListByType(1));
 		$data['select_user'] = form_dropdown('user_id', $arr_user, 0, 'id="user_id" class="form-control"');
 
 		// 규칙 설정

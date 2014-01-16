@@ -111,8 +111,8 @@ class Part extends CI_Controller {
 		$data['rows'] =& $rows;
 
 		foreach($rows as $row){
-			$row->current = $this->part_model->parseLocation($row->current_location);
-			$row->previous = $this->part_model->parseLocation($row->previous_location);
+			$row->current = gs2_decode_location($row->current_location);
+			$row->previous = gs2_decode_location($row->previous_location);
 		}
 
 		$this->load->view('layout/header');
