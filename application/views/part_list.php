@@ -1,6 +1,6 @@
 <?php
-$this->load->view('layout/header', array('title' => '관리자 >> 장비 목록'));
-$this->load->view('layout/navbar', array('current' => 'page-admin'));
+$this->view('layout/header');
+$this->view('layout/navbar');
 ?>
     <!-- start of div.container -->
     <div class="container">
@@ -68,5 +68,5 @@ endforeach;
       </script>
 
 <?php
-$this->load->view('layout/footer');
+$this->view('layout/footer');
 ?>

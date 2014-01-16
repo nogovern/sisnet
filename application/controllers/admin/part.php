@@ -22,7 +22,8 @@ class Part extends CI_Controller {
 			$items = $this->part_model->getList();
 		}
 
-		$data['title']  = '장비리스트';		
+		$data['title']  = '관리자 > 장비 > 리스트';
+		$data['current'] = 'page-admin-part';		
 		$data['rows'] = $items;
 		
 		$this->load->view('part_list', $data);
@@ -32,23 +33,18 @@ class Part extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$data['title'] = "신규 장비를 등록하세요";
+		$data['title']  = '관리자 > 장비 > 신규등록';
+		$data['current'] = 'page-admin-part';		
 
 		//================ refactoring needed ===================
 		// 장비 카테고리 와 배열로 변경
 		$em = $this->part_model->getEntityManager();
 
-		$parent = $em->getRepository('Entity\Category')->find(1);
-		$rows = $em
-					->getRepository('Entity\Category')
-					->findBy(
-						array('parent' => $parent),
-						array('id' => 'ASC')				// order by 
-					);
-		$cats[0] = "--선택하세요--";
-		foreach($rows as $row) {
-			$cats[$row->id] = $row->name; 
-		}
+		// 카테고리 selectbox 생성
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getSubCategories(1);
+		$cats = gs2_convert_for_dropdown($cats);
+		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
 
 		// 납품처 목록
 		unset($rows);
@@ -61,8 +57,7 @@ class Part extends CI_Controller {
 			$companies[$row->id] = $row->name;
 		}
 
-		// selectbox 생성
-		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
+		// 납품처 selectbox 생성
 		$data['select_company'] = form_dropdown('company_id', $companies, 0, 'id="company_id" class="form-control"');
 
 		// 규칙 설정
@@ -99,7 +94,6 @@ class Part extends CI_Controller {
 			// 입력 성공 메세지
 
 			redirect('/admin/part');
-
 		}
 	}
 
