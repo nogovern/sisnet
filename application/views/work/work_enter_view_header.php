@@ -86,7 +86,7 @@
           </tr>
           <tr>
             <td>요청 메모</td>
-            <td><?=$work->memo;?></td>
+            <td><?=nl2br($work->memo)?></td>
             <td>&nbsp;</td>
           </tr>
         </tbody>

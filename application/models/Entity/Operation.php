@@ -236,5 +236,18 @@ class Operation
 		}
 		return $qty;
 	}
+
+	// 총 스캔 수량 (입고에서만 사용???)
+	public function getTotalScanQty() {
+		if(!count($this->items)) {
+			return 0;
+		} 
+
+		$qty = 0;
+		foreach($this->items as $item) {
+			$qty += $item->qty_scan;
+		}
+		return $qty;
+	}
 }
 

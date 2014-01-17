@@ -144,6 +144,8 @@ class Enter extends CI_Controller
 			echo 'error - $actin 이 비어있음!!!';
 		}
 
+		$em = $this->work_model->getEntityManager();
+
 		$id = $_REQUEST['id'];
 		$work = $this->work_model->get($id);
 
@@ -200,44 +202,46 @@ class Enter extends CI_Controller
 
 			echo '출고 상태로 변경 하였음!';
 		}
-		// 스캔 저장
-		elseif($action == 'scan_save') {
-			$items = explode(",", $_POST['items']);
-			foreach($items as $sn) {
-				$temp = $this->work_model->em->getRepository('Entity\OperationTempPart')
-												->findBy(array('operation' => $work, 'serial_number' => $sn));
-				if($temp[0]){
-					$temp[0]->setScanFlag(TRUE);
-					$temp[0]->setQuantity(1);
+		//////////////////////////////
+		// 시리얼장비 스캔 결과 저장
+		//////////////////////////////
+		elseif($action == 'scan_serial_save') {
+			$serials = explode(",", $_POST['serials']);
+			$items = $work->getItems();
 
-					$this->work_model->em->persist($temp[0]);
-				}
+			foreach( $items as $item) {
+				if( in_array( $item->serial_number,  $serials)) {
+					$item->setScanFlag(TRUE);
+					$item->setQtyScan(1);
+
+					$em->persist($item);
+				} 
 			}
 
-			$this->work_model->_commit();
-
+			$em->flush();
 			echo '스캔 결과 저장';
 		}
-		// 수량 확인 저장
-		elseif($action == 'save_count') {
-			
-			$work->setStatus('4');
-			$work->setDateModify();
+		//////////////////////
+		// 수량 장비 스캔 결과 저장
+		//////////////////////
+		elseif($action == 'scan_count_save') {
+			$items = $work->getItems();
 
-			$temps = $this->work_model->em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
-			foreach($temps as $temp) {
-				$temp->setScanFlag(TRUE);
-				$temp->setQuantity($_POST['cnt']);
+			foreach($items as $item) {
+				$item->setScanFlag(TRUE);
+				$item->setQtyScan($_POST['cnt']);
 
-				$this->work_model->_add($temp);
+				$em->persist($item);
 			}
 
-			$this->work_model->_add($work);
-			$this->work_model->_commit();
+			$em->persist($work);
+			$em->flush();
 
 			echo '수량 : ' . $_POST['cnt'];
 		}
-		// 업무 종료
+		////////////////////
+		// 입고 업무 종료
+		// ////////////////
 		elseif($action == 'complete') {
 			$this->load->model('part_m', 'part_model');
 
@@ -247,54 +251,49 @@ class Enter extends CI_Controller
 
 			$this->work_model->_add($work);
 
-			// 임시 장비 목록
+			// 장비 목록
 			$complete_count = 0; 
-			$temps = $this->work_model->em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
+			$items = $work->getItems();
+
 			$idx = 0;
-			foreach($temps as $temp) {
-				if ($temp->isScan()) { 
-					$temp->setCompleteFlag(TRUE);
-					$complete_count += $temp->qty;
+			foreach($items as $item) {
+				if ($item->isScan()) { 
+					//$item->setCompleteFlag(TRUE);
+					$complete_count += $item->qty_scan;
 				}
-				$this->work_model->_add($temp);
 
 				// 시리얼 관리 장비 등록
-				if($temp->part_type == '1') {
-					$location_string = 'O@' . $work->office->id;
+				if($item->part_type == '1') {
+					$location_string = gs2_encode_location($work->office);
 
 					$data = array(
-						'part'		=> $temp->part,
-						'part_id'	=> $temp->part->id,
-						'serial_number'		=> $temp->serial_number,
-						'previous_location'	=> '',
+						'part'		=> $item->part,
+						'part_id'	=> $item->part->id,
+						'serial_number'		=> $item->serial_number,
+						'previous_location'	=> $item->prev_location,
 						'current_location'	=> $location_string,
 						'is_valid'	=> TRUE,
 						'is_new'	=> TRUE,
 						'date_enter'=> 'now',
 						'memo'	=> '입고 업무로 들어 왔어',
-						);
+					);
+
 					$new = $this->part_model->addSerialPart($data);
 				} 
 				// 수량, 소모품 재고 변경
 				else 
 				{
-					$stock = $work->office->in($temp->part, $temp->qty, 'new');
-					$this->work_model->_add($stock);
+					$stock = $work->office->in($item->part, $work->getTotalScanQty(), 'new');
+					// 발주 수량 뺴기
+					$stock->setQtyS100($stock->qty_s100 - $work->getTotalRequestQty());
+					$em->persist($stock);
 				}				 
 			}
-
-			// 업무 장비 목록
-			$item = $work->getItem();
-			$item->setQtyComplete($complete_count);
-			$item->setDateModify();
-			$item->setCompleteFlag(TRUE);
-
-			$this->work_model->_add($item);
 
 			////////////
 			// Last 
 			////////////
-			$this->work_model->_commit();
+			$em->flush();
 			
 			echo  '완료 : '. $complete_count .'\\n입고 업무를 종료함';
 

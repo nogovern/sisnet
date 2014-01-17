@@ -86,36 +86,6 @@ endif;
   </div>
 </div><!-- end of div.container -->
 
-<!-- 스캔 modal dialog -->
-<div class="modal fade" id="modal_scan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">스캔</h4>
-      </div>
-      <div class="modal-body">
-        <form id="form_scan" role="form" class="form form-horizontal">
-          <div class="form-group">
-            <label class="form-label col-sm-3">시리얼넘버</label>
-            <div class="col-sm-7">
-              <input type="text" class="form-control" name="value">
-            </div>
-          </div>
-        </form>
-        <div class="well text-center" style="font-size:34px;">
-          <span>1</span>/<span >0</span>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="btn_scan_save" type="button" class="btn btn-primary">저장</button>
-        <button id="btn_next" type="button" class="btn btn-success">스캔 계속</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 <!-- 입고 장비 등록 modal dialog -->
 <div class="modal fade" id="modal_enter_add_item" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -328,6 +298,9 @@ $(document).ready(function(){
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <script type="text/javascript">
+// modal 공통 설정
+$(".modal").modal({backdrop: 'static', show: false});
+
 // 작업 정보 객체
 var operation = {
   id : <?=$work->id?>,
