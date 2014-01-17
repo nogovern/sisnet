@@ -43,15 +43,16 @@ endforeach;
               <th style="padding:0;margin:0;">
                 <table class="table" style="margin:0;">
                   <tbody>
-                    <td class="col-xs-3">사무소명</td>
-                    <td class="col-xs-2">기준수량</td>
+                    <td class="col-xs-2">사무소명</td>
+                    <td class="col-xs-1">기준</td>
                     <td class="col-xs-1">신품</td>
                     <td class="col-xs-1">중고</td>
+                    <td class="col-xs-1" style="background-color: #CCC;">발주</td>
                     <td class="col-xs-1" style="background-color: #CCC;">설치</td>
                     <td class="col-xs-1" style="background-color: #CCC;">점검</td>
                     <td class="col-xs-1" style="background-color: #CCC;">수리</td>
                     <td class="col-xs-1" style="background-color: #CCC;">페기</td>
-                    <td class="col-xs-1">기능</td>
+                    <td class="col-xs-2">기능</td>
                   </tbody>
                 </table>
               </th>
@@ -75,25 +76,26 @@ foreach($rows as $row):
               <td><?=$arr_status_text[$row->status]?></td>
               <td><?=intval($row->getNewTotal())?></td>
               <td><?=intval($row->getUsedTotal())?></td>
-              <td colspan="9" style="padding:0;">
+              <td colspan="10" style="padding:0;">
 <?php
 if(count($row->getStockList())):
 ?>
-<table class="table table-hover table-bordered" style="margin:0;">
+<table class="table table-hover table-bordered table-condensed" style="margin:0;">
   <tbody>
 <?php
   foreach($row->getStockList() as $stock):
 ?>
     <tr class="default">
-      <td class="col-xs-3"><?=$stock->office->name?></td>
-      <td class="col-xs-2"><?=$stock->qty_minimum?></td>
+      <td class="col-xs-2"><?=$stock->office->name?></td>
+      <td class="col-xs-1 active"><?=$stock->qty_minimum?></td>
       <td class="col-xs-1"><?=number_format($stock->qty_new)?></td>
       <td class="col-xs-1"><?=number_format($stock->qty_used)?></td>
+      <td class="col-xs-1"><b><?=$stock->qty_s100?></b></td>
       <td class="col-xs-1"><?=$stock->qty_s200?></td>
       <td class="col-xs-1"><?=$stock->qty_s900?></td>
       <td class="col-xs-1"><?=$stock->qty_s500?></td>
       <td class="col-xs-1"><?=$stock->qty_s600?></td>
-      <td class="col-xs-1">
+      <td class="col-xs-2">
 <?php
       // 사무소가 master 이고 장비 상태가 정상인 경우만 입고 버튼 보임
       if($stock->office->isMaster() === TRUE && $row->status > '0'):
