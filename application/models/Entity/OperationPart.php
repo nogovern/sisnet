@@ -78,6 +78,9 @@ class OperationPart {
 	/** @Column(type="string", length=1) */
 	protected $part_type;
 
+	/** @Column(type="integer") */
+	protected $qty_scan = 0;
+
 	// ---------- get -------------
 	public function __get($key) {
 		return $this->$key;
@@ -97,6 +100,10 @@ class OperationPart {
 
 	public function getQtyComplete() {
 		return $this->qty_complete;
+	}
+
+	public function getQtyScan() {
+		return $this->qty_scan;
 	}
 
 	public function isScan()
@@ -169,10 +176,16 @@ class OperationPart {
 		$this->is_scan = ($value == TRUE) ? 'Y' : 'N';
 	}
 
-	// 분실 수량 할당
+	// 분실 수량
 	public function setQtyLost($value)
 	{
 		$this->qty_lost = $value;
+	}
+
+	// 스캔한 장비 수량
+	public function setQtyScan($value)
+	{
+		$this->qty_scan = $value;
 	}
 
 	// part_type, part_name 은 작업 등록 시점의 기록 유지 위해 추가
