@@ -101,7 +101,7 @@ class OperationPart {
 
 	public function isScan()
 	{
-		retrun ($this->is_scan == 'Y') ? TRUE : FALSE;
+		return ($this->is_scan == 'Y') ? TRUE : FALSE;
 	}
 
 	// ---------- set -------------

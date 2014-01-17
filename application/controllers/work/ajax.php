@@ -191,16 +191,74 @@ class Ajax extends CI_Controller
 
 	// 입고 - 아이템 정보 갱신
 	public function update_item($action=NULL) {
-		$item = $this->em->getReference('Entity\OperationPart', $this->input->post('item_id'));
+
+		$error = FALSE;
+		$error_msg = '';
+
+		$op = $this->em->getReference('Entity\Operation', $_POST['id']);
+		// $item = $this->em->getReference('Entity\OperationPart', $_POST['item_id']);
+		$part_type = $op->getItem()->part_type;
 
 		if($action == 'register') {
+			// 시리얼 장비
+			if($part_type == '1') {
+				// 시리얼 중복 검사 (1차)
+				foreach($op->getItems() as $item) {
+					if($item->serial_number == $_POST['serial_number']) {
+						$error_msg = '에러! 시리얼넘버 중복 발생';
+						$error = TRUE;
+					}
+				}
+				
+				// 시리얼 중복 검사 (2차)
+				if(!$error) {
+					$s_part = $this->em->getRepository('Entity\SerialPart')->findBy(array('serial_number' => $_POST['serial_number']));
+					if($s_part) {
+						$error_msg = '에러! DB에 이미 등록된 장비가 있습니다';
+						$error = TRUE;
+					}
+				}
+
+				if(!$error) {
+					// 시리얼 넘버 등록 안된 item 1만 update
+					foreach($op->getItems() as $item) {
+						if($item->qty_complete == 0) {
+							$item->setQtyComplete(1);
+							$item->setSerialNumber($_POST['serial_number']);
+
+							break;
+						} 
+					}
+				}
+			} 
+			// 수량 장비
+			else {
+				$item = $op->getItem();
+				$item->setQtyComplete($_POST['qty']);				
+			}
 
 		}
-
-		elseif($action == 'remove') {
-
+		// 입고 등록 장비 정보 초기화
+		elseif($action == 'reset') {
+			$item = $this->em->getReference('Entity\OperationPart', $_POST['item_id']);
+			$item->setQtyComplete(0);
+			$item->setSerialNumber('');
 		}
-	}
+
+		// json 결과 객체
+		$result = new stdClass;
+
+		// 에러 없으면 ...
+		if(!$error) {
+			$this->em->flush();
+			$result->item_id = $item->id;
+		}
+
+		$result->error = $error;
+		$result->error_msg = $error_msg;
+
+		echo json_encode($result);
+	}// end of update_item()
 	
 }
 

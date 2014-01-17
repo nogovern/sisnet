@@ -125,7 +125,7 @@ class Enter extends CI_Controller
 
 		$work = $this->work_model->get($work_id);
 		$data['work'] = $work;
-		$data['temp_items'] = $em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
+		//$data['temp_items'] = $em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
 
 		if($work->status >= "3") {
 			$this->load->view('work_enter_scan_view', $data);

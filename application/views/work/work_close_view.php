@@ -233,7 +233,7 @@ endif;
     $this->view('common/modal_memo');                 	// 작업자 메모
     $this->view('common/modal_change_worker');        	// 방문자 변경
     $this->view('common/modal_store_complete');       	// 점포 완료
-    $this->view('common/modal_op_complete');       		// 작업 완료
+    $this->view('common/modal_op_complete');       		  // 작업 완료
     $this->view('common/modal_close_part_register');   	// 장비 등록 (설치/철수 다름)
     // 작업 완료
 ?>
