@@ -125,7 +125,7 @@ $this->view('layout/navbar');
           </tr>
           <tr>
             <td>요청 수량</td>
-            <td><?=$work->getItem()->qty_request?> 개</td>
+            <td><?=$work->getTotalRequestQty()?> 개</td>
             <td>&nbsp;</td>
           </tr>
         </tbody>

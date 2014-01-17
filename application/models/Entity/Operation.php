@@ -158,6 +158,7 @@ class Operation
 		return ($this->date_register) ? $this->date_register->format($format) : '';
 	}
 
+	// 작업 요청일 (= 입고예정일)
 	public function getDateRequest($long = FALSE) {
 		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
 		return ($this->date_request) ? $this->date_request->format($format) : '';
@@ -168,6 +169,7 @@ class Operation
 		return ($this->date_modify) ? $this->date_modify->format($format) : '';
 	}
 
+	// 작업예정일, 작업일
 	public function getDateWork($long = FALSE) {
 		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
 		return ($this->date_work) ? $this->date_work->format($format) : '';
@@ -184,6 +186,10 @@ class Operation
 
 	// 업무 아이템(장비) 목록 
 	public function getItemList() {
+		return $this->items;
+	}
+
+	public function getItems() {
 		return $this->items;
 	}
 
@@ -205,6 +211,30 @@ class Operation
 		return ($this->worker) ? $this->worker->name : '';
 	}
 
-	
+	// 총 요청 수량 or 총 등록 수량
+	public function getTotalRequestQty() {
+		if(!count($this->items)) {
+			return 0;
+		} 
+
+		$qty = 0;
+		foreach($this->items as $item) {
+			$qty += $item->qty_request;
+		}
+		return $qty;
+	}
+
+	// 총 완료 수량
+	public function getTotalCompleteQty() {
+		if(!count($this->items)) {
+			return 0;
+		} 
+
+		$qty = 0;
+		foreach($this->items as $item) {
+			$qty += $item->qty_complete;
+		}
+		return $qty;
+	}
 }
 
