@@ -104,15 +104,7 @@ class Part extends CI_Controller {
 		$data['title'] = '---- 리스트 -------';
 		$data['rows'] =& $rows;
 
-		foreach($rows as $row){
-			$row->current = gs2_decode_location($row->current_location);
-			$row->previous = gs2_decode_location($row->previous_location);
-		}
-
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
 		$this->load->view('part_serial_list', $data);
-		$this->load->view('layout/footer');
 	}
 
 	public function serial_add() {

@@ -69,7 +69,7 @@ if(!function_exists('gs2_decode_location')) {
     function gs2_decode_location($string)
     {
         if(is_null($string) || !is_string($string)) {
-            trigger_error('인자는 location 형식(S@1) 의 문자열이어야 합니다.');
+            log_message('error', '인자는 location 형식(S@1) 의 문자열이어야 합니다.');
             return NULL;
         }
 
