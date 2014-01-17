@@ -226,9 +226,9 @@ $(document).ready(function(){
   });
   
   var do_submit = function (form) {
-    var val = $("#input_text").val();
-    var sn = (equipment.type == '1') ?  val : '';
-    var qty = (equipment.type == '1') ? 1 : parseInt(val, 10);
+    var input = $("#input_text").val();
+    var sn = (equipment.type == '1') ?  input : '';
+    var qty = (equipment.type == '1') ? 1 : parseInt(input, 10);
 
     $.ajax({
       url: "/work/ajax/update_item/register",
@@ -237,7 +237,7 @@ $(document).ready(function(){
       data: {
         "id": operation.id,         
         "item_id": equipment.id,
-        "serial_number": val,
+        "serial_number": input,
         "qty": qty,   
         "extra": "add_item_for_enter_op",
         "csrf_test_name": $.cookie("csrf_cookie_name")
@@ -253,7 +253,7 @@ $(document).ready(function(){
         // 성공 시 처리
         if(!response.error) {
           $("#modal_enter_add_item").modal('hide'); //modal 닫기
-          qty_complete++;
+          qty_complete += qty;
           changeCompleteCount();
           checkCompleteCount();
         } else {
@@ -268,6 +268,9 @@ $(document).ready(function(){
 
   // 장비 등록 삭제 or 초기화
   $(".btn_delete").click(function(){
+    // var input = $("#input_text").val();
+    // var qty = (equipment.type == '1') ? 1 : parseInt(input, 10);
+
     $.ajax({
       url: "/work/ajax/update_item/reset",
       type: "POST",
@@ -283,9 +286,7 @@ $(document).ready(function(){
       .done(function(response) {
         // 성공 시 처리
         if(!response.error) {
-          // var a = $(this).closest("tr");
-          // console.log(a);
-          qty_complete--;
+          qty_complete = (equipment.type == '1') ? qty_complete - 1 : 0;
           changeCompleteCount();
         }
 
