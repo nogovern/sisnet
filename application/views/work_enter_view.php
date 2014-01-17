@@ -157,10 +157,16 @@ $(document).ready(function(){
 
   // 요청 수량 보다 적으면 true 리턴
   function checkCompleteCount() {
+    // 수량 장비
+    if(equipment.type != '1' && qty_complete > 0) {
+      alert('먼저 등록 된 수량을 먼저 삭제 후 재등록해 주세요');
+      return false;
+    }
+
     if(qty_complete < qty_request) {
       return true;
     } else {
-      alert('더 이상 등록할 수 없습니다');
+      alert('요청 수량 보다 많이 등록할 수 없습니다');
       $("#modal_enter_add_item").modal('hide');
       return false;
     }
@@ -255,7 +261,12 @@ $(document).ready(function(){
           $("#modal_enter_add_item").modal('hide'); //modal 닫기
           qty_complete += qty;
           changeCompleteCount();
-          checkCompleteCount();
+          checkDeliveryStatus();
+
+          // 리스트 갱신
+          var $tr = $("#part_table tr[data-itemid="+ response.item_id +"]");
+          $("td", $tr).eq(3).text(sn);              // SN
+          $("td", $tr).eq(5).text(qty);    // 등록 수량
         } else {
           alert(response.error_msg);
           $("#input_text").val('').focus();
@@ -288,6 +299,14 @@ $(document).ready(function(){
         if(!response.error) {
           qty_complete = (equipment.type == '1') ? qty_complete - 1 : 0;
           changeCompleteCount();
+          checkDeliveryStatus();
+
+          // 리스트 갱신
+          var $tr = $("#part_table tr[data-itemid="+ response.item_id +"]");
+          $("td", $tr).eq(3).text('');              // SN
+          $("td", $tr).eq(5).text(0);               // 등록 수량
+
+          alert('해당 장비가 초기화 되었음');
         }
 
         // for debug

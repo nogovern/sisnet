@@ -251,6 +251,8 @@ class Ajax extends CI_Controller
 		// 에러 없으면 ...
 		if(!$error) {
 			$this->em->flush();
+
+			// 화면 갱신을 위해 id를 리턴
 			$result->item_id = $item->id;
 		}
 
