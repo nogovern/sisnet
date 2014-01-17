@@ -127,17 +127,25 @@ class Work_m extends MY_Model {
 			'is_new'	=> TRUE,
 		);
 
+		// 총 입고 요청 수량
+		$request_qty = intval($post['qty']);
+
 		// 장비 정보 다시!
 		$part = $this->em->getRepository('Entity\Part')->find($post['part_id']);
+		
 		// 시리얼장비 수량 만큼 반복
 		if( $part->type == 1) {
-			for($i = 0; $i < intval($_POST['qty']); $i++) {
-				$post_data['qty'] = 1;
+			for($i = 0; $i < $request_qty; $i++) {
+				$post_data['qty'] = 1;					// 시리얼 장비는 1개 
 				$this->addItem($op, $post_data);
 			}
 		} else {
 			$item = $this->addItem($op, $post_data);
 		}
+
+		// 장비 재고량 변경
+		$stock = $part->getStock($op->office->id);
+		$stock->setQtyS100($stock->qty_s100 + $request_qty);	// 발주 수량 update
 
 		/////////////////
 		// 업무 log 생성
@@ -151,7 +159,9 @@ class Work_m extends MY_Model {
 
 		$this->addLog($op->id, $log_data);
 
+		/////////////////
 		// 한번에 flush
+		/////////////////
 		$this->em->flush();
 
 		return $op;
