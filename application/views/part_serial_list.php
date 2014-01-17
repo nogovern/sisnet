@@ -171,6 +171,5 @@ $(document).ready(function(){
 
 
 <?php
-$this->view('layout/header');
-$this->view('layout/navbar');
+$this->view('layout/footer');
 ?>
