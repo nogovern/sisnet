@@ -77,7 +77,7 @@ class Part_m extends MY_Model
 	 * @param  integer 	$qty 	기본 수량은 1
 	 * @return \Entity\SerialPart   성공시 추가된 object
 	 */
-	public function addSerialPart($post, $qty = 1, $type = 'new') {
+	public function addSerialPart($post, $do_flush=FALSE) {
 		if(!count($post)) {
 			return FALSE;
 		}
@@ -110,14 +110,15 @@ class Part_m extends MY_Model
 		// 입고 사무소 찾기
 		$office = gs2_decode_location($new->current_location);
 		// 재고량 변경
-		$stock = $office->in($part, $qty, $type);
+		$stock = $office->in($part, $post['qty'], 'new');
 
 		// doctrine persist() 
 		$this->em->persist($new);
 		$this->em->persist($stock);
 
-		// doctrine flush() -- flush 는 호출하는 쪽에서
-		//$this->_commit();
+		if($do_flush) {
+			$this->em->flush();
+		}
 
 		return $new;
 	}
