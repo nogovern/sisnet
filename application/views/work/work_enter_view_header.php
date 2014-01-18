@@ -115,7 +115,7 @@
           </tr>
           <tr>
             <td>수량 (요청/등록/스캔)</td>
-            <td><?=$work->getTotalRequestQty()?>/<span id="complete_count"><?=$work->getTotalCompleteQty()?></span>/<span id="scan_count">0</span>            </td>
+            <td><?=$work->getTotalRequestQty()?>/<span id="complete_count"><?=$work->getTotalCompleteQty()?></span>/<span id="scan_count"><?=$work->getTotalScanQty()?></span>            </td>
             <td>&nbsp;</td>
           </tr>
         </tbody>

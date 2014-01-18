@@ -62,7 +62,7 @@ switch($row->status) {
             <td><?=$row->getItem()->part->name?></td>
             <td><?=$row->getItem()->part->company->name?></td>
             <td><?=$row->getTotalRequestQty();?></td>
-            <td><?=($row->status == '4') ? $row->getItem()->qty_complete : '';?></td>
+            <td><?=$row->getTotalScanQty();?></td>
             <td>
               <span class="label <?=$label_color?>"><?=constant("GS2_OP_ENTER_STATUS_" .$row->status)?></span>
             </td>

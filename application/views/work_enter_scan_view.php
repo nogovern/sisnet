@@ -48,7 +48,7 @@ $scan_count++;
                 <td><?=($item->part_type == '1') ? $item->serial_number : ''?></td>
                 <td><?=$item->qty_request?></td>
                 <td><?=$item->qty_complete?></td>
-                <td>0</td>
+                <td><?=$item->qty_scan?></td>
                 <td style="width:150px;">
                   <i class="fa fa-check scan_status <?=($item->isScan()) ? '' : 'hide'?>" style="color:green;font-size:20px;"></i>
                 </td>
@@ -85,18 +85,6 @@ endif;
   </div>
 </div><!-- end of div.container -->
 
-<!-- dialog form -->
-<div id="dialog-form" title="장비 등록" style="display:none;">
-  <div class="row col-xs-10">
-  <form id="my_form" role="form" class="form">
-    <div class="form-group">
-      <label class="form-label"><?=($work->getItem()->part->type == '1') ? '시리얼넘버' : '수 량 '?></label>
-      <input id="my_val" class="form-control" name="value" id="value">
-    </div>
-  </form>
-  </div>
-</div>
-
 <!-- 시리얼장비 modal dialog -->
 <div class="modal fade" id="modal_scan_serial" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -116,7 +104,7 @@ endif;
           </div>
         </form>
         <div class="well text-center" style="font-size:34px;">
-          <span><?=$item_count?></span>/<span id="scan_count_text">0</span>
+          <span><?=$work->getTotalCompleteQty()?></span>/<span id="scan_count_text">0</span>
         </div>
       </div>
       <div class="modal-footer">

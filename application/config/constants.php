@@ -74,10 +74,9 @@ define('GS2_OP_TYPE_CHANGE',	900);		// (상태변경)점검
 
 // 입고
 define('GS2_OP_ENTER_STATUS_1', 	'요청');		// 요청
-define('GS2_OP_ENTER_STATUS_2', 	'확정');		// 요청접수
-define('GS2_OP_ENTER_STATUS_3', 	'입력');		// 납품처 입력
-define('GS2_OP_ENTER_STATUS_4', 	'확인');		// 확인 및 스캔
-define('GS2_OP_ENTER_STATUS_5', 	'완료');		// 완료
+define('GS2_OP_ENTER_STATUS_2', 	'확정');		// 요청접수 (납품처 장비 등록)
+define('GS2_OP_ENTER_STATUS_3', 	'입력');		// 장비 스캔 & 확인
+define('GS2_OP_ENTER_STATUS_4', 	'완료');		// 완료
 
 // 설치
 define('GS2_OP_INSTALL_STATUS_1', 	'요청'); 

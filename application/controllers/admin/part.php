@@ -164,11 +164,12 @@ class Part extends CI_Controller {
 			$post['current_location'] = 'O@' . $post['office_id'];		// 입고 사무소
 			$post['previous_location'] = '';
 			$post['date_install']	= '';
+			$post['qty'] = 1;
+
 			// var_dump($post);
 			// exit;
 
-			$entry = $this->part_model->addSerialPart($post);
-			$this->part_model->_commit();
+			$entry = $this->part_model->addSerialPart($post, TRUE);
 			if(!$entry) {
 				die('에러');
 			}

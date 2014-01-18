@@ -260,39 +260,44 @@ class Enter extends CI_Controller
 				if ($item->isScan()) { 
 					//$item->setCompleteFlag(TRUE);
 					$complete_count += $item->qty_scan;
+
+					// 시리얼 관리 장비 등록
+					if($item->part_type == '1') {
+						$location_string = gs2_encode_location($work->office);
+
+						$data = array(
+							'part'		=> $item->part,
+							'part_id'	=> $item->part->id,
+							'serial_number'		=> $item->serial_number,
+							'previous_location'	=> $item->prev_location,
+							'current_location'	=> $location_string,
+							'is_valid'	=> 'Y',
+							'is_new'	=> 'Y',
+							'qty'		=> 1,
+							'date_enter'=> 'now',
+							'memo'	=> '입고 업무로 들어 왔어',
+						);
+
+						$new = $this->part_model->addSerialPart($data, FALSE);
+					} 
+					// 수량, 소모품 재고 변경
+					else 
+					{
+						$stock = $work->office->in($item->part, $work->getTotalScanQty(), 'new');
+					}				 
 				}
-
-				// 시리얼 관리 장비 등록
-				if($item->part_type == '1') {
-					$location_string = gs2_encode_location($work->office);
-
-					$data = array(
-						'part'		=> $item->part,
-						'part_id'	=> $item->part->id,
-						'serial_number'		=> $item->serial_number,
-						'previous_location'	=> $item->prev_location,
-						'current_location'	=> $location_string,
-						'is_valid'	=> TRUE,
-						'is_new'	=> TRUE,
-						'date_enter'=> 'now',
-						'memo'	=> '입고 업무로 들어 왔어',
-					);
-
-					$new = $this->part_model->addSerialPart($data);
-				} 
-				// 수량, 소모품 재고 변경
-				else 
-				{
-					$stock = $work->office->in($item->part, $work->getTotalScanQty(), 'new');
-					// 발주 수량 뺴기
-					$stock->setQtyS100($stock->qty_s100 - $work->getTotalRequestQty());
-					$em->persist($stock);
-				}				 
 			}
 
-			////////////
-			// Last 
-			////////////
+			//////////////////
+			// 발주 수량 뺴기
+			//////////////////
+			if($item->part_type == '1') {
+				$stock = $item->part->getStock($work->office->id);
+			}
+			$stock->setQtyS100($stock->qty_s100 - $work->getTotalRequestQty());
+			$em->persist($stock);
+
+			// at last, flush
 			$em->flush();
 			
 			echo  '완료 : '. $complete_count .'\\n입고 업무를 종료함';
