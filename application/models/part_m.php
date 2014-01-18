@@ -65,7 +65,7 @@ class Part_m extends MY_Model
  	 */
 	public function existSerialNumber($sn) {
 		$repo = $this->em->getRepository('Entity\SerialPart');
-		$row = $repo->findBy(array('serial_number' => $sn));
+		$row = $repo->findOneBy(array('serial_number' => $sn));
 
 		return ($row) ? TRUE : FALSE; 
 	}
