@@ -248,8 +248,9 @@ class Enter extends CI_Controller
 			// 업무 메인 
 			$work->setStatus('4');
 			$work->setDateModify();
+			$work->setDateFinish();
 
-			$this->work_model->_add($work);
+			$em->persist($work);
 
 			// 장비 목록
 			$complete_count = 0; 
@@ -296,6 +297,10 @@ class Enter extends CI_Controller
 			}
 			$stock->setQtyS100($stock->qty_s100 - $work->getTotalRequestQty());
 			$em->persist($stock);
+
+			/////////////
+			// 로그 기록 해야함
+			/////////////
 
 			// at last, flush
 			$em->flush();

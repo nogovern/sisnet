@@ -30,12 +30,11 @@ $this->view('layout/navbar');
             <th>장비종류</th>
             <th>모 델</th>
             <th>납품처</th>
-            <th>요청수량</th>
-            <th>입고수량</th>
+            <th>수량(요청/리스트/입고)</th>
             <th>상태</th>
             <th>등록일</th>
             <th>요청일</th>
-            <th>수정일</th>
+            <th>완료일</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -61,14 +60,13 @@ switch($row->status) {
             <td><?=$row->getItem()->part->category->name?></td>
             <td><?=$row->getItem()->part->name?></td>
             <td><?=$row->getItem()->part->company->name?></td>
-            <td><?=$row->getTotalRequestQty();?></td>
-            <td><?=$row->getTotalScanQty();?></td>
+            <td><?=$row->getTotalRequestQty() .'/'. $row->getTotalCompleteQty() .'/'. $row->getTotalScanQty()?></td>
             <td>
               <span class="label <?=$label_color?>"><?=constant("GS2_OP_ENTER_STATUS_" .$row->status)?></span>
             </td>
             <td><?=$row->getDateRegister();?></td>
             <td><?=$row->getDateRequest();?></td>
-            <td><?=$row->getDateModify();?></td>
+            <td><?=$row->getDateFinish();?></td>
             <!--
             <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
             -->
