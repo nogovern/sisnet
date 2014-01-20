@@ -65,7 +65,7 @@ if($this->auth->isLoggedIn()) {
 if($this->auth->isLoggedIn()):
 ?>                
                 <li class="divider"></li>
-                <li><a href="/main/logout"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>
+                <li><a href="<?=site_url('main/logout')?>"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>
 <?php
 endif;
 ?>                
