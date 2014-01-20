@@ -119,6 +119,43 @@ class Ajax extends CI_Controller
 		echo ($result) ? 'false' : 'true';
 	}
 
+	// 시리얼장비 로 장비 정보 json 형식으로 반환
+	// 	- 출고 시 시리얼장비인 경우 검색
+	public function get_part_by_serial($sn='') {
+		$error_msg= '';
+
+		$sn = (isset($_POST['serial_number'])) ? $this->input->post('serial_number') : $sn;
+		if(empty($sn)) {
+			$error_msg = '시리얼넘버가 없습니다';
+			log_message('error', $error_msg);
+		}
+
+		$sn = urldecode($sn);
+
+		$this->load->model('part_m', 'part_model');
+		$s_part = $this->part_model->existSerialNumber($sn);
+
+		$result = new stdClass;
+		if(!$s_part) {
+			$error_msg = '해당 시리얼 넘버의 장비가 없습니다.';
+		} else {
+			$info = array(
+				'category_id'=> $s_part->part->category->id,
+				'part_id'	=> $s_part->part->id,
+			);
+		}
+
+		if(!empty($error_msg)) {
+			$result->error = TRUE;
+		} else {
+			$result->error = FALSE;
+			$result->info = $info;
+		}
+
+		$result->error_msg = $error_msg;
+		echo json_encode($result);
+	}
+
 	// 등록된 사용자명인지 검사
 	public function is_exist_username() {
 		$this->load->model('user_m', 'user_model');

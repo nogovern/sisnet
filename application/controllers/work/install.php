@@ -128,7 +128,7 @@ class Install extends CI_Controller
 		$this->load->helper('form');
 		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
 
-		$this->load->view('util/modal_part_register', $data);
+		$this->load->view('common/modal_part_register', $data);
 	}
 
 	/////////////////

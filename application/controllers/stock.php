@@ -122,7 +122,7 @@ class Stock extends CI_Controller
 					'part'		=> $part,
 					'office'	=> $office,
 					'minimum'	=> $this->input->post('qty_minimum'),
-					'new'		=> (int)$this->input->post('new'),
+					'new'		=> (int)$this->input->post('qty_new'),
 					'used' 		=> $this->input->post('qty_new'),
 				);
 

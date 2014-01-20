@@ -105,7 +105,7 @@ $(document).ready(function(){
       $("#part_qty").val(1).attr('readonly', false);
 
       // 수량 선택 가능
-      $("#category_id option").attr('disabled', false);
+      // $("#category_id option").attr('disabled', false);
       $("#part_id option").attr('disabled', false);
       $("#part_qty").val(1).attr('readonly', false);
 
@@ -113,7 +113,7 @@ $(document).ready(function(){
       $("#search_block").slideDown();
 
       // 수량 선택 불가
-      $("#category_id option").attr('disabled', true);
+      // $("#category_id option").attr('disabled', true);
       $("#part_id option").attr('disabled', true);
       $("#part_qty").val(1).attr('readonly', true);
     }
@@ -144,7 +144,7 @@ $(document).ready(function(){
     var target_url = '';
 
     if(sm == '1') {
-      target_url = '/ajax/search_part_by_serial/' + encodeURIComponent(q);
+      target_url = '/ajax/get_part_by_serial/' + encodeURIComponent(q);
     } else if(sm == '2') {
       target_url = '/ajax/search_part_by_previos_location/' + encodeURIComponent(q);
     } else {
@@ -161,10 +161,17 @@ $(document).ready(function(){
         "extra": "test",
         "csrf_test_name": $.cookie("csrf_cookie_name")
       },
-      dataType: "html",
+      dataType: "json",
     })
-      .done(function(html) {
-        alert(html);
+      .done(function(response) {
+        if(!response.error) {
+          var info = response.info;
+          $("#modal_part_register #category_id").val(info.category_id);
+          $("#category_id").trigger('change');
+          $("#modal_part_register #select_part").val(info.part_id);
+        } else {
+          alert(response.error_msg);
+        }
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
@@ -186,6 +193,7 @@ $(document).ready(function(){
     $.ajax({
       url: target_url,
       type: "POST",
+      asybc: false,
       data: {
         "category_id": cat,
         "office_id": operation.office_id,

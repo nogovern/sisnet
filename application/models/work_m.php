@@ -305,7 +305,7 @@ class Work_m extends MY_Model {
 		if($op->type == '100') {
 			$location = $op->work_location;		// 입고시는 납품처
 		} elseif( $op->type >= '200' && $op->type < '300') {
-			$location = 'O@' . $op->offfice->id;		// 설치시는 사무소
+			$location = 'O@' . $op->office->id;		// 설치시는 사무소
 		} elseif( $op->type >= '300' && $op->type < '400') {
 			$location = $op->work_location;		// 철수시는 점포
 		} else {

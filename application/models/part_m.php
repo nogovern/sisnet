@@ -67,7 +67,7 @@ class Part_m extends MY_Model
 		$repo = $this->em->getRepository('Entity\SerialPart');
 		$row = $repo->findOneBy(array('serial_number' => $sn));
 
-		return ($row) ? TRUE : FALSE; 
+		return ($row) ? $row : FALSE; 
 	}
 
 	/**
