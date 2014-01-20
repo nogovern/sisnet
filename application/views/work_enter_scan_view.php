@@ -32,17 +32,16 @@ $this->view('work/work_enter_view_header');
             </thead>
             <tbody>
 <?php
-$i = 1;
-$item_count = count($work->getItems());
-$scan_count = 0;
+$idx = 1;
 foreach($work->getItems() as $item):
-// 스캔 완료된 장비
-if($item->isScan()) {
-$scan_count++;
-}
+  // 납품처 에서 등록 한 장비만 보여줌
+  if($item->getQtyComplete() < 1) {
+    continue;
+  }
+  
 ?>                  
-              <tr data-temp_id="<?=$item->id?>">
-                <td><?=$i++?></td>
+              <tr data-itemid="<?=$item->id?>" data-sn="<?=$item->serial_number?>" data-isset="<?=($item->qty_complete>0) ? 'Y' : 'N'?>">
+                <td><?=$idx++?></td>
                 <td><?=constant('GS2_PART_TYPE_' . $item->part_type)?></td>
                 <td><?=$item->part_name?></td>
                 <td><?=($item->part_type == '1') ? $item->serial_number : ''?></td>
@@ -171,19 +170,23 @@ var equipment = {
 
 var qty_request = <?=$work->getTotalRequestQty()?>;       // 요청 수량
 var qty_complete = <?=$work->getTotalCompleteQty()?>;     // 등록 수량
-var scan_count  = 0;
+var scan_count  = <?=$work->getTotalScanQty()?>;;
 
 
 // 등록된 장비 목록 갯수
 var scanned_serials = [];
 
-$(document).ready(function(){
-  // 스캔 카운트 및 스캔 목록 초기화
-  if(scan_count == 0) {
+function checkScanCount() {
+  if(scan_count < qty_complete) {
     $("#btn_complete").attr('disabled', true);
   } else {
     $("#btn_complete").attr('disabled', false);
   }
+}
+
+$(document).ready(function(){
+  // 스캔 카운트 및 완료 버튼 상태 설정
+  checkScanCount();
 
   // 스캔 시리얼 버튼
   $("#btn_open_scan_serial").click(function() {
@@ -235,11 +238,7 @@ $(document).ready(function(){
       $("#btn_search").attr('disabled', true);
     }
 
-    if(scan_count == 0) {
-      $("#btn_complete").attr('disabled', true);
-    } else {
-      $("#btn_complete").attr('disabled', false);
-    }
+    checkScanCount();
 
     $input.val('').focus();
   });
@@ -263,29 +262,34 @@ $(document).ready(function(){
 
   // 수량 장비 스캔 결과 저장
   $("#btn_count_save").click(function(e){
+    var qty = $(":input[name=cnt]").val(); 
 
     $.ajax({
       url: "/work/enter/ajax/scan_count_save",
       type: "POST",
       data: {
         id : operation.id,
-        cnt: $(":input[name=cnt]").val(),
+        cnt: qty,
         "csrf_test_name": $.cookie("csrf_cookie_name")
       },
       dataType: "html",
     })
       .done(function(html) {
-        alert(html);
-        // 완료 버튼 활성화
-        $("#btn_complete").attr('disabled', false);
+        // alert(html);
+        // 완료 버튼 상태 변경
+        scan_count = qty;
+        $("#scan_count").text(qty);
+        $("#scan_count_text").text(qty);
+        $("#part_table tr td:nth-child(7)").text(qty);
+        
+        $("#modal_scan_count").modal('hide');
+        $(".scan_status").removeClass('hide');
+        checkScanCount();
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
       });
     
-    $("#part_table tr td:nth-child(5)").text($(":input[name=cnt]").val());
-    $(".scan_status").removeClass('hide');
-    $("#modal_scan_count").modal('hide');
   });
 
   // 시리얼 장비 스캔 결과 저장
@@ -305,8 +309,8 @@ $(document).ready(function(){
       })
         .done(function(html) {
           alert(html);
-          // 완료 버튼 활성화
-          $("#btn_complete").attr('disabled', false);
+          // 완료 버튼 상태 변경
+          checkScanCount();
         })
         .fail(function(xhr, textStatus){
           alert("Request failed: " + textStatus);
@@ -318,12 +322,32 @@ $(document).ready(function(){
   $("#btn_reset").click(function(){
     var ok = confirm("재입력을 위해 입력된 정보를 초기화합니다.");
     if(ok === true) {
-      scan_count = 0;
-      scanned_serials = [];     // empty array
-      $("#scan_count").text(scan_count);
-      $(".scan_status").addClass('hide');
-      $(":input[name=q]").attr('disabled', false);
-      $("#btn_search").attr('disabled', false);
+      $.ajax({
+        url: "/work/ajax/scan_reset",
+        type: "POST",
+        data: {
+          id : <?=$work->id?>,
+          "csrf_test_name": $.cookie("csrf_cookie_name")
+        },
+        dataType: "html",
+      })
+        .done(function(html) {
+          alert(html);
+
+          scan_count = 0;
+          scanned_serials = [];     // empty array
+          $("#scan_count").text(scan_count);
+          $("#scan_count_text").text(scan_count);
+          $(".scan_status").addClass('hide');
+          $(":input[name=q]").attr('disabled', false);
+          $("#btn_search").attr('disabled', false);
+
+          // 완료 버튼 상태 변경
+          checkScanCount();
+        })
+        .fail(function(xhr, textStatus){
+          alert("Request failed: " + textStatus);
+        });
     }
   });
 

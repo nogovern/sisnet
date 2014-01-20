@@ -34,7 +34,6 @@ $this->view('work/work_enter_view_header');
             <tbody>
 <?php
 $i = 1;
-$item_count = count($work->getItems());
 foreach($work->getItems() as $item):
 ?>                  
               <tr data-itemid="<?=$item->id?>" data-sn="<?=$item->serial_number?>" data-isset="<?=($item->qty_complete>0) ? 'Y' : 'N'?>">

@@ -277,6 +277,28 @@ class Ajax extends CI_Controller
 
 		echo json_encode($result);
 	}// end of update_item()
+
+
+	////////////////
+	// 스캔 정보 초기화 //
+	////////////////
+	public function scan_reset() {
+		$id = $this->input->post('id');
+
+		$op = $this->em->getReference('Entity\Operation', $id);
+		$items = $op->getItems();
+
+		foreach($items as $item) {
+			$item->setScanFlag(FALSE);
+			$item->setQtyScan(0);
+
+			$this->em->persist($item);
+		}
+
+		$this->em->flush();
+
+		echo '초기화 완료';
+	}
 	
 }
 
