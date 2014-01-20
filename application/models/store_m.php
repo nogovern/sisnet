@@ -15,6 +15,17 @@ class Store_m extends MY_Model
 		$this->setEntityName('Store');
 	}
 
+	// 점포명으로 검색(정확)
+	function getByName($name) {
+		return $this->repo->findOneBy(array('name' => $value));
+	}
+
+	/**
+	 * 점포명에서 일부 단어로 검색 하여 결과 목록 반환
+	 * 
+	 * @param  string $q 	검색어
+	 * @return array   		array of Entity\Store 
+	 */
 	function findByName($q) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('s')

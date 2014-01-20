@@ -99,29 +99,27 @@ class Ajax extends CI_Controller
 		}
 	}
 
-	// 시리얼로  장비 검색
-	public function search_part_by_serial($query) {
-		$query = (empty($query)) ? $_POST['input_text'] : $query;
-		if(empty($query)) {
-			die('검색어가 없음!');
-		}
-
-		$sn = urldecode($query);
-
-		$this->load->model('part_m', 'part_model');
-		$em = $this->part_model->getEntityManager();
-
-		$s_part = $em->getRepository('Entity\SerialPart')->findBy(array('serial_number' => $sn));
-
-		echo ($s_part) ? 'false' : 'true';
-	}
-
 	// 직전위치로 장비 검색
 	public function search_part_by_previous_location($query) {
 
 	}
 
-	// 사용자 username 검색
+	// 시리얼로  장비 검색
+	public function search_part_by_serial($query) {
+		$query = (empty($query)) ? $_POST['input_text'] : $query;
+		if(empty($query)) {
+			log_message('error', __METHOD__ . ' 시리얼넘버 가 비어있음!');
+		}
+
+		$sn = urldecode($query);
+
+		$this->load->model('part_m', 'part_model');
+		$result = $this->part_model->existSerialNumber($sn);
+
+		echo ($result) ? 'false' : 'true';
+	}
+
+	// 등록된 사용자명인지 검사
 	public function is_exist_username() {
 		$this->load->model('user_m', 'user_model');
 
@@ -133,7 +131,7 @@ class Ajax extends CI_Controller
 		echo ($user) ? 'false' : 'true';
 	}
 
-	// 사무소명 검색
+	// 등록된 사무소명 이지 검사 
 	public function is_exist_office_name($name = '') {
 
 		// uri 에 검색어가 한글일 경우 urldecode 해줘야 하는군...
@@ -145,4 +143,18 @@ class Ajax extends CI_Controller
 		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 		echo (!$result) ? 'true' : 'false';
 	}
+
+	// 등록된 점포명인지 검사
+	public function is_exist_store_name($name) {
+		// uri 에 검색어가 한글일 경우 urldecode 해줘야 하는군...
+		$name = !empty($name) ? urldecode($name) : $_POST['name'];
+
+		$this->load->model('store_m', 'store_model');
+		$result = $this->store_model->getByName($name);
+
+		echo (!$result) ? 'true' : 'false';
+
+	}
+
+	
 }
