@@ -118,17 +118,18 @@ class Stock extends CI_Controller
 				$part = $em->getReference('Entity\Part', (int)$this->input->post('part_id'));
 				$office = $em->getReference('Entity\office', (int)$this->input->post('office_id'));
 
+				$stock_arr = array(
+					'part'		=> $part,
+					'office'	=> $office,
+					'minimum'	=> $this->input->post('qty_minimum'),
+					'new'		=> (int)$this->input->post('new'),
+					'used' 		=> $this->input->post('qty_new'),
+				);
+
+				$this->load->model('part_m', 'part_model');
+				$stock = $this->part_model->createStock($stock_arr, TRUE);
+
 				unset($stock);
-				$stock = new Entity\Stock();
-				$stock->setPart($part);
-				$stock->setOffice($office);
-
-				$stock->setQtyMinimum((int)$this->input->post('qty_minimum'));
-				$stock->setQtyNew((int)$this->input->post('qty_new'));
-				$stock->setQtyUsed((int)$this->input->post('qty_used'));
-
-				$em->persist($stock);
-				$em->flush();
 
 				redirect('/stock');
 			} else {

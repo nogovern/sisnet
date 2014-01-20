@@ -123,4 +123,60 @@ class Part_m extends MY_Model
 		return $new;
 	}
 
+	// 재고 생성
+	public function createStock($data, $do_flush=FALSE) {
+		$stock = new Entity\Stock;
+
+		$stock->setPart($data['part']);				// Entity
+		$stock->setOffice($data['office']);			// Entity
+		
+		if(isset($data['minimum'])) {
+			$stock->setQtyMinimum((int)$data['minimum']);
+		}
+		
+		if(isset($data['new'])) {
+			$stock->setQtyNew((int)$data['new']);
+		}
+
+		if(isset($data['used'])) {
+			$stock->setQtyUsed((int)$data['used']);
+		}
+		
+		if(isset($data['s200'])) {
+			$stock->setQtyS200($data['s200']);
+		}
+
+		if(isset($data['s400'])) {
+			$stock->setQtyS400($data['s400']);
+		}
+
+		if(isset($data['s100'])) {
+			$stock->setQtyS100($data['s100']);
+		}
+
+		$this->em->persist($stock);
+		if($do_flush) {
+			$this->em->flush();
+		}
+
+		return $stock;
+	}
+
+	///////////
+	// 틀만 만들어 놓은 - 사용 여부는 미정
+	////////////
+	public function getStock($office_id) {
+		$stock_arr = array(
+			'part'		=> $part,
+			'office'	=> $op->office,
+			'new'		=> 0,
+			'used' 		=> 0,
+			'minimum'	=> 0
+		);
+	}
+
+	public function getStockIfExist($office_id) {
+
+	}
 }
+
