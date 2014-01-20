@@ -72,7 +72,7 @@ endforeach;
       </div>
       <div class="row">
         <div class="col-md-12">
-          <a href="/work/install"><span class="btn btn-default" type="button">리스트</span></a>
+          <a href="<?=site_url('work/install')?>"><span class="btn btn-default" type="button">리스트</span></a>
 <?php
 if($work->status == 1):
 ?>

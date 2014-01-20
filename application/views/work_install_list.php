@@ -77,7 +77,7 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
           </table>
 
           <p>
-            <a href="/work/install/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청 등록</span></a>
+            <a href="<?=site_url('work/install/add')?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청 등록</span></a>
           </p>
 
         </div>

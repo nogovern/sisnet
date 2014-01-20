@@ -77,7 +77,7 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
           </table>
 
           <p>
-            <a href="/work/close/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청 등록</span></a>
+            <a href="<?=site_url("/work/close/add")?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청 등록</span></a>
           </p>
 
         </div>

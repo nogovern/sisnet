@@ -191,7 +191,7 @@ endforeach;
       </div>
       <div class="row">
         <div class="col-md-12">
-          <a href="/work/close"><span class="btn btn-default" type="button">리스트</span></a>
+          <a href="<?=site_url('work/close')?>"><span class="btn btn-default" type="button">리스트</span></a>
           <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
 <?php
 if($work->status == 1):

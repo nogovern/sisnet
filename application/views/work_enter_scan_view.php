@@ -64,7 +64,7 @@ endforeach;
   </div>
   <div class="row">
     <div class="col-md-12">
-      <a href="/work/enter"><span class="btn btn-default" type="button">리스트</span></a>
+      <a href="<?=site_url('work/enter')?>"><span class="btn btn-default" type="button">리스트</span></a>
 <?php
 if($work->status == 3):
   if($work->getItem()->part_type == '1'){
