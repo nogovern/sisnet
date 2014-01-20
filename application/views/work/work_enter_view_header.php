@@ -71,12 +71,27 @@
           </tr>
           <tr>
             <td>담당자</td>
-            <td><?=$work->getItem()->part->company->user->name?></td>
+            <td>
+            <?php
+              // 납품처 담당자
+              if($work->getItem()->part->company->user) {
+                echo $work->getItem()->part->company->user->name;
+              } else {
+                echo '--지정안됨--';
+              }
+            ?>
+            </td>
             <td>&nbsp;</td>
           </tr>
           <tr>
             <td>담당자 연락처</td>
-            <td><?=$work->getItem()->part->company->user->phone?></td>
+            <td>
+              <?php
+              if($work->getItem()->part->company->user) {
+                echo $work->getItem()->part->company->user->phone;
+              }
+            ?>
+            </td>
             <td>&nbsp;</td>
           </tr>
           <tr>
