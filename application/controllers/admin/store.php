@@ -20,6 +20,15 @@ class Store extends CI_Controller {
 		$this->lists();
 	}
 
+	public function lists() {
+
+		$data['title'] = '점포 리스트';
+		$data['current'] = 'page-admin-store';
+		$data['rows'] = $this->store_model->getList();
+
+		$this->load->view('store_list', $data);
+	}
+
 	// 신규 점포 등록 alias
 	public function add($mode = NULL) {
 		$this->register($mode);
@@ -82,15 +91,6 @@ class Store extends CI_Controller {
 		}
 
 
-	}
-
-	public function lists() {
-
-		$data['title'] = '점포 리스트';
-		$data['current'] = 'page-admin-store';
-		$data['rows'] = $this->store_model->getList();
-
-		$this->load->view('store_list', $data);
 	}
 
 	public function ajax($action) {

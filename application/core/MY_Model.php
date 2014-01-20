@@ -91,9 +91,21 @@ class MY_Model extends CI_Model {
 		return $this->em->getRepository($this->getEntityName())->find($id);
 	}
 	
-	// 목록
-	public function getList() {
-		return $this->em->getRepository($this->getEntityName())->findBy(array(), array('id' => 'desc'));
+	/**
+	 * 기본 리스트 형식 
+	 * 
+	 * @param  array   $order  [description]
+	 * @param  integer $limit  [description]
+	 * @param  integer $offset [description]
+	 * @return [type]          [description]
+	 */
+	public function getList($order_by = array(), $limit = 30, $offset = 0) {
+		if(!count($order_by)){
+			$order_by = array('id' => 'desc');
+		}
+
+		$reop = $this->em->getRepository($this->getEntityName()); 
+		return $reop->findBy(array(), $order_by, $limit, $offset);
 	}
 
 	// 검색
