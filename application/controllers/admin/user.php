@@ -14,12 +14,35 @@ class User extends CI_Controller {
 	}
 
 	public function lists($type='', $page=1) {
-		if(!$type) {
-			$rows = $this->user_model->getList();
-		} else {
-			$rows = $this->user_model->getListByType($type);
-			$config['suffix'] = '&type=' . $type;
+		// var_dump($_GET);
+		// $_SERVER['QUERY_STRING'];
+		$prefix = array();
+		
+		$page = isset($_GET['page']) ? $_GET['page'] : 1;
+		if(isset($_GET['page'])) {
+			$prefix['page'] = $_GET['page'];
 		}
+
+		if(isset($_GET['per_page'])) {
+			$prefix['per_page'] = $_GET['per_page'];
+		}
+
+		if(isset($_GET['opType'])){
+			$prefix['opType'] = $_GET['opType'];
+		}
+
+		$criteria = array();
+		$order_by = array('id' => 'desc');
+		$row_count = isset($_GET['per_page']) ? $_GET['per_page'] : 20;
+		$offset = ($page - 1) * $row_count;
+		$rows = $this->user_model->getList2($criteria, $order_by, $row_count, $offset);
+
+		// if(!$type) {
+		// 	$rows = $this->user_model->getList();
+		// } else {
+		// 	$rows = $this->user_model->getListByType($type);
+		// 	$config['suffix'] = '&type=' . $type;
+		// }
 
 		// pagination
 		// ===========

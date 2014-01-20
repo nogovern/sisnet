@@ -108,11 +108,26 @@ class MY_Model extends CI_Model {
 		return $reop->findBy(array(), $order_by, $limit, $offset);
 	}
 
+	// 기본 리스트 형식 2
+	public function getList2($criteria=array(), $order_by=array(), $limit = 30, $offset = 0) {
+		if(!count($order_by)){
+			$order_by = array('id' => 'desc');
+		}
+
+		$reop = $this->em->getRepository($this->getEntityName()); 
+		return $reop->findBy($criteria, $order_by, $limit, $offset);
+	}
+
 	// 검색
 	public function find($options) {
 		$rows = $this->em->getRepository($this->getEntityName())->findBy($options);
 		
 		return $rows;	
+	}
+
+	// 등록된 row 수 리턴 
+	public function getTotalRows($repo=NULL) {
+		;
 	}
 
 }
