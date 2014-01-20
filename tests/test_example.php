@@ -28,15 +28,37 @@ class StackTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testUsingModel() {
-		$model = $this->CI->load->model('user_repository');
+		$model = $this->CI->load->model('user_m');
 
 		// $this->CI-> 형태로 불러와야 함
-		$this->assertTrue( $this->CI->user_repository->getTrue());
+		//$this->assertTrue( $this->CI->user_m->getTrue());
 
-		$rows = $this->CI->user_repository->lists();
+		//$rows = $this->CI->user_m->lists();
 
-		$this->assertEquals( count($rows), 7);
+		//$this->assertEquals( count($rows), 7);
 		// $class = new AClass;
 		// $this->assertEquals(TRUE, $class->ret());
+	}
+
+	public function testIncreaseStock() {
+		$em = $this->CI->doctrine->em;
+
+		$part = $em->getRepository('Entity\Part')->find(38);
+		$office = $em->getRepository('Entity\Office')->find(1);
+
+		$repo = $em->getRepository('Entity\Stock');
+		$stock = $repo->findOneBy(array('part'=> $part, 'office' => $office));
+
+		$this->assertEquals(0, $stock->qty_s900);
+
+		// 10 증가
+		$stock->increase('s900', 10);
+		$this->assertEquals(10, $stock->qty_s900);
+
+		// 5 감소
+		$stock->decrease('s900', 15);
+		$this->assertEquals(5, $stock->qty_s900);
+		
+
 	}
 }

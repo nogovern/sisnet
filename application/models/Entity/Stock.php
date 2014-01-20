@@ -129,6 +129,39 @@ class Stock
 		$this->qty_s100 = $qty;
 	}
 
-	
+	// 재고 수량 증가
+	public function increase($where, $qty) {
+		$valid_where = array('new', 'used', 's200', 's500', 's600', 's900', 's100');
+
+		if(!in_array($where, $valid_where)) {
+			log_message('error', __METHOD__ . "$where 는 없는 재고 형식 입니다");
+			return FALSE;
+		}
+
+		$where = 'qty_' . $where;
+		
+		$stock =& $this->{$where}; 		// [중요] reference 를 참조해야 함!!
+		$stock =  $stock + $qty;
+	}
+
+	// 재고 수량 감소
+	public function decrease($where, $qty) {
+		$valid_where = array('new', 'used', 's200', 's500', 's600', 's900', 's100');
+
+		if(!in_array($where, $valid_where)) {
+			log_message('error', __METHOD__ . "$where 는 없는 재고 형식 입니다");
+			return FALSE;
+		}
+
+		$where = 'qty_' . $where;
+		$stock =& $this->{$where}; 		// [중요] reference 를 참조해야 함!!
+
+		if($stock < $qty) {
+			log_message('error', __METHOD__ . '- 재고 감소량이 현 재고수량 보다 많습니다');
+			return FALSE;
+		}
+
+		$stock =  $stock - $qty;
+	}
 }
 
