@@ -145,16 +145,27 @@ class Ajax extends CI_Controller
 	}
 
 	// 등록된 점포명인지 검사
-	public function is_exist_store_name($name) {
+	public function is_exist_store_name($name='') {
 		// uri 에 검색어가 한글일 경우 urldecode 해줘야 하는군...
-		$name = !empty($name) ? urldecode($name) : $_POST['name'];
+		$name = !empty($name) ? urldecode($name) : $this->input->post('name');
 
 		$this->load->model('store_m', 'store_model');
 		$result = $this->store_model->getByName($name);
 
 		echo (!$result) ? 'true' : 'false';
+	}
+
+	// 등록된 점포 코드 인지 검사
+	public function is_exist_store_code($query='') {
+		// uri 에 검색어가 한글일 경우 urldecode 해줘야 하는군...
+		$code = !empty($query) ? urldecode($query) : $this->input->post('code');
+
+		$this->load->model('store_m', 'store_model');
+		$result = $this->store_model->getByCode($code);
+
+		echo (!$result) ? 'true' : 'false';
 
 	}
 
-	
+
 }

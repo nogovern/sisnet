@@ -151,6 +151,8 @@ $(document).ready(function(){
 
   // jquery validate 설정
   $("#register_form").validate({
+    debug: true,
+    onkeyup: false,
     rules: {
       type: {
         required: true

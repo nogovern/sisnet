@@ -16,8 +16,13 @@ class Store_m extends MY_Model
 	}
 
 	// 점포명으로 검색(정확)
-	function getByName($name) {
+	function getByName($value) {
 		return $this->repo->findOneBy(array('name' => $value));
+	}
+
+	// 점포 코드 로 검색(정확)
+	function getByCode($value) {
+		return $this->repo->findOneBy(array('code' => $value));
 	}
 
 	/**

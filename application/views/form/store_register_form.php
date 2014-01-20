@@ -19,21 +19,23 @@ if(isset($form_saved)) {
     <div class="col-sm-6">
       <input type="text" class="form-control required" id="name" name="name" placeholder="입력하세요" >
     </div>
+    <div class="col-sm-3"></div>
   </div>
   
-    <div class="form-group">
-      <label class="control-label col-sm-3">점포 코드</label>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" id="code" name="code" placeholder="입력하세요">
-      </div>
+  <div class="form-group">
+    <label class="control-label col-sm-3">점포 코드</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="code" name="code" placeholder="입력하세요">
     </div>
+    <div class="col-sm-3"></div>
+  </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-3">점포 가변 코드</label>
-      <div class="col-sm-6">
-        <input type="text" class="form-control " id="code2" name="code2" placeholder="입력하세요">
-      </div>
+  <div class="form-group">
+    <label class="control-label col-sm-3">점포 가변 코드</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control " id="code2" name="code2" placeholder="입력하세요">
     </div>
+  </div>
 
   <div class="form-group">
     <label class="control-label col-sm-3">점주 이름</label>
@@ -174,8 +176,43 @@ endif;
   // form validation
   $("#store_register_form").validate({
     rules: {
-      name: 'required',
-      code: 'required'
+      name : {
+        required: true,
+        remote: {
+          url: "<?=site_url('ajax/is_exist_store_name')?>",
+          type: "post",
+          data: {
+            "csrf_test_name": $.cookie("csrf_cookie_name")
+          }
+        }
+      },
+      code : {
+        required: true,
+        remote: {
+          url: "<?=site_url('ajax/is_exist_store_code')?>",
+          type: "post",
+          data: {
+            "csrf_test_name": $.cookie("csrf_cookie_name")
+          }
+        }
+      }
+    },
+    messages: {
+      name: {
+        required: "필수항목 입니다.",
+        remote: '등록된 점포명 입니다. 확인 후 입력해주세요'
+      },
+      code: {
+        required: "필수항목 입니다.",
+        remote: '등록된 점포 코드입니다. 확인 후 입력해주세요'
+      }
+    },
+    errorPlacement: function(error, el) {
+      error.appendTo(el.parent());
+      el.closest(".form-group").addClass('has-error');
+    },
+    success: function(el) {
+      el.closest(".form-group").removeClass('has-error');
     },
     submitHandler: function(form){
       doSubmit(form);
