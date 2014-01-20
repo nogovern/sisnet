@@ -45,7 +45,7 @@ class Store extends CI_Controller {
 		}
 
 		// 규칙 설정
-		$this->form_validation->set_rules('name', '점포명', 'required');
+		$this->form_validation->set_rules('name', '점포명', 'trim|required');
 
 		if($this->form_validation->run() === FALSE){
 			if($mode == 'popup') {
