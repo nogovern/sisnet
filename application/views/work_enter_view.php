@@ -37,15 +37,15 @@ $i = 1;
 $item_count = count($work->getItems());
 foreach($work->getItems() as $item):
 ?>                  
-              <tr data-itemid="<?=$item->id?>" data-sn="<?=$item->serial_number?>">
+              <tr data-itemid="<?=$item->id?>" data-sn="<?=$item->serial_number?>" data-isset="<?=($item->qty_complete>0) ? 'Y' : 'N'?>">
                 <td><?=$i++?></td>
                 <td><?=constant('GS2_PART_TYPE_' . $item->part_type);?></td>
                 <td><?=$item->part_name?></td>
                 <td><?=($item->part_type == '1') ? $item->serial_number : '-'?></td>
                 <td><?=$item->getQtyRequest()?></td>
                 <td><?=$item->qty_complete?></td>
-                <td class="function" style="width:150px;">
-                  <button class="btn btn-danger btn-xs btn_delete" type="button">X</button>
+                <td class="function" style="width:100px;">
+                  <button class="btn btn-danger btn-xs btn_delete" type="button" style="display:none;">X</button>
                 </td>
               </tr>
 <?php
@@ -113,8 +113,25 @@ endif;
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script type="text/javascript">
-$(document).ready(function(){
+
+// 출고 버튼 상태 & 장비 삭제 버튼 표시
+// 장비 등록 & 삭제 시 항상 호출하므로 일단 여기에 넣음
+function checkDeliveryStatus() {
+  $("#btn_delivery").attr('disabled', (qty_complete > 0) ? false : true);
   
+  // 삭제(초기화) 버튼
+  $("#part_table tbody tr").each(function(){
+    if($(this).data('isset') == 'Y') {
+      $(".btn_delete", this).show();
+    } else {
+      $(".btn_delete", this).hide();
+    }
+  });
+}
+
+$(document).ready(function(){
+  checkDeliveryStatus();
+
   // 개별 등록 버튼
   $("#btn_part_register").click(function(e) {
     if(!checkCompleteCount()) {
@@ -229,14 +246,17 @@ $(document).ready(function(){
         // 성공 시 처리
         if(!response.error) {
           $("#modal_enter_add_item").modal('hide'); //modal 닫기
-          qty_complete += qty;
-          changeCompleteCount();
-          checkDeliveryStatus();
 
           // 리스트 갱신
           var $tr = $("#part_table tr[data-itemid="+ response.item_id +"]");
+          $tr.data('isset', 'Y');
           $("td", $tr).eq(3).text(sn);              // SN
           $("td", $tr).eq(5).text(qty);    // 등록 수량
+          
+          // 수량,버튼 갱신        
+          qty_complete += qty;
+          changeCompleteCount();
+          checkDeliveryStatus();
         } else {
           alert(response.error_msg);
           $("#input_text").val('').focus();
@@ -267,16 +287,17 @@ $(document).ready(function(){
       .done(function(response) {
         // 성공 시 처리
         if(!response.error) {
+          // 리스트 갱신
+          var $tr = $("#part_table tr[data-itemid="+ response.item_id +"]");
+          $tr.data('isset', 'N');
+          $("td", $tr).eq(3).text('');              // SN
+          $("td", $tr).eq(5).text(0);               // 등록 수량
+
           qty_complete = (equipment.type == '1') ? qty_complete - 1 : 0;
           changeCompleteCount();
           checkDeliveryStatus();
 
-          // 리스트 갱신
-          var $tr = $("#part_table tr[data-itemid="+ response.item_id +"]");
-          $("td", $tr).eq(3).text('');              // SN
-          $("td", $tr).eq(5).text(0);               // 등록 수량
-
-          alert('해당 장비가 초기화 되었음');
+          // alert('해당 장비가 초기화 되었음');
         }
 
         // for debug
@@ -326,12 +347,7 @@ var items = [];     // array of item object
 // 장비 목록에 있는 serial_number 배열 (unique 임을 이미 확보)
 var arr_serial = [];
 
-function checkDeliveryStatus() {
-  $("#btn_delivery").attr('disabled', (qty_complete > 0) ? false : true);
-}
-
 $(document).ready(function(){
-  checkDeliveryStatus();
 
   // 요청 확정
   $("#btn_request_ok").click(function(){

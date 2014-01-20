@@ -196,12 +196,13 @@ class Ajax extends CI_Controller
 
 	// 완료
 	public function complete() {
+		$id = $this->input->post('id');
 
 	}
 
 	// 승인 
 	public function approve() {
-
+		$id = $this->input->post('id');
 	}
 
 	// 입고 - 아이템 정보 갱신
