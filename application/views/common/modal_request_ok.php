@@ -9,7 +9,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><?=$_config['op_title'][$work->type]?> 요청서 확정</h4>
+        <h4 class="modal-title"><?=$_config['op_type'][$work->type]?> 요청서 확정</h4>
       </div>
       <!-- start form -->
       <form role="form" class="form form-horizontal">
