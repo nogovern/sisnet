@@ -126,8 +126,18 @@ class MY_Model extends CI_Model {
 	}
 
 	// 등록된 row 수 리턴 
-	public function getTotalRows($repo=NULL) {
-		;
+	public function getRowCount($table_name=NULL) {
+		if(!$table_name) {
+			$table_name = $this->entity_name;
+		}
+
+		$dql = "select count(t.id) FROM {$table_name} t";
+		$query = $this->em->createQuery($dql);
+		$count = $query->getSingleScalarResult();
+
+		return $count;
 	}
 
 }
+
+

@@ -50,7 +50,9 @@ endforeach;
           </tbody>
 
         </table>
-
+        <div class="row">
+          <?=$pagination?>
+        </div>
         <p>
           <a href="/admin/store/register"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;점포 등록</span></a>
         </p>
@@ -58,8 +60,8 @@ endforeach;
         </div>
       </div>
     </div><!-- end of container -->
-      <script type="text/javascript">
-      </script>
+    <script type="text/javascript">
+    </script>
 
 <?php
 $this->load->view('layout/footer');

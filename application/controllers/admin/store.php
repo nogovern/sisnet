@@ -24,8 +24,29 @@ class Store extends CI_Controller {
 
 		$data['title'] = '점포 리스트';
 		$data['current'] = 'page-admin-store';
-		$data['rows'] = $this->store_model->getList();
 
+		$rows = $this->store_model->getList();
+		$total = $this->store_model->getRowCount();
+
+		// ===========
+		// pagination
+		// ===========
+		$per_page = 20;
+		$this->load->library('pagination');
+		$config = array(
+			'base_url' 		=> base_url() . 'admin/store/lists/',
+			'prefix'		=> '?page=',
+			'total_rows'	=> $total,
+			'per_page'		=> $per_page,
+			'num_links'		=> 5,
+			'use_page_numbers'	=> TRUE,
+			'page_query_string'	=> FALSE
+		);
+
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['rows'] = $rows;
 		$this->load->view('store_list', $data);
 	}
 
