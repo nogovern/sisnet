@@ -190,13 +190,15 @@ $(document).ready(function(){
       dataType: "json",
     })
       .done(function(response) {
-        if(response.result === 'success') {
+        if(window.console){
+          console.log(response);
+        }
+
+        if(response.result == 'success') {
           callback_insert_row(response.id, item.type, item.name, $("#serial_number").val(), '', qty, is_new);
         } else {
-          console.log(response);
           alert('에러!');
         }
-        // console.log(response);
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);

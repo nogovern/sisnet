@@ -159,16 +159,16 @@ $this->load->view('layout/navbar', array('current' => 'page-work-close'));
 $arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
 $arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
 
-$i = 1;
+$idx = 1;
 $item_count = count($items);
 foreach($items as $item):
 ?>                  
                   <tr data-item_id="<?=$item->id?>">
-                    <td><?=$item->id?></td>
+                    <td><?=$idx++?></td>
                     <td><?=$arr_type_text[$item->part->type]?></td>
-                    <td><?=$item->part->name?></td>
+                    <td><?=$item->part_name?></td>
                     <td><?=($item->is_new == 'Y')? '신품' : '중고'?></td>
-                    <td><?=($item->part->type == '1') ? '' : ''?></td>
+                    <td><?=($item->part_type == '1') ? $item->serial_number : ''?></td>
                     <td><?=''?></td>
                     <td><?=$item->qty_request?></td>
                     <td style="width:150px;">

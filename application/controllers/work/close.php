@@ -96,7 +96,7 @@ class Close extends CI_Controller
 		// 사무소 dropdown
 		$this->load->model('office_m', 'office_model');
 		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
-		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
+		$data['select_office'] = form_dropdown('office_id', $arr_office, $work->office->id, 'id="office_id" class="form-control"');
 
 		// 사용자 dropdown
 		$this->load->model('user_m', 'user_model');

@@ -11,10 +11,10 @@ class Ajax extends CI_Controller
 		parent::__construct();
 
 		// operation.id 가 post 로 넘어오는지 검사!
-		$id = $this->input->post('id');
-		if(!$id) {
-			die('잘못된 접근입니다.');
-		}
+		// $id = $this->input->post('id');
+		// if(!$id) {
+		// 	die('잘못된 접근입니다.');
+		// }
 
 		$this->load->model('work_m', 'work_model');
 		$this->em = $this->work_model->getEntityManager();
@@ -42,10 +42,14 @@ class Ajax extends CI_Controller
 	////////////
 	// 장비 등록 - 이 시점에서는 실 재고에 반영 안됨
 	////////////
-	public function add_item() {
+	public function add_item($op_id=0) {
 		$id = $this->input->post('id');		// 작업 ID
-
-		$op = $this->em->getReference('Entity\Operation', $_POST['id']);
+		if(!$id) {
+			log_message('error', __METHOD__ . ' 작업 번호가 없습니다.');
+			return FALSE;
+		}
+		
+		$op = $this->em->getReference('Entity\Operation', $id);
 		if(!$op) {
 			die( __CLASS__ . __METHOD__ . " 작업이 존재하지 않습니다");
 		}
@@ -66,6 +70,7 @@ class Ajax extends CI_Controller
 
 		// id를 얻기 위해 일단 flush
 		$item = $this->work_model->addItem($op, $post_data, TRUE);
+		
 		// json 결과 객체
 		$result = new stdClass;	
 
@@ -77,8 +82,18 @@ class Ajax extends CI_Controller
 			//////////////////////////
 
 			$part = $this->em->getReference('Entity\Part', $_POST['part_id']);
-			// 장비 재고량 변경
+			
+			// 장비 재고 가져오기 - 없으면 생성
 			$stock = $part->getStock($op->office->id);
+			if(!$stock) {
+				$stock_arr = array(
+					'part'		=> $part,
+					'office'	=> $op->office,
+				);
+				$this->load->model('part_m', 'part_model');
+				$stock = $this->part_model->createStock($stock_arr);
+			}
+
 			$qty = intval($_POST['qty']);
 			$is_new = ($_POST['is_new'] == 'Y') ? TRUE : FALSE;
 

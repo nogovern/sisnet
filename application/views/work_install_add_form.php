@@ -65,6 +65,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
                     <option value="201">신규</option>
                     <option value="202">휴점S</option>
                     <option value="203">휴점C</option>
+                    <option value="204">리뉴얼</option>
                   </select>
                 </div>
               </div>
