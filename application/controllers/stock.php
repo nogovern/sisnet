@@ -115,17 +115,6 @@ class Stock extends CI_Controller
 			// 재고 등록되어 있지 않으면 등록
 			// 수량이 모두 0이면 등록 하지 않음
 			if($has_stock === FALSE) {
-				if(
-					$this->input->post('qty_minimum') == 0  
-					&& $this->input->post('qty_new') == 0  
-					&& $this->input->post('qty_used') == 0  
-					&& $this->input->post('qty_s200') == 0  
-					&& $this->input->post('qty_s500') == 0 )
-				{
-					trigger_error('수량이 모두 0 일수 없습니다');
-					exit;
-				}
-
 				$part = $em->getReference('Entity\Part', (int)$this->input->post('part_id'));
 				$office = $em->getReference('Entity\office', (int)$this->input->post('office_id'));
 
@@ -137,8 +126,6 @@ class Stock extends CI_Controller
 				$stock->setQtyMinimum((int)$this->input->post('qty_minimum'));
 				$stock->setQtyNew((int)$this->input->post('qty_new'));
 				$stock->setQtyUsed((int)$this->input->post('qty_used'));
-				$stock->setQtyS200((int)$this->input->post('qty_s200'));
-				$stock->setQtyS500((int)$this->input->post('qty_s500'));
 
 				$em->persist($stock);
 				$em->flush();
