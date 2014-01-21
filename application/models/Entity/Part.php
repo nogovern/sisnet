@@ -212,14 +212,10 @@ class Part
 	 * @param  [type] $office_id 사무소 ID
 	 * @return [type]            [description]
 	 */
-	public function getDisabledTotal($office_id = NULL) {
+	public function getDisableTotal($office_id = NULL) {
 		$sum = 0;
 
 		foreach($this->stock_list as $stock) {
-			if($office_id && $stock->office->id != $office_id) {
-				continue;
-			}
-
 			$sum += ($stock->qty_s200 + $stock->qty_s500 + $stock->qty_s600 + $stock->qty_s900);
 		}
 
@@ -236,9 +232,7 @@ class Part
 		$sum = 0;
 
 		foreach($this->stock_list as $stock) {
-			if($office_id && $stock->office->id != $office_id) {
-				continue;
-			}
+			$sum += $stock->qty_new + $stock->qty_used;
 		}
 
 		// 계산 방법

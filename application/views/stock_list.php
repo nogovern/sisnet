@@ -37,8 +37,8 @@ endforeach;
               <th class="col-xs-6">사무소별 현황</th>
             </tr>
             <tr>
-              <th>신품</th>
-              <th>중고</th>
+              <th>가용</th>
+              <th>비가용</th>
               <!-- 사무소별 -->
               <th style="padding:0;margin:0;">
                 <table class="table" style="margin:0;">
@@ -74,8 +74,12 @@ foreach($rows as $row):
               <td><?=$row->category->name?></td>
               <td><?=$row->name?></td>
               <td><?=$arr_status_text[$row->status]?></td>
+              <td><?=intval($row->getUsableTotal())?></td>
+              <td><?=intval($row->getDisableTotal())?></td>
+              <!--
               <td><?=intval($row->getNewTotal())?></td>
               <td><?=intval($row->getUsedTotal())?></td>
+              -->
               <td colspan="10" style="padding:0;">
 <?php
 if(count($row->getStockList())):
