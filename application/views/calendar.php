@@ -24,6 +24,10 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
 
       $(".highlight").closest('td').addClass('active');
 
+      // 휴일 표시
+      $("#calendar tbody tr td:nth-child(1)").css('color', 'red');
+      $("#calendar tbody tr td:nth-child(7)").css('color', 'red');
+
   		$("#calendar tbody td").hover(
   			function(){
   				$(this).addClass('success');

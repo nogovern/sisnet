@@ -24,7 +24,7 @@ class Calendar_m extends MY_Model
 			'template' => '
 			{table_open}<table id="calendar" class="table table-bordered">{/table_open}
 
-			{heading_row_start}<tr>{/heading_row_start}
+			{heading_row_start}<thead><tr>{/heading_row_start}
 
 			{heading_previous_cell}<th><a href="{previous_url}">&lt;&lt;</a></th>{/heading_previous_cell}
 			{heading_title_cell}<th colspan="{colspan}">{heading}</th>{/heading_title_cell}
@@ -34,7 +34,7 @@ class Calendar_m extends MY_Model
 
 			{week_row_start}<tr>{/week_row_start}
 			{week_day_cell}<th width="14.28%">{week_day}</th>{/week_day_cell}
-			{week_row_end}</tr>{/week_row_end}
+			{week_row_end}</tr></thead><tbody>{/week_row_end}
 
 			{cal_row_start}<tr>{/cal_row_start}
 			{cal_cell_start}<td>{/cal_cell_start}
@@ -57,7 +57,7 @@ class Calendar_m extends MY_Model
 			{cal_cell_end}</td>{/cal_cell_end}
 			{cal_row_end}</tr>{/cal_row_end}
 
-			{table_close}</table>{/table_close}
+			{table_close}</tbody></table>{/table_close}
 		');
 	}
 
