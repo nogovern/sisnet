@@ -5,24 +5,21 @@
 		</div>
 		<form action="" role="form col-md-12">
 			<div class="form-group row">
-                <label for="category" class="control-label col-md-3">장비 종류</label>
+                <label for="category_id" class="control-label col-md-3">장비 종류</label>
                 	<div class="col-md-4">
-	                  <select id="category" name="category" class="form-control">
+	                  <select id="category_id" name="category_id" class="form-control">
 	                    <option value="">-- 장비종류를 선택하세요--</option>
-	                    <option value="1">POS스캐너</option>
-	                    <option value="2">고정스캐너</option>
-	                    <option value="3">모니터_CRT</option>
-	                    <option value="4">모니터_LCD</option>
-	                    <option value="5">서버</option>
-	                    <option value="6">프린터_점포용</option>
+	                    <option value="2">POS스캐너</option>
+	                    <option value="3">고정스캐너</option>
+	                    <option value="4">모니터_CRT</option>
+	                    <option value="5">모니터_LCD</option>
+	                    <option value="6">서버</option>
+	                    <option value="7">프린터_점포용</option>
 	                  </select>
                 	</div>
                 	<div class="col-md-5">
 	                  <select name="part_id" id="part_id" class="form-control">
-	                    <option>--선택하세요--</option>
-	                    <option>--선택하세요--</option>
-	                    <option>--선택하세요--</option>
-	                    <option>--선택하세요--</option>
+                      <option value="">-- 선택하세요 --</option>
 	                  </select>
 	              </div>
               </div>
@@ -90,6 +87,24 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+var categories = <?=$json?>;
+
+$(document).ready(function() {
+  $("#category_id").change(function(){
+    var cur_cat = $(this).val();
+    var list = categories[cur_cat];
+    var $select = $("#part_id");
+
+    $select.html('');
+    for(var i in list) {
+      console.log(i + ':' + list[i]);
+      $select.append($("<option></option>").val(i).text(list[i]));
+    }
+  });
+});
+</script>
 
 <!-- Button trigger modal -->
 <button class="btn btn-primary btn-lg" data-toggle="modal" href="#stack1">

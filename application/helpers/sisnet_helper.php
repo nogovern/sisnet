@@ -123,6 +123,30 @@ if(!function_exists('gs2_op_type')) {
     }
 }
  
+// 장비 카테고리-장비 배열
+if(!function_exists('gs2_category_parts')) {
+    function gs2_category_parts($type=NULL) {
+        $CI =& get_instance();
+
+        $categories = array();
+
+        $CI->load->model('category_m');
+        $CI->load->model('part_m');
+        $rows = $CI->category_m->getSubCategories(1);
+
+        $em = $CI->category_m->getEntityManager();
+        foreach($rows as $row) {
+            $categories[$row->id] = array();
+            $parts = $em->getRepository('Entity\Part')->findBy(array('category' => $row));
+            foreach($parts as $part) {
+                $categories[$row->id][$part->id] = $part->name;
+            }
+        }
+
+        return $categories;
+    }
+}
+ 
 
 
 
