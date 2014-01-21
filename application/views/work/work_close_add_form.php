@@ -27,7 +27,7 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
                   <input type="text" class="form-control required" id="store_name" name="store_name">
                 </div>
                 <div class="col-sm-4" style="padding-top:1px;">
-                  <button type="button" id="btn_search" class="btn btn-info">검색</button>
+                  <button type="button" id="btn_search_store" class="btn btn-info">검색</button>
                 </div>
               </div>
 
@@ -138,8 +138,16 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
         $(".date-picker", pa).datepicker("show");
       });
 
+      // 점포명 에서 enter 키 눌렀을때 처리
+      $("#store_name").keypress(function(e){
+        if(e.keyCode == 13){
+          e.preventDefault();   // submit 막기 
+          $('#btn_search_store').click();
+        }
+      });
+
       // colorbox - 점포 검색
-      $("#btn_search").click(function(){
+      $("#btn_search_store").click(function(){
         var query = $.trim($("#store_name").val());      // 점포명
         if(query === '') {
           alert('최소 2자 이상의 점포명을 입력하세요');
