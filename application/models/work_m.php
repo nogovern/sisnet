@@ -93,7 +93,7 @@ class Work_m extends MY_Model {
 	}
 
 	// 철수 목록
-	public function getEvaucationList() {
+	public function getCloseList() {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
 			->from('\Entity\Operation', 'w')
@@ -110,8 +110,20 @@ class Work_m extends MY_Model {
 		return $rows;
 	}
 
-	public function getCloseList() {
-		return $this->getEvaucationList();
+	// 상태변경 업무 목록
+	public function getChangeList() {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('\Entity\Operation', 'w')
+			->where('w.type >= 900')
+			->orderBy('w.id', 'DESC');
+
+		$rows = $qb->getQuery()->getResult();
+
+		foreach($rows as $row) {
+			$row->office = gs2_decode_location($row->office_location);
+		}
+		return $rows;
 	}
 
 	///////////////

@@ -14,7 +14,17 @@ class Change extends CI_Controller
 	}
 
 	public function index() {
-		echo '<h1>공사중</h1>';
+		$this->lists();
+	}
+
+	public function lists() {
+		$data['title'] = '장비 상태변경 업무';
+		$data['current'] = 'page-changer';
+
+		$data['status'] = '';
+		$data['rows'] = $this->work_model->getChangeList();
+		
+		$this->load->view('work/work_change_list', $data);
 	}
 
 }
