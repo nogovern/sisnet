@@ -111,6 +111,18 @@ if(!function_exists('gs2_get_store_join_types')) {
     }
 }
 
+// 업무 타입
+if(!function_exists('gs2_op_type')) {
+    function gs2_op_type($type=NULL) {
+        $CI =& get_instance();
+
+        $_config = $CI->config->item('gs2');
+        $op_types = $_config['op_type'];
+
+        return $op_types[$type];
+    }
+}
+ 
 
 
 

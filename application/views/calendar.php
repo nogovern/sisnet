@@ -15,9 +15,25 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
 		<?php
 		echo $calendar; 
 		?>
-  </div>
-	
   	</div><!-- end of calendar -->
+  	<script type="text/javascript">
+  	$(document).ready(function(){
+  		$("#calendar tr:eq(1) th").each(function(){
+  			$(this).css('background-color', '#EEE');
+  		});
+
+      $(".highlight").closest('td').addClass('active');
+
+  		$("#calendar tbody td").hover(
+  			function(){
+  				$(this).addClass('success');
+  			},
+  			function() {
+  				$(this).removeClass('success');
+  			}
+  		);
+  	});
+  	</script>
 <?php
 $this->load->view('layout/footer');
 ?>

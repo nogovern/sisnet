@@ -22,7 +22,7 @@ class Calendar_m extends MY_Model
 			'month_type'		=> 'long',
 			'day_type'			=> 'short',
 			'template' => '
-			{table_open}<table class="table table-bordered">{/table_open}
+			{table_open}<table id="calendar" class="table table-bordered">{/table_open}
 
 			{heading_row_start}<tr>{/heading_row_start}
 
@@ -66,8 +66,8 @@ class Calendar_m extends MY_Model
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
 			->from('\Entity\Operation', 'w')
-			->where("w.date_register >= :from")
-			->andWhere("w.date_register < :to")
+			->where("w.date_request >= :from")
+			->andWhere("w.date_request < :to")
 			->orderBy('w.id', 'DESC')
 			->setParameter('from', $start->format('Y-m-d'))
 			->setParameter('to', $start->add(new DateInterval("P1M"))->format('Y-m-d'));
@@ -79,10 +79,11 @@ class Calendar_m extends MY_Model
 		if(count($rows)) {
 			foreach($rows as $row) {
 				$day = $row->date_register->format("j");
-				$content = sprintf("[%s] %s", $row->office->name, $row->type);
+				$content = sprintf("[%s] <a href=\"%s\">%s</a>", $row->office->name, '#', gs2_op_type($row->type));
 				if(array_key_exists($day, $events)){
-					$content = $events[$day] . '<br>' . $row->type;
-				}		
+					$content = $events[$day] . '<br>' . $content;
+				} 		
+
 				$events[$day] = $content;
 			}
 		}
