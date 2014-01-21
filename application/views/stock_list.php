@@ -15,11 +15,11 @@ $this->load->view('layout/navbar', array('current' => 'page-stock'));
         <div class="col-md-12">
 
         <ul class="nav nav-pills">
-          <li class="<?=is_null($this_office) ?'active':''?>"><a href="<?=site_url()?>stock/lists">전체</a></li>
+          <li class="<?=is_null($this_office) ?'active':''?>"><a href="<?=base_url()?>stock/lists">전체</a></li>
 <?php
 foreach($office_list as $o):
 ?>
-          <li class="<?=(!is_null($this_office) && $o->id == $this_office->id)?'active':''?>"><a href="<?=site_url()?>stock/lists/<?=$o->id?>"><?=$o->name?></a></li>
+          <li class="<?=(!is_null($this_office) && $o->id == $this_office->id)?'active':''?>"><a href="<?=base_url()?>stock/listByOffice/<?=$o->id?>"><?=$o->name?></a></li>
 <?php
 endforeach;
 ?>          
