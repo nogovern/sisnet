@@ -201,7 +201,34 @@ class Ajax extends CI_Controller
 		$result = $this->store_model->getByCode($code);
 
 		echo (!$result) ? 'true' : 'false';
+	}
 
+	////////////
+	// 점포 정보
+	////////////
+	public function store_info($store_id) {
+		$store_id = isset($_POST['sotre_id']) ? $this->input->post('store_id') : $store_id;
+
+		$this->load->model('store_m', 'store_model');
+		$em = $this->store_model->getEntityManager();
+
+		$store = $this->store_model->get($store_id);
+		// var_dump($store);
+
+		$result = new stdClass;
+
+		// extract from Entity
+		$cols = $em->getClassMetadata('Entity\Store')->getColumnNames();
+		foreach ($cols as  $value) {
+			if( $value == 'date_register') {
+				$result->$value = $store->getDateRegister();
+			} elseif( $value == 'join_type') {
+				$result->$value = gs2_get_store_join_type($store->$value);
+			} else {
+				$result->$value = $store->$value;
+			}
+		}
+		echo json_encode($result);
 	}
 
 

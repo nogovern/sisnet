@@ -100,7 +100,13 @@ if(!function_exists('gs2_decode_location')) {
 // 점포 - 가맹 타입
 if(!function_exists('gs2_get_store_join_type')) {
     function gs2_get_store_join_type($type) {
+        if(!$type)
+            return NULL;
         
+        $CI =& get_instance();
+        $_config = $CI->config->item('gs2');
+
+        return $_config['store_join_type'][$type];
     }
 }
 
