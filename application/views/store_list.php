@@ -50,7 +50,7 @@ endforeach;
           </tbody>
 
         </table>
-        <div class="row">
+        <div style="text-align:center">
           <?=$pagination?>
         </div>
         <p>
