@@ -86,7 +86,7 @@
 
       if(is_ok == true){
         $.ajax({
-          url: "/work/ajax/accept_request",
+          url: "<?=base_url()?>work/ajax/accept_request",
           type: "POST",
           data: {
             id : operation.id,

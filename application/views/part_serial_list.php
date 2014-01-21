@@ -70,7 +70,7 @@ endforeach;
     </table>
 
     <p>
-      <a href="/admin/part/serial_add"><span class="btn btn-primary"><i class="icon-pencil"></i> 장비 등록</span></a>
+      <a href="<?=base_url()?>admin/part/serial_add"><span class="btn btn-primary"><i class="icon-pencil"></i> 장비 등록</span></a>
       <button class="btn btn-success" data-target="#myModal" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;팝업 등록</button>
     </p>
 

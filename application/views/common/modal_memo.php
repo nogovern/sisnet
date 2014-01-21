@@ -31,7 +31,7 @@
       e.preventDefault();
 
       $.ajax({
-          url: "/work/ajax/write_memo",
+          url: "<?=base_url()?>work/ajax/write_memo",
           type: "POST",
           data: {
             id : operation.id,

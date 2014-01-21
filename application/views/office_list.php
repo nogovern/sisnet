@@ -56,7 +56,7 @@ $this->view('layout/navbar');
           </table>
 
           <p>
-            <a href="/admin/office/add"><span class="btn btn-primary">&nbsp;신규  등록</span></a>
+            <a href="<?=base_url()?>admin/office/add"><span class="btn btn-primary">&nbsp;신규  등록</span></a>
           </p>
 
         </div>

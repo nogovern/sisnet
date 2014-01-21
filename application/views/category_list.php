@@ -43,7 +43,7 @@ endforeach;
         </table>
 
         <p>
-          <a href="/admin/category/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;카테고리 등록</span></a>
+          <a href="<?=base_url()?>admin/category/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;카테고리 등록</span></a>
         </p>
 
         </div>

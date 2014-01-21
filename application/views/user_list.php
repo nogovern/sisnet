@@ -70,7 +70,7 @@ echo $pagination
   </div><!-- end of row -->
   <div class="row">  
     <div class="col-md-12">
-      <a href="/admin/user/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;사용자 등록</span></a>
+      <a href="<?=base_url()?>admin/user/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;사용자 등록</span></a>
     </div>
   </div>
 </div><!-- end of container -->

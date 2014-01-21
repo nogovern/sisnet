@@ -54,7 +54,7 @@ endforeach;
           <?=$pagination?>
         </div>
         <p>
-          <a href="/admin/store/register"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;점포 등록</span></a>
+          <a href="<?=base_url()?>admin/store/register"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;점포 등록</span></a>
         </p>
 
         </div>

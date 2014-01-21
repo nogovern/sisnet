@@ -265,7 +265,7 @@ $(document).ready(function(){
     var qty = $(":input[name=cnt]").val(); 
 
     $.ajax({
-      url: "/work/enter/ajax/scan_count_save",
+      url: "<?=base_url()?>work/enter/ajax/scan_count_save",
       type: "POST",
       data: {
         id : operation.id,
@@ -298,7 +298,7 @@ $(document).ready(function(){
 
     if(ok === true){
       $.ajax({
-        url: "/work/enter/ajax/scan_serial_save",
+        url: "<?=base_url()?>work/enter/ajax/scan_serial_save",
         type: "POST",
         data: {
           id : <?=$work->id?>,
@@ -323,7 +323,7 @@ $(document).ready(function(){
     var ok = confirm("재입력을 위해 입력된 정보를 초기화합니다.");
     if(ok === true) {
       $.ajax({
-        url: "/work/ajax/scan_reset",
+        url: "<?=base_url()?>work/ajax/scan_reset",
         type: "POST",
         data: {
           id : <?=$work->id?>,
@@ -357,7 +357,7 @@ $(document).ready(function(){
 
     if(is_ok == true){
       $.ajax({
-        url: "/work/enter/ajax/complete",
+        url: "<?=base_url()?>work/enter/ajax/complete",
         type: "POST",
         data: {
           id : <?=$work->id?>,

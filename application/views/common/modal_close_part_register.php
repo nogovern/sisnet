@@ -129,7 +129,7 @@ $(document).ready(function(){
 
     // 장비 정보 요청
     $.ajax({
-      url: "/util/part/get",
+      url: "<?=base_url()?>util/part/get",
       type: "POST",
       data: {
         "part_id": part_id,
@@ -175,7 +175,7 @@ $(document).ready(function(){
     var is_lost = $(":checkbox[name=is_lost]").is(":checked") ? 'Y' : 'N';
 
     $.ajax({
-      url: "/work/ajax/add_item/" + operation.id,
+      url: "<?=base_url()?>work/ajax/add_item/" + operation.id,
       type: "POST",
       data: {
         "id"        : operation.id,         
@@ -218,7 +218,7 @@ $(document).ready(function(){
     }
 
     $.ajax({
-        url: "/work/ajax/remove_item/" + operation.id,
+        url: "<?=base_url()?>work/ajax/remove_item/" + operation.id,
         type: "POST",
         data: {
           id: operation.id,         

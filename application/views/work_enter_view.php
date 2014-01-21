@@ -182,7 +182,7 @@ $(document).ready(function(){
         },
         remote: {
           params: {
-            url: "<?=base_url() . 'ajax/search_part_by_serial'?>",
+            url: "<?=base_url()?>ajax/search_part_by_serial",
             type: "post",
             data: {
               "csrf_test_name": $.cookie("csrf_cookie_name")
@@ -223,7 +223,7 @@ $(document).ready(function(){
     var qty = (equipment.type == '1') ? 1 : parseInt(input, 10);
 
     $.ajax({
-      url: "/work/ajax/update_item/register",
+      url: "<?=base_url()?>work/ajax/update_item/register",
       type: "POST",
       async: false,
       data: {
@@ -272,7 +272,7 @@ $(document).ready(function(){
     // var qty = (equipment.type == '1') ? 1 : parseInt(input, 10);
 
     $.ajax({
-      url: "/work/ajax/update_item/reset",
+      url: "<?=base_url()?>work/ajax/update_item/reset",
       type: "POST",
       async: false,
       data: {
@@ -354,10 +354,10 @@ $(document).ready(function(){
 
     if(is_ok == true){
       $.ajax({
-        url: "/work/enter/ajax/request_ok",
+        url: "<?=base_url()?>work/enter/ajax/request_ok",
         type: "POST",
         data: {
-          id : <?=$work->id?>,
+          id : operation.id,
           "csrf_test_name": $.cookie("csrf_cookie_name")
         },
         dataType: "html",
@@ -385,10 +385,10 @@ $(document).ready(function(){
     }
 
     $.ajax({
-        url: "/work/enter/ajax/delivery",
+        url: "<?=base_url()?>work/enter/ajax/delivery",
         type: "POST",
         data: {
-          id : <?=$work->id?>,
+          id : operation.id,
           // items : items.toString(),
           "csrf_test_name": $.cookie("csrf_cookie_name")
         },

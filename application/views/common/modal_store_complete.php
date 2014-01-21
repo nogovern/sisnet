@@ -48,7 +48,7 @@ $(document).ready(function(){
     },
     submitHandler: function(form) {
       $.ajax({
-        url: "<?=site_url("/work/ajax/store_complete")?>",
+        url: "<?=base_url()?>work/ajax/store_complete",
         type: "POST",
         data: {
           id : operation.id,

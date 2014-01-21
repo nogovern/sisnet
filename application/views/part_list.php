@@ -58,7 +58,7 @@ endforeach;
         </table>
 
         <p>
-          <a href="/admin/part/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;장비 등록</span></a>
+          <a href="<?=base_url()?>admin/part/add"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;장비 등록</span></a>
         </p>
 
         </div>

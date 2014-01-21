@@ -144,9 +144,9 @@ $(document).ready(function(){
     var target_url = '';
 
     if(sm == '1') {
-      target_url = '/ajax/get_part_by_serial/' + encodeURIComponent(q);
+      target_url = "<?=base_url()?>ajax/get_part_by_serial/" + encodeURIComponent(q);
     } else if(sm == '2') {
-      target_url = '/ajax/search_part_by_previos_location/' + encodeURIComponent(q);
+      target_url = "<?=base_url()?>ajax/search_part_by_previos_location/" + encodeURIComponent(q);
     } else {
       alert('잘못된 검색 방법입니다.');
       return false;
@@ -186,7 +186,7 @@ $(document).ready(function(){
       $("#select_part").html('');
       return false;
     } else {
-      var target_url = "<?=site_url('ajax/get_model_list_for_delivery/')?>" + '/' + cat;
+      var target_url = "<?=base_url()?>ajax/get_model_list_for_delivery" + '/' + cat;
     }
 
     // ajax request
@@ -225,7 +225,7 @@ $(document).ready(function(){
 
     // 장비 정보 요청
     $.ajax({
-      url: "/util/part/get",
+      url: "<?=base_url()?>util/part/get",
       type: "POST",
       data: {
         "part_id": part_id,
@@ -265,7 +265,7 @@ $(document).ready(function(){
     }
 
     $.ajax({
-      url: "/work/ajax/add_item",
+      url: "<?=base_url()?>work/ajax/add_item",
       type: "POST",
       data: {
         "id": operation.id,         
@@ -304,7 +304,7 @@ $(document).ready(function(){
     }
 
     $.ajax({
-        url: "/work/ajax/remove_item",
+        url: "<?=base_url()?>work/ajax/remove_item",
         type: "POST",
         data: {
           id : operation.id,
