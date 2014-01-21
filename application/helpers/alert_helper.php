@@ -15,7 +15,7 @@ if (!function_exists('alert')) {
 		echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=".$CI->config->item('charset')."\">";
 		echo "<script type='text/javascript'>alert('".$msg."');";
 	    if ($url)
-	        echo "location.replace('".$url."');";
+	        echo "location.replace('".site_url($url)."');";
 		else
 			echo "history.go(-1);";
 		echo "</script>";
@@ -59,7 +59,6 @@ if (!function_exists('alert_colorbox_close')) {
 
         echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=".$CI->config->item('charset')."\">";
         echo "<script type='text/javascript'> alert('".$msg."'); parent.jQuery.fn.colorbox.close(); </script>";
-        exit;
         exit;
     }
 }
