@@ -56,8 +56,8 @@ define('GS2_LOCATION_TYPE_STORE', 	'S');			// 점포
 define('GS2_OP_TYPE_ENTER', 	100);		// 입고
 define('GS2_OP_TYPE_INSTALL', 	200);		// 설치
 define('GS2_OP_TYPE_INSTALL_1', 201);		// 설치 - 신규
-define('GS2_OP_TYPE_INSTALL_2', 202);		// 설치 - 휴점S
-define('GS2_OP_TYPE_INSTALL_3', 202);		// 설치 - 휴점C
+define('GS2_OP_TYPE_INSTALL_2', 202);		// 설치 - 개점S
+define('GS2_OP_TYPE_INSTALL_3', 202);		// 설치 - 개점C
 define('GS2_OP_TYPE_INSTALL_4', 203);		// 설치 - 리뉴얼
 
 define('GS2_OP_TYPE_CLOSE',		300);		// 철수
