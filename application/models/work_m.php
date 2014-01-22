@@ -217,7 +217,9 @@ class Work_m extends MY_Model {
 		return $op;
 	}
 
-	// 업무 메인 생성
+	///////////////
+	// 업무 메인 생성 
+	///////////////
 	public function addOperation($type, $post, $do_flush=FALSE) {
 		
 		// 새로운 업무 객체
@@ -307,7 +309,8 @@ class Work_m extends MY_Model {
 
 	// 업무-장비 목록 생성(필요시)
 	public function addItem($op, $data, $do_flush=FALSE) {
-		$part = $this->em->getReference('Entity\Part', $data['part_id']);
+		$this->load->model('part_m', 'part_model');
+		$part = $this->part_model->get($data['part_id']);
 
 		$item = new Entity\OperationPart;
 		$item->setOperation($op);
@@ -319,13 +322,11 @@ class Work_m extends MY_Model {
 		$item->setPartName($part->name);
 
 		// 시리얼넘버 장비일 경우
-		if($part->type == '1') {
-			if(isset($data['serial_number']) && !empty($data['serial_number'])) {
+		// 장비 찾아서 입력
+		if($part->type == '1' && isset($data['serial_number'])) {
+			if(!empty($data['serial_number'])) {
 				$item->setSerialNumber($data['serial_number']);
-			}
-
-			if(isset($data['serial_part_id']) && !empty($data['serial_part_id'])) {
-				$sp = $this->em->getReference('Entity\SerialPart', $data['serial_part_id']);
+				$sp = $this->part_model->getPartBySerialNumber($data['serial_number']);
 				$item->setSerialPart($sp);
 			}
 		}
@@ -433,71 +434,6 @@ class Work_m extends MY_Model {
 	}
 
 
-	/**
-	 * 작업 처리용 장비 임시 테이블
-	 * 임시테이블에 아이템 추가 
-	 * 
-	 * @param [type]  $op          Operation class
-	 * @param [type]  $part        Part class
-	 * @param [type]  $val       part type - 1:시리얼넘버, 2:수량
-	 * @param boolean $is_complete default FALSE;
-	 * @param boolean $is_scan     default FALSE;
-	 */
-	public function addTempItem($op, $part, $val, $is_scan = FALSE, $is_complete = FALSE) {
-		if(!($op instanceof Entity\Operation)){
-			die('첫번째 인자는 Operation Class 여야 함!!!');
-		}
-		
-		if(!($part instanceof Entity\Part)){
-			die('2번째 인자는 Part Class 여야 함!!!');
-		}
-
-		// 수량장비일 경우 $val 은 숫자 형식이어야 함!
-		if($part->type == 2 && !is_numeric($val)) {
-			return FALSE;
-		}
-
-		$temp = new Entity\OperationTempPart;
-		$temp->setOperation($op);
-		$temp->setPart($part);
-		$temp->setDateRegister();
-		$temp->setPartType($part->type);
-		$temp->setCompleteFlag($is_complete);
-
-		// 임시로
-		$loc = gs2_decode_location($op->getWorkLocation());
-		$user = $loc->user;
-		$temp->setuser($user);				// 처리 담당자
-		
-		if($part->type == 1){
-			$temp->setSerialNumber($val);
-		} else {
-			$temp->setQuantity($val);
-		}
-
-		$this->_add($temp);
-		$this->_commit();
-
-		return $temp;
-	}
-
-	/**
-	 * 임시테이블에서 장비 삭제
-	 * 
-	 * @param  class $item   OperationTempPart class
-	 * @return [type]       [description]
-	 */
-	public function removeTempItem($item) {
-		$this->em->remove($item);
-		$this->em->flush();
-	}
-
-	public function updateTempItem($item, $val, $is_scan = FALSE, $is_complete = FALSE) {
-		$item->setScanFlag($is_scan);
-		$item->setCompleteFlag($is_complete);
-
-	}
-
 	public function nextStatus($id) {
 		$op = $this->repo->find($id);
 		if(!$op) {
@@ -511,20 +447,40 @@ class Work_m extends MY_Model {
 		$this->updateOperation($id, $op_data);
 	}
 
-	// 장비 출고 
+	// 장비 출고 (설치)
 	public function deliveryItem($id) {
-		$op = $this->repo->find($id);
+		$op = $this->get($id);
 
-		$items = $op->getItemList();
+		$items = $op->getItems();
 		foreach($items as $item) {
-			$item->setQtyComplete($item->getQtyRequest());
+			$qty = $item->getQtyRequest();
+
+			// 설치 등록 장비 내용 변경
+			$item->setQtyComplete($qty);
 			$item->setCompleteFlag(TRUE);
 
 			$part = $this->em->getReference('Entity\Part', $item->part->id);
 			$stock = $part->getStock($op->office->id);
 
-			$qty = $item->getQtyRequest();
-			$stock->setQtyS200($stock->qty_s200 - $qty);
+			// 시리얼장비 내용 변경
+			if($item->part_type == '1') {
+				$sp = $item->serial_part;
+				if($sp) {
+					$sp->setValidFlag(FALSE);		// 유효 재고에서 빠짐
+					$sp->setPreviousLocation($item->prev_location);
+					$sp->setCurrentLocation($op->work_location);
+					$sp->setDateModify();
+					// 신품일떄 최초 설치일
+					if($item->isNew()) {
+						$sp->setDateInstall($op->getDateWork());
+					}
+
+					$this->em->persist($sp);
+				}
+			}
+
+			// 설치중 수량 제거 
+			$stock->decrease('s200', $qty);
 
 			$this->em->persist($stock);
 		}

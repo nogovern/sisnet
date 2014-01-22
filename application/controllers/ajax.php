@@ -114,7 +114,7 @@ class Ajax extends CI_Controller
 		$sn = urldecode($query);
 
 		$this->load->model('part_m', 'part_model');
-		$result = $this->part_model->existSerialNumber($sn);
+		$result = $this->part_model->getPartBySerialNumber($sn);
 
 		echo ($result) ? 'false' : 'true';
 	}
@@ -133,7 +133,7 @@ class Ajax extends CI_Controller
 		$sn = urldecode($sn);
 
 		$this->load->model('part_m', 'part_model');
-		$s_part = $this->part_model->existSerialNumber($sn);
+		$s_part = $this->part_model->getPartBySerialNumber($sn);
 
 		$result = new stdClass;
 		if(!$s_part) {

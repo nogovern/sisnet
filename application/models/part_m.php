@@ -58,17 +58,30 @@ class Part_m extends MY_Model
 	}
  	
  	/**
- 	 * 시리얼넘버가 존재하는지 검색
+ 	 * 시리얼넘버가 존재 여부
  	 * 
  	 * @param  string $sn  시리얼 넘버
  	 * @return boolean     시러얼넘버가 있으면 TRUE
  	 */
 	public function existSerialNumber($sn) {
+		$row = $this->getPartBySerialNumber($sn);
+		return ($row) ? TRUE : FALSE; 
+	}
+
+	/**
+	 * 시리얼넘버로 장비 찾기
+	 * 
+	 * @param  string 	$sn [description]
+	 * @return object or NULL     [description]
+	 */
+	public function getPartBySerialNumber($sn) {
 		$repo = $this->em->getRepository('Entity\SerialPart');
 		$row = $repo->findOneBy(array('serial_number' => $sn));
 
-		return ($row) ? $row : FALSE; 
+		return($row) ? $row : NULL;
 	}
+
+
 
 	/**
 	 * 시리얼관리장비 추가

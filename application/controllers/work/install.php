@@ -196,6 +196,9 @@ class Install extends CI_Controller
 			// 장비 출고 후 재고 반영
 			$this->work_model->deliveryItem($op->id);
 
+			// 점포 상태 변경
+			
+
 			// 실제 DB 반영
 			$this->work_model->_commit();
 			
