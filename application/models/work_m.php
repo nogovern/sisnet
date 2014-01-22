@@ -231,8 +231,9 @@ class Work_m extends MY_Model {
 		$new->setDateRequest($post['date_request']);
 		$new->setStatus('1');
 		$new->setMemo($post['memo']);
-		if(isset($post['date_work'])) {
-			$new->setDateWork($post['date_work']);
+		// 점포 개점일 or 폐점일
+		if(isset($post['date_store'])){
+			$new->setDateStore($post['date_store']);
 		}
 
 		// 요청자
@@ -275,6 +276,16 @@ class Work_m extends MY_Model {
 		// 작업 완료일
 		if(isset($data['date_finish'])) {
 			$op->setDateFinish($data['date_finish']);
+		}
+
+		// 작업(방문) 예정일 
+		if(isset($data['date_expect'])) {
+			$op->setDateExpect($data['date_expect']);
+		}
+
+		// 점포 개/폐점일 
+		if(isset($data['date_store'])) {
+			$op->setDateStore($data['date_store']);
 		}
 
 		// 상태 변경
@@ -493,7 +504,7 @@ class Work_m extends MY_Model {
 
 		$op->setWorker($worker);
 		$op->setOffice($office);
-		$op->setDateWork($data['date_work']);
+		$op->setDateExpect($data['date_expect']);
 		$op->setMemo($data['memo']);
 		$op->setDateModify();
 		$op->setStatus('2');

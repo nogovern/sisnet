@@ -53,12 +53,17 @@ $this->load->view('layout/navbar', array('current' => 'page-work-close'));
               </tr>
               <tr>
                 <td>폐점일 </td>
-                <td><?=$work->getDateWork();?></td>
+                <td><?=$work->getDateStore()?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
-                <td>작업요청일</td>
-                <td><?=$work->date_request->format("Y-m-d H:i:s");?></td>
+                <td>작업 요청일</td>
+                <td><?=$work->getDateRequest(TRUE);?></td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>방문 예정일</td>
+                <td><?=$work->getDateExpect()?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>

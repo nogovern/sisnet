@@ -32,7 +32,7 @@ class Ajax extends CI_Controller
 		$post = array(
 			'office_id'	=> $this->input->post('office_id'),
 			'worker_id'	=> $this->input->post('worker_id'),
-			'date_work'	=> $this->input->post('date_work'),
+			'date_expect'	=> $this->input->post('date_work'),	// 작업 예정일
 			'memo'		=> $this->input->post('memo')
 			);
 		

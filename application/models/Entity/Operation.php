@@ -205,9 +205,9 @@ class Operation
 		return ($this->date_finish) ? $this->date_finish->format($format) : '';
 	}
 
-	public function getDateExptect($long = FALSE) {
+	public function getDateExpect($long = FALSE) {
 		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
-		return ($this->date_exptect) ? $this->date_exptect->format($format) : '';
+		return ($this->date_expect) ? $this->date_expect->format($format) : '';
 	}
 
 	public function getDateStore($long = FALSE) {

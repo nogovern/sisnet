@@ -48,17 +48,22 @@ $_config= $this->config->item('gs2');
               </tr>
               <tr>
                 <td>등록일</td>
-                <td><?=$work->date_register->format("Y-m-d H:i:s")?></td>
+                <td><?=$work->getDateRegister()?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
                 <td>개점일 </td>
-                <td><?=$work->getDateWork();?></td>
+                <td><?=$work->getDateStore()?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
-                <td>작업요청일</td>
-                <td><?=$work->date_request->format("Y-m-d H:i:s");?></td>
+                <td>작업 요청일</td>
+                <td><?=$work->getDateRequest(TRUE);?></td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>방문 예정일</td>
+                <td><?=$work->getDateExpect()?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>

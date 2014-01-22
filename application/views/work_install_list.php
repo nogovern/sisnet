@@ -31,8 +31,8 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
                 <th>담당사무소</th>
                 <th>진행상태</th>
                 <th>등록일</th>
-                <th>요청일</th>
                 <th>개점일</th>
+                <th>요청일</th>
                 <th>예정일</th>
                 <th>완료일</th>
                 <th>메모</th>
@@ -54,7 +54,7 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
   ?>
               <tr class="">
                 <td><?=$row->id?></td>
-                <td><?=$row->type?></td>
+                <td><?=gs2_op_type($row->type)?></td>
                 <td><?=$row->store->name?></td>
                 <td><?=$row->user->name?></td>
                 <td><?=$row->office->name?></td>
@@ -62,9 +62,9 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
                   <span class="label <?=$label_color?>"><?=constant("GS2_OP_INSTALL_STATUS_" .$row->status)?></span>
                 </td>
                 <td><?=$row->getDateRegister();?></td>
+                <td><?=$row->getDateStore();?></td>
                 <td><?=$row->getDateRequest();?></td>
-                <td><?=$row->getDateModify();?></td>
-                <td><?=$row->getDateWork();?></td>
+                <td><?=$row->getDateExpect();?></td>
                 <td><?=$row->getDateFinish();?></td>
                 <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/install/view/') . '/' . $row->id ?>">보기</button></td>

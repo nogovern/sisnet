@@ -57,7 +57,7 @@ class Close extends CI_Controller
 			$this->load->view('work/work_close_add_form', $data);
 		} else {
 			$post = $this->input->post();
-			$post['date_work'] = $this->input->post('date_close');
+			$post['date_store'] = $this->input->post('date_close');
 			
 			$this->work_model->createCloseOperation($this->input->post('op_type'), $post);
 			alert('철수 요청을 등록하였습니다.', site_url('/work/close'));

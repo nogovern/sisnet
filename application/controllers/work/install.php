@@ -100,7 +100,7 @@ class Install extends CI_Controller
 		} else {
 			// var_dump($_POST);
 			$post = $this->input->post();
-			$post['date_work'] = $this->input->post('date_open');
+			$post['date_store'] = $this->input->post('date_open');
 			
 			$this->work_model->createInstallOperation($this->input->post('op_type'), $post);
 			alert('설치 요청을 등록하였습니다.', site_url('/work/install'));
