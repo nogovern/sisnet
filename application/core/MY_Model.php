@@ -99,13 +99,13 @@ class MY_Model extends CI_Model {
 	 * @param  integer $offset [description]
 	 * @return [type]          [description]
 	 */
-	public function getList($order_by = array(), $limit = 30, $offset = 0) {
+	public function getList($order_by = array(), $limit = 20, $offset = 0) {
 		if(!count($order_by)){
 			$order_by = array('id' => 'desc');
 		}
 
-		$reop = $this->em->getRepository($this->getEntityName()); 
-		return $reop->findBy(array(), $order_by, $limit, $offset);
+		$repo = $this->em->getRepository($this->getEntityName()); 
+		return $repo->findBy(array(), $order_by, $limit, $offset);
 	}
 
 	// 기본 리스트 형식 2
@@ -114,8 +114,8 @@ class MY_Model extends CI_Model {
 			$order_by = array('id' => 'desc');
 		}
 
-		$reop = $this->em->getRepository($this->getEntityName()); 
-		return $reop->findBy($criteria, $order_by, $limit, $offset);
+		$repo = $this->em->getRepository($this->getEntityName()); 
+		return $repo->findBy($criteria, $order_by, $limit, $offset);
 	}
 
 	// 검색

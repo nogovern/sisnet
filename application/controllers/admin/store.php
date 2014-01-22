@@ -20,13 +20,13 @@ class Store extends CI_Controller {
 		$this->lists();
 	}
 
-	public function lists() {
+	public function lists($page = 1) {
 
 		$data['title'] = '점포 리스트';
 		$data['current'] = 'page-admin-store';
 
 		$per_page = 20;
-		$page = (isset($_GET['page'])) ? $this->input->get('page') : 1;
+		$page = (isset($_GET['page'])) ? $this->input->get('page') : $page;
 		$offset = ($page - 1) * $per_page;
 
 		$rows = $this->store_model->getList(array(), $per_page, $offset);
@@ -36,65 +36,22 @@ class Store extends CI_Controller {
 		// pagination
 		// ===========
 		$this->load->library('pagination');
-		if(0){
-			$config = array(
-				'base_url' 		=> base_url() . 'admin/store/lists/',
-				'total_rows'	=> $total,
-				'per_page'		=> $per_page,
-				'num_links'		=> 5,
-				'use_page_numbers'	=> TRUE,
-				'page_query_string'	=> FALSE,
-			);
+		
+		$config = array(
+			'base_url' 		=> base_url() . 'admin/store/lists/',
+			'total_rows'	=> $total,
+			'use_page_numbers'	=> TRUE,
+		);
 
-			$config['uri_segment'] = 4;
-			// if (count($_GET) > 0) $config['suffix'] = http_build_query($_GET, '', "&");
-			// $config['prefix']	= '?page=';
-			// $config['cur_page'] 	= $page;	
-			$config['query_string_segment'] = 'page';
-		} else {
-			$config = array(
-				'base_url' 		=> base_url() . 'admin/store/lists/',
-				'total_rows'	=> $total,
-				'use_page_numbers'	=> TRUE,
-			);
-
-			$config['per_page'] = 20;
-			$config['uri_segment'] = 4;
-			$config['num_links'] = 5;
-			// $config['page_query_string'] = TRUE;
-			 
-			$config['query_string_segment'] = 'page';
-			 
-			$config['full_tag_open'] = '<ul class="pagination pagination-sm pagination">';
-			$config['full_tag_close'] = '</ul><!--pagination-->';
-			 
-			$config['first_link'] = '&laquo; First';
-			$config['first_tag_open'] = '<li class="prev page">';
-			$config['first_tag_close'] = '</li>';
-			 
-			$config['last_link'] = 'Last &raquo;';
-			$config['last_tag_open'] = '<li class="next page">';
-			$config['last_tag_close'] = '</li>';
-			 
-			$config['next_link'] = 'Next &rarr;';
-			$config['next_tag_open'] = '<li class="next page">';
-			$config['next_tag_close'] = '</li>';
-			 
-			$config['prev_link'] = '&larr; Previous';
-			$config['prev_tag_open'] = '<li class="prev page">';
-			$config['prev_tag_close'] = '</li>';
-			 
-			$config['cur_tag_open'] = '<li class="active"><a href="">';
-			$config['cur_tag_close'] = '</a></li>';
-			 
-			$config['num_tag_open'] = '<li class="page">';
-			$config['num_tag_close'] = '</li>';
-			 
-			$config['anchor_class'] = 'class="follow_link"';
-		}
+		$config['per_page'] = 20;
+		$config['uri_segment'] = 4;
+		$config['num_links'] = 5;
+		// $config['page_query_string'] = TRUE;
+		$config['query_string_segment'] = 'page';
+		
 
 		$this->pagination->initialize($config);
-		$this->pagination->cur_page = $page;
+		// $this->pagination->cur_page = $page;
 		$data['pagination'] = $this->pagination->create_links();
 
 		$data['rows'] = $rows;
