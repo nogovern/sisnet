@@ -25,7 +25,7 @@ endforeach;
 ?>          
         </ul>
           
-        <table class="table table-responsive table-hover " id="stock_list">
+        <table class="table table-condensed table-hover " id="stock_list">
           <thead>
             <tr>
               <th rowspan="2">No</th>

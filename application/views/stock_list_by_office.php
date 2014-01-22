@@ -25,7 +25,7 @@ endforeach;
 ?>          
         </ul>
           
-        <table class="table table-responsive table-hover " id="stock_list">
+        <table class="table table-condensed table-hover " id="stock_list">
           <caption style="text-align: right;">등록 장비수 : <?=count($rows)?></caption>
           <thead>
             <tr>
