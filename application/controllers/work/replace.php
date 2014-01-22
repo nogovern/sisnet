@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* 	상태변경 컨트롤러
+* 	교체 컨트롤러
 */
-class Change extends CI_Controller
+class Replace extends CI_Controller
 {
 	
 	public function __construct()
@@ -18,18 +18,23 @@ class Change extends CI_Controller
 	}
 
 	public function lists() {
-		$data['title'] = '장비 상태변경 업무';
-		$data['current'] = 'page-changer';
+		$data['title'] = '교체 업무';
+		$data['current'] = 'page-replace';
 
 		$data['status'] = '';
-		$data['rows'] = $this->work_model->getChangeList();
+		$data['rows'] = $this->work_model->getReplaceList();
 		
-		$this->load->view('work/work_change_list', $data);
+		$this->load->view('work/work_replace_list', $data);
 	}
 
 	public function register() {
 		echo '작업중';
 	}
+
+	public function view() {
+		echo '작업중';
+	}
+
 
 
 }
