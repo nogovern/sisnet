@@ -62,11 +62,20 @@ class Operation
 	/** @Column(type="datetime") */
 	protected $date_finish;		// 작업완료일시
 
+	/** @Column(type="datetime") */
+	protected $date_expect;		// 작업예정일시
+
+	/** @Column(type="datetime") */
+	protected $date_store;		// 점포 계점일 or 폐점일
+
 	/** @Column(type="string", length=255) */
 	protected $memo;
 
 	/** @Column(type="string", length=1) */
-	protected $status;
+	protected $status = '1';
+
+	/** @Column(type="string", length=1) */
+	protected $is_complete = 'N'; 
 
 	/**
 	 * @OneToMany(targetEntity="OperationPart", mappedBy="operation")
@@ -136,12 +145,28 @@ class Operation
 			$this->date_finish = new \DateTime($date);
 	}
 
+	// 방문(작업) 예정일시
+	public function setDateExpect($date = 'now') {
+		if(!empty($date))
+			$this->date_expect = new \DateTime($date);
+	}
+
+	// 점포 걔폐점일
+	public function setDateStore($date = 'now') {
+		if(!empty($date))
+			$this->date_store = new \DateTime($date);
+	}
+
 	public function setMemo($memo) {
 		$this->memo = $memo;
 	}
 
 	public function setStatus($status) {
 		$this->status = $status;
+	}
+
+	public function setCompleteFlag($value=FALSE) {
+		$this->is_complete = ($value) ? 'Y' : 'N';
 	}
 
 	// ---------- get -------------
@@ -178,6 +203,16 @@ class Operation
 	public function getDateFinish($long = FALSE) {
 		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
 		return ($this->date_finish) ? $this->date_finish->format($format) : '';
+	}
+
+	public function getDateExptect($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_exptect) ? $this->date_exptect->format($format) : '';
+	}
+
+	public function getDateStore($long = FALSE) {
+		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
+		return ($this->date_store) ? $this->date_store->format($format) : '';
 	}
 
 	public function getWorkLocation() {
