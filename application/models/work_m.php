@@ -48,6 +48,35 @@ class Work_m extends MY_Model {
 	}
 
 	/**
+	 * [공통] 업무 목록 
+	 * 
+	 * @param  string $type 100/200/300 ...
+	 * @return [type]       [description]
+	 */
+	protected function _getOpList($type) {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('\Entity\Operation', 'w')
+			->where('w.type >= :type')
+			->andWhere('w.type < :type2')
+			->orderBy('w.id', 'DESC');
+
+		$qb->setParameter('type', $type);
+		$qb->setParameter('type2', $type+100);
+
+		$rows = $qb->getQuery()->getResult();
+
+		// need refactoring
+		// -- 기능의 최소화
+		// -- 여기서 하는것 보다 컨드롤 에서 하는게 나을 듯...
+		foreach($rows as $row) {
+			$row->store = ($row->work_location) ? gs2_decode_location($row->work_location) : '';
+		}
+		
+		return $rows;
+	}
+
+	/**
 	 * 입고 목록
 	 * 
 	 * @return [type] [description]
@@ -61,11 +90,6 @@ class Work_m extends MY_Model {
 			->orderBy('w.id', 'DESC');
 
 		$rows = $qb->getQuery()->getResult();
-
-		// 입고 업무의 작업 장소는 "납품처"
-		foreach($rows as $row) {
-			$row->store = gs2_decode_location($row->work_location);
-		}
 
 		return $rows;
 	}
@@ -112,18 +136,12 @@ class Work_m extends MY_Model {
 
 	// 상태변경 업무 목록
 	public function getChangeList() {
-		$qb = $this->em->createQueryBuilder();
-		$qb->select('w')
-			->from('\Entity\Operation', 'w')
-			->where('w.type >= 900')
-			->orderBy('w.id', 'DESC');
+		return $this->_getOpList(900);
+	}
 
-		$rows = $qb->getQuery()->getResult();
-
-		foreach($rows as $row) {
-			$row->office = gs2_decode_location($row->office_location);
-		}
-		return $rows;
+	// 교체 업무 목록
+	public function getReplaceList() {
+		return $this->_getOpList(400);
 	}
 
 	///////////////
