@@ -139,9 +139,18 @@ class Ajax extends CI_Controller
 		if(!$s_part) {
 			$error_msg = '해당 시리얼 넘버의 장비가 없습니다.';
 		} else {
+			$prev_location = gs2_decode_location($s_part->previous_location);
+			if($prev_location) {
+				$prev_location = $prev_location->name;
+			}
+
 			$info = array(
-				'category_id'=> $s_part->part->category->id,
-				'part_id'	=> $s_part->part->id,
+				'spart_id'		=> $s_part->id,			// gs2_part_serial.id
+				'category_id'	=> $s_part->part->category->id,
+				'part_id'		=> $s_part->part->id,
+				'serial_number'	=> $s_part->serial_number,
+				'prev_location' => $prev_location,
+				'is_new'		=> $s_part->is_new,
 			);
 		}
 

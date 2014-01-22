@@ -69,7 +69,7 @@ class Install extends CI_Controller
 		$this->load->model('category_m', 'category_model');
 		$cats = $this->category_model->getSubCategories(1);
 		$cats = gs2_convert_for_dropdown($cats);
-		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
+		$data['select_category'] = form_dropdown('select_category', $cats, 0, 'id="select_category" class="form-control"');
 
 		$this->load->view('work_install_view', $data);
 	}

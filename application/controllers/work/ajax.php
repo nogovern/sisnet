@@ -198,6 +198,7 @@ class Ajax extends CI_Controller
 	public function complete() {
 		$id = $this->input->post('id');
 
+		echo '작업 완료 작업중';
 	}
 
 	// 승인 
