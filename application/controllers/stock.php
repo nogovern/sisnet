@@ -19,59 +19,45 @@ class Stock extends CI_Controller
 		}
 	}
 
-	public function index() {
-		$this->lists();
+	public function index($arg=NULL) {
+		$this->lists($arg);
 	}
 
 	// 전체 장비 재고 리스트
-	public function lists($id = '') {
+	public function lists($office_id = NULL) {
 
-		$data['title'] = '재고 현황';
-		$data['this_office']  = NULL;
+		if(is_null($office_id)) {
+			$office_id = $this->session->userdata('office_id');		// 유저 소속 사무소
+		}
+
+		// 세션에 office_id 가 없는 경우
+		if(!$office_id) {
+			$office_id = 'all';
+		}
+		
+		$data['title'] = '전체 재고 현황';
+		$data['current'] = 'page-stock';
+		$data['this_office'] = $office_id;
 		
 		$this->load->model('office_m', 'office_model');
 		$data['office_list'] = $this->office_model->getList();
 		
-		// 창고별 재고 를 볼경우
-		if($id && is_numeric($id)) {
-			$office = $this->office_model->get($id);
-			$stocks = $office->getStockList();
-			$parts = array();
-			foreach( $stocks as $stock) {
-				$parts[] = $stock->part;
-			}
-			
-			$data['this_office'] = $office;
-			$data['rows'] = $parts;
-		} else {
+		// 전체 재고		
+		if($office_id == 'all') {
 			$em = $this->stock_model->getEntityManager();
 			$data['rows'] = $em->getRepository('Entity\Part')->findAll();
+
+			$this->load->view('stock_list', $data);
+		} 
+		// 사무소별 장비 재고
+		else {
+			$office = $this->office_model->get($office_id);
+			$data['rows'] = $office->getStockList();
+
+			$this->load->view('stock_list_by_office', $data);
 		}
 
-		$this->load->view('stock_list', $data);
 	}
-
-	// 사무소별 장비 재고 리스트
-	public function listByOffice($id = '') {
-
-		$data['title'] = '재고 현황';
-		$data['current'] = 'page-stock';
-		$data['this_office']  = NULL;
-		
-		$this->load->model('office_m', 'office_model');
-		
-		// 창고별 재고 를 볼경우
-		if($id && is_numeric($id)) {
-			$office = $this->office_model->get($id);
-		}
-
-		$data['office_list'] = $this->office_model->getList();
-		$data['this_office'] = $office;
-		$data['rows'] = $office->getStockList();
-
-		$this->load->view('stock_list_by_office', $data);
-	}
-
 
 	public function add() {
 		//////////
