@@ -15,7 +15,7 @@ if (!function_exists('alert')) {
 		echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=".$CI->config->item('charset')."\">";
 		echo "<script type='text/javascript'>alert('".$msg."');";
 	    if ($url)
-	        echo "location.replace('".site_url($url)."');";
+	        echo "location.replace('".$url."');";
 		else
 			echo "history.go(-1);";
 		echo "</script>";
