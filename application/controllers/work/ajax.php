@@ -27,6 +27,7 @@ class Ajax extends CI_Controller
 	// 요청 확정
 	public function accept_request() {
 		$id = $this->input->post('id');
+		$op = $this->work_model->get($id);
 
 		$post = array(
 			'office_id'	=> $this->input->post('office_id'),
@@ -35,7 +36,7 @@ class Ajax extends CI_Controller
 			'memo'		=> $this->input->post('memo')
 			);
 		
-		$op = $this->work_model->acceptRequest($id, $post);
+		$this->work_model->acceptRequest($op, $post);
 		echo 'success';
 	}
 
@@ -157,6 +158,7 @@ class Ajax extends CI_Controller
 	// 작업자 메모
 	public function write_memo() {
 		$id = $this->input->post('id');
+		$op = $this->work_model->get($id);
 		
 		$post = array(
 			'user_id'	=> $this->session->userdata('user_id'),			// 로그인 한 유저
@@ -164,7 +166,7 @@ class Ajax extends CI_Controller
 			'type'		=> '2',
 		);
 
-		$this->work_model->addLog($id, $post, TRUE);
+		$this->work_model->addLog($op, $post, TRUE);
 
 		echo '메모를 저장하였습니다';
 	}
@@ -172,6 +174,7 @@ class Ajax extends CI_Controller
 	// 점포 완료
 	public function store_complete() {
 		$id = $this->input->post('id');
+		$op = $this->work_model->get($id);
 		
 		// 업무 log 생성
 		$log_data = array(
@@ -181,7 +184,7 @@ class Ajax extends CI_Controller
 			'type' 			=> '1',
 			'next_status' 	=> '3',
 		);
-		$this->work_model->addLog($id, $log_data);
+		$this->work_model->addLog($op, $log_data);
 
 		$op_data = array(
 			'status'		=> '3',
@@ -189,7 +192,7 @@ class Ajax extends CI_Controller
 		);
 
 		// 3번째 인자를 TRUE 로 하여 flush 실행
-		$this->work_model->updateOperation($id, $op_data, TRUE);
+		$this->work_model->updateOperation($op, $op_data, TRUE);
 
 		echo '점포 작업 완료 로 변경하였음';
 	}

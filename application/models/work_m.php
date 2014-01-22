@@ -187,7 +187,7 @@ class Work_m extends MY_Model {
 			'next_status' => '1',
 			);
 
-		$this->addLog($op->id, $log_data);
+		$this->addLog($op, $log_data);
 
 		/////////////////
 		// 한번에 flush
@@ -261,9 +261,7 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무 메인 수정
-	public function updateOperation($id, $data, $do_flush = FALSE) {
-		$op = $this->repo->find($id);
-
+	public function updateOperation($op, $data, $do_flush = FALSE) {
 		// 요청일 
 		if(isset($data['date_request'])) {
 			$op->setDateRequest($data['date_request']);
@@ -398,19 +396,17 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무-파일 생성(필요시)
-	public function addFile($id, $data) {
+	public function addFile($op, $data) {
 
 	}
 
 	// 업무-메모 생성
-	public function addMemo($id, $data) {
+	public function addMemo($op, $data) {
 
 	}
 	
-
 	// 업무-로그 생성
-	public function addLog($id, $data, $do_flush = FALSE) {
-		$op = $this->repo->find($id);
+	public function addLog($op, $data, $do_flush = FALSE) {
 		if(!$op){	
 			die("에러! operation 객체를 얻을 수 없음");
 		}
@@ -434,22 +430,20 @@ class Work_m extends MY_Model {
 	}
 
 
-	public function nextStatus($id) {
-		$op = $this->repo->find($id);
+	public function nextStatus($op) {
 		if(!$op) {
-			die("에러! operation 객체를 얻을 수 없음");
+			die("에러! operation 객체가  없음");
 		}
 
 		$op_data = array(
 			'status' => $op->getStatus() + 1,
 			);
 
-		$this->updateOperation($id, $op_data);
+		$this->updateOperation($op, $op_data);
 	}
 
 	// 장비 출고 (설치)
-	public function deliveryItem($id) {
-		$op = $this->get($id);
+	public function deliveryItem($op) {
 
 		$items = $op->getItems();
 		foreach($items as $item) {
@@ -493,9 +487,7 @@ class Work_m extends MY_Model {
 	 * @param  array  $data 	[description]
 	 * @return object       	Operation Entity Object
 	 */
-	public function acceptRequest($id, $data = array()) {
-		$op = $this->repo->find($id);
-
+	public function acceptRequest($op, $data = array()) {
 		$worker = $this->em->getReference('Entity\User', $data['worker_id']);
 		$office = $this->em->getReference('Entity\Office', $data['office_id']);
 
@@ -508,8 +500,6 @@ class Work_m extends MY_Model {
 
 		$this->em->persist($op);
 		$this->em->flush();
-
-		return $op;
 	}	
 }
 

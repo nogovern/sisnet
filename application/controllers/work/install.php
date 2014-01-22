@@ -164,7 +164,7 @@ class Install extends CI_Controller
 				'next_status' => '3',
 				);
 
-			$this->work_model->addLog($op->id, $log_data);
+			$this->work_model->addLog($op, $log_data);
 
 			// 업무 상태 변경 (메소드로 통일 하자);
 			$op->setStatus('3');
@@ -188,13 +188,13 @@ class Install extends CI_Controller
 				'type' => '1',
 				'next_status' => '4',
 				);
-			$this->work_model->addLog($op->id, $log_data);
+			$this->work_model->addLog($op, $log_data);
 
 			// 업무 상태 변경
-			$this->work_model->nextStatus($op->id);
+			$this->work_model->nextStatus($op);
 			
 			// 장비 출고 후 재고 반영
-			$this->work_model->deliveryItem($op->id);
+			$this->work_model->deliveryItem($op);
 
 			// 점포 상태 변경
 			
