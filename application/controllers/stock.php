@@ -45,14 +45,16 @@ class Stock extends CI_Controller
 		// 전체 재고		
 		if($office_id == 'all') {
 			$em = $this->stock_model->getEntityManager();
-			$data['rows'] = $em->getRepository('Entity\Part')->findAll();
+			$data['rows'] = $em->getRepository('Entity\Part')->findAll();		// part Entity
 
 			$this->load->view('stock_list', $data);
 		} 
 		// 사무소별 장비 재고
 		else {
 			$office = $this->office_model->get($office_id);
-			$data['rows'] = $office->getStockList();
+
+			$rows = $office->getStockList();				// stock Entity
+			$data['rows'] = $rows;
 
 			$this->load->view('stock_list_by_office', $data);
 		}
