@@ -208,12 +208,12 @@ if($work->status == 2):
           <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
           <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
           <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete" <?=($item_count==0) ? 'disabled' : '' ?> >점포 완료</button>
+          <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
 <?php
 endif;
 
 if($work->status == 3):
 ?>
-          <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
           <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
           <button id="btn_complete" class="btn btn-success" type="button" disabled>설치 완료</button>
 <?php
