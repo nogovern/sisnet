@@ -152,6 +152,14 @@ if(!function_exists('gs2_category_parts')) {
         return $categories;
     }
 }
+
+// 재고 표시 변환 0 => "-" 로 변경
+if(!function_exists('gs2_zero_to_dash')) {
+    function gs2_zero_to_dash($num) {
+        return ($num == 0) ? '-' : $num;
+    }
+}
+
  
 
 
