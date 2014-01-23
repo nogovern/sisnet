@@ -49,8 +49,12 @@ class Part_m extends MY_Model
 		// DQL 안에서 "" 쓰면 안된다. '' 를 써야함
 		// ouble quotation marks ”...” define a terminal string a vertical bar | represents an alternative
 		// 
+
+		$dql = "SELECT sp FROM Entity\SerialPart sp WHERE sp.replace_part IS NULL";
+		// $dql = "SELECT sp FROM Entity\SerialPart sp WHERE sp.is_valid = \'Y\' AND sp.replace_part IS NULL";
+
 		$qb = $this->em->createQueryBuilder();
-		$query = $this->em->createQuery('SELECT sp FROM Entity\SerialPart sp WHERE sp.is_valid = \'Y\' AND sp.replace_part IS NULL ');
+		$query = $this->em->createQuery($dql);
 		$rows = $query->getResult();
 		
 		return $rows;

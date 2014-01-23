@@ -101,7 +101,7 @@ class Part extends CI_Controller {
 	public function serial() {
 		$rows = $this->part_model->getSerialPartList();
 		
-		$data['title'] = '---- 리스트 -------';
+		$data['title'] = '관리자 >> 시리얼장비 >> 목록';
 		$data['rows'] =& $rows;
 
 		$this->load->view('part_serial_list', $data);
@@ -111,7 +111,7 @@ class Part extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$data['title'] = "시리얼관리장비 등록";
+		$data['title'] = "관리자 >> 시리얼장비 >> 신규등록";
 
 		//================ refactoring needed ===================
 		// 장비 카테고리 와 배열로 변경

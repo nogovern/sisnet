@@ -14,21 +14,20 @@ $this->view('layout/navbar');
   <div class="row">
     <div class="col-md-12">
       
-    <table class="table table-hover">
+    <table class="table table-hover table-condensed">
       <thead>
         <tr>
           <th>No</th>
-          <th>시리얼넘버</th>
           <th>장비종류</th>
           <th>모델명</th>
+          <th>시리얼넘버</th>
           <th>제조사명</th>
-          <th>현재위치</th>
           <th>직전위치</th>
+          <th>현재위치</th>
           <th>신품</th>
           <th>상태</th>
           <th>최초설치일</th>
           <th>입고일</th>
-          <th>수정일</th>
           <th>메모</th>
         </tr>
       </thead>
@@ -36,30 +35,38 @@ $this->view('layout/navbar');
       <tbody>
 <?php
 foreach($rows as $row):
+  // row 색 지정
+  switch($row->is_valid) {
+    case 'Y':
+      $tr_class = '';
+      break;
+    case 'N':
+    default:
+      $tr_class = 'danger';
+  }
 ?>
-        <tr class="">
+        <tr class="<?=$tr_class?>">
           <td><?=$row->id?></td>
-          <td><?=$row->getSerialNumber()?></td>
           <td><?=$row->part->category->name?></td>
           <td><?=$row->part->name?></td>
+          <td><?=$row->getSerialNumber()?></td>
           <td><?=$row->part->manufacturer?></td>
-          <td>
-            <?php
-              if(gs2_decode_location($row->current_location))
-                echo gs2_decode_location($row->current_location)->name;
-            ?>
-          </td>
           <td>
             <?php
               if(gs2_decode_location($row->previous_location))
                 echo gs2_decode_location($row->previous_location)->name;
             ?>
           </td>
+          <td>
+            <?php
+              if(gs2_decode_location($row->current_location))
+                echo gs2_decode_location($row->current_location)->name;
+            ?>
+          </td>
           <td><?=$row->isNew() ? '신품' : '중고'?></td>
           <td><?=$row->status?></td>
           <td><?=$row->getDateInstall()?></td>
           <td><?=$row->getDateEnter()?></td>
-          <td><?=$row->getDateModify()?></td>
           <td><?=$row->memo?></td>
         </tr>
 <?php
@@ -77,7 +84,6 @@ endforeach;
     </div>
   </div>
 </div><!-- end of container -->
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -43,6 +43,7 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
             <tbody>
   <?php
   foreach($rows as $row):
+    // 상태 색
     switch($row->status) {
       case '1': $label_color = 'label-default';break;
       case '2': $label_color = 'label-info';break;
@@ -51,8 +52,10 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
       default : $label_color = 'label-default';break;
     }
 
+    // row 색 지정
+    $tr_class = ''
   ?>
-              <tr class="">
+              <tr class="<?=$tr_class?>">
                 <td><?=$row->id?></td>
                 <td><?=gs2_op_type($row->type)?></td>
                 <td><?=$row->store->name?></td>
