@@ -1,6 +1,6 @@
 <?php
-$this->load->view('layout/header', array('title' => '철수 >> 철수 요청 양식'));
-$this->load->view('layout/navbar', array('current' => 'page-work-install'));
+$this->view('layout/header');
+$this->view('layout/navbar');
 ?>
 
     <!-- start of div.container -->
@@ -292,5 +292,5 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 </script>
 
 <?php
-$this->load->view('layout/footer');
+$this->view('layout/footer');
 ?>

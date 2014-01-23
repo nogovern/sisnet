@@ -24,10 +24,11 @@ class Close extends CI_Controller
 	}
 
 	public function lists() {
-		$data['title'] = '철수업무';
+		$data['title'] = '철수 >> 업무 목록';
+		$data['current'] = 'page-close';
 		$data['type'] = '';
-		$data['rows'] = $this->work_model->getCloseList();
 		
+		$data['rows'] = $this->work_model->getCloseList();
 		$this->load->view('work/work_close_list', $data);
 	}
 
@@ -36,7 +37,11 @@ class Close extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->helper('form');
 
-		$data['title'] = '철수업무';
+		$data['title'] = '철수 >> 요청서 작성';
+		$data['current'] = 'page-close';
+
+		// 테스트용 -- 추후 삭제
+		// 등록 유저는 세션 정보 사용하면 됨 
 		$data['user_id'] = $this->session->userdata('user_id');
 
 		// 규칙 설정

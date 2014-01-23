@@ -1,6 +1,6 @@
 <?php
-$this->load->view('layout/header', array('title' => '철수 >> 철수 리스트'));
-$this->load->view('layout/navbar', array('current' => 'page-close'));
+$this->view('layout/header');
+$this->view('layout/navbar');
 ?>
     <!-- start of div.container -->
     <div class="container">
@@ -116,5 +116,5 @@ $this->load->view('layout/navbar', array('current' => 'page-close'));
     </script>
 
 <?php
-$this->load->view('layout/footer');
+$this->view('layout/footer');
 ?>
