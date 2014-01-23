@@ -80,13 +80,6 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
               </div>
 
               <div class="form-group">
-                <label class="control-label col-sm-3">메  모</label>
-                <div class="col-sm-9">
-                  <textarea class="form-control" name="memo"></textarea>
-                </div>
-              </div>
-
-              <div class="form-group">
                 <label class="control-label col-sm-3">파일 첨부</label>
                 <div class="col-sm-9">
                   <input type="file" class="form-control" name="file1"></input>
@@ -94,6 +87,14 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
                   <input type="file" class="form-control" name="file3"></input>
                 </div>
               </div>
+              
+              <div class="form-group">
+                <label class="control-label col-sm-3">메  모</label>
+                <div class="col-sm-9">
+                  <textarea class="form-control" name="memo" rows="7"></textarea>
+                </div>
+              </div>
+
             </fieldset>
 
             <div class="col-sm-5" style="padding-top:30px;">
