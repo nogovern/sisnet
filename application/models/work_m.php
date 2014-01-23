@@ -23,18 +23,40 @@ class Work_m extends MY_Model {
 		$this->operation = $this->repo->find($operation_id);
 	}
 
-	public function getByName($value) {
-		return $repo->findBy(array('name' => $value));
+	// 가장 최근 생성된 업무번호
+	public function getMaxOperationNumber() {
+		// $dql = "select substr(max(op.operation_number),3,8) from Entity\Operation op";
+		$dql = "SELECT max(op.operation_number) FROM Entity\Operation op";
+		$query = $this->em->createQuery($dql);
+
+		return $query->getSingleScalarResult();
 	}
 
-	// 작업번호 생성
-	private function makeOperationNumber() {
+	/**
+	 * 업무번호 생성
+	 * 
+	 * @return string  형식은 "ON" + "YYYYMMDD" + "00001"
+	 */
+	public function makeOperationNumber() {
 		$prefix = 'ON';
 
-		$idx = mt_rand(1, 9999);
-		$no = $prefix . date('Ymd') . sprintf("%05d", $idx);
+		$max = $this->getMaxOperationNumber();
 
-		return $no;
+		$today = new DateTime();
+		$d1 = $today->format('Ymd');		// 오늘 날짜
+
+		$d2 = substr($max, 2, 8);			// 작업번호 날짜
+
+		if(!strcmp($d1, $d2)) {
+			$number = intval(substr($max, 10,5)) + 1;
+		} else {
+			$number = 1;
+		}
+
+		// 새로운 업무 번호
+		$new = sprintf('%s%s%05d', $prefix, $d1, $number);
+
+		return $new;
 	}
 
 	/**
