@@ -60,14 +60,58 @@ class Stock
 	/** @Column(type="integer") */
 	protected $qty_s900 = 0;
 
-	/**
-	 * 매직 메소드 (테스트용)
-	 */
+	// ================== setter ===================
+	
+	// 매직 메소드 (테스트용)
 	public function __get($key) {
 		if(strstr($key, "qty_"))
 			return $this->$key ? $this->$key : 0;
 		return $this->$key;
 	}
+	
+	/**
+	 * s100 업무상태의 수량 가져오기
+	 * 
+	 * @param  boolean $alias if TRUE, - 표시로 반환함
+	 * @return integer         [description]
+	 */
+	public function getQtyS100() {
+		return $this->qty_s100;
+	}
+
+	public function getQtyS200() {
+		return $this->qty_s200;
+	}
+
+	public function getQtyS500() {
+		return $this->qty_s500;
+	}
+
+	public function getQtyS600() {
+		return $this->qty_s600;
+	}
+
+	public function getQtyS900() {
+		return $this->qty_s900;
+	}
+
+	// 신품
+	public function getQtyNew() {
+		return $this->qty_new;
+	}
+
+	// 중고 가용
+	public function getQtyUsed() {
+		return $this->qty_used;
+	}
+
+	// 중고 비가용 수량 가져오기
+	public function getQtyDisabled() {
+		$sum = ($this->qty_s200 + $this->qty_s500 + $this->qty_s600 + $this->qty_s900); 
+		return $sum;
+	}
+
+	// ================== setter ===================
 
 	public function setOffice($instance = NULL) {
 		if($instance){
@@ -93,13 +137,13 @@ class Stock
 		$this->qty_minimum = $qty;
 	}
 
-	// 신품 수량  
+	// 신품 수량  설정
 	public function setQtyNew($qty) {
 		$this->qty_new = $qty;
 
 	}
 
-	// 중고 수량  
+	// 중고 수량  설정
 	public function setQtyUsed($qty) {
 		$this->qty_used = $qty;
 	}

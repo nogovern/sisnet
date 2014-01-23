@@ -47,11 +47,11 @@ endforeach;
                     <td class="col-xs-1">기준</td>
                     <td class="col-xs-1">신품</td>
                     <td class="col-xs-1">중고</td>
-                    <td class="col-xs-1" style="background-color: #CCC;">발주</td>
                     <td class="col-xs-1" style="background-color: #CCC;">설치</td>
                     <td class="col-xs-1" style="background-color: #CCC;">점검</td>
                     <td class="col-xs-1" style="background-color: #CCC;">수리</td>
                     <td class="col-xs-1" style="background-color: #CCC;">페기</td>
+                    <td class="col-xs-1" style="background-color: #CCC;">발주</td>
                     <td class="col-xs-2">기능</td>
                   </tbody>
                 </table>
@@ -92,13 +92,13 @@ if(count($row->getStockList())):
     <tr class="default">
       <td class="col-xs-2"><?=$stock->office->name?></td>
       <td class="col-xs-1 active"><?=$stock->qty_minimum?></td>
-      <td class="col-xs-1"><?=number_format($stock->qty_new)?></td>
-      <td class="col-xs-1"><?=number_format($stock->qty_used)?></td>
-      <td class="col-xs-1"><b><?=$stock->qty_s100?></b></td>
-      <td class="col-xs-1"><?=$stock->qty_s200?></td>
-      <td class="col-xs-1"><?=$stock->qty_s900?></td>
-      <td class="col-xs-1"><?=$stock->qty_s500?></td>
-      <td class="col-xs-1"><?=$stock->qty_s600?></td>
+      <td class="col-xs-1"><?=gs2_zero_to_dash(number_format($stock->qty_new))?></td>
+      <td class="col-xs-1"><?=gs2_zero_to_dash(number_format($stock->qty_used))?></td>
+      <td class="col-xs-1"><?=gs2_zero_to_dash($stock->qty_s200)?></td>
+      <td class="col-xs-1"><?=gs2_zero_to_dash($stock->qty_s900)?></td>
+      <td class="col-xs-1"><?=gs2_zero_to_dash($stock->qty_s500)?></td>
+      <td class="col-xs-1"><?=gs2_zero_to_dash($stock->qty_s600)?></td>
+      <td class="col-xs-1"><b><?=gs2_zero_to_dash($stock->qty_s100)?></b></td>
       <td class="col-xs-2">
 <?php
       // 사무소가 master 이고 장비 상태가 정상인 경우만 입고 버튼 보임

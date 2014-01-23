@@ -209,10 +209,9 @@ class Part
 	/**
 	 * 비가용 수량 합계
 	 * 
-	 * @param  [type] $office_id 사무소 ID
-	 * @return [type]            [description]
+	 * @return integer            [description]
 	 */
-	public function getDisableTotal($office_id = NULL) {
+	public function getDisableTotal() {
 		$sum = 0;
 
 		foreach($this->stock_list as $stock) {
@@ -225,10 +224,9 @@ class Part
 	/**
 	 * 가용 수량 합계
 	 * 
-	 * @param  [type] $office_id 사무소 id
-	 * @return [type]            [description]
+	 * @return integer            [description]
 	 */
-	public function getUsableTotal($office_id = NULL) {
+	public function getUsableTotal() {
 		$sum = 0;
 
 		foreach($this->stock_list as $stock) {
@@ -240,7 +238,8 @@ class Part
 
 		return $sum;
 	}
-
+	
+	// 특정 사무소의 장비 재고 1개
 	public function getStock($office_id) {
 		if(is_null($office_id)) {
 			trigger_error('office_id 는 필수입니다!');

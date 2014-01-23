@@ -39,11 +39,11 @@ endforeach;
               <th>기준</th>
               <th>신품</th>
               <th>중고</th>
-              <th style="background-color: #CCC;">발주</th>
               <th style="background-color: #CCC;">설치</th>
               <th style="background-color: #CCC;">점검</th>
               <th style="background-color: #CCC;">수리</th>
               <th style="background-color: #CCC;">페기</th>
+              <th style="background-color: #CCC;">발주</th>
               <th>기능</th>
             </tr>
           </thead>
@@ -64,16 +64,16 @@ foreach($rows as $row):
               <td><?=$row->part->category->name?></td>
               <td><?=$row->part->name?></td>
               <td><?=$arr_status_text[$row->part->status]?></td>
-              <td><?=intval($row->part->getUsableTotal())?></td>
-              <td><?=intval($row->part->getDisableTotal())?></td>
-              <td><?=$row->qty_minimum?></td>
-              <td><?=number_format($row->qty_new)?></td>
-              <td><?=number_format($row->qty_used)?></td>
-              <td><b><?=$row->qty_s100?></b></td>
-              <td><?=$row->qty_s200?></td>
-              <td><?=$row->qty_s900?></td>
-              <td><?=$row->qty_s500?></td>
-              <td><?=$row->qty_s600?></td>
+              <td><?=gs2_zero_to_dash($row->qty_new)?></td>
+              <td><?=gs2_zero_to_dash($row->getQtyDisabled())?></td>
+              <td><?=gs2_zero_to_dash($row->qty_minimum)?></td>
+              <td><?=gs2_zero_to_dash($row->getQtyNew())?></td>
+              <td><?=gs2_zero_to_dash($row->getQtyUsed())?></td>
+              <td><?=gs2_zero_to_dash($row->getQtyS200())?></td>
+              <td><?=gs2_zero_to_dash($row->getQtyS900())?></td>
+              <td><?=gs2_zero_to_dash($row->getQtyS500())?></td>
+              <td><?=gs2_zero_to_dash($row->getQtyS600())?></td>
+              <td><b><?=gs2_zero_to_dash($row->getQtyS100())?></b></td>
               <td>
 <?php
   // 사무소가 master 이고 장비 상태가 정상인 경우만 입고 버튼 보임
