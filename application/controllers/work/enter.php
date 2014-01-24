@@ -103,7 +103,7 @@ class Enter extends CI_Controller
 
 			// 100 - 입고업무
 			$this->work_model->createEnterOperation(GS2_OP_TYPE_ENTER, $this->input->post());
-			alert_colorbox_close('입고 요청 완료');
+			alert_colorbox_close('입고 요청 완료', TRUE);
 		}
 	}
 
