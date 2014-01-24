@@ -44,10 +44,7 @@ class Main extends CI_Controller
 				// 로그인 메세지
 				alert('로그인 되었습니다', site_url('stock'));
 			} else {
-				echo '==== 로그인 실패!!! ======';
-				echo '<pre>';
-				var_dump($_POST);
-				echo '</pre>';
+				alert('로그인에 실패하였습니다.\n정보 확인 후 다시 시도해 주세요.', site_url('login'));
 			}
 		} 
 		
