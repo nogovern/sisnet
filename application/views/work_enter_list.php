@@ -33,7 +33,8 @@ $this->view('layout/navbar');
             <th>수량(요청/리스트/입고)</th>
             <th>상태</th>
             <th>등록일</th>
-            <th>요청일</th>
+            <th>입고요청일</th>
+            <th>입고예정일</th>
             <th>완료일</th>
             <th>&nbsp;</th>
           </tr>
@@ -66,6 +67,7 @@ switch($row->status) {
             </td>
             <td><?=$row->getDateRegister();?></td>
             <td><?=$row->getDateRequest();?></td>
+            <td><?=$row->getDateExpect();?></td>
             <td><?=$row->getDateFinish();?></td>
             <!--
             <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>

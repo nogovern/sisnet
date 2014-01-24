@@ -518,6 +518,13 @@ class Work_m extends MY_Model {
 			$this->em->persist($stock);
 		}
 	}
+
+	public function getLogs($op) {
+		$repo = $this->em->getRepository('Entity\OperationLog');
+		$logs = $repo->findBy(array('operation' => $op), array('id'=>'desc'));
+
+		return $logs;
+	}
 	
 }
 

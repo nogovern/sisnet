@@ -122,9 +122,11 @@ class Enter extends CI_Controller
 
 		$data['title'] = '입고 > 작업 상세 보기';
 		$data['current'] = 'page-enter';
+		$data['_config'] = $this->config->item('gs2');
 
 		$work = $this->work_model->get($work_id);
 		$data['work'] = $work;
+		$data['logs'] = $this->work_model->getLogs($work);
 		//$data['temp_items'] = $em->getRepository('Entity\OperationTempPart')->findBy(array('operation' => $work));
 
 		if($work->status >= "3") {
@@ -132,7 +134,6 @@ class Enter extends CI_Controller
 		} else {
 			$this->load->view('work_enter_view', $data);
 		}
-
 	}
 
 

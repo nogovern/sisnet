@@ -63,7 +63,7 @@ endforeach;
 <?php
 if($work->status == 1):
 ?>
-      <button id="btn_request_ok" class="btn btn-success" type="button">요청확정</button>
+      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_enter_request_ok">요청확정</button>
 <?php
 endif;
 
@@ -84,6 +84,9 @@ endif;
     </div>
   </div>
 </div><!-- end of div.container -->
+<?php
+$this->view('common/modal_enter_request_ok');
+?>
 
 <!-- 입고 장비 등록 modal dialog -->
 <div class="modal fade" id="modal_enter_add_item" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -310,7 +313,6 @@ $(document).ready(function(){
   });
 
 });
-
 </script>
 
 <!-- jquery form validation -->
@@ -347,31 +349,6 @@ var items = [];     // array of item object
 var arr_serial = [];
 
 $(document).ready(function(){
-
-  // 요청 확정
-  $("#btn_request_ok").click(function(){
-    var is_ok = confirm("요청 하시겠습니까?\n그리고 입고예정일 확인해야함.");
-
-    if(is_ok == true){
-      $.ajax({
-        url: "<?=base_url()?>work/enter/ajax/request_ok",
-        type: "POST",
-        data: {
-          id : operation.id,
-          "csrf_test_name": $.cookie("csrf_cookie_name")
-        },
-        dataType: "html",
-      })
-        .done(function(html) {
-          alert(html);
-          location.reload();
-        })
-        .fail(function(xhr, textStatus){
-          alert("Request failed: " + textStatus);
-        });
-    }// end of if
-  });
-  
   // 출고
   $("#btn_delivery").click(function(){
     if(qty_complete < 1) {

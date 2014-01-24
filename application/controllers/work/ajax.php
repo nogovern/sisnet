@@ -38,7 +38,7 @@ class Ajax extends CI_Controller
 		$this->work_model->updateOperation($op, $post_data);
 			
 		$log_data = array(
-			'content'	=> gs2_op_general_type($op->type),		// for 테스트
+			'content'	=> $this->input->post('memo'),		// for 테스트
 			'type'		=> '1',
 			'event'		=> '요청확정'
 		);

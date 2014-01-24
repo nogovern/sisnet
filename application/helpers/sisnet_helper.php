@@ -128,6 +128,18 @@ if(!function_exists('gs2_op_type')) {
         return $op_types[$type];
     }
 }
+
+// 일반적인 업무 타입명 반환
+if(!function_exists('gs2_op_general_type')) {
+    function gs2_op_general_type($type=NULL) {
+
+        // 303 인 경우 300 으로 변경 
+        $type = intval($type);
+        $type = floor($type / 100) * 100;
+
+        return gs2_op_type($type);
+    }
+} 
  
 // 장비 카테고리-장비 배열
 if(!function_exists('gs2_category_parts')) {
