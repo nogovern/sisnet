@@ -143,7 +143,9 @@ endforeach;
         $tr.append($("<td>").html($("#select_part :selected").text()));
         $tr.append($("<td>").html($("#input_qty").val()));
 
-        console.log($tr);
+        if(window.console) {
+          console.log($tr);
+        }
 
         table.append($tr);
         tbl_idx++;

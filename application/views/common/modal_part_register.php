@@ -177,7 +177,10 @@ $(document).ready(function(){
       .done(function(html) {
         item = {};      // empty item
         item = html;
-        console.log(item);
+
+        if(window.console) {
+          console.log(item);
+        }
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);

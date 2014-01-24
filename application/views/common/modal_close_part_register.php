@@ -142,7 +142,10 @@ $(document).ready(function(){
       .done(function(repsonse) {
         item = {};      // empty item
         item = repsonse;
-        console.log(item);
+
+        if(window.console) {
+          console.log(item);
+        }
 
         if( item.type == '1') {
           $("#serial_number").val('').attr('readonly', false);

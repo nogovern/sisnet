@@ -216,7 +216,10 @@ $(document).ready(function(){
     
     $("#part_table tbody tr td:nth-child(4)").each(function(n){
       var sn = $(this).text();
-      console.log(n, sn);
+      if(window.console) {
+        console.log(n, sn);
+      }
+      
       // 시리얼번호가 일치할 경우
       if( v === sn) {
         $(".scan_status", $(this).parent()).removeClass('hide');
