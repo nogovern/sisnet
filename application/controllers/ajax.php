@@ -222,7 +222,9 @@ class Ajax extends CI_Controller
 		$em = $this->store_model->getEntityManager();
 
 		$store = $this->store_model->get($store_id);
-		// var_dump($store);
+		
+		// postbox 타입
+		$postbox = array('0' => "미설치", '일반설치', 'MMK설치');		
 
 		$result = new stdClass;
 
@@ -233,8 +235,15 @@ class Ajax extends CI_Controller
 				$result->$value = $store->getDateRegister();
 			} elseif( $value == 'join_type') {
 				$result->$value = gs2_get_store_join_type($store->$value);
+			} elseif( $value == 'has_postbox') {
+				if(is_null($store->$value)){ 
+					$val = '';
+				} else {
+					$val = $postbox[$store->$value];
+				}
+				$result->$value = $val;
 			} else {
-				$result->$value = $store->$value;
+				$result->$value = ($store->$value) ? $store->$value : '';
 			}
 		}
 		echo json_encode($result);

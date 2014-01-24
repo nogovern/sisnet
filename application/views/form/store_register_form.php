@@ -62,7 +62,6 @@ if(isset($form_saved)) {
     <label class="control-label col-sm-3">주 소</label>
     <div class="col-sm-6">
       <input type="text" class="form-control" id="address" name="address" placeholder="입력하세요">
-      <span class="help-block">Start typing e.g. Yellow, Red</span>
     </div>
   </div>
 
@@ -115,10 +114,13 @@ if(isset($form_saved)) {
     <label class="control-label col-sm-3">무인택배함 설치 유무</label>
     <div class="col-sm-6">
         <label class="radio-inline">
-          <input type="radio" name="has_postbox" value="Y" > 설치
-        </label> /
+          <input type="radio" name="has_postbox" value="1" >일반 설치
+        </label>
         <label class="radio-inline">
-          <input type="radio" name="has_postbox" value="N"> 미설치
+          <input type="radio" name="has_postbox" value="1" >MMK 설치
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="has_postbox" value="0"> 미설치
         </label>
     </div>
   </div>

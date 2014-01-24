@@ -68,7 +68,7 @@ class Operation
 	/** @Column(type="datetime") */
 	protected $date_store;		// 점포 계점일 or 폐점일
 
-	/** @Column(type="string", length=255) */
+	/** @Column(type="string", length=4000) */
 	protected $memo;
 
 	/** @Column(type="string", length=1) */
