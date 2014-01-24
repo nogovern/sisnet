@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* 	교체 컨트롤러
+* 	이동 컨트롤러
 */
-class Replace extends CI_Controller
+class Move extends CI_Controller
 {
 	
 	public function __construct()
@@ -18,13 +18,13 @@ class Replace extends CI_Controller
 	}
 
 	public function lists() {
-		$data['title'] = '교체 업무';
-		$data['current'] = 'page-replace';
+		$data['title'] = '이동 업무';
+		$data['current'] = 'page-move';
 
 		$data['status'] = '';
-		$data['rows'] = $this->work_model->getReplaceList();
+		$data['rows'] = $this->work_model->getMoveList();
 		
-		$this->load->view('work/work_replace_list', $data);
+		$this->load->view('work/work_move_list', $data);
 	}
 
 	public function register() {

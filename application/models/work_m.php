@@ -166,6 +166,11 @@ class Work_m extends MY_Model {
 		return $this->_getOpList(400);
 	}
 
+	// 이동 업무 목록
+	public function getMoveList() {
+		return $this->_getOpList(500);
+	}
+
 	///////////////
 	// 입고 업무 생성
 	///////////////

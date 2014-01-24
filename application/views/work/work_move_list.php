@@ -6,7 +6,7 @@ $this->view('layout/navbar');
     <div class="container">
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="page-header">
-        <h1><span class="fa fa-desktop"></span>&nbsp;교체 업무</h1>
+        <h1><span class="fa fa-desktop"></span>&nbsp;이동 업무</h1>
       </div>
      
       <!-- Example row of columns -->
@@ -71,7 +71,7 @@ $this->view('layout/navbar');
           </table>
 
           <p>
-            <a href="<?=site_url("/work/replace/register")?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청서 등록</span></a>
+            <a href="<?=site_url("/work/move/register")?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청서 등록</span></a>
           </p>
 
         </div>
