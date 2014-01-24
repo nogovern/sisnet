@@ -24,7 +24,7 @@ class Enter extends CI_Controller
 	}
 	public function lists() {
 		$data['title'] = '입고업무';
-		$data['current'] = 'page-work-enter';
+		$data['current'] = 'page-enter';
 
 		$data['type'] = '';
 		$data['rows'] = $this->work_model->getEnterList();
@@ -35,6 +35,7 @@ class Enter extends CI_Controller
 	// 입고요청
 	public function request() {
 		$data['title'] = "입고 요청 작성";
+		$data['current'] = 'page-enter';
 
 		$this->load->library('form_validation');
 		$this->load->helper('form');
