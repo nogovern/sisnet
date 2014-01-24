@@ -95,6 +95,10 @@ class Stock
 		return $this->qty_s900;
 	}
 
+	public function getQtyMinimum() {
+		return $this->qty_minimum;
+	}
+
 	// 신품
 	public function getQtyNew() {
 		return $this->qty_new;

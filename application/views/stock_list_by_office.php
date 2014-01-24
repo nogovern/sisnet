@@ -34,11 +34,10 @@ endforeach;
               <th>장비 종류</th>
               <th>장비명</th>
               <th>상태</th>
-              <th>가용</th>
-              <th>비가용</th>
               <th>기준</th>
-              <th>신품</th>
-              <th>중고</th>
+              <th>신가</th>
+              <th>중가</th>
+              <th>중비</th>
               <th style="background-color: #CCC;">설치</th>
               <th style="background-color: #CCC;">점검</th>
               <th style="background-color: #CCC;">수리</th>
@@ -64,11 +63,10 @@ foreach($rows as $row):
               <td><?=$row->part->category->name?></td>
               <td><?=$row->part->name?></td>
               <td><?=$arr_status_text[$row->part->status]?></td>
-              <td><?=gs2_zero_to_dash($row->qty_new)?></td>
-              <td><?=gs2_zero_to_dash($row->getQtyDisabled())?></td>
               <td><?=gs2_zero_to_dash($row->qty_minimum)?></td>
-              <td><?=gs2_zero_to_dash($row->getQtyNew())?></td>
-              <td><?=gs2_zero_to_dash($row->getQtyUsed())?></td>
+              <td class="active"><?=gs2_zero_to_dash($row->getQtyNew())?></td>
+              <td class="active"><?=gs2_zero_to_dash($row->getQtyUsed())?></td>
+              <td class="active"><?=gs2_zero_to_dash($row->getQtyDisabled())?></td>
               <td><?=gs2_zero_to_dash($row->getQtyS200())?></td>
               <td><?=gs2_zero_to_dash($row->getQtyS900())?></td>
               <td><?=gs2_zero_to_dash($row->getQtyS500())?></td>
