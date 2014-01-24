@@ -10,18 +10,12 @@ class Ajax extends CI_Controller
 	{
 		parent::__construct();
 
-		// operation.id 가 post 로 넘어오는지 검사!
-		// $id = $this->input->post('id');
-		// if(!$id) {
-		// 	die('잘못된 접근입니다.');
-		// }
-
 		$this->load->model('work_m', 'work_model');
 		$this->em = $this->work_model->getEntityManager();
 	}
 
 	public function index() {
-		echo '워크 메인';
+		echo '워크 ajax 메인';
 	}
 
 	// 요청 확정
@@ -29,14 +23,28 @@ class Ajax extends CI_Controller
 		$id = $this->input->post('id');
 		$op = $this->work_model->get($id);
 
-		$post = array(
-			'office_id'	=> $this->input->post('office_id'),
-			'worker_id'	=> $this->input->post('worker_id'),
+		$post_data = array(
 			'date_expect'	=> $this->input->post('date_work'),	// 작업 예정일
-			'memo'		=> $this->input->post('memo')
-			);
+			'status'		=> '2'
+		);
+
+		// 입고가 아닌 경우
+		if($op->type >= '200') {
+			//$post_data['office_id']	= $this->input->post('office_id');
+			$post_data['worker_id']	= $this->input->post('worker_id');
+		}
+
+		// 업무 master 변경
+		$this->work_model->updateOperation($op, $post_data);
+			
+		$log_data = array(
+			'content'	=> gs2_op_general_type($op->type),		// for 테스트
+			'type'		=> '1',
+			'event'		=> '요청확정'
+		);
+		// 로그 기록
+		$this->work_model->addLog($op, $log_data, TRUE);
 		
-		$this->work_model->acceptRequest($op, $post);
 		echo 'success';
 	}
 
@@ -161,7 +169,6 @@ class Ajax extends CI_Controller
 		$op = $this->work_model->get($id);
 		
 		$post = array(
-			'user_id'	=> $this->session->userdata('user_id'),			// 로그인 한 유저
 			'content'	=> $this->input->post('memo'),
 			'type'		=> '2',
 		);
@@ -171,30 +178,49 @@ class Ajax extends CI_Controller
 		echo '메모를 저장하였습니다';
 	}
 
+	// 방문자 변경
+	public function change_worker() {
+		$id = $this->input->post('id');
+		$op = $this->work_model->get($id);
+
+		// 작업자 변경
+		$data = array(
+			'worker_id' => $this->input->post('worker_id'),
+		);
+		$this->work_model->updateOperation($op, $data);
+
+		// 로그 기록
+		$log_data = array(
+			'type'		=> '1',
+			'content'	=> '방문자 변경 되었음',
+		);
+		$this->work_model->addLog($op, $log_data, TRUE);
+
+		echo '작업자 변경 완료';
+	}
+
 	// 점포 완료
 	public function store_complete() {
 		$id = $this->input->post('id');
 		$op = $this->work_model->get($id);
 		
+		// 업무 main 변경
+		$op_data = array(
+			'status'		=> '3',
+			'date_work'		=> $this->input->post('date_complete'),		// 작업일
+		);
+		$this->work_model->updateOperation($op, $op_data);
+		
 		// 업무 log 생성
 		$log_data = array(
-			'user_id'		=> $this->session->userdata('user_id'),
-			'content' 		=> $this->input->post('memo'),
+			'content' 		=> $this->input->post('memo') . '\n\n -- 점포 완료 입력됨 --',
 			'date_complete' => $this->input->post('date_complete'),
 			'type' 			=> '1',
 			'next_status' 	=> '3',
 		);
-		$this->work_model->addLog($op, $log_data);
+		$this->work_model->addLog($op, $log_data, TRUE);
 
-		$op_data = array(
-			'status'		=> '3',
-			'date_work'		=> $this->input->post('date_complete'),
-		);
-
-		// 3번째 인자를 TRUE 로 하여 flush 실행
-		$this->work_model->updateOperation($op, $op_data, TRUE);
-
-		echo '점포 작업 완료 로 변경하였음';
+		echo '점포완료 로 변경하였음';
 	}
 
 	// 완료

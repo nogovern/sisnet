@@ -58,7 +58,7 @@ class Install extends CI_Controller
 		// 사무소 dropdown
 		$this->load->model('office_m', 'office_model');
 		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
-		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
+		$data['select_office'] = form_dropdown('office_id', $arr_office, $work->office->id, 'id="office_id" class="form-control"');
 
 		// 사용자 dropdown
 		$this->load->model('user_m', 'user_model');
@@ -157,7 +157,6 @@ class Install extends CI_Controller
 
 			// 업무 log 생성
 			$log_data = array(
-				'user_id'	=> $this->session->userdata('user_id'),
 				'content' 	=> $this->input->post('memo'),
 				'date_complete' => $this->input->post('date_complete'),
 				'type' => '1',
@@ -182,7 +181,6 @@ class Install extends CI_Controller
 		elseif( $action == 'operation_complete') {
 			// 업무 log 생성
 			$log_data = array(
-				'user_id'	=> $this->session->userdata('user_id'),
 				'content' => '작업을 종료합니다',
 				'date_complete' => $this->input->post('date_complete'),
 				'type' => '1',

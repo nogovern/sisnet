@@ -208,7 +208,6 @@ class Work_m extends MY_Model {
 		// 업무 log 생성
 		/////////////////
 		$log_data = array(
-			'user_id'	=> $this->session->userdata('user_id'),
 			'content' 	=> '[시스템] 입고 요청 생성',
 			'type' => '2',
 			'next_status' => '1',
@@ -321,7 +320,7 @@ class Work_m extends MY_Model {
 		}
 
 		// 담당자 변경
-		if(isset($data['woker_id'])) {
+		if(isset($data['worker_id'])) {
 			$worker = $this->em->getReference('Entity\User', $data['worker_id']);
 			$op->setWorker($worker);
 		}
@@ -449,8 +448,10 @@ class Work_m extends MY_Model {
 			die("에러! operation 객체를 얻을 수 없음");
 		}
 
+		// 로그인 한 유 이므로 세션 정보 사용
+		$writer = $this->em->getReference('Entity\User', $this->session->userdata('user_id'));
+
 		$log = new Entity\OperationLog;
-		$writer = $this->em->getReference('Entity\User', $data['user_id']);
 		$log->setUser($writer);
 		$log->setOperation($op);
 		$log->setContent($data['content']);
@@ -517,28 +518,7 @@ class Work_m extends MY_Model {
 			$this->em->persist($stock);
 		}
 	}
-
-	/**
-	 * [공통] 작업 요청 확정
-	 * 
-	 * @param  integer $id   	[description]
-	 * @param  array  $data 	[description]
-	 * @return object       	Operation Entity Object
-	 */
-	public function acceptRequest($op, $data = array()) {
-		$worker = $this->em->getReference('Entity\User', $data['worker_id']);
-		$office = $this->em->getReference('Entity\Office', $data['office_id']);
-
-		$op->setWorker($worker);
-		$op->setOffice($office);
-		$op->setDateExpect($data['date_expect']);
-		$op->setMemo($data['memo']);
-		$op->setDateModify();
-		$op->setStatus('2');
-
-		$this->em->persist($op);
-		$this->em->flush();
-	}	
+	
 }
 
 
