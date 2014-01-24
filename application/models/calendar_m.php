@@ -78,7 +78,7 @@ class Calendar_m extends MY_Model
 		$events = array();
 		if(count($rows)) {
 			foreach($rows as $row) {
-				$day = $row->date_register->format("j");
+				$day = $row->date_request->format("j");
 				$content = sprintf("[%s] <a href=\"%s\">%s</a>", $row->office->name, '#', gs2_op_type($row->type));
 				if(array_key_exists($day, $events)){
 					$content = $events[$day] . '<br>' . $content;
