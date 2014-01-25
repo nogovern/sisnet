@@ -169,10 +169,17 @@ class Part extends CI_Controller {
 			// var_dump($post);
 			// exit;
 
-			$entry = $this->part_model->addSerialPart($post, TRUE);
+			$entry = $this->part_model->addSerialPart($post);
 			if(!$entry) {
 				die('에러');
 			}
+
+			// 재고량 변경
+			$stock = $entry->part->getStock($this->input->post('office_id'));
+			$stock->increase('new', 1);
+
+			$this->part_model->_add($stock);
+			$this->part_model->_commit();
 
 			redirect('admin/part/serial');
 		}
