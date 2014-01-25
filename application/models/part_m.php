@@ -126,12 +126,13 @@ class Part_m extends MY_Model
 
 		// 입고 사무소 찾기
 		$office = gs2_decode_location($new->current_location);
-		// 재고량 변경
-		$stock = $office->in($part, $post['qty'], 'new');
+
+		// 재고량 변경 (1/25 - 제거)
+		// $stock = $office->in($part, $post['qty'], 'new');
+		// $this->em->persist($stock);
 
 		// doctrine persist() 
 		$this->em->persist($new);
-		$this->em->persist($stock);
 
 		if($do_flush) {
 			$this->em->flush();
