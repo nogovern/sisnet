@@ -259,6 +259,8 @@ class Enter extends CI_Controller
 			$items = $work->getItems();
 
 			$idx = 0;
+
+			// 시리얼장비는 입고 수량 만큼 row가 생성되므로
 			foreach($items as $item) {
 				if ($item->isScan()) { 
 					//$item->setCompleteFlag(TRUE);
@@ -282,6 +284,7 @@ class Enter extends CI_Controller
 						);
 
 						$new = $this->part_model->addSerialPart($data, FALSE);
+						$stock = $work->office->in($item->part, $item->getQtyScan(), 'new');
 					} 
 					// 수량, 소모품 재고 변경
 					else 
@@ -301,8 +304,15 @@ class Enter extends CI_Controller
 			$em->persist($stock);
 
 			/////////////
-			// 로그 기록 해야함
+			// 로그 기록 
 			/////////////
+			$log_data = array(
+				'content' => gs2_op_type($work->type) . ' 작업을 완료 합니다',
+				'date_complete' => $this->input->post('date_complete'),
+				'type' => '1',
+				'next_status' => '3',
+				);
+			$this->work_model->addLog($work, $log_data);
 
 			// at last, flush
 			$em->flush();
