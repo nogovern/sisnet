@@ -2,7 +2,7 @@
 // 모달 content - 장비 등록
 ?>
 <!-- modal dialog -->
-<div class="modal fade" id="modal_part_register" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_close_part_register" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- start form -->
@@ -83,7 +83,6 @@ $(document).ready(function(){
       $("#btn_search_serial").click();
   });
 
-
   // 장비 종류 선택 시 장비 목록 가져오기
   $(document).on('change', "#category_id", function(){
     var cat = $(":selected", this).val();
@@ -147,13 +146,9 @@ $(document).ready(function(){
           console.log(item);
         }
 
-        if( item.type == '1') {
-          $("#serial_number").val('').attr('readonly', false);
-          $("#part_qty").val('1').attr('readonly', true);
-        } else {
-          $("#serial_number").attr('readonly', true);
-          $("#part_qty").val('1').attr('readonly', false);
-        }
+        // 장비 구분 하여 폼 컨트롤 형식 변경
+        changeFormLayout(item.type);
+
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
@@ -172,7 +167,7 @@ $(document).ready(function(){
     }
 
     // 철수 시 장비는 모두 중고 상태임
-    var is_new = $(":radio[name=is_new]:checked").val();
+    var is_new = 'N';
 
     // 장비 분실 여부
     var is_lost = $(":checkbox[name=is_lost]").is(":checked") ? 'Y' : 'N';
@@ -199,6 +194,7 @@ $(document).ready(function(){
 
         if(response.result == 'success') {
           callback_insert_row(response.id, item.type, item.name, $("#serial_number").val(), '', qty, is_new);
+          reset_part_register_form();
         } else {
           alert('에러!');
         }
@@ -206,10 +202,6 @@ $(document).ready(function(){
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
       });
-
-    // 버튼 비활성
-    // 선택 초기화해야 함!
-    // $("#btn_part_add").prop("disabled", true);
   });
 
   // 장비 삭제 이벤트 등록
@@ -240,4 +232,39 @@ $(document).ready(function(){
   });
 
 });//end of ready
+
+
+// 장비 type에 따라 폼 입력 양식 변경
+function changeFormLayout(part_type) {
+  if( part_type == '1') {
+    $("#serial_number").val('').attr('readonly', false);
+    $("#part_qty").val('1').attr('readonly', true);
+  } else {
+    $("#serial_number").attr('readonly', true);
+    $("#part_qty").val('1').attr('readonly', false);
+  }
+}
+
+// 폼 초기화
+function reset_part_register_form() {
+  var form = $("#modal_close_part_register form");
+
+  $("#category_id").val('0');
+  $("#select_part").val('0');
+  // 철수 장비는 모두 중고 상태임!
+  // $(':radio[name="is_new"]', form).prop('checked', false);
+  $('#part_qty').val(0);
+  $("#serial_number").val('');
+  $(":checkbox[name=is_lost]").prop('checked', false);
+}
+
+// 등록된 시리얼넘버 검색
+function exist_serial_number(sn, haystack) {
+  if(haystack !== undefined) {
+    return true;
+  }
+
+  return false;
+}
 </script>
+
