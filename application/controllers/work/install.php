@@ -153,32 +153,10 @@ class Install extends CI_Controller
 		// ================================
 		
 		// 점포 완료
-		if( $action == 'store_complete') {
-
-			// 업무 log 생성
-			$log_data = array(
-				'content' 	=> $this->input->post('memo'),
-				'date_complete' => $this->input->post('date_complete'),
-				'type' => '1',
-				'next_status' => '3',
-				);
-
-			$this->work_model->addLog($op, $log_data);
-
-			// 업무 상태 변경 (메소드로 통일 하자);
-			$op->setStatus('3');
-			$op->setDateFinish($this->input->post('date_complete'));
-			$op->setDateModify();
-
-
-			$em->persist($op);
-			$em->flush();
-
-			echo $action . ' is done.';
-			exit;
-		}
+		// work/ajax/store_complete 로 대체 함
+		
 		// 설치 업무 완료
-		elseif( $action == 'operation_complete') {
+		if( $action == 'operation_complete') {
 			// 업무 log 생성
 			$log_data = array(
 				'content' => '작업을 종료합니다',
