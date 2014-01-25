@@ -65,7 +65,7 @@ endforeach;
         <th>모델</th>
         <th>철수점포</th>
         <th>수량</th>
-        <th>상태 선택</th>
+        <th>상태(가용/수리/폐기)</th>
         <th>삭제</th>
       </tr>
     </thead>
@@ -74,36 +74,38 @@ endforeach;
 foreach($rows as $row):
   $item_count = count($row->getItems());
   $idx = 0;
-  foreach($row->getItems() as $item):
+  foreach($row->getItems() as $item) {
 ?>      
       <tr data-opid="<?=$row->id?>">
 <?php
-if($item_count == 1 && $idx < $item_count) {
+    if($item_count == 1 && $idx < $item_count) {
 ?> 
         <td><?=$row->operation_number?></td>
 <?php
-} else {
-  if( $idx == 0) {
+    } else {
+      if( $idx == 0) {
 ?>
         <td rowspan="<?=$item_count?>"><?=$row->operation_number?></td>
 <?php    
+    }
   }
-} 
+
+  $input_name = 'items['. $item->id .']'; 
 ?> 
         <td><?=$item->serial_number?></td>
-        <td><?=$item->part_name?></td>
         <td><?=$item->part->category->name?></td>
+        <td><?=$item->part_name?></td>
         <td><?=gs2_decode_location($row->work_location)->name?></td>
-        <td><?=$item->qty_complete?></td>
+        <td><?=$item->qty_request?></td>
         <td data-itemid="<?=$item->id?>">
-          <input type="text" name="qty1" value="0" style="width:30px;">/
-          <input type="text" name="qty2" value="0" style="width:30px;">/
-          <input type="text" name="qty3" value="0" style="width:30px;"></td>
+          <input type="text" name="<?=$input_name?>[0]" value="0" style="width:30px;">/
+          <input type="text" name="<?=$input_name?>[1]" value="0" style="width:30px;">/
+          <input type="text" name="<?=$input_name?>[2]" value="0" style="width:30px;"></td>
         <td>삭제</td>
       </tr>
 <?php
   $idx = $idx + 1;
-  endforeach;
+  }
 endforeach;
 ?>
     </tbody>
