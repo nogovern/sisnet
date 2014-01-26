@@ -214,7 +214,7 @@ endif;
 
 if($work->status == 3):
 ?>
-          <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
+          <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_close_part_register">장비 등록</button>
           <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
           <button id="btn_approve" class="btn btn-success" type="button" disabled>승인</button>
 <?php

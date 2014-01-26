@@ -44,7 +44,7 @@
     $("#modal_op_complete form").submit(function(e){
       e.preventDefault();
 
-      var target_url = "<?=base_url()?>work/install/ajax/operation_complete";
+      var target_url = "<?=base_url()?>work/ajax/complete";
       var date_complete = $("input[name=date_complete]", this).val();
       if(date_complete == ''){
         alert('작업 완료일시를 입력하세요');
@@ -66,7 +66,7 @@
       })
         .done(function(html) {
           alert(html);
-          location.reload();
+          // location.reload();
         })
         .fail(function(xhr, textStatus){
           alert("Request failed: " + textStatus);

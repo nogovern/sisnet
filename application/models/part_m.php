@@ -117,12 +117,20 @@ class Part_m extends MY_Model
 		$new->setPreviousLocation($post['previous_location']);
 		$new->setNewFlag($post['is_new']);
 		$new->setValidFlag($post['is_valid']);
-		$new->setDateEnter($post['date_enter']);
+		$new->setDateModify();
+
+
+		if(isset($post['memo'])) {
+			$new->setMemo($post['memo']);
+		}
+		
+		if(isset($post['date_enter'])) {
+			$new->setDateEnter($post['date_enter']);
+		}
+		
 		if(@!empty($post['date_install'])) {
 			$new->setDateInstall($post['date_install']);
 		}
-		$new->setDateModify();
-		$new->setMemo($post['memo']);
 
 		// 입고 사무소 찾기
 		$office = gs2_decode_location($new->current_location);

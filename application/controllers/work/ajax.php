@@ -223,11 +223,72 @@ class Ajax extends CI_Controller
 		echo '점포완료 로 변경하였음';
 	}
 
-	// 완료
-	public function complete() {
+	// 작업 완료
+	public function complete($operation_id=NULL) {
 		$id = $this->input->post('id');
+		// 테스트용
+		if(!$id) {
+			$id = $operation_id;
+		}
 
-		echo '작업 완료 작업중';
+		$op = $this->work_model->get($id);
+		// 추가 모델 로딩
+		$this->load->model('part_m', 'part_model');
+
+		// 업무 메인 변경
+		$op_data['status'] = '4';
+		$op_data['date_finish'] = $this->input->post('date_complete');
+		$this->work_model->updateOperation($op, $op_data);
+
+		// 업무 장비 정보 변경
+
+		if( $op->type >= '200' && $op->type < '300') {
+			// 장비 출고 후 재고 반영
+			$this->work_model->deliveryItem($op);
+		} 
+		// 철수 후 장비 상태는 점검 전
+		elseif ( $op->type >= '300' && $op->type < '400') {
+			$items = $op->getItems();
+
+			foreach($items as $item) {
+				if($item->part_type == '1') {
+					// 기존 시리얼넘버가 존재하면 기존 정보 update
+
+					// 없는 시리얼넘버이면 생성
+					$post['part_id'] = $item->part->id;
+					$post['is_valid'] = 'N';									// 가용 여부
+					$post['current_location'] = $op->office;
+					$post['previous_location'] = $op->work_location;
+					$post['date_install']	= $op->getDateFinish();				// 최초 설치일
+					$post['qty'] = 1;
+					$post['serial_number'] = $item->serial_number;
+					$post['is_new'] = $item->is_new;
+
+					$this->part_model->addSerialPart($post);
+
+					//var_dump($post);
+				}
+
+				// 재고수량 변경
+				$stock = $item->part->getStock($op->office->id);
+				$stock->increase('s900', $item->qty_request);	// 점검 전 수량에 추가
+				$this->work_model->_add($stock);
+			}
+		}
+
+		// 점포 상태 변경 (설치 - 정상, 철수 - 폐점, 휴점, 리뉴얼, 교체)
+		
+
+		// 업무 log 생성
+		$log_data = array(
+			'content' => gs2_op_type($op->type) . ' 작업을 작업완료 합니다',
+			'date_complete' => $this->input->post('date_complete'),
+			'type' => '1',
+			'next_status' => '4',
+			);
+		$this->work_model->addLog($op, $log_data, FALSE);
+		
+		echo 'operation complete is done successfully!';
 	}
 
 	// 승인 

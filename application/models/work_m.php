@@ -443,7 +443,7 @@ class Work_m extends MY_Model {
 	}
 	
 	// 업무-로그 생성
-	public function addLog($op, $data, $do_flush = FALSE) {
+	public function addLog($op, $data, $do_flush=FALSE) {
 		if(!$op){	
 			die("에러! operation 객체를 얻을 수 없음");
 		}
