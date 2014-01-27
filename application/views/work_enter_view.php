@@ -17,7 +17,7 @@ $this->view('work/work_enter_view_header');
     <div class="col-md-12">
       <!-- start: ALERTS PANEL -->
       <div class="panel panel-primary">
-        <div class="panel-heading"><i class="fa fa-tags"></i> 납품 장비</div>
+        <div class="panel-heading"><i class="fa fa-tags"></i> 장비 리스트</div>
         <div class="panel-body" style="padding:0 15px;">
           <table class="table table-hover" id="part_table">
             <thead>
