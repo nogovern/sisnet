@@ -27,8 +27,35 @@ class Replace extends CI_Controller
 		$this->load->view('work/work_replace_list', $data);
 	}
 
+	/////////////
+	// 요청서 등록
+	/////////////
 	public function register() {
-		echo '작업중';
+		$data['title'] = '교체 업무 >> 요청서 등록';
+		$data['current'] = 'page-replace';
+
+		$this->load->library('form_validation');
+		$this->load->helper('form');
+
+		// 사무소 select 생성
+		$this->load->model('office_m', 'office_model');
+		$rows = $this->office_model->getList();
+		$arr_office = gs2_convert_for_dropdown($rows);
+		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control required"');
+
+		// 규칙 설정		
+		$this->form_validation->set_rules('office_id', '설치 사무소', 'required|greater_than[0]');
+		$this->form_validation->set_rules('store_id', '설치 점포', 'required');
+		$this->form_validation->set_rules('date_open', '설치 요청일', 'required');
+		$this->form_validation->set_rules('date_close', '철수 요청일', 'required');
+
+		if($this->form_validation->run() === FALSE) {
+			$this->load->view('work/work_replace_register', $data);
+
+		} else {
+			
+		}
+
 	}
 
 	public function view($id) {
