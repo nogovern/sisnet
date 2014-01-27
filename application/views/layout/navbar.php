@@ -38,7 +38,8 @@ if(0) {
             <li id="page-install"><a href="<?=site_url('/work/install')?>">설치</a></li>
             <li id="page-close"><a href="<?=site_url('/work/close')?>">철수</a></li>
             <li id="page-changer"><a href="<?=site_url('/work/change')?>">상태변경</a></li>
-            <li id="page-close"><a href="<?='#'?>">교체</a></li>
+            <li id="page-replace"><a href="<?=site_url('/work/replace')?>">교체</a></li>
+            <li id="page-move"><a href="<?=site_url('/work/move')?>">이동</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">
