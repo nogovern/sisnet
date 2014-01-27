@@ -43,7 +43,7 @@ class Store_m extends MY_Model
 	}
 
 	// 생성
-	function create($post) {
+	function create($data) {
 		$store = new Entity\Store();
 
 		$store->code 		= $this->input->post('code');
@@ -66,11 +66,13 @@ class Store_m extends MY_Model
 		$this->em->flush();
 
 		return $store;
-
 	}
 
 	// 수정
-	public function update($id, $post) {
-
+	public function update($id, $data) {
+		$func_map = array(
+			'code'	=>	'setCode',
+			'has_postbox'	=> 'setPostbox'
+		);
 	}
 }
