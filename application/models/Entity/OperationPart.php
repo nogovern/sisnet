@@ -15,7 +15,7 @@ class OperationPart {
 	protected $id;
 
 	/**
-	 * @ManyToOne(targetEntity="Operation", inversedBy="itmes")
+	 * @ManyToOne(targetEntity="Operation", inversedBy="items")
 	 * @JoinColumn(name="operation_id", referencedColumnName="id")
 	 */
 	protected $operation;
