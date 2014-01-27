@@ -80,13 +80,19 @@ class Operation
 	/**
 	 * @OneToMany(targetEntity="OperationPart", mappedBy="operation")
 	 */
-	private $items;					// 작업 장비들 목록
+	protected $items;					// 작업 장비들 목록
+
+	/**
+	 * @OneToMany(targetEntity="OperationLog", mappedBy="operation")
+	 */
+	protected $logs;
 
 	//////////
 	// 생성자 //
 	//////////
 	public function __construct() {
 		$this->items = new ArrayCollection();
+		$this->logs = new ArrayCollection(); 
 	}
 
 
@@ -283,6 +289,11 @@ class Operation
 			$qty += $item->qty_scan;
 		}
 		return $qty;
+	}
+
+	// log 리스트를 반환
+	public function getLogs() {
+		return $this->logs;
 	}
 }
 

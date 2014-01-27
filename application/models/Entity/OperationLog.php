@@ -16,7 +16,7 @@ class OperationLog
 	protected $id;
 
 	/**
-	 * @ManyToOne(targetEntity="Operation", inversedBy="part_list")
+	 * @ManyToOne(targetEntity="Operation", inversedBy="logs")
 	 * @JoinColumn(name="operation_id", referencedColumnName="id")
 	 */
 	protected $operation;
