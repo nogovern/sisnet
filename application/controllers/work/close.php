@@ -86,6 +86,7 @@ class Close extends CI_Controller
 		}
 
 		$data['title'] = "철수 업무 상세 보기";
+		$data['current'] = 'page-close';
 		$data['_config'] = $this->config->item('gs2');
 
 		$work = $this->work_model->get($id);

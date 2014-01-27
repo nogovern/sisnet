@@ -1,6 +1,6 @@
 <?php
-$this->load->view('layout/header', array('title' => '철수 >> 철수 요청 보기'));
-$this->load->view('layout/navbar', array('current' => 'page-work-close'));
+$this->view('layout/header');
+$this->view('layout/navbar');
 
 // 여기서 해줘야지 만 되네요....
 //$_config= $this->config->item('gs2');
@@ -329,5 +329,5 @@ endif;
 
     </script>
 <?php
-$this->load->view('layout/footer');
+$this->view('layout/footer');
 ?>

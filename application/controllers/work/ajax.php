@@ -253,20 +253,35 @@ class Ajax extends CI_Controller
 			foreach($items as $item) {
 				if($item->part_type == '1') {
 					// 기존 시리얼넘버가 존재하면 기존 정보 update
+					$sp = $this->part_model->getPartBySerialNumber($item->serial_number);
 
 					// 없는 시리얼넘버이면 생성
-					$post['part_id'] = $item->part->id;
-					$post['is_valid'] = 'N';									// 가용 여부
-					$post['current_location'] = $op->office;
-					$post['previous_location'] = $op->work_location;
-					$post['date_install']	= $op->getDateFinish();				// 최초 설치일
-					$post['qty'] = 1;
-					$post['serial_number'] = $item->serial_number;
-					$post['is_new'] = $item->is_new;
+					if(!$sp) 
+					{
+						$sp_data['part_id'] = $item->part->id;
+						$sp_data['previous_location'] = $op->work_location;
+						$sp_data['current_location'] = gs2_encode_location($op->office);
+						$sp_data['date_enter']	= $op->getDateFinish();				// 최초 설치일
+						$sp_data['qty'] = 1;
+						$sp_data['serial_number'] = $item->serial_number;
+						$sp_data['is_new'] = $item->is_new;
+						$sp_data['is_valid'] = 'N';									// 가용 여부
 
-					$this->part_model->addSerialPart($post);
+						$this->part_model->addSerialPart($sp_data);
+					} 
 
-					//var_dump($post);
+					else {
+						//////////////////////////////////////////////
+						// part_m 안에 updateSerialPart 로 구현하자! 
+						//////////////////////////////////////////////
+						$sp->setPreviousLocation($op->work_location);
+						$sp->setCurrentLocation(gs2_encode_location($op->office));
+						$sp->setDateEnter($op->getDateFinish());
+						$sp->setNewFlag(FALSE);
+						$sp->setValidFlag(FALSE);
+
+						$this->part_model->_add($sp);
+					}
 				}
 
 				// 재고수량 변경
@@ -286,7 +301,7 @@ class Ajax extends CI_Controller
 			'type' => '1',
 			'next_status' => '4',
 			);
-		$this->work_model->addLog($op, $log_data, FALSE);
+		$this->work_model->addLog($op, $log_data, TRUE);
 		
 		echo 'operation complete is done successfully!';
 	}

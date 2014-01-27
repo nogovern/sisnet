@@ -84,17 +84,15 @@ define('GS2_OP_ENTER_STATUS_4', 	'완료');		// 완료
 define('GS2_OP_INSTALL_STATUS_1', 	'요청'); 
 define('GS2_OP_INSTALL_STATUS_2', 	'확정');
 define('GS2_OP_INSTALL_STATUS_3', 	'점포완료');
-define('GS2_OP_INSTALL_STATUS_4', 	'입력');
-define('GS2_OP_INSTALL_STATUS_5', 	'완료');
-define('GS2_OP_INSTALL_STATUS_6', 	'승인');
+define('GS2_OP_INSTALL_STATUS_4', 	'완료');
+define('GS2_OP_INSTALL_STATUS_5', 	'승인');
 
 // 철수
 define('GS2_OP_CLOSE_STATUS_1', 	'요청'); 
 define('GS2_OP_CLOSE_STATUS_2', 	'확정');
 define('GS2_OP_CLOSE_STATUS_3', 	'점포완료');
-define('GS2_OP_CLOSE_STATUS_4', 	'입력');
-define('GS2_OP_CLOSE_STATUS_5', 	'완료');
-define('GS2_OP_CLOSE_STATUS_6', 	'승인');
+define('GS2_OP_CLOSE_STATUS_4', 	'완료');
+define('GS2_OP_CLOSE_STATUS_5', 	'승인');
 
 // 장비 관련
 define('GS2_PART_TYPE_1', 	'시리얼');				// 시리얼관리장비

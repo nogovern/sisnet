@@ -25,6 +25,7 @@ $this->view('layout/navbar');
           <th>직전위치</th>
           <th>현재위치</th>
           <th>신품</th>
+          <th>가용</th>
           <th>상태</th>
           <th>최초설치일</th>
           <th>입고일</th>
@@ -36,14 +37,8 @@ $this->view('layout/navbar');
 <?php
 foreach($rows as $row):
   // row 색 지정
-  switch($row->is_valid) {
-    case 'Y':
-      $tr_class = '';
-      break;
-    case 'N':
-    default:
-      $tr_class = 'danger';
-  }
+  $tr_class = $row->isValid() ? '' : 'danger';
+
 ?>
         <tr class="<?=$tr_class?>">
           <td><?=$row->id?></td>
@@ -64,6 +59,7 @@ foreach($rows as $row):
             ?>
           </td>
           <td><?=$row->isNew() ? '신품' : '중고'?></td>
+          <td><?=$row->isValid() ? '' : '비가용'?></td>
           <td><?=$row->status?></td>
           <td><?=$row->getDateInstall()?></td>
           <td><?=$row->getDateEnter()?></td>

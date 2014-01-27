@@ -110,13 +110,17 @@ class Part_m extends MY_Model
 			return FALSE;
 		}
 
+		// flag 변수
+		$is_new = ($post['is_new'] == 'Y') ? TRUE : FALSE;
+		$is_valid = ($post['is_valid'] == 'Y') ? TRUE : FALSE;
+
 		$new = new Entity\SerialPart;
 		$new->setPart($part);
 		$new->setSerialNumber($post['serial_number']);				// 필수
 		$new->setCurrentLocation($post['current_location']);		// 필수
 		$new->setPreviousLocation($post['previous_location']);
-		$new->setNewFlag($post['is_new']);
-		$new->setValidFlag($post['is_valid']);
+		$new->setNewFlag($is_new);
+		$new->setValidFlag($is_valid);
 		$new->setDateModify();
 
 
@@ -128,12 +132,12 @@ class Part_m extends MY_Model
 			$new->setDateEnter($post['date_enter']);
 		}
 		
-		if(@!empty($post['date_install'])) {
+		if(isset($post['date_install'])) {
 			$new->setDateInstall($post['date_install']);
 		}
 
 		// 입고 사무소 찾기
-		$office = gs2_decode_location($new->current_location);
+		// $office = gs2_decode_location($new->current_location);
 
 		// 재고량 변경 (1/25 - 제거)
 		// $stock = $office->in($part, $post['qty'], 'new');
