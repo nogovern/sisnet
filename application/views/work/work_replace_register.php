@@ -12,7 +12,7 @@ $this->view('layout/navbar');
 <?php
     // 에러 출력
     echo validation_errors();
-    echo form_open('', 'enctype="multipart/form-data role="form" class="form-horizontal" ');
+    echo form_open('', 'enctype="multipart/form-data" role="form" class="form-horizontal" ');
 
     ////////////////
     // 교체 업무 기본 값 - hidden element

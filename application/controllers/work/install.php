@@ -74,12 +74,15 @@ class Install extends CI_Controller
 		$this->load->view('work_install_view', $data);
 	}
 
+	///////////////
+	// 설치 요청 등록
+	///////////////
 	public function add() {
 		$this->load->library('form_validation');
 		$this->load->helper('form');
 
-		$data['title'] = '설치 업무';
-		$data['user_id'] = $this->session->userdata('user_id');
+		$data['title'] = '설치 >> 요청서 작성';
+		$data['current'] = 'page-install';
 
 		// 규칙 설정
 		$this->form_validation->set_rules('store_name', '설치 점포', 'required');

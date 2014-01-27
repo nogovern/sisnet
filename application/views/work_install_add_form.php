@@ -1,6 +1,6 @@
 <?php
-$this->load->view('layout/header', array('title' => '설치 >> 설치 요청 양식'));
-$this->load->view('layout/navbar', array('current' => 'page-work-install'));
+$this->view('layout/header');
+$this->view('layout/navbar');
 ?>
 
     <!-- start of div.container -->
@@ -11,12 +11,12 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 <?php
         // 에러 출력
         echo validation_errors();
-        echo form_open('', 'role="form" class="form-horizontal" ');
-        echo form_hidden('store_id', '', ' id="store_id"');
+        echo form_open('', 'role="form" enctype="multipart/form-data" class="form-horizontal" ');
 
-        // test 용 
-        echo form_hidden('user_id', "$user_id", ' id="user_id"');        
+        // echo form_hidden('store_id', '', ' id="store_id"');
 ?>
+          <input type="hidden" name="store_id" id="store_id" value="">
+
           <h2><span class="fa fa-pencil-square-o"></span> 설치 요청 양식</h2>
             <fieldset class="col-sm-7">
               <legend>설치 양식</legend>
@@ -97,16 +97,16 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 
             </fieldset>
 
-            <div class="col-sm-5" style="padding-top:30px;">
+            <!-- 점포 정보 -->
+            <div id="store_info" class="col-sm-5" style="padding-top:30px;">
               <div class="panel panel-default">
                 <div class="panel-heading">점포 정보</div>
                 <div class="panel-body">
                   선택하신 점포가 없습니다
                 </div>
               </div>
-
             </div>
-          <div class="clearfix"></div>
+            <div class="clearfix"></div>
 
           <p class="row col-sm-offset-2">
             <button id="btn_save" class="btn btn-primary" type="submit">저 장</button>
@@ -198,6 +198,10 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
     function callback_store_info(id, name) {
       $(":hidden[name=store_id]").val(id);
       $("#store_name").val(name);
+
+      // 점포 정보
+      var url2 = "<?=site_url("admin/store/showTableFormat")?>" + "/" + id;
+      $("#store_info .panel-body").load(url2);
     }
 
     // 점포 검색 창에서 점포 신규 등록시 
@@ -259,6 +263,10 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
   </div>
 </div><!-- /.modal -->
 
+<?php
+// $this->view('common/modla_store_info');
+?>
+
 <script type="text/javascript">
   $(document).ready(function(){
     $("#btn_modal_store_register").click(function(e){
@@ -280,5 +288,5 @@ $this->load->view('layout/navbar', array('current' => 'page-work-install'));
 </script>
 
 <?php
-$this->load->view('layout/footer');
+$this->view('layout/footer');
 ?>
