@@ -35,7 +35,7 @@
             <label class="form-label col-sm-4">납품 예정일</label>
             <div class="col-sm-6">
               <div class="input-group">
-                <input type="text" id="date_work" name="date_work" class="form-control date-picker">
+                <input type="text" id="date_work" name="date_work" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
                 <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
               </div>
             </div>
