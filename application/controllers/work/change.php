@@ -52,6 +52,13 @@ class Change extends CI_Controller
 			$this->load->view('work/work_change_request_form', $data);
 		} else {
 			gs2_dump($_POST);
+			
+			$post_data = array();
+			$post_data['op_type'] = '900';
+
+			$_POST['extras'];			// 업무 목록 
+
+			$this->work_model->addOperation('900', $post_data);
 		}
 		
 	}
