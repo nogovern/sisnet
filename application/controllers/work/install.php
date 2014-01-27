@@ -23,7 +23,9 @@ class Install extends CI_Controller
 	}
 
 	public function lists() {
-		$data['title'] = '설치';
+		$data['title'] = '설치 >> 업무 리스트';
+		$data['current'] = 'page-install';
+
 		$data['type'] = '';
 		$data['rows'] = $this->work_model->getInstallList();
 
@@ -42,7 +44,9 @@ class Install extends CI_Controller
 			die('에러! 업무 번호는 필수입니다');
 		}
 
-		$data['title'] = '설치';
+		$data['title'] = '설치 >> 상세보기';
+		$data['current'] = 'page-install';
+
 		$data['_config'] = $this->config->item('gs2');
 
 		$work = $this->work_model->get($id);
