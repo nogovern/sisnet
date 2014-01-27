@@ -378,7 +378,23 @@ $(document).ready(function(){
     }// end of if
   });
 
-});
+  // 사용자 메모 출력
+  gs2_display_memo("#memo_panel");
+
+});// end of ready
+
+/////////////
+// 공통
+/////////////
+function gs2_display_memo(where, op_id) {
+  var load_url;
+  if(op_id === undefined)
+    op_id = operation.id;
+
+  load_url = '<?=site_url("work/ajax/loadUserMemo")?>' + '/' + op_id;
+  $(where).load(load_url);
+}
+
 </script>
 
 

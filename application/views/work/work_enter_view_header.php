@@ -137,18 +137,8 @@
       </table>
     </div>
 
-    <div class="col-sm-4" style="overflow-y: auto; height: 350px;">
-      <ul class="list-group">
-<?php
-foreach($logs as $log):
-?>
-        <li class="list-group-item">
-          <p class="help-block"><?php echo $log->user->name . "   " . $log->getDateRegister(TRUE); ?></p>
-          <?php echo nl2br($log->content); ?><span class="badge"><?=$log->getDateRegister(TRUE);?></span>
-        </li>
-<?php
-endforeach;
-?>
-      </ui>
+    <!-- 유저 메모 -->
+    <div id="memo_panel" class="col-sm-4" style="overflow-y: auto; height: 340px;">
     </div>
+
   </div><!-- end of row -->

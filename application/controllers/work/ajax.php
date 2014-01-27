@@ -406,6 +406,26 @@ class Ajax extends CI_Controller
 		echo '초기화 완료';
 	}
 	
+
+	//////////////////////
+	// 업무 메모 리스트 
+	//////////////////////
+	public function loadUserMemo($op_id) {
+		$op = $this->work_model->get($op_id);
+		$data['logs'] = $this->work_model->getLogs($op);
+
+		$this->load->view('common/work_memo_list', $data);
+	}
+
+	///////////////////
+	// 업무 log 리스트
+	///////////////////
+	public function loadOperationLog($op_id) {
+		$op = $this->work_model->get($op_id);
+		$data['logs'] = $this->work_model->getLogs($op);
+		
+	}
 }
+
 
 
