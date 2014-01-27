@@ -8,6 +8,22 @@
  */
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+////////////////
+// custom dump
+////////////////
+if (!function_exists('gs2_dump')) {
+    function gs2_dump($var, $return=FALSE) {
+        $output = "<pre>";
+        $output .= print_r($var, TRUE);
+        $output .= "</pre>";
+
+        if(!$return)
+            echo $output;
+        else 
+            return $output;
+    }
+}
+
 // 작업종류 명을 리턴
 if (!function_exists('gs2_get_work_name')) {
 	function gs2_get_work_name($type) {
