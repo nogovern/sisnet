@@ -42,13 +42,36 @@ class Change extends CI_Controller
 			->from('\Entity\Operation', 'w')
 			->where('w.type >= 300')
 			->andWhere('w.type < 400')
-			->andWhere('w.status >= 3')
+			->andWhere('w.status >= 4')
 			->orderBy('w.id', 'DESC');
 
 		$rows = $qb->getQuery()->getResult();
 		$data['rows'] = $rows;
+
+		if( $this->form_validation->run() === FALSE) {
+			$this->load->view('work/work_change_request_form', $data);
+		} else {
+			gs2_dump($_POST);
+		}
 		
-		$this->load->view('work/work_change_request_form', $data);
+	}
+
+	public function view($id) {
+		$data['title'] = '장비 상태변경 변경 - 등록';
+		$data['current'] = 'page-changer';
+
+		$op = $this->work_model->get($id);
+		if(!$op) {
+			alert("요청하신 업무가 존재하지 않습니다.");
+		}
+
+		$em = $this->work_model->getEntityManager();
+		$sub_ops = $em->getRepository('Entity\OperaionExtra')->findBy(array('operation_id' => $id));
+
+		$data['op']	= $op;
+		$data['sub_ops'] = $sub_ops;
+
+		$this->load->view('work/work_change_view', $data);
 	}
 
 
