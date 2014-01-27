@@ -41,8 +41,9 @@
           dataType: "html",
         })
           .done(function(response) {
-            alert(response);
             $("#modal_memo").modal("hide");
+            // 메모 refresh
+            gs2_display_memo('#memo_panel');
           })
           .fail(function(xhr, textStatus){
             alert("Request failed: " + textStatus);
