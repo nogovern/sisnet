@@ -44,8 +44,9 @@ class Replace extends CI_Controller
 		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control required"');
 
 		// 규칙 설정		
-		$this->form_validation->set_rules('office_id', '설치 사무소', 'required|greater_than[0]');
-		$this->form_validation->set_rules('store_id', '설치 점포', 'required');
+		$this->form_validation->set_rules('office_id', '담당 사무소', 'required|greater_than[0]');
+		$this->form_validation->set_rules('store_id', '교체 점포', 'required');
+		$this->form_validation->set_rules('store_name', '교체 점포명', 'required');
 		$this->form_validation->set_rules('date_open', '설치 요청일', 'required');
 		$this->form_validation->set_rules('date_close', '철수 요청일', 'required');
 
@@ -53,9 +54,9 @@ class Replace extends CI_Controller
 			$this->load->view('work/work_replace_register', $data);
 
 		} else {
-			
+			echo 'good';
+			gs2_dump($_POST);
 		}
-
 	}
 
 	public function view($id) {

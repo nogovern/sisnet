@@ -13,9 +13,14 @@ $this->view('layout/navbar');
     // 에러 출력
     echo validation_errors();
     echo form_open('', 'enctype="multipart/form-data role="form" class="form-horizontal" ');
-    echo form_hidden('store_id', '', ' id="store_id"');
 
+    ////////////////
+    // 교체 업무 기본 값 - hidden element
+    ////////////////
 ?>
+      <input type="hidden" name="store_id" id="store_id" value="">
+      <input type="hidden" name="op_type" id="op_type" value="1">
+
       <fieldset class="col-sm-7">
         <legend>교체 양식</legend>
 
@@ -28,27 +33,34 @@ $this->view('layout/navbar');
             <button type="button" id="btn_search_store" class="btn btn-info">검색</button>
           </div>
         </div>
-
+        
         <div class="form-group">
-          <label class="control-label col-sm-3">점포 폐점일</label>
+          <label class="control-label col-sm-3">설치요청일</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly>
+              <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control" id="date_open_hour" name="date_open_hour">
+              <?php for($i=0; $i < 25; $i++):?>
+              <option value="<?=$i?>"><?=$i?>시</option>
+              <?php endfor; ?>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="control-label col-sm-3">철수요청일</label>
           <div class="col-sm-6">
             <div class="input-group">
                 <input type="text" id="date_close" name="date_close" class="form-control date-picker" readonly>
                 <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-3">교체 일시</label>
-          <div class="col-sm-6">
-            <div class="input-group">
-              <input type="text" id="date_request" name="date_request" class="form-control date-picker" readonly>
-              <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
-            </div>
-          </div>
           <div class="col-sm-2">
-            <select class="form-control" name="date_request_hour">
+            <select class="form-control" id="date_close_hour" name="date_close_hour">
               <?php for($i=0; $i < 25; $i++):?>
               <option value="<?=$i?>"><?=$i?>시</option>
               <?php endfor; ?>
@@ -56,6 +68,7 @@ $this->view('layout/navbar');
           </div>
         </div>
 
+        <!-- 교체 업무는 type 이 없음 
         <div class="form-group">
           <label class="control-label col-sm-3">교체 형태</label>
           <div class="col-sm-5">
@@ -67,6 +80,7 @@ $this->view('layout/navbar');
             </select>
           </div>
         </div>
+        -->
 
         <div class="form-group">
           <label class="control-label col-sm-3">교체 사무소</label>
@@ -191,7 +205,7 @@ $(document).ready(function(){
       },
       store_name: "required",
       date_close: "required",
-      date_request: "required"
+      date_open: "required"
     }, 
     submitHandler: function(form) {
       form.submit();
