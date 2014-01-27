@@ -118,8 +118,13 @@ class Store extends CI_Controller {
 			alert("올바르지 않은 접근입니다");
 			exit;
 		}
+	}
 
+	// 테이블 형식으로 점포 정보 보이기
+	public function showTableFormat($id) {
+		$store = $this->store_model->get($id);
 
+		$this->load->view('common/store_info_table', array( 'sinfo' => $store));
 	}
 
 	public function ajax($action) {
@@ -163,7 +168,6 @@ class Store extends CI_Controller {
 	            	'<a href="#" class="select_me">[선택]</a>'
 	            );
 	        }
-
 	        echo $output;
 		}
 
