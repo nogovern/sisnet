@@ -43,6 +43,7 @@ class Change extends CI_Controller
 			->where('w.type >= 300')
 			->andWhere('w.type < 400')
 			->andWhere('w.status >= 4')
+			->andWhere("w.is_complete = 'N' ")
 			->orderBy('w.id', 'DESC');
 
 		$rows = $qb->getQuery()->getResult();

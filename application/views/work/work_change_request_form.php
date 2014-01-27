@@ -24,7 +24,7 @@ $this->view('layout/navbar');
   </table>
   
   <!-- 철수 작업 목록 -->
-  <table class="table">
+  <table class="table" id="target_operations">
     <thead>
       <tr class="warning">
         <th>선택</th>
@@ -41,7 +41,7 @@ $this->view('layout/navbar');
 foreach($rows as $row):
 ?>      
       <tr>
-        <td><input type="checkbox" name="sel" value="1"></td>
+        <td><input type="checkbox" name="tartget_op[]" value="<?=$row->id?>"></td>
         <td><?=$row->id?></td>
         <td><?=$row->getDateFinish()?></td>
         <td><?=gs2_op_type($row->type)?></td>
@@ -130,6 +130,17 @@ $(document).ready(function(){
     $("#modal_select_op1 .modal-body").load(url, function(result){
       $("#modal_select_op1").modal('show');
     });
+  });
+
+
+  // 예제
+  $(form).submit(function(e){
+    // 선택된 checkbox 값을 배열에 저장 하는 방법
+    var arr = $.map($('#target_operations :checkbox:checked'), function(e,i) {
+      return +e.value;
+    });
+
+    console.log(arr.toString());
   });
 });
 </script>
