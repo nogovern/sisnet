@@ -39,7 +39,7 @@
             <label class="form-label col-sm-4">작업 예정일</label>
             <div class="col-sm-6">
               <div class="input-group">
-                <input type="text" id="date_work" name="date_work" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
+                <input type="text" id="date_expect" name="date_expect" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
                 <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
               </div>
             </div>
@@ -70,7 +70,7 @@
 
       var $form = $("#modal_request_ok form");
       var $worker_id = $("#worker_id");
-      var $date_work = $("#date_work");
+      var $date_expect = $("#date_expect");
 
       if($worker_id.val() < 1) {
         alert('필수 항목 입니다');
@@ -78,9 +78,9 @@
         return false;
       }
 
-      if($date_work.val() == '') {
+      if($date_expect.val() == '') {
         alert('작업 예정일은 필수 항목 입니다');
-        $date_work.focus();
+        $date_expect.focus();
         return false;
       }
 
@@ -94,7 +94,7 @@
             id : operation.id,
             office_id: $("#office_id").val(),
             worker_id: $worker_id.val(),
-            date_work: $date_work.val(),
+            date_work: $date_expect.val(),
             memo: $("textarea[name=memo]", this).val(),
             "csrf_test_name": $.cookie("csrf_cookie_name")
           },
