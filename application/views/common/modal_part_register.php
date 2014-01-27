@@ -248,6 +248,15 @@ $(document).ready(function(){
   $(document).on("click", "#btn_part_add", function(e){
     e.stopPropagation();
     
+    // 신품 or 중고(Y/N)
+    var is_new = $(":radio[name=is_new]:checked").val();
+    if(is_new === undefined) {
+      alert('장비 신품 여부를 선택하세요');
+      $(":radio[name=is_new]").focus();
+      return false;
+    }
+
+    // 수량 확인
     var qty = parseInt($("#part_qty").val(), 10);
     if(!qty || qty < 1) {
       alert('수량을 입력하세요');
@@ -255,11 +264,11 @@ $(document).ready(function(){
       return false;
     }
 
-    // 신품 or 중고(Y/N)
-    var is_new = $(":radio[name=is_new]:checked").val();
-    if(is_new === undefined) {
-      alert('장비 신품 여부를 선택하세요');
-      $(":radio[name=is_new]").focus();
+    // 요청 수량과 재고수량 비교
+    var max_qty = (is_new == 'Y') ? item.qty_new : item.qty_used;
+    if(qty > max_qty) {
+      alert('재고 수량을 넘을 수 없습니다');
+      $("#part_qty").val('').focus();
       return false;
     }
 
