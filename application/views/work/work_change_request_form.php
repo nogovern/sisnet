@@ -95,7 +95,7 @@ $(document).ready(function(){
       alert('상태변경을 요청 할 1개이상의 작업(업무)를 선택하셔야 합니다');
       return false;
     }
-    console.log(arr.toString());
+    gs2_console(arr.toString());
   });
 });
 </script>
