@@ -84,8 +84,8 @@ class Change extends CI_Controller
 				$em->persist($new);
 				//$this->setOperation
 			}
-
 			$em->flush();
+			redirect('work/change');
 		}
 	}
 
