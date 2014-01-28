@@ -138,7 +138,8 @@ function makeIt() {
     }
     sums[i] = sum;
   }
-  console.log(sums);
+
+  gs2_console(sums);
 }
 
 function checkCount() {

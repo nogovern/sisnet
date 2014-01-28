@@ -55,6 +55,10 @@
     <script src="<?=base_url()?>assets/js/bootstrap.min.js"></script>
     <script src="<?=base_url()?>assets/js/jquery.cookie.js"></script>
     <script src="<?=base_url()?>assets/js/jquery.colorbox.js"></script>
+
+    <!-- common js file -->
+    <script src="<?=base_url()?>assets/js/common.js"></script>
+    
   </head>
 
   <body>

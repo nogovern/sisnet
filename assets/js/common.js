@@ -4,3 +4,9 @@
  * @author	JangKwangHee
  * @Date	2014.01.27
  */
+
+function gs2_console(msg) {
+	if(window.console) {
+		console.log(msg);
+	}
+}
