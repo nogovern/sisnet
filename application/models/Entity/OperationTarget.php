@@ -27,9 +27,6 @@ class OperationTarget
 	 */
 	protected $target;
 
-	/** @Column(type="string", length=1) */
-	protected $is_complete = 'N';
-
 	//=====================================================
 	
 	public function __construct($op, $target) {

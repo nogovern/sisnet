@@ -19,17 +19,17 @@ class Change extends CI_Controller
 
 	public function lists() {
 		$data['title'] = '장비 상태변경 업무';
-		$data['current'] = 'page-changer';
+		$data['current'] = 'page-change';
 
 		$data['status'] = '';
 		$data['rows'] = $this->work_model->getChangeList();
-		
+
 		$this->load->view('work/work_change_list', $data);
 	}
 
 	public function register() {
 		$data['title'] = '장비 상태변경 변경 - 등록';
-		$data['current'] = 'page-changer';
+		$data['current'] = 'page-change';
 
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -49,24 +49,38 @@ class Change extends CI_Controller
 		$rows = $qb->getQuery()->getResult();
 		$data['rows'] = $rows;
 
+		// 규칙 설정
+		$this->form_validation->set_rules('op_type', '작업 종류', 'required');
+
 		if( $this->form_validation->run() === FALSE) {
 			$this->load->view('work/work_change_request_form', $data);
 		} else {
-			gs2_dump($_POST);
-			
+			// gs2_dump($_POST);
 			$post_data = array();
-			$post_data['op_type'] = '900';
+			$post_data['op_type'] = $this->input->post('op_type');
+			$post_data['office_id'] = $this->session->userdata('office_id');
+			$post_data['date_request'] = '';
+			$post_data['memo']	= '';
 
-			$_POST['extras'];			// 업무 목록 
+			// 새로 생성된 변경작업 Entity
+			$main_op = $this->work_model->addOperation('900', $post_data);
+			
+			// 대상 작업 목록
+			$ops = $this->input->post('target_ops');
+			foreach($ops as $target_id) {
+				$target = $em->getReference('Entity\Operation', $target_id);
+				$new = new Entity\OperationTarget($main_op, $target);
+				$em->persist($new);
+				//$this->setOperation
+			}
 
-			$this->work_model->addOperation('900', $post_data);
+			$em->flush();
 		}
-		
 	}
 
 	public function view($id) {
 		$data['title'] = '장비 상태변경 변경 - 등록';
-		$data['current'] = 'page-changer';
+		$data['current'] = 'page-change';
 
 		$op = $this->work_model->get($id);
 		if(!$op) {
@@ -74,10 +88,10 @@ class Change extends CI_Controller
 		}
 
 		$em = $this->work_model->getEntityManager();
-		$sub_ops = $em->getRepository('Entity\OperaionExtra')->findBy(array('operation_id' => $id));
+		$targets = $em->getRepository('Entity\OperationTarget')->findBy(array('operation' => $op));
 
 		$data['op']	= $op;
-		$data['sub_ops'] = $sub_ops;
+		$data['targets'] = $targets;
 
 		$this->load->view('work/work_change_view', $data);
 	}

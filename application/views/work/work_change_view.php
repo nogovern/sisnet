@@ -8,7 +8,7 @@ $this->view('layout/navbar');
   <div class="row">
 
   <div class="page-header">
-    <h2><span class="fa fa-desktop"></span>&nbsp;장비 상태 변경서 :: 등록</h2>
+    <h2><span class="fa fa-desktop"></span>&nbsp;장비 상태 변경서 :: 상태저장</h2>
   </div>
 
   <table class="table table-condensed">
@@ -23,39 +23,9 @@ $this->view('layout/navbar');
     </tbody>
   </table>
   
-  <!-- 철수 작업 목록 -->
-  <table class="table">
-    <thead>
-      <tr class="warning">
-        <th>선택</th>
-        <th>#</th>
-        <th>완료일</th>
-        <th>구분</th>
-        <th>상태</th>
-        <th>대상점포</th>
-        <th>담당사무소</th>
-      </tr>
-    </thead>
-    <tbody>
-<?php
-foreach($rows as $row):
-?>      
-      <tr>
-        <td><input type="checkbox" name="sel" value="1"></td>
-        <td><?=$row->id?></td>
-        <td><?=$row->getDateFinish()?></td>
-        <td><?=gs2_op_type($row->type)?></td>
-        <td><?=constant('GS2_OP_CLOSE_STATUS_' . $row->status)?></td>
-        <td><?=gs2_decode_location($row->work_location)->name?></td>
-        <td><?=$row->office->name?></td>
-      </tr>
-<?php
-endforeach;
-?>      
-    </tbody>
-  </table>
 
   <!-- 철수 장비 변경 테이블-->
+  <form>
   <table class="table table-bordered">
     <thead>
       <tr class="active">
@@ -71,12 +41,14 @@ endforeach;
     </thead>
     <tbody>
 <?php
-foreach($rows as $row):
+foreach($targets as $t):
+  $row = $t->target;        // 대상 작업 Entity
+
   $item_count = count($row->getItems());
   $idx = 0;
   foreach($row->getItems() as $item) {
 ?>      
-      <tr data-opid="<?=$row->id?>">
+      <tr data-opid="<?=$row->id?>" data-itemid="<?=$item->id?>" data-qty="<?=$item->qty_request?>" class="op-item">
 <?php
     if($item_count == 1 && $idx < $item_count) {
 ?> 
@@ -87,10 +59,10 @@ foreach($rows as $row):
 ?>
         <td rowspan="<?=$item_count?>"><?=$row->operation_number?></td>
 <?php    
+      }
     }
-  }
 
-  $input_name = 'items['. $item->id .']'; 
+    $input_name = 'items['. $item->id .']'; 
 ?> 
         <td><?=$item->serial_number?></td>
         <td><?=$item->part->category->name?></td>
@@ -104,7 +76,7 @@ foreach($rows as $row):
         <td>삭제</td>
       </tr>
 <?php
-  $idx = $idx + 1;
+    $idx = $idx + 1;
   }
 endforeach;
 ?>
@@ -112,46 +84,95 @@ endforeach;
   </table>
 
   <div>
-    <button id="btnOpen" type="button" class="btn btn-primary" data-target="#modal_select_op1" data-toggle="modal">Open</button>
+    <button type="submit" class="btn btn-primary">완료</button>
+    <button type="button" class="btn btn-default" >리스트</button>
+    <button id="btnSample" type="button" class="btn btn-info" data-target="#modal_select_op1" data-toggle="modal">철수 완료 작업 리스트 불러오기</button>
   </div>
+  </form>
 
   </div><!-- /end of row -->
 </div><!-- start of div.container -->
+
+<!-- 공통 modal 사용하기 위한 container -->
+<div class="modal fade" id="modal_container" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div><!-- /.modal -->
 
 <!-- jquery form validation -->
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function(){
-  // ajax 로 외부 페이지 load 하여 modal 여는 방법
-  $("#btnOpen").click(function(){
-    var url = "<?=site_url('tests/opnumber')?>";
-    $("#modal_select_op1 .modal-body").load(url, function(result){
-      $("#modal_select_op1").modal('show');
+var items = [];
+var sums = [];
+var requests = [];
+
+function makeIt() {
+  $("tr.op-item").each(function(){
+    var idx = $(this).data('itemid');
+    items[idx] = [];
+    $("input", this).each(function(n){ 
+      items[idx][n] = ($(this).val()); 
     });
+  });
+
+  // 1번만 실행
+  if(requests.length == 0) {
+    $("tr.op-item").each(function(){
+      var idx = $(this).data('itemid');
+      requests[idx] = parseInt($(this).data('qty'), 10);
+    });
+  }
+
+  // console.log(typeof items);
+  var sum,
+      j;
+
+  for(var i in items) {
+    sum = 0;
+    for(j=0; j < items[i].length; j++) {
+      sum += parseInt(items[i][j], 10);
+    }
+    sums[i] = sum;
+  }
+  console.log(sums);
+}
+
+function checkCount() {
+
+}
+
+$(document).ready(function(){
+
+  // 장비 수량들 배열 만들기
+  $("input").change(makeIt);
+  makeIt();
+
+  $("#btnSample").click(function(e){
+    var url = '<?=site_url('tests/modal')?>'; 
+    $('#modal_container .modal-content').load(url, function(){
+      $("#modal_container").modal('show');
+    });
+  });
+
+  // 전송
+  $("form").submit(function(){
+    
+    $("tr.op-item input").css('background-color', '');
+    for(var i in items) {
+      if(sums[i] !== requests[i]) {
+        $("tr[data-itemid="+ i +"] input").css('background-color', 'yellow');
+        $("tr[data-itemid="+ i +"] input").first().focus();
+        alert('각 상태의 합이 수량과 같아야 합니다');
+        return false;
+      }
+    }
   });
 });
 </script>
-
-<!-- 철수완료 작업 리스트 modal dialog -->
-<div class="modal fade" id="modal_select_op1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">철수완료 작업 리스트</h4>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">저장</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-      </div>
-    </div>
-  </div>
-</div><!-- /.modal -->
 
 <?php
 $this->view('layout/footer');

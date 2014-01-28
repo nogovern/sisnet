@@ -77,11 +77,11 @@ class Work_m extends MY_Model {
 	 */
 	protected function _getOpList($type) {
 		$qb = $this->em->createQueryBuilder();
-		$qb->select('w')
-			->from('\Entity\Operation', 'w')
-			->where('w.type >= :type')
-			->andWhere('w.type < :type2')
-			->orderBy('w.id', 'DESC');
+		$qb->select("w")
+			->from("\Entity\Operation", "w")
+			->where("w.type >= :type")
+			->andWhere("w.type < :type2")
+			->orderBy("w.id", "DESC");
 
 		$qb->setParameter('type', $type);
 		$qb->setParameter('type2', $type+100);
@@ -158,7 +158,14 @@ class Work_m extends MY_Model {
 
 	// 상태변경 업무 목록
 	public function getChangeList() {
-		return $this->_getOpList(900);
+		// return $this->_getOpList(900);
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('\Entity\Operation', 'w')
+			->where('w.type >= 900')
+			->orderBy('w.id', 'DESC');
+
+		return $qb->getQuery()->getResult();
 	}
 
 	// 교체 업무 목록

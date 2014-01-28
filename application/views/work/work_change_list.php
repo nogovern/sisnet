@@ -60,8 +60,8 @@ $this->view('layout/navbar');
                 <td>0</td>
                 <td><?=$row->getDateRegister();?></td>
                 <td><?=$row->getDateFinish();?></td>
-                <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
-                <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/close/view/') . '/' . $row->id ?>">보기</button></td>
+                <td></td>
+                <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/change/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php
   endforeach;
