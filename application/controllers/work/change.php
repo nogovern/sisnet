@@ -98,14 +98,79 @@ class Change extends CI_Controller
 			alert("요청하신 업무가 존재하지 않습니다.");
 		}
 
-		$em = $this->work_model->getEntityManager();
-		$targets = $em->getRepository('Entity\OperationTarget')->findBy(array('operation' => $op));
+		// 규칙 설정
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('op_id', '작업 ID', 'required');
 
-		$data['op']	= $op;
-		$data['targets'] = $targets;
 
-		$this->load->view('work/work_change_view', $data);
+		//$targets = $em->getRepository('Entity\OperationTarget')->findBy(array('operation' => $op));
+		if($this->form_validation->run() === FALSE) {
+			$data['op']	= $op;
+			$this->load->view('work/work_change_view', $data);
+
+		} else {
+			// gs2_dump($_POST);
+			$em = $this->work_model->getEntityManager();
+			$this->load->model('part_m', 'part_model');
+			
+			///////////////////////
+			// 현재 작업 상태 변경
+			///////////////////////
+			$op_data['date_finish'] = '';
+			$op_data['status'] = '2';
+			$op_data['is_complete'] = TRUE;
+			
+			$this->work_model->updateOperation($op, $op_data);
+
+			////////////////////////////////////////////
+			// target 업무의 is_complete 를 'Y' 로 변경한다 //
+			////////////////////////////////////////////
+			foreach($op->targets as $t) {
+				$this->work_model->updateOperation($t->target, array('is_complete' => TRUE));
+			}
+			
+			/////////////////////////////////
+			// target 업무 내 장비 재고량을 변경한다 //
+			/////////////////////////////////
+			foreach($_POST['items'] as $i => $arr) {
+				// 철수업무  장비 
+				$item = $em->getRepository('Entity\OperationPart')->find($i);
+				$stock = $item->part->getStock($op->office->id);
+
+				// 가용 수량
+				if($arr[0] > 0) {
+					$stock->increase('used', intval($arr[0]));
+					// 시리얼장비일 경우 처리!
+					if($item->part_type == '1') {
+
+					}
+				}
+				// 수리 대기 
+				elseif( $arr[1] > 0) {
+					$stock->increase('s500', intval($arr[1]));
+				}
+				// 폐기 대기 
+				elseif( $arr[2] > 0) {
+					$stock->increase('s600', intval($arr[2]));
+				}
+				// 점검전 수량에서 뺴기
+				$stock->increase('s900', intval($item->qty_request));
+
+				$this->work_model->_add($stock);
+			}
+			
+			///////////////
+			// log 기록 //
+			///////////////
+			$log_data = array(
+				'type'		=> '1',
+				'content'	=> '상태변경 완료',
+			);
+			$this->work_model->addLog($op, $log_data, TRUE);
+		}
+
 	}
 
-
 }
+

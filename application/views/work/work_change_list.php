@@ -45,6 +45,7 @@ $this->view('layout/navbar');
     }
 
     $item_count = 0;
+    // $target 은 gs2_operation_targets 의 row 에 해당
     foreach($row->targets as $target) {
       // gs2_dump($target->target->id);
       $item_count += count($target->target->getItems());

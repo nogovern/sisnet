@@ -14,18 +14,23 @@ $this->view('layout/navbar');
   <table class="table table-condensed">
     <tbody>
       <tr>
-        <td class="col-sm-3">작업번호: XXXXX</td>
-        <td class="col-sm-3">등록일: XXXXX</td>
-        <td class="col-sm-2">재고사무소: XXXXX</td>
+        <td class="col-sm-3">작업번호: <?php echo $op->operation_number; ?></td>
+        <td class="col-sm-3">등록일: <?php echo $op->getDateRegister(); ?></td>
+        <td class="col-sm-2">재고사무소: <?php echo $op->office->name; ?></td>
         <td class="col-sm-2">수량: </td>
-        <td class="col-sm-2">완료시간: </td>
+        <td class="col-sm-2">완료시간: <?php echo $op->getDateFinish(); ?></td>
       </tr>
     </tbody>
   </table>
   
 
   <!-- 철수 장비 변경 테이블-->
-  <form>
+<?php
+// 에러 출력
+echo validation_errors(); 
+echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
+?>
+  <input type="hidden" name="op_id" value="<?=$op->id?>">
   <table class="table table-bordered">
     <thead>
       <tr class="active">
@@ -41,7 +46,7 @@ $this->view('layout/navbar');
     </thead>
     <tbody>
 <?php
-foreach($targets as $t):
+foreach($op->targets as $t):
   $row = $t->target;        // 대상 작업 Entity
 
   $item_count = count($row->getItems());

@@ -10,11 +10,11 @@ $this->view('layout/navbar');
     <div class="page-header">
       <h2><span class="fa fa-desktop"></span>&nbsp;장비 상태 변경서 :: 등록</h2>
     </div>
-  <?php
-  // 에러 출력
-  echo validation_errors(); 
-  echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
-  ?>
+<?php
+// 에러 출력
+echo validation_errors(); 
+echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
+?>
       <input type="hidden" name="op_type" value="900">
       <table class="table table-condensed">
         <tbody>
