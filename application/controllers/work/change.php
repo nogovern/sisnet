@@ -46,8 +46,19 @@ class Change extends CI_Controller
 			->andWhere("w.is_complete = 'N' ")
 			->orderBy('w.id', 'DESC');
 
+		// 결과 중 gs2_operation_targets 에 등록 안된것만 필터링
+		$data['rows'] = array();
 		$rows = $qb->getQuery()->getResult();
-		$data['rows'] = $rows;
+		foreach($rows as $row) {
+			$find = $em->getRepository('Entity\OperationTarget')->findOneBy(array('target' => $row));
+			if(!$find) {
+				$data['rows'][] = $row;
+			}
+		}
+
+		if(!count($data['rows'])) {
+			alert('상태변경 등록 할 철수업무가 없습니다');
+		}
 
 		// 규칙 설정
 		$this->form_validation->set_rules('op_type', '작업 종류', 'required');

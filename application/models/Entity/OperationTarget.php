@@ -16,13 +16,13 @@ class OperationTarget
 	protected $id;
 
 	/**
-	 * @OneToOne(targetEntity="Operation")
+	 * @ManyToOne(targetEntity="Operation", inversedBy="targets")
 	 * @JoinColumn(name="operation_id", referencedColumnName="id")
 	 */
 	protected $operation;
 
 	/**
-	 * @ManyToOne(targetEntity="Operation", inversedBy="targets")
+	 * @OneToOne(targetEntity="Operation")
 	 * @JoinColumn(name="target_operation_id", referencedColumnName="id")
 	 */
 	protected $target;

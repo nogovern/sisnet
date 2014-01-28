@@ -87,12 +87,18 @@ class Operation
 	 */
 	protected $logs;
 
+	/**
+	 * @OneToMany(targetEntity="OperationTarget", mappedBy="operation")
+	 */
+	protected $targets;
+
 	//////////
 	// 생성자 //
 	//////////
 	public function __construct() {
 		$this->items = new ArrayCollection();
 		$this->logs = new ArrayCollection(); 
+		$this->targets = new ArrayCollection(); 
 	}
 
 
