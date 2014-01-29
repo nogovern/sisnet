@@ -39,8 +39,8 @@ $this->view('layout/navbar');
   foreach($rows as $row):
     switch($row->status) {
       case '1': $label_color = 'label-default';break;
-      case '2': $label_color = 'label-info';break;
-      case '3': $label_color = 'label-success';break;
+      case '2': $label_color = 'label-success';break;
+      case '3': $label_color = 'label-info';break;
       default : $label_color = 'label-default';break;
     }
 
@@ -58,7 +58,7 @@ $this->view('layout/navbar');
                 <td><?=$row->user->name?></td>
                 <td><?=$row->office->name?></td>
                 <td>
-                  <span class="label <?=$label_color?>"><?=constant("GS2_OP_CLOSE_STATUS_" .$row->status)?></span>
+                  <span class="label <?=$label_color?>"><?=constant("GS2_OP_CHANGE_STATUS_" .$row->status)?></span>
                 </td>
                 <td><?php echo $item_count; ?></td>
                 <td><?=$row->getDateRegister();?></td>

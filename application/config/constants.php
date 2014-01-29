@@ -96,6 +96,10 @@ define('GS2_OP_CLOSE_STATUS_3', 	'점포완료');
 define('GS2_OP_CLOSE_STATUS_4', 	'완료');
 define('GS2_OP_CLOSE_STATUS_5', 	'승인');
 
+// 상태변경
+define('GS2_OP_CHANGE_STATUS_1', 	'생성'); 
+define('GS2_OP_CHANGE_STATUS_2', 	'완료');
+
 // 장비 관련
 define('GS2_PART_TYPE_1', 	'시리얼');				// 시리얼관리장비
 define('GS2_PART_TYPE_2', 	'수량');				// 수량관리장비
