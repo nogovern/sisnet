@@ -31,11 +31,11 @@ class Replace extends CI_Controller
 	// 요청서 등록
 	/////////////
 	public function register() {
-		$data['title'] = '교체 업무 >> 요청서 등록';
-		$data['current'] = 'page-replace';
-
 		$this->load->library('form_validation');
 		$this->load->helper('form');
+
+		$data['title'] = '교체 업무 >> 요청서 등록';
+		$data['current'] = 'page-replace';
 
 		// 사무소 select 생성
 		$this->load->model('office_m', 'office_model');
@@ -54,8 +54,32 @@ class Replace extends CI_Controller
 			$this->load->view('work/work_replace_register', $data);
 
 		} else {
-			echo 'good';
 			gs2_dump($_POST);
+			$post_data = $this->input->post();
+
+			// 설치 업무 생성
+			$post_data['op_type'] = '205';
+			$post_data['date_request'] = $post_data['date_open'];
+			$install_op = $this->work_model->createOperation('205', $post_data, TRUE);
+			
+			// 철수 업무 생성
+			$post_data['op_type'] = '305';
+			$post_data['date_request'] = $post_data['date_close'];
+			$close_op = $this->work_model->createOperation('305', $post_data, TRUE);
+
+			// 교체 업무 생성
+			$post_data['op_type'] = '400';
+			$op = $this->work_model->createOperation('400', $post_data);
+
+			$tg1 = $this->work_model->createTargetOperation($op, $install_op);
+			$tg2 = $this->work_model->createTargetOperation($op, $close_op);
+
+			//===========
+			// flush
+			//===========
+			$this->work_model->_commit();
+
+			alert("교체 업무를 등록하였습니다", site_url('work/replace'));
 		}
 	}
 

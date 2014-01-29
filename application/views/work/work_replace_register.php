@@ -19,7 +19,7 @@ $this->view('layout/navbar');
     ////////////////
 ?>
       <input type="hidden" name="store_id" id="store_id" value="">
-      <input type="hidden" name="op_type" id="op_type" value="1">
+      <input type="hidden" name="op_type" id="op_type" value="400">
 
       <fieldset class="col-sm-7">
         <legend>교체 양식</legend>

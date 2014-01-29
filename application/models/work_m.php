@@ -234,25 +234,23 @@ class Work_m extends MY_Model {
 	// 설치 업무 생성
 	///////////////
 	public function createInstallOperation($type, $post) {
-		$op = $this->addOperation($type, $post);
-		$this->em->flush();
-
-		return $op;
+		return $this->addOperation($type, $post, TRUE);
 	}
 
 	///////////////
 	// 철수 업무 생성 //
 	///////////////
 	public function createCloseOperation($type, $post) {
-		$op = $this->addOperation($type, $post);
-		$this->em->flush();
-
-		return $op;
+		return $this->addOperation($type, $post, TRUE);
 	}
 
 	///////////////
 	// 업무 메인 생성 
 	///////////////
+	public function createOperation($type, $post, $do_flush=FALSE) {
+		return $this->addOperation($type, $post, $do_flush);
+	}
+
 	public function addOperation($type, $post, $do_flush=FALSE) {
 		
 		// 새로운 업무 객체
@@ -261,12 +259,25 @@ class Work_m extends MY_Model {
 		$new->setType($post['op_type']);
 		$new->setOperationNumber($this->makeOperationNumber());		
 		$new->setDateRegister();
-		$new->setDateRequest($post['date_request']);
 		$new->setStatus('1');
-		$new->setMemo($post['memo']);
+		$new->setDateRequest($post['date_request']);
+
+		// 요청 메모
+		if(isset($post['memo'])) {
+			$new->setMemo($post['memo']);
+		}
+
 		// 점포 개점일 or 폐점일
 		if(isset($post['date_store'])){
 			$new->setDateStore($post['date_store']);
+		}
+
+		if(isset($post['date_open']) && ($post['op_type'] >= '200' && $post['op_type'] < '300')) {
+			$new->setDateStore($post['date_open']);
+		}
+
+		if(isset($post['date_close']) && ($post['op_type'] >= '300' && $post['op_type'] < '400')) {
+			$new->setDateStore($post['date_close']);
 		}
 
 		// 요청자
@@ -277,11 +288,13 @@ class Work_m extends MY_Model {
 		$office = $this->em->getReference('Entity\Office', $post['office_id']);
 		$new->setOffice($office);
 
-		// 입고 업무시 납품처 지정
+		// 입고 업무시 납품처
 		if($type >= '100' && $type < '200') {
 			$part = $this->em->getReference('Entity\Part', $post['part_id']);
 			$new->setWorkLocation(GS2_LOCATION_TYPE_COMPANY, $part->company->id);
-		} else if( $type >= '200' && $type < '400') {
+		}
+		// 설치,철수,교체 는 점포 
+		else if( $type >= '200' && $type < '500') {
 			$store = $this->em->getReference('Entity\Store', $post['store_id']);
 			$new->setWorkLocation(GS2_LOCATION_TYPE_STORE, $store->id);
 		}
@@ -537,7 +550,27 @@ class Work_m extends MY_Model {
 
 		return $logs;
 	}
-	
+
+
+	/**
+	 * gs2_operation_targets 테이블에 데이터 생성
+	 * 상태변경, 교체 업무의 대상이 되는 업무 (1-N 관계 정의 함)
+	 * 
+	 * @param  Entity\Operation  $op       업무
+	 * @param  Entity\Operation  $target   대상 업무
+	 * @param  boolean $do_flush 
+	 * @return Entity\OperationTarget      object
+	 */
+	public function createTargetOperation($op, $target, $do_flush=FALSE) {
+		$top = new Entity\OperationTarget($op, $target);
+		$this->em->persist($top);
+
+		if($do_flush) {
+			$this->em->flush();
+		}
+
+		return $top;
+	}
 }
 
 
