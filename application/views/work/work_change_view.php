@@ -164,9 +164,26 @@ $(document).ready(function(){
     });
   });
 
+  //////////
   // 전송
+  //////////
   $("form").submit(function(){
-    
+    var error = false;
+
+    // 숫자 여부 검사
+    $("#register_form .op-item input").each(function(){
+      if(!gs2_is_number($(this).val())) {
+        $(this).focus();
+        error = true;
+        return false;
+      }
+    });
+
+    if(error) {
+      alert('입력값은 숫자만 가능합니다');
+      return false;
+    }
+
     $("tr.op-item input").css('background-color', '');
     for(var i in items) {
       if(sums[i] !== requests[i]) {
