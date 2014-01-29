@@ -117,7 +117,7 @@ class Change extends CI_Controller
 			///////////////////////
 			// 현재 작업 상태 변경
 			///////////////////////
-			$op_data['date_finish'] = '';
+			$op_data['date_finish'] = 'now';
 			$op_data['status'] = '2';
 			$op_data['is_complete'] = TRUE;
 			
@@ -127,37 +127,49 @@ class Change extends CI_Controller
 			// target 업무의 is_complete 를 'Y' 로 변경한다 //
 			////////////////////////////////////////////
 			foreach($op->targets as $t) {
-				$this->work_model->updateOperation($t->target, array('is_complete' => TRUE));
-			}
-			
-			/////////////////////////////////
-			// target 업무 내 장비 재고량을 변경한다 //
-			/////////////////////////////////
-			foreach($_POST['items'] as $i => $arr) {
-				// 철수업무  장비 
-				$item = $em->getRepository('Entity\OperationPart')->find($i);
-				$stock = $item->part->getStock($op->office->id);
+				$top = $t->target;			// target operation 의 약자 (대상 업무)
+				
+				$this->work_model->updateOperation($top, array('is_complete' => TRUE));
 
-				// 가용 수량
-				if($arr[0] > 0) {
-					$stock->increase('used', intval($arr[0]));
-					// 시리얼장비일 경우 처리!
-					if($item->part_type == '1') {
+				/////////////////////////////////
+				// 장비 재고량을 변경
+				/////////////////////////////////
+				foreach($top->getItems() as $item) {
+					// 대상 업무의 사무소의 재고
+					$stock = $item->part->getStock($top->office->id);
 
+					// 상태변경 수량 배열
+					$post_arr = $_POST['items'][$item->id];
+
+					// 중고 가용 수량
+					if(!empty($post_arr[0]) && $post_arr[0] > 0) {
+						$stock->increase('used', intval($post_arr[0]));
 					}
-				}
-				// 수리 대기 
-				elseif( $arr[1] > 0) {
-					$stock->increase('s500', intval($arr[1]));
-				}
-				// 폐기 대기 
-				elseif( $arr[2] > 0) {
-					$stock->increase('s600', intval($arr[2]));
-				}
-				// 점검전 수량에서 뺴기
-				$stock->increase('s900', intval($item->qty_request));
+					// 수리 대기 수량
+					if(!empty($post_arr[1]) && $post_arr[1] > 0) {
+						$stock->increase('s500', intval($post_arr[1]));
+					}
+					// 폐기 대기 수량
+					if(!empty($post_arr[2]) && $post_arr[2] > 0) {
+						$stock->increase('s600', intval($post_arr[2]));
+					}
 
-				$this->work_model->_add($stock);
+					// 시리얼장비일 경우
+					if($item->part_type == '1') {
+						
+					}
+
+					// 상태변경 수량 배열을 serialize 해서 extra 저장
+					$item->setExtra(serialize($post_arr));
+					$this->work_model->_add($item);
+
+					// 점검전 수량에서 빼기
+					$stock->decrease('s900', intval($item->qty_request));
+					$this->work_model->_add($stock);
+					
+					// gs2_dump($item->extra);
+					// gs2_dump($stock->qty_used);
+				}
 			}
 			
 			///////////////
@@ -168,6 +180,8 @@ class Change extends CI_Controller
 				'content'	=> '상태변경 완료',
 			);
 			$this->work_model->addLog($op, $log_data, TRUE);
+
+			redirect('work/change');
 		}
 
 	}

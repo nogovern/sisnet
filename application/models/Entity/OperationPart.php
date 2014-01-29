@@ -170,6 +170,10 @@ class OperationPart {
 		$this->prev_location = $value;
 	}
 
+	public function setExtra($value) {
+		$this->extra = $value;
+	}
+
 	// 입고 시 장비 스캔 여부
 	public function setScanFlag($value)
 	{

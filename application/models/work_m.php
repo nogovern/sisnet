@@ -338,6 +338,11 @@ class Work_m extends MY_Model {
 			$op->setOffice($office);
 		}
 
+		// is_complete 변경 (상태변경, 교체 업무에서만 사용)
+		if(isset($data['is_complete'])) {
+			$op->setCompleteFlag($data['is_complete']);
+		}
+
 		$op->setDateModify();
 
 		// save & apply
