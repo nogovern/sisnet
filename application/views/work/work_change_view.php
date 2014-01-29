@@ -11,14 +11,17 @@ $this->view('layout/navbar');
     <h2><span class="fa fa-desktop"></span>&nbsp;장비 상태 변경서 :: 상태저장</h2>
   </div>
 
-  <table class="table table-condensed">
+  <table class="table table-bordered">
     <tbody>
       <tr>
         <td class="col-sm-3">작업번호: <?php echo $op->operation_number; ?></td>
-        <td class="col-sm-3">등록일: <?php echo $op->getDateRegister(); ?></td>
         <td class="col-sm-2">재고사무소: <?php echo $op->office->name; ?></td>
         <td class="col-sm-2">수량: </td>
-        <td class="col-sm-2">완료시간: <?php echo $op->getDateFinish(); ?></td>
+        <td class="col-sm-2">등록일: <?php echo $op->getDateRegister(); ?></td>
+        <td class="col-sm-3">완료시간: <?php echo $op->getDateFinish(TRUE); ?></td>
+      </tr>
+      <tr>
+        <td class="col-sm-2">상태: <?php echo constant('GS2_OP_CHANGE_STATUS_' . $op->status)?></td>
       </tr>
     </tbody>
   </table>
@@ -75,9 +78,18 @@ foreach($op->targets as $t):
         <td><?=gs2_decode_location($row->work_location)->name?></td>
         <td><?=$item->qty_request?></td>
         <td data-itemid="<?=$item->id?>">
+<?php
+if($op->status == '1') {
+?>
           <input type="text" name="<?=$input_name?>[0]" value="0" style="width:30px;">/
           <input type="text" name="<?=$input_name?>[1]" value="0" style="width:30px;">/
           <input type="text" name="<?=$input_name?>[2]" value="0" style="width:30px;"></td>
+<?php
+} else {
+  $results = unserialize($item->extra);
+  echo join('/', $results);
+}
+?>
         <td>삭제</td>
       </tr>
 <?php
@@ -89,9 +101,15 @@ endforeach;
   </table>
 
   <div>
+<?php
+if($op->status == '1'):
+?>
     <button type="submit" class="btn btn-primary">완료</button>
-    <button type="button" class="btn btn-default" >리스트</button>
     <button id="btnSample" type="button" class="btn btn-info" data-target="#modal_select_op1" data-toggle="modal">철수 완료 작업 리스트 불러오기</button>
+<?php
+endif;
+?>
+    <button type="button" class="btn btn-default btn_go_list" >리스트</button>
   </div>
   </form>
 
@@ -152,6 +170,10 @@ function checkCount() {
 }
 
 $(document).ready(function(){
+  // 리스트로 가기
+  $(".btn_go_list").click(function(){
+    location.href = "<?=site_url('work/change');?>";
+  });
 
   // 장비 수량들 배열 만들기
   $("input").change(makeIt);
