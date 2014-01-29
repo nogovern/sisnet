@@ -138,25 +138,45 @@ class Change extends CI_Controller
 					// 대상 업무의 사무소의 재고
 					$stock = $item->part->getStock($top->office->id);
 
+					$sp = NULL;
+					if($item->part_type == '1') {
+						$sp = $this->part_model->getPartBySerialNumber($item->serial_number);
+					}
+
 					// 상태변경 수량 배열
 					$post_arr = $_POST['items'][$item->id];
 
+					$qty_used = intval($post_arr[0]);		// 중고 가용
+					$qty_s500 = intval($post_arr[1]);		// 수리대기
+					$qty_s600 = intval($post_arr[2]);		// 폐기대기
+
 					// 중고 가용 수량
-					if(!empty($post_arr[0]) && $post_arr[0] > 0) {
-						$stock->increase('used', intval($post_arr[0]));
+					if($qty_used > 0) {
+						$stock->increase('used', $qty_used);
+						
+						// 시리얼장비
+						if($sp) {
+							$sp->setValidFlag(TRUE);
+							$sp->setStatus('1');
+						}
 					}
 					// 수리 대기 수량
-					if(!empty($post_arr[1]) && $post_arr[1] > 0) {
-						$stock->increase('s500', intval($post_arr[1]));
+					if($qty_s500 > 0) {
+						$stock->increase('s500', $qty_s500);
+						if($sp) {
+							$sp->setStatus('5');
+						}
 					}
 					// 폐기 대기 수량
-					if(!empty($post_arr[2]) && $post_arr[2] > 0) {
-						$stock->increase('s600', intval($post_arr[2]));
+					if($qty_s600 > 0) {
+						$stock->increase('s600', $qty_s600);
+						if($sp) {
+							$sp->setStatus('6');
+						}
 					}
 
-					// 시리얼장비일 경우
-					if($item->part_type == '1') {
-						
+					if($sp) {
+						$this->work_model->_add($sp);
 					}
 
 					// 상태변경 수량 배열을 serialize 해서 extra 저장

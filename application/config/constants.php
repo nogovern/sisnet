@@ -105,6 +105,13 @@ define('GS2_PART_TYPE_1', 	'시리얼');				// 시리얼관리장비
 define('GS2_PART_TYPE_2', 	'수량');				// 수량관리장비
 define('GS2_PART_TYPE_3', 	'소모품');				// 소모품
 
+// 시리얼장비 상태
+define('GS2_SERIAL_STATUS_OK', 		'1');
+define('GS2_SERIAL_STATUS_NOTOK', 	'0');
+define('GS2_SERIAL_STATUS_FIX', 	'5');
+define('GS2_SERIAL_STATUS_DESTORY', '6');
+define('GS2_SERIAL_STATUS_INSPECT', '9');
+
 // 점포 상태
 define('GS2_STORE_STATUS_0',	'폐점');
 define('GS2_STORE_STATUS_1',	'정상운영');
