@@ -11,7 +11,7 @@ $this->view('layout/navbar');
 <?php
         // 에러 출력
         echo validation_errors();
-        echo form_open('', 'role="form" class="form-horizontal" ');
+        echo form_open('', 'enctype="multipart/form-data" role="form" class="form-horizontal" ');
         // echo form_hidden('store_id', '', ' id="store_id"');
 ?>
           <input type="hidden" name="store_id" id="store_id" value="">
