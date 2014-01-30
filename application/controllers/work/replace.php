@@ -84,7 +84,15 @@ class Replace extends CI_Controller
 	}
 
 	public function view($id) {
-		echo '작업중';
+
+		$data['title'] = '교체업무 > 상세보기';
+		$data['current'] = 'page-replace';
+
+		$data['work'] = $this->work_model->get($id);
+		$data['_config'] = $this->config->item('gs2');
+
+		$this->load->view('work/work_replace_view', $data);
+
 	}
 
 	public function update($id) {

@@ -4,6 +4,16 @@ $this->view('layout/navbar');
 
 // 점포 객체 
 $store = gs2_decode_location($work->work_location);
+
+// 대상 업무 객체
+foreach($work->targets as $top) {
+  if( $top->target->type == '205' ) {
+    $install_target = $top->target;
+  }
+  if( $top->target->type == '305' ) {
+    $close_target = $top->target;
+  }
+}
 ?>
 
 <!-- start of div.container -->
@@ -144,54 +154,39 @@ $store = gs2_decode_location($work->work_location);
 
   </div><!-- end of row -->
 
-
+  <!-- 설치 작업 -->
   <div class="row">
     <div class="col-md-12">
       <!-- start: ALERTS PANEL -->
-      <div class="panel panel-primary">
-        <div class="panel-heading"><i class="fa fa-tags"></i> 장비 리스트</div>
-        <div class="panel-body" style="padding:0 15px;">
-          <table class="table table-hover" id="part_table">
-            <thead>
+      <div id="install_target_panel" class="panel panel-primary">
+        <div class="panel-heading"><i class="fa fa-tags"></i> 장비 설치 작업 번호: <?php echo $install_target->operation_number; ?> </div>
+        <div class="panel-body" style="">
+          <table class="table table-condensed">
+            <tbody>
               <tr>
+                <td class="col-sm-3">장비 설치 상태: <?php echo $install_target->getStatus(); ?></td>
+                <td class="col-sm-3">설치 작업자: <?php echo $install_target->getWorkerInfo();; ?></td>
+                <td class="col-sm-3">설치 예정일: <?php echo $install_target->getDateExpect(); ?></td>
+                <td class="col-sm-3">설치 완료일: <?php echo $install_target->getDateWork(); ?></td>
+              </tr>
+              <tr>
+                <td class="col-sm-12" colspan="4">설치작업 첨부 파일: </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-condensed table-hover">
+            <thead>
+              <tr class="active">
                 <th>#</th>
-                <th>종류</th>
-                <th>장비명</th>
-                <th>상태</th>
-                <th>S/N</th>
-                <th>직전위치</th>
-                <th>등록수량</th>
-                <th></th>
+                <th>장비구분</th>
+                <th>모델</th>
+                <th>시리얼</th>
+                <th>장비상태</th>
+                <th>수량</th>
               </tr>
             </thead>
             <tbody>
-<?php
-$arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
-$arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
 
-$idx = 1;
-$item_count = count($items);
-foreach($items as $item):
-?>                  
-              <tr data-item_id="<?=$item->id?>">
-                <td><?=$idx++?></td>
-                <td><?=$arr_type_text[$item->part->type]?></td>
-                <td><?=$item->part_name?></td>
-                <td><?=($item->is_new == 'Y')? '신품' : '중고'?></td>
-                <td><?=($item->part_type == '1') ? $item->serial_number : ''?></td>
-                <td><?=''?></td>
-                <td><?=$item->qty_request?></td>
-                <td style="width:150px;">
-                  <?php if($work->getStatus() < '4'):?>
-                  <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
-                  <?php else:?>
-                  <i class="fa fa-check scan_status" style="color:green;font-size:20px;"></i>
-                  <?php endif;?>
-                </td>
-              </tr>
-<?php
-endforeach;
-?>             
             </tbody>
           </table>
         </div>
@@ -199,6 +194,48 @@ endforeach;
       <!-- end: ALERTS PANEL -->
     </div>
   </div>
+
+  <!-- 철수 작업 -->
+  <div class="row">
+    <div class="col-md-12">
+      <!-- start: ALERTS PANEL -->
+      <div id="close_target_panel" class="panel panel-danger">
+        <div class="panel-heading"><i class="fa fa-tags"></i> 장비 철수 작업 번호: <?php echo $close_target->operation_number; ?> </div>
+        <div class="panel-body" style="">
+          <table class="table table-condensed">
+            <tbody>
+              <tr>
+                <td class="col-sm-3">장비 철수 상태: <?php echo $close_target->getStatus(); ?></td>
+                <td class="col-sm-3">철수 작업자: <?php echo $close_target->getWorkerInfo();; ?></td>
+                <td class="col-sm-3">철수 예정일: <?php echo $close_target->getDateExpect(); ?></td>
+                <td class="col-sm-3">철수 완료일: <?php echo $close_target->getDateWork(); ?></td>
+              </tr>
+              <tr>
+                <td class="col-sm-12" colspan="4">철수작업 첨부 파일: </td>
+              </tr>ß
+            </tbody>
+          </table>
+          <table class="table table-condensed table-hover">
+            <thead>
+              <tr class="active">
+                <th>#</th>
+                <th>장비구분</th>
+                <th>모델</th>
+                <th>시리얼</th>
+                <th>장비상태</th>
+                <th>수량</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- end: ALERTS PANEL -->
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-12">
       <a href="<?=site_url('work/close')?>"><span class="btn btn-default" type="button">리스트</span></a>
