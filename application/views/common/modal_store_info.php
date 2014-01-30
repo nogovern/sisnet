@@ -24,7 +24,7 @@
 
     $("#modal_store_info .modal-title").text('점포 정보');
     $("#modal_store_info .modal-body").html('').load(sinfo_url, function(){
-      $("#modal_store_info").modal('show');---
+      $("#modal_store_info").modal('show');
     });
   }
 </script>
