@@ -202,13 +202,20 @@ endforeach;
   <div class="row">
     <div class="col-md-12">
       <a href="<?=site_url('work/close')?>"><span class="btn btn-default" type="button">리스트</span></a>
-      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
 <?php
-if($work->status == 1):
+if($work->status == 1 && $work->type != '305') {
 ?>
       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_request_ok">요청확정</button>
 <?php
-endif;
+}
+
+// 작업메모는 확정 후 부터만 가능 
+if($work->status > 2 && $work->status < 5) {
+?>
+      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
+
+<?php
+}
 
 if($work->status == 2):
 ?>
