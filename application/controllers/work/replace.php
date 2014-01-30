@@ -88,8 +88,30 @@ class Replace extends CI_Controller
 		$data['title'] = '교체업무 > 상세보기';
 		$data['current'] = 'page-replace';
 
-		$data['work'] = $this->work_model->get($id);
+		$work = $this->work_model->get($id);
+		$data['work'] = $work;
 		$data['_config'] = $this->config->item('gs2');
+
+		////////////////
+		// 요청확정용 
+		////////////////
+		$this->load->helper('form');
+
+		// 사무소 dropdown
+		$this->load->model('office_m', 'office_model');
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$data['select_office'] = form_dropdown('office_id', $arr_office, $work->office->id, 'id="office_id" class="form-control"');
+
+		// 사용자 dropdown
+		$this->load->model('user_m', 'user_model');
+		$arr_user = gs2_convert_for_dropdown($this->user_model->getListByType(1));
+		$data['select_user'] = form_dropdown('worker_id', $arr_user, 0, 'id="worker_id" class="form-control required"');
+
+		// 장비 카테고리 dropdown
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getSubCategories(1);
+		$cats = gs2_convert_for_dropdown($cats);
+		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
 
 		$this->load->view('work/work_replace_view', $data);
 

@@ -217,12 +217,12 @@ if($work->status > 2 && $work->status < 5) {
 <?php
 }
 
-if($work->status == 2):
+if($work->status == 2) {
 ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete">점포 완료</button>
 <?php
-endif;
+}
 
 if($work->status == 3):
 ?>

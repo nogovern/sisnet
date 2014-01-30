@@ -66,9 +66,14 @@ foreach($work->targets as $top) {
             <td><?=$work->getDateStore()?></td>
             <td>&nbsp;</td>
           </tr>
-          <tr>
-            <td>작업 요청일</td>
-            <td><?=$work->getDateRequest(TRUE);?></td>
+          <tr class="warning">
+            <td>설치 요청일</td>
+            <td><?=$install_target->getDateRequest(TRUE);?></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr class="warning">
+            <td>철수 요청일</td>
+            <td><?=$close_target->getDateRequest(TRUE);?></td>
             <td>&nbsp;</td>
           </tr>
           <tr>
@@ -243,7 +248,7 @@ foreach($work->targets as $top) {
 <?php
 if($work->status == 1):
 ?>
-      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_request_ok">요청확정</button>
+      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_replace_request_ok">요청확정</button>
 <?php
 endif;
 
@@ -276,10 +281,10 @@ endif;
 /////////////////////////////
 /// 모달 dialog include
 /////////////////////////////
-$this->view('common/modal_request_ok');           	// 요청 확정
+$this->view('common/modal_replace_request_ok');           	// 요청 확정
 $this->view('common/modal_memo');                 	// 작업자 메모
-$this->view('common/modal_change_worker');        	// 방문자 변경
-$this->view('common/modal_store_complete');       	// 점포 완료
+//$this->view('common/modal_change_worker');        	// 방문자 변경
+//$this->view('common/modal_store_complete');       	// 점포 완료
 $this->view('common/modal_op_complete');       		  // 작업 완료
 $this->view('common/modal_close_part_register');   	// 장비 등록 (설치/철수 다름)
 // 작업 완료
