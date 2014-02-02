@@ -16,11 +16,59 @@ class Company extends CI_Controller {
 		$this->lists();
 	}
 
-	public function lists() {
+	public function lists($page=1) {
 
-		$data['page_title'] = '업체 리스트';
-		$data['rows'] = $this->company_model->getList();
+		// GET 방식의 검색 조건
+		$criteria = array();
+		
+		// 상태
+		if($this->input->get('status')) {
+			$criteria['status'] = $this->input->get('status');
+		}
 
+		// 거래처 종류
+		if($this->input->get('type')) {
+			$criteria['type'] = $this->input->get('type');
+		}
+
+		$num_rows = 15;
+		$order_by = array('id' => 'desc');
+		$offset = ($page - 1) * $num_rows;
+
+		// 총 결과수
+		$total_rows = $this->company_model->getRowCount($criteria);
+		// 리스트 가져오기
+		$rows = $this->company_model->getListBy($criteria, $order_by, $num_rows, $offset);
+
+		// ===========
+		// pagination
+		// ===========
+		$this->load->library('pagination');
+		
+		$config = array(
+			'base_url' 		=> base_url() . 'admin/company/lists/',
+			'prefix'		=> '',
+			'total_rows'	=> $total_rows,
+			'per_page'		=> $num_rows,
+			'uri_segment'	=> 4,
+			'num_links'		=> 5,
+			'use_page_numbers'	=> TRUE
+		);
+
+		// 검색 조건이 있을 경우
+		if(count($criteria)) {
+			$config['suffix'] = '/?' . http_build_query($this->input->get());
+			$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
+		}
+
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['title'] = '업체 리스트';
+		$data['current'] = 'page-admin-company';
+
+		$data['type'] = $this->input->get('type');
+		$data['rows'] = $rows;
 		$this->load->view('company_list', $data);
 	}
 

@@ -16,8 +16,8 @@ class Store extends CI_Controller {
 		//$this->output->enable_profiler(TRUE);
 	}
 
-	public function index() {
-		$this->lists();
+	public function index($page=1) {
+		$this->lists($page);
 	}
 
 	public function lists($page = 1) {
@@ -25,12 +25,22 @@ class Store extends CI_Controller {
 		$data['title'] = '점포 리스트';
 		$data['current'] = 'page-admin-store';
 
-		$per_page = 20;
-		$page = (isset($_GET['page'])) ? $this->input->get('page') : $page;
-		$offset = ($page - 1) * $per_page;
+		// GET 방식의 검색 조건
+		$criteria = array();
+		
+		// 점포 상태
+		if($this->input->get('status')) {
+			$criteria['status'] = $this->input->get('status');
+		}
 
-		$rows = $this->store_model->getList(array(), $per_page, $offset);
-		$total = $this->store_model->getRowCount();
+		$num_rows = 15;
+		$order_by = array('id' => 'desc');
+		$offset = ($page - 1) * $num_rows;
+
+		// 총 결과수
+		$total_rows = $this->store_model->getRowCount($criteria);
+		// 리스트 가져오기
+		$rows = $this->store_model->getListBy($criteria, $order_by, $num_rows, $offset);
 
 		// ===========
 		// pagination
@@ -39,71 +49,27 @@ class Store extends CI_Controller {
 		
 		$config = array(
 			'base_url' 		=> base_url() . 'admin/store/lists/',
-			'total_rows'	=> $total,
-			'use_page_numbers'	=> TRUE,
+			'prefix'		=> '',
+			'total_rows'	=> $total_rows,
+			'per_page'		=> $num_rows,
+			'uri_segment'	=> 4,
+			'num_links'		=> 5,
+			'use_page_numbers'	=> TRUE
 		);
 
-		$config['per_page'] = 20;
-		$config['uri_segment'] = 4;
-		$config['num_links'] = 5;
-		// $config['page_query_string'] = TRUE;
-		// $config['query_string_segment'] = 'page';
-		
-
-		$this->pagination->initialize($config);
-		// $this->pagination->cur_page = $page;
-		$data['pagination'] = $this->pagination->create_links();
-
-		$data['rows'] = $rows;
-		$this->load->view('store_list', $data);
-	}
-
-
-	///////////////
-	// filter + pagination
-	///////////////
-	public function list2($page = 1) {
-		// gs2_dump($this->input->get());
-		// exit;
-
-		$data['title'] = '점포 리스트';
-		$data['current'] = 'page-admin-store';
-
-		$per_page = 10;
-		$page = (isset($_GET['page'])) ? $this->input->get('page') : $page;
-		$offset = ($page - 1) * $per_page;
-
-		$rows = $this->store_model->getList(array(), $per_page, $offset);
-		$total = $this->store_model->getRowCount();
-
-		// ===========
-		// pagination
-		// ===========
-		$this->load->library('pagination');
-		
-		$config = array(
-			'base_url' 		=> base_url() . 'admin/store/list2/',
-			'total_rows'	=> $total,
-			'use_page_numbers'	=> TRUE,
-		);
-
-		$config['per_page'] = $per_page;
-		$config['uri_segment'] = 4;
-		$config['num_links'] = 5;
-		// $config['page_query_string'] = TRUE;
-		// $config['query_string_segment'] = 'page';
-		if($this->input->get()) {
+		// 검색 조건이 있을 경우
+		if(count($criteria)) {
 			$config['suffix'] = '/?' . http_build_query($this->input->get());
 			$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
 		}
 
 		$this->pagination->initialize($config);
-		// $this->pagination->cur_page = $page;
 		$data['pagination'] = $this->pagination->create_links();
 
 		$data['rows'] = $rows;
 		$this->load->view('store_list', $data);
 	}
+
 
 	// 신규 점포 등록 alias
 	public function add($mode = NULL) {

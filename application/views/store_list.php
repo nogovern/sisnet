@@ -11,7 +11,7 @@ $this->view('layout/navbar', array('current' => 'page-admin-store'));
 
   <!-- Example row of columns -->
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-md-12">
       
     <table class="table table-hover table-condensed">
       <thead>

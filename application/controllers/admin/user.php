@@ -28,10 +28,10 @@ class User extends CI_Controller {
 			$criteria['type'] = $this->input->get('type');
 		}
 
-		$num_rows = 5;
+		$num_rows = 15;
 		$order_by = array('id' => 'desc');
 		$offset = ($page - 1) * $num_rows;
-		$rows = $this->user_model->getList2($criteria, $order_by, $num_rows, $offset);
+		$rows = $this->user_model->getListBy($criteria, $order_by, $num_rows, $offset);
 
 		// 총 결과수
 		$total_rows = $this->user_model->getRowCount($criteria);
