@@ -92,7 +92,7 @@ class MY_Model extends CI_Model {
 	}
 	
 	/**
-	 * 기본 리스트 형식 
+	 * 검색 없는 리스트 형식 
 	 * 
 	 * @param  array   $order  [description]
 	 * @param  integer $limit  [description]
@@ -100,22 +100,23 @@ class MY_Model extends CI_Model {
 	 * @return [type]          [description]
 	 */
 	public function getList($order_by = array(), $limit = 20, $offset = 0) {
-		if(!count($order_by)){
-			$order_by = array('id' => 'desc');
-		}
-
-		$repo = $this->em->getRepository($this->getEntityName()); 
-		return $repo->findBy(array(), $order_by, $limit, $offset);
+		return $this->getListBy(array(), $order_by, $limit, $offset);
 	}
 
-	// 기본 리스트 형식 2
-	public function getList2($criteria=array(), $order_by=array(), $limit = 20, $offset = 0) {
+	// 필터 적용된 리스트 반환
+	public function getListBy($criteria=array(), $order_by=array(), $limit = 20, $offset = 0) {
 		if(!count($order_by)){
 			$order_by = array('id' => 'desc');
 		}
 
 		$repo = $this->em->getRepository($this->getEntityName()); 
 		return $repo->findBy($criteria, $order_by, $limit, $offset);
+	}
+
+	// 결과행 수를 반환 (검색조건 가능)
+	public function getRowCount($criteria = array()) {
+		$rows = $this->em->getRepository($this->entity_name)->findBy($criteria);
+		return sizeof($rows);
 	}
 
 	// 검색
@@ -137,12 +138,6 @@ class MY_Model extends CI_Model {
 		$count = $query->getSingleScalarResult();
 
 		return $count;
-	}
-
-	// 결과행 수를 반환 (검색조건 가능)
-	public function getRowCount($criteria = array()) {
-		$rows = $this->em->getRepository($this->entity_name)->findBy($criteria);
-		return sizeof($rows);
 	}
 
 }
