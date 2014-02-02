@@ -175,7 +175,14 @@ class Work_m extends MY_Model {
 
 	// 이동 업무 목록
 	public function getMoveList() {
-		return $this->_getOpList(500);
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('\Entity\Operation', 'w')
+			->where('w.type >= 700')
+			->andWhere('w.type < 800')
+			->orderBy('w.id', 'DESC');
+
+		return $qb->getQuery()->getResult();
 	}
 
 	///////////////
@@ -298,8 +305,13 @@ class Work_m extends MY_Model {
 			$store = $this->em->getReference('Entity\Store', $post['store_id']);
 			$new->setWorkLocation(GS2_LOCATION_TYPE_STORE, $store->id);
 		}
+		// 이동은 사무소
+		else if( $type >= '700' && $type < '800') {
+			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['target_office_id']);
+		}
 
 		$this->em->persist($new);
+
 		if($do_flush) {
 			$this->em->flush();
 

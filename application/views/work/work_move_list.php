@@ -145,7 +145,7 @@ $(document).ready(function(){
         required: true,
         min: 1
       },
-      receive_office_id: {
+      target_office_id: {
         required: true,
         min: 1,
         notEqual: $("#send_office_id").val()
@@ -155,7 +155,7 @@ $(document).ready(function(){
       send_office_id: {
         min: '송신 사무소를 선택하세요'
       },
-      receive_office_id: {
+      target_office_id: {
         min: '수신 사무소를 선택하세요'
       }
     },
