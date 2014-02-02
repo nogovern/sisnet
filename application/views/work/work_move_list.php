@@ -15,9 +15,7 @@ $this->view('layout/navbar');
       <ul class="nav nav-pills">
         <li class="<?=($status=='')?'active':''?>"><a href="#">전체</a></li>
         <li class=""><a href="#">요청</a></li>
-        <li class=""><a href="#">요청확정</a></li>
-        <li class=""><a href="#">점포완료</a></li>
-        <li class=""><a href="#">작업완료</a></li>
+        <li class=""><a href="#">입력</a></li>
         <li class=""><a href="#">완료</a></li>
       </ul>
 
@@ -27,12 +25,12 @@ $this->view('layout/navbar');
             <th>No</th>
             <th>작업형태</th>
             <th>요청자</th>
-            <th>재고사무소</th>
+            <th>송신사무소</th>
+            <th>수신사무소</th>
+            <th>장비수량</th>
             <th>진행상태</th>
-            <th>상태변경 장비수량</th>
             <th>등록일</th>
             <th>완료일</th>
-            <th>메모</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -40,24 +38,26 @@ $this->view('layout/navbar');
         <tbody>
 <?php
 foreach($rows as $row):
-switch($row->status) {
-  case '1': $label_color = 'label-default';break;
-  case '2': $label_color = 'label-info';break;
-  case '3': $label_color = 'label-warning';break;
-  case '4': $label_color = 'label-success';break;
-  default : $label_color = 'label-default';break;
-}
+  switch($row->status) {
+    case '1': $label_color = 'label-default';break;
+    case '2': $label_color = 'label-warning';break;
+    case '3': $label_color = 'label-success';break;
+    default : $label_color = 'label-default';break;
+  }
+
+  $receiver = gs2_decode_location($row->work_location);
 
 ?>
           <tr class="">
             <td><?=$row->id?></td>
-            <td><?=$row->type?></td>
+            <td><?=gs2_op_type($row->type)?></td>
             <td><?=$row->user->name?></td>
             <td><?=$row->office->name?></td>
+            <td><?=$receiver->name?></td>
+            <td>0</td>
             <td>
               <span class="label <?=$label_color?>"><?=constant("GS2_OP_CLOSE_STATUS_" .$row->status)?></span>
             </td>
-            <td>0</td>
             <td><?=$row->getDateRegister();?></td>
             <td><?=$row->getDateFinish();?></td>
             <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/move/view/') . '/' . $row->id ?>">보기</button></td>
