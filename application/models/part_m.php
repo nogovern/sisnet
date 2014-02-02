@@ -58,7 +58,20 @@ class Part_m extends MY_Model
 		$rows = $query->getResult();
 		
 		return $rows;
+	}
 
+
+	// 2014.02.02 by JKH
+	// 시리얼 장비 리스트 - 페이징 및 필터 적용 위해서 추가
+	public function getSerialPartsBy($criteria=array(), $order_by=array(), $limit=15, $offset=0) {
+		if(!count($order_by)) {
+			$order_by = array( 'id' => 'desc');
+		}
+
+		$repo = $this->em->getRepository('Entity\SerialPart');
+		$rows = $repo->findBy($criteria, $order_by, $limit, $offset);
+
+		return $rows;
 	}
  	
  	/**

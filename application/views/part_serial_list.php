@@ -71,6 +71,10 @@ endforeach;
       </tbody>
 
     </table>
+    <!-- Pagination -->
+    <div style="text-align:center">
+      <?=$pagination?>
+    </div>
 
     <p>
       <a href="<?=base_url()?>admin/part/serial_add"><span class="btn btn-primary"><i class="icon-pencil"></i> 장비 등록</span></a>

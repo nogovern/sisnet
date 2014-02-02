@@ -114,8 +114,11 @@ class MY_Model extends CI_Model {
 	}
 
 	// 결과행 수를 반환 (검색조건 가능)
-	public function getRowCount($criteria = array()) {
-		$rows = $this->em->getRepository($this->entity_name)->findBy($criteria);
+	public function getRowCount($criteria = array(), $table_name=NULL) {
+		if(NULL === $table_name) {
+			$table_name = $this->entity_name;
+		}
+		$rows = $this->em->getRepository($table_name)->findBy($criteria);
 		return sizeof($rows);
 	}
 
