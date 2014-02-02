@@ -47,8 +47,55 @@ class Store extends CI_Controller {
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
 		// $config['page_query_string'] = TRUE;
-		$config['query_string_segment'] = 'page';
+		// $config['query_string_segment'] = 'page';
 		
+
+		$this->pagination->initialize($config);
+		// $this->pagination->cur_page = $page;
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['rows'] = $rows;
+		$this->load->view('store_list', $data);
+	}
+
+
+	///////////////
+	// filter + pagination
+	///////////////
+	public function list2($page = 1) {
+		// gs2_dump($this->input->get());
+		// exit;
+
+		$data['title'] = '점포 리스트';
+		$data['current'] = 'page-admin-store';
+
+		$per_page = 10;
+		$page = (isset($_GET['page'])) ? $this->input->get('page') : $page;
+		$offset = ($page - 1) * $per_page;
+
+		$rows = $this->store_model->getList(array(), $per_page, $offset);
+		$total = $this->store_model->getRowCount();
+
+		// ===========
+		// pagination
+		// ===========
+		$this->load->library('pagination');
+		
+		$config = array(
+			'base_url' 		=> base_url() . 'admin/store/list2/',
+			'total_rows'	=> $total,
+			'use_page_numbers'	=> TRUE,
+		);
+
+		$config['per_page'] = $per_page;
+		$config['uri_segment'] = 4;
+		$config['num_links'] = 5;
+		// $config['page_query_string'] = TRUE;
+		// $config['query_string_segment'] = 'page';
+		if($this->input->get()) {
+			$config['suffix'] = '/?' . http_build_query($this->input->get());
+			$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
+		}
 
 		$this->pagination->initialize($config);
 		// $this->pagination->cur_page = $page;

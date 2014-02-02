@@ -32,7 +32,7 @@ class MY_Pagination extends CI_Pagination {
         $config['num_tag_close'] = '</li>';
          
         $config['anchor_class'] = 'class="follow_link"';
-        
+
         // init these vars
         $this->initialize($config);
     }

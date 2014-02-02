@@ -109,7 +109,7 @@ class MY_Model extends CI_Model {
 	}
 
 	// 기본 리스트 형식 2
-	public function getList2($criteria=array(), $order_by=array(), $limit = 30, $offset = 0) {
+	public function getList2($criteria=array(), $order_by=array(), $limit = 20, $offset = 0) {
 		if(!count($order_by)){
 			$order_by = array('id' => 'desc');
 		}
@@ -125,8 +125,9 @@ class MY_Model extends CI_Model {
 		return $rows;	
 	}
 
-	// 등록된 row 수 리턴 
-	public function getRowCount($table_name=NULL) {
+	// 등록된 row 수 리턴
+	// 성능 상 이게 좋은것 같지만... 검색조건을 어떻게 붙이지?
+	public function getRowCount2($table_name=NULL) {
 		if(!$table_name) {
 			$table_name = $this->entity_name;
 		}
@@ -136,6 +137,12 @@ class MY_Model extends CI_Model {
 		$count = $query->getSingleScalarResult();
 
 		return $count;
+	}
+
+	// 결과행 수를 반환 (검색조건 가능)
+	public function getRowCount($criteria = array()) {
+		$rows = $this->em->getRepository($this->entity_name)->findBy($criteria);
+		return sizeof($rows);
 	}
 
 }

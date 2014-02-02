@@ -9,55 +9,54 @@ class User extends CI_Controller {
 		$this->load->model('user_m', 'user_model');
 	}
 
-	public function index($type='', $page=1) {
-		$this->lists($type, $page);
+	public function index($page=1) {
+		$this->lists($page);
 	}
 
-	public function lists($type='', $page=1) {
-		// var_dump($_GET);
-		// $_SERVER['QUERY_STRING'];
-		$prefix = array();
+	public function lists($page=1) {
 		
-		$page = isset($_GET['page']) ? $_GET['page'] : 1;
-		if(isset($_GET['page'])) {
-			$prefix['page'] = $_GET['page'];
-		}
-
-		if(isset($_GET['per_page'])) {
-			$prefix['per_page'] = $_GET['per_page'];
-		}
-
-		if(isset($_GET['opType'])){
-			$prefix['opType'] = $_GET['opType'];
-		}
-
+		// GET 방식의 검색 조건
 		$criteria = array();
-		$order_by = array('id' => 'desc');
-		$row_count = isset($_GET['per_page']) ? $_GET['per_page'] : 20;
-		$offset = ($page - 1) * $row_count;
-		$rows = $this->user_model->getList2($criteria, $order_by, $row_count, $offset);
+		
+		// 회원 상태
+		if($this->input->get('status')) {
+			$criteria['status'] = $this->input->get('status');
+		}
 
-		// if(!$type) {
-		// 	$rows = $this->user_model->getList();
-		// } else {
-		// 	$rows = $this->user_model->getListByType($type);
-		// 	$config['suffix'] = '&type=' . $type;
-		// }
+		// 회원 타입
+		if($this->input->get('type')) {
+			$criteria['type'] = $this->input->get('type');
+		}
+
+		$num_rows = 5;
+		$order_by = array('id' => 'desc');
+		$offset = ($page - 1) * $num_rows;
+		$rows = $this->user_model->getList2($criteria, $order_by, $num_rows, $offset);
+
+		// 총 결과수
+		$total_rows = $this->user_model->getRowCount($criteria);
 
 		// pagination
 		// ===========
 		// user/lists/?page=1&type=2 식으로 사용하려면 config에 
-		// prefix, suffix 를 설정해야 함
-		// (소스에 보면) $this->prefix.$n.$this->suffix;
+		// (소스에 보면) $this->prefix.$n.$this->criteria;
 		$this->load->library('pagination');
 		$config = array(
 			'base_url' 		=> base_url() . 'admin/user/lists/',
-			'prefix'		=> '?page=',
-			'total_rows'	=> count($rows),
-			'per_page'		=> 10,
+			'prefix'		=> '',
+			'total_rows'	=> $total_rows,
+			'per_page'		=> $num_rows,
+			'uri_segment'	=> 4,
+			'num_links'		=> 5,
 			'use_page_numbers'	=> TRUE,
 			'page_query_string'	=> FALSE
 		);
+
+		// 검색 조건이 있을 경우
+		if(count($criteria)) {
+			$config['suffix'] = '/?' . http_build_query($this->input->get());
+			$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
+		}
 
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
@@ -66,7 +65,7 @@ class User extends CI_Controller {
 		$data['current'] = 'page-admin-user';
 
 		$data['rows'] = $rows;
-		$data['type'] = $type;		// 회원구분
+		$data['type'] = $this->input->get('type');		// 회원구분
 		
 		$this->load->view('user_list', $data);
 	}

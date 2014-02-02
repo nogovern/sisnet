@@ -15,9 +15,9 @@ $this->view('layout/navbar');
     <div class="col-md-12">
       <ul class="nav nav-pills">
         <li class="<?=($type=='')?'active':''?>"><a href="<?=base_url()?>admin/user">전체</a></li>
-        <li class="<?=($type==1)?'active':''?>"><a href="<?=base_url()?>admin/user/lists/1">시스네트</a></li>
-        <li class="<?=($type==2)?'active':''?>"><a href="<?=base_url()?>admin/user/lists/2">GS25</a></li>
-        <li class="<?=($type==3)?'active':''?>"><a href="<?=base_url()?>admin/user/lists/3">납품처</a></li>
+        <li class="<?=($type==1)?'active':''?>"><a href="<?=base_url()?>admin/user/lists/?type=1">시스네트</a></li>
+        <li class="<?=($type==2)?'active':''?>"><a href="<?=base_url()?>admin/user/lists/?type=2">GS25</a></li>
+        <li class="<?=($type==3)?'active':''?>"><a href="<?=base_url()?>admin/user/lists/?type=3">납품처</a></li>
       </ul>
 
       <table class="table table-hover">
