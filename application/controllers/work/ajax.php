@@ -55,7 +55,11 @@ class Ajax extends CI_Controller
 			}
 		} else {
 			// 작업 예정일
-			$post['date_expect'] = $this->input->post('date_work');	
+			if(!$this->input->post('date_expect')) {
+				$post_data['date_expect'] = $this->input->post('date_work');
+			} else {
+				$post_data['date_expect'] = $this->input->post('date_expect');
+			}
 
 			// 입고가 아닌 경우
 			if($op->type >= '200') {

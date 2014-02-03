@@ -14,28 +14,12 @@
       <!-- start form -->
       <form role="form" class="form form-horizontal">
       <div class="modal-body">
-          <!--
-          <input type="hidden" name="mode" value="install_request_ok">
-          <div class="form-group">
-            <label class="form-label col-sm-4">담당 사무소</label>
-            <div class="col-sm-5">
-            </div>
-            <div class="col-sm-3">
-              <button class="btn btn-info btn-sm" type="button">사무소 변경</button>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label col-sm-4">담당 직원 선택</label>
-            <div class="col-sm-7">
-            </div>
-          </div>
-        -->
 
           <div class="form-group">
             <label class="form-label col-sm-4">납품 예정일</label>
             <div class="col-sm-6">
               <div class="input-group">
-                <input type="text" id="date_work" name="date_work" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
+                <input type="text" id="date_expect" name="date_expect" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
                 <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
               </div>
             </div>
@@ -59,7 +43,7 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#date_work").datepicker({
+    $("#date_expect").datepicker({
       dateFormat: "yy-mm-dd",
       minDate: new Date(),
       changeMonth: true,
@@ -73,10 +57,10 @@
       var   office_id = 1,
             worker_id = 1;    // 납품 업체 담당자
 
-      var $date_work = $("#date_work");
-      if($date_work.val() == '') {
+      var $date_expect = $("#date_expect");
+      if($date_expect.val() == '') {
         alert('납품 예정일은 필수 항목 입니다');
-        $date_work.focus();
+        $date_expect.focus();
         return false;
       }
 
@@ -92,9 +76,9 @@
         type: "POST",
         data: {
           id : operation.id,
-          office_id: office_id,
-          worker_id: worker_id,
-          date_work: $date_work.val(),
+          // office_id: office_id,
+          // worker_id: worker_id,
+          date_expect: $date_expect.val(),
           memo: $("textarea[name=memo]", this).val(),
           "csrf_test_name": $.cookie("csrf_cookie_name")
         },
