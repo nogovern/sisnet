@@ -154,10 +154,10 @@ foreach($work->targets as $top) {
           <table class="table table-condensed">
             <tbody>
               <tr>
-                <td class="col-sm-3">장비 설치 상태: <?php echo $install_target->getStatus(); ?></td>
+                <td class="col-sm-3">장비 설치 상태: <?php echo constant('GS2_OP_INSTALL_STATUS_' . $install_target->getStatus()); ?></td>
                 <td class="col-sm-3">설치 작업자: <?php echo $install_target->getWorkerInfo();; ?></td>
                 <td class="col-sm-3">설치 예정일: <?php echo $install_target->getDateExpect(); ?></td>
-                <td class="col-sm-3">설치 완료일: <?php echo $install_target->getDateWork(); ?></td>
+                <td class="col-sm-3">설치 완료일: <?php echo $install_target->getDateFinish(); ?></td>
               </tr>
               <tr>
                 <td class="col-sm-12" colspan="4">설치작업 첨부 파일: </td>
@@ -185,7 +185,7 @@ foreach($install_target->getItems() as $item):
                 <td><?php echo $item->part_name;?></td>
                 <td><?php echo $item->serial_number; ?></td>
                 <td><?php echo $item->status; ?></td>
-                <td><?php echo $item->qty_complete; ?></td>
+                <td><?php echo $item->qty_request; ?></td>
               </tr>
 <?php
 endforeach;
@@ -208,10 +208,10 @@ endforeach;
           <table class="table table-condensed">
             <tbody>
               <tr>
-                <td class="col-sm-3">장비 철수 상태: <?php echo $close_target->getStatus(); ?></td>
+                <td class="col-sm-3">장비 철수 상태: <?php echo constant('GS2_OP_CLOSE_STATUS_' . $close_target->getStatus()); ?></td>
                 <td class="col-sm-3">철수 작업자: <?php echo $close_target->getWorkerInfo();; ?></td>
                 <td class="col-sm-3">철수 예정일: <?php echo $close_target->getDateExpect(); ?></td>
-                <td class="col-sm-3">철수 완료일: <?php echo $close_target->getDateWork(); ?></td>
+                <td class="col-sm-3">철수 완료일: <?php echo $close_target->getDateFinish(); ?></td>
               </tr>
               <tr>
                 <td class="col-sm-12" colspan="4">철수작업 첨부 파일: </td>
@@ -239,7 +239,7 @@ foreach($close_target->getItems() as $item):
                 <td><?php echo $item->part_name;?></td>
                 <td><?php echo $item->serial_number; ?></td>
                 <td><?php echo $item->status; ?></td>
-                <td><?php echo $item->qty_complete; ?></td>
+                <td><?php echo $item->qty_request; ?></td>
               </tr>
 <?php
 endforeach;
@@ -264,10 +264,16 @@ if($work->status == 1):
 endif;
 
 if($work->status == 2):
-?>
+  // 대상 작업이 모두 완료일때만 교체 업무 '승인' 버튼 가능
+  if($close_target->status == '4' && $install_target->status == '4'):
+?>    
+    <!--
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete">점포 완료</button>
+    -->
+      <button id="btn_confirm" class="btn btn-success" type="button">승인</button>
 <?php
+  endif;
 endif;
 
 if($work->status == 3):
@@ -277,13 +283,7 @@ if($work->status == 3):
       <button id="btn_approve" class="btn btn-success" type="button" disabled>승인</button>
 <?php
 endif;
-if($work->status == 4):
 ?>
-      <button id="btn_confirm" class="btn btn-success" type="button">승인</button>
-<?php
-endif;
-?>
-
     </div>
   </div>
 </div><!-- end of div.container -->
@@ -298,10 +298,10 @@ endif;
 /////////////////////////////
 $this->view('common/modal_replace_request_ok');             // 요청 확정
 $this->view('common/modal_memo');                   // 작업자 메모
+$this->view('common/modal_op_complete');            // 작업 완료
 //$this->view('common/modal_change_worker');          // 방문자 변경
 //$this->view('common/modal_store_complete');         // 점포 완료
-$this->view('common/modal_op_complete');            // 작업 완료
-$this->view('common/modal_close_part_register');    // 장비 등록 (설치/철수 다름)
+// $this->view('common/modal_close_part_register');    // 장비 등록 (설치/철수 다름)
 // 작업 완료
 ?>
 
@@ -357,37 +357,6 @@ $(document).ready(function(){
 
 });// end of ready
 
-//  장비리스트에 행 추가
-function callback_insert_row(id, type, name, sn, prev, qty, is_new) {
-  var type_text = '';
-  if( type == '1') type_text = '시리얼';
-  if( type == '2') type_text = '수량';
-  if( type == '3') type_text = '소모품';
-
-  var tr = $("<tr/>").attr('data-item_id', id);
-  tr.append($("<td/>").text(id));
-  tr.append($("<td/>").text(type_text));
-  tr.append($("<td/>").text(name));
-  tr.append($("<td/>").text((is_new == 'Y') ? '신품' : '중고'));
-  tr.append($("<td/>").text(sn));
-  tr.append($("<td/>").text(prev));
-  tr.append($("<td/>").text(qty));
-  tr.append($("<td/>").html('<button class="btn btn-danger btn-xs remove_item" type="button">X</button>'));
-  $("#part_table tbody").append(tr);
-
-  $("button[data-target=#modal_store_complete]").attr('disabled', false);
-}
-
-// 행 삭제
-function callback_remove_row(what) {
-  $(what).closest('tr').fadeOut('slow').remove();
-
-  // 등록 장비 없을 시 작업완료 비활성
-  var len = $("#part_table tbody tr").length;
-  if(len == 0) {
-    $("button[data-target=#modal_op_complete]").attr('disabled', true);
-  }
-}
 
 /////////////
 // 공통
