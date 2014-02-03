@@ -40,6 +40,7 @@ if(0) {
             <li id="page-change"><a href="<?=site_url('/work/change')?>">상태변경</a></li>
             <li id="page-replace"><a href="<?=site_url('/work/replace')?>">교체</a></li>
             <li id="page-move"><a href="<?=site_url('/work/move')?>">이동</a></li>
+            <li id="page-destroy"><a href="<?=site_url('/work/destroy')?>">폐기</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">
