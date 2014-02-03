@@ -247,16 +247,24 @@ $(document).ready(function(){
         
         // 성공 시 처리
         if(!response.error) {
-          $("#modal_enter_add_item").modal('hide'); //modal 닫기
 
           // 리스트 갱신
           var $tr = $("#part_table tr[data-itemid="+ response.item_id +"]");
           $tr.data('isset', 'Y');
-          $("td", $tr).eq(3).text(sn);              // SN
+          $("td", $tr).eq(3).text(sn);     // SN
           $("td", $tr).eq(5).text(qty);    // 등록 수량
           
-          // 수량,버튼 갱신        
+          // 등록 수량 증가
           qty_complete += qty;
+
+          // 입력 계속
+          if(qty_complete < qty_request) {
+            $("#input_text").val('').focus();  
+          } else {
+            $("#modal_enter_add_item").modal('hide'); //modal 닫기
+          }
+
+          // 수량, 버튼 상태 변경
           changeCompleteCount();
           checkDeliveryStatus();
         } else {

@@ -60,7 +60,6 @@ echo form_hidden('part_id', $form_hiddens['part_id']);
 
               <p class="form-actions">
                 <button class="btn btn-primary" type="submit">입력완료</button>
-                <button id="ajax" class="btn btn-danger" type="button">다른 종류</button>
               </p>
             </form>
           </div>
