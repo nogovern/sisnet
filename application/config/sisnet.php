@@ -35,6 +35,54 @@ $config['gs2']['op_type'] = array(
 	'901'	=> '상태변경-점검',
 );
 
+// 업무 형태 (약어)
+$config['gs2']['op_type_short'] = array(
+	'100'	=> '입고',
+	'200'	=> '설치',
+	'201'	=> '설치',
+	'202'	=> '휴설C',
+	'203'	=> '휴설S',
+	'204'	=> '리설',
+	'205'	=> '교설',
+	'300'	=> '철수',
+	'301'	=> '철수',
+	'302'	=> '휴철C',
+	'303'	=> '휴철S',
+	'304'	=> '리철',
+	'305'	=> '교철',
+	'400'	=> '교체',
+	'500'	=> '수리',
+	'600'	=> '폐기',
+	'700'	=> '이동',
+	'800'	=> '이관',
+	'900'	=> '변경',
+	'901'	=> '점검',
+);
+
+// 업무 link base url
+$config['gs2']['op_url'] = array(
+	'100'	=> 'work/enter/view',
+	'200'	=> 'work/install/view',
+	'201'	=> 'work/install/view',
+	'202'	=> 'work/install/view',
+	'203'	=> 'work/install/view',
+	'204'	=> 'work/install/view',
+	'205'	=> 'work/install/view',
+	'300'	=> 'work/close/view',
+	'301'	=> 'work/close/view',
+	'302'	=> 'work/close/view',
+	'303'	=> 'work/close/view',
+	'304'	=> 'work/close/view',
+	'305'	=> 'work/close/view',
+	'400'	=> 'work/replace/view',
+	'500'	=> 'work/repair/view',
+	'600'	=> 'work/destroy/view',
+	'700'	=> 'work/move/view',
+	'800'	=> 'work/transfer/view',
+	'900'	=> 'work/change/view',
+	'901'	=> 'work/change/view',
+);
+
 // 점포 가맹 타입 (DB 에서 불러와야 함)
 $config['gs2']['store_join_type'] = array(
 	'1' => '가맹1종A(순수)',

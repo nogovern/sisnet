@@ -155,7 +155,33 @@ if(!function_exists('gs2_op_general_type')) {
 
         return gs2_op_type($type);
     }
-} 
+}
+
+// 짧은 업무 타입명 반환
+if(!function_exists('gs2_op_short_type')) {
+    function gs2_op_short_type($type=NULL) {
+
+        $CI =& get_instance();
+
+        $_config = $CI->config->item('gs2');
+        $op_types = $_config['op_type_short'];
+
+        return $op_types[$type];
+    }
+}  
+
+// 업무 type 으로 상세보기 link 얻기
+if(!function_exists('gs2_hover')) {
+    function gs2_hover($type=NULL) {
+
+        $CI =& get_instance();
+
+        $_config = $CI->config->item('gs2');
+        $url = $_config['op_url'];
+
+        return base_url() . $url[$type] . '/';
+    }
+}  
  
 // 장비 카테고리-장비 배열
 if(!function_exists('gs2_category_parts')) {
