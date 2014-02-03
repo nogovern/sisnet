@@ -43,8 +43,8 @@ $this->view('layout/navbar');
   foreach($rows as $row):
     switch($row->status) {
       case '1': $label_color = 'label-default';break;
-      case '2': $label_color = 'label-info';break;
-      case '3': $label_color = 'label-warning';break;
+      case '2': $label_color = 'label-danger';break;
+      case '3': $label_color = 'label-info';break;
       case '4': $label_color = 'label-success';break;
       default : $label_color = 'label-default';break;
     }
@@ -60,7 +60,7 @@ $this->view('layout/navbar');
                   <span class="label <?=$label_color?>"><?=constant("GS2_OP_CLOSE_STATUS_" .$row->status)?></span>
                 </td>
                 <td><?=$row->getDateRequest();?></td>
-                <td><?=$row->getDateRequest();?></td>
+                <td><?=$row->getDateWork();?></td>
                 <td><?=$row->getDateFinish();?></td>
                 <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/replace/view/') . '/' . $row->id ?>">보기</button></td>

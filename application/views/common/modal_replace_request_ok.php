@@ -33,7 +33,7 @@
                 <label class="form-label col-sm-5">철수 담당자</label>
                 <div class="col-sm-7">
         <?php
-        echo $select_user;
+        echo $select_close_user;
         ?>      
                 </div>
               </div>
@@ -44,7 +44,7 @@
                 <label class="form-label col-sm-5">설치 담당자</label>
                 <div class="col-sm-7">
         <?php
-        echo $select_user;
+        echo $select_install_user;
         ?>      
                 </div>
               </div>
@@ -58,7 +58,7 @@
                 <label class="form-label col-sm-5">철수 예정일</label>
                 <div class="col-sm-7">
                   <div class="input-group">
-                    <input type="text" id="date_expect" name="date_expect" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
+                    <input type="text" id="close_expect_date" name="close_expect_date" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
                     <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
                   </div>
                 </div>
@@ -70,7 +70,7 @@
                 <label class="form-label col-sm-5">설치 예정일</label>
                 <div class="col-sm-7">
                   <div class="input-group">
-                    <input type="text" id="date_expect" name="date_expect" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
+                    <input type="text" id="install_expect_date" name="install_expect_date" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
                     <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
                   </div>
                 </div>
@@ -94,55 +94,61 @@
   </div>
 </div><!-- /.modal -->
 
+
+
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("#date_request").datepicker({});
+// 공통 으로 둬야 겠다
+jQuery.validator.setDefaults({
+  onkeyup: false,
+  debug: true
+});
 
-    $("#modal_replace_request_ok form").submit(function(e){
-      e.preventDefault();
-
-      var $form = $("#modal_replace_request_ok form");
-      var $worker_id = $("#worker_id");
-      var $date_expect = $("#date_expect");
-
-      if($worker_id.val() < 1) {
-        alert('필수 항목 입니다');
-        $worker_id.focus();
-        return false;
+$(document).ready(function(){
+  $("#modal_replace_request_ok form").validate({
+    rules: {
+      install_worker_id: {
+        required: true,
+        min : 1
+      },
+      close_worker_id: {
+        required: true,
+        min : 1
       }
+      // install_expect_date: 'required',
+      // close_expect_date: 'required'
+    },
+    submitHandler: function(form) {
+      var is_ok = confirm("교체 요청을 확정 합니다.\n진행할까요?");
 
-      if($date_expect.val() == '') {
-        alert('작업 예정일은 필수 항목 입니다');
-        $date_expect.focus();
+      if(!is_ok)
         return false;
-      }
 
-      var is_ok = confirm("확정 하시겠습니까?\n그리고 작업 예정일 확인 해야 합니다");
-
-      if(is_ok == true){
-        $.ajax({
-          url: "<?=base_url()?>work/ajax/accept_request",
-          type: "POST",
-          data: {
-            id : operation.id,
-            office_id: $("#office_id").val(),
-            worker_id: $worker_id.val(),
-            date_work: $date_expect.val(),
-            memo: $("textarea[name=memo]", this).val(),
-            "csrf_test_name": $.cookie("csrf_cookie_name")
-          },
-          dataType: "html",
+      // gs2_console($(form).serialize());
+      // ajax request for 요청확정
+      $.ajax({
+        url: "<?=base_url()?>work/ajax/accept_request",
+        type: "POST",
+        data: {
+          id : operation.id,
+          close_worker_id : $("#close_worker_id").val(),
+          install_worker_id : $("#install_worker_id").val(),
+          close_expect_date: $("#close_expect_date").val(),
+          install_expect_date: $("#install_expect_date").val(),
+          memo: $("textarea[name=memo]", form).val(),
+          "csrf_test_name": $.cookie("csrf_cookie_name")
+        },
+        dataType: "html",
+      })
+        .done(function(html) {
+          gs2_console(html);
+          location.reload();
         })
-          .done(function(html) {
-            alert('확정하였습니다.\n 다음단계로 이동합니다.');
-            location.reload();
-          })
-          .fail(function(xhr, textStatus){
-            alert("Request failed: " + textStatus);
-          });
-      }// end of if
+        .fail(function(xhr, textStatus){
+          alert("Request failed: " + textStatus);
+        });
+    }
+  });//end of validate
 
-    });//end of submit
-  });//end of ready
+});//end of ready
 
 </script>

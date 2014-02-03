@@ -23,22 +23,53 @@ class Ajax extends CI_Controller
 		$id = $this->input->post('id');
 		$op = $this->work_model->get($id);
 
+		// 공통
 		$post_data = array(
-			'date_expect'	=> $this->input->post('date_work'),	// 작업 예정일
 			'status'		=> '2'
 		);
 
-		// 입고가 아닌 경우
-		if($op->type >= '200') {
-			//$post_data['office_id']	= $this->input->post('office_id');
-			$post_data['worker_id']	= $this->input->post('worker_id');
+		// 교체업무
+		if($op->type == '400') {
+			$post_data['date_expect'] = $this->input->post('close_expect_date');	// 교체 철수 요청일
+			$post_data['date_work'] = $this->input->post('install_expect_date');	// 교체 설치 요청일
+
+			foreach($op->targets as $top) {
+				// 설치 확정
+				if($top->target->type == '205') {
+					$t_data = array(
+						'worker_id'		=> $this->input->post('install_worker_id'),
+						'date_expect' 	=> $this->input->post('install_expect_date'),
+						'status'		=> '2'
+					);
+					$this->work_model->updateOperation($top->target, $t_data); 
+				} 
+				// 철수 확정
+				else {
+					$t_data = array(
+						'worker_id'		=> $this->input->post('close_worker_id'),
+						'date_expect' 	=> $this->input->post('close_expect_date'),
+						'status'		=> '2'
+					);
+					$this->work_model->updateOperation($top->target, $t_data); 
+				}
+			}
+		} else {
+			// 작업 예정일
+			$post['date_expect'] = $this->input->post('date_work');	
+
+			// 입고가 아닌 경우
+			if($op->type >= '200') {
+				$post_data['worker_id']	= $this->input->post('worker_id');
+			}
 		}
 
-		// 업무 master 변경
+		////////////////////
+		// 업무 master 변경 
+		////////////////////
 		$this->work_model->updateOperation($op, $post_data);
 			
 		$log_data = array(
-			'content'	=> $this->input->post('memo'),		// for 테스트
+			'content'	=> $this->input->post('memo'),
 			'type'		=> '1',
 			'event'		=> '요청확정'
 		);

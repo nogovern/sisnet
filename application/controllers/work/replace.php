@@ -105,7 +105,8 @@ class Replace extends CI_Controller
 		// 사용자 dropdown
 		$this->load->model('user_m', 'user_model');
 		$arr_user = gs2_convert_for_dropdown($this->user_model->getListByType(1));
-		$data['select_user'] = form_dropdown('worker_id', $arr_user, 0, 'id="worker_id" class="form-control required"');
+		$data['select_install_user'] = form_dropdown('install_worker_id', $arr_user, 0, 'id="install_worker_id" class="form-control required"');
+		$data['select_close_user'] = form_dropdown('close_worker_id', $arr_user, 0, 'id="close_worker_id" class="form-control required"');
 
 		// 장비 카테고리 dropdown
 		$this->load->model('category_m', 'category_model');

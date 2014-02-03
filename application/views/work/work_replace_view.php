@@ -52,23 +52,8 @@ foreach($work->targets as $top) {
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td>담당직원</td>
-            <td><?=$work->getWorkerInfo();?></td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
             <td>등록일</td>
             <td><?=$work->date_register->format("Y-m-d H:i:s")?></td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td>폐점일 </td>
-            <td><?=$work->getDateStore()?></td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr class="warning">
-            <td>설치 요청일</td>
-            <td><?=$install_target->getDateRequest(TRUE);?></td>
             <td>&nbsp;</td>
           </tr>
           <tr class="warning">
@@ -76,9 +61,9 @@ foreach($work->targets as $top) {
             <td><?=$close_target->getDateRequest(TRUE);?></td>
             <td>&nbsp;</td>
           </tr>
-          <tr>
-            <td>방문 예정일</td>
-            <td><?=$work->getDateExpect()?></td>
+          <tr class="warning">
+            <td>설치 요청일</td>
+            <td><?=$install_target->getDateRequest(TRUE);?></td>
             <td>&nbsp;</td>
           </tr>
           <tr>
@@ -217,7 +202,7 @@ foreach($work->targets as $top) {
               </tr>
               <tr>
                 <td class="col-sm-12" colspan="4">철수작업 첨부 파일: </td>
-              </tr>ß
+              </tr>
             </tbody>
           </table>
           <table class="table table-condensed table-hover">
@@ -277,22 +262,22 @@ endif;
   </div>
 </div><!-- end of div.container -->
 
+<!-- jquery form validation -->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 <?php
 /////////////////////////////
 /// 모달 dialog include
 /////////////////////////////
-$this->view('common/modal_replace_request_ok');           	// 요청 확정
-$this->view('common/modal_memo');                 	// 작업자 메모
-//$this->view('common/modal_change_worker');        	// 방문자 변경
-//$this->view('common/modal_store_complete');       	// 점포 완료
-$this->view('common/modal_op_complete');       		  // 작업 완료
-$this->view('common/modal_close_part_register');   	// 장비 등록 (설치/철수 다름)
+$this->view('common/modal_replace_request_ok');             // 요청 확정
+$this->view('common/modal_memo');                   // 작업자 메모
+//$this->view('common/modal_change_worker');          // 방문자 변경
+//$this->view('common/modal_store_complete');         // 점포 완료
+$this->view('common/modal_op_complete');            // 작업 완료
+$this->view('common/modal_close_part_register');    // 장비 등록 (설치/철수 다름)
 // 작업 완료
 ?>
-
-<!-- jquery form validation -->
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <script type="text/javascript">
 // 작업 정보 객체
@@ -306,7 +291,7 @@ var operation = {
 // 장비 목록
 var items = [];     // array of item object
 var item = {};
-var count_item = <?=$item_count?>;
+var count_item = 0;
 
 $(document).ready(function(){
   // datepicker...
