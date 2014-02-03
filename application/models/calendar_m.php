@@ -66,9 +66,16 @@ class Calendar_m extends MY_Model
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
 			->from('\Entity\Operation', 'w')
-			->where("w.date_request >= :from")
-			->andWhere("w.date_request < :to")
-			->orderBy('w.id', 'DESC')
+			->where("w.date_expect >= :from")
+			->andWhere("w.date_expect < :to");
+		
+		// 특정 사무소 의 일정만 볼 경우		
+		if(!$this->session->userdata('office_id')) {
+			$qb->andWhere("w.office = :office");
+			$qb->setParameter('office', $this->session->userdata('office_id'));
+		}
+			
+		$qb->orderBy('w.id', 'DESC')
 			->setParameter('from', $start->format('Y-m-d'))
 			->setParameter('to', $start->add(new DateInterval("P1M"))->format('Y-m-d'));
 
@@ -78,7 +85,7 @@ class Calendar_m extends MY_Model
 		$events = array();
 		if(count($rows)) {
 			foreach($rows as $row) {
-				$day = $row->date_request->format("j");
+				$day = $row->date_expect->format("j");
 				$content = sprintf("[%s]<a href=\"%s\">%s %s</a>", 
 					$row->office->name, 
 					gs2_hover($row->type) . $row->id, gs2_op_short_type($row->type),
@@ -91,7 +98,6 @@ class Calendar_m extends MY_Model
 				$events[$day] = $content;
 			}
 		}
-		// var_dump($events);
 
 		return $events;
 	}
