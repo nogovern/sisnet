@@ -28,23 +28,17 @@ class User extends CI_Controller {
 			$criteria['type'] = $this->input->get('type');
 		}
 
-		$num_rows = 15;
-		$order_by = array('id' => 'desc');
-		$offset = ($page - 1) * $num_rows;
-		$rows = $this->user_model->getListBy($criteria, $order_by, $num_rows, $offset);
-
-		// 총 결과수
-		$total_rows = $this->user_model->getRowCount($criteria);
-
+		//============
 		// pagination
-		// ===========
-		// user/lists/?page=1&type=2 식으로 사용하려면 config에 
-		// (소스에 보면) $this->prefix.$n.$this->criteria;
+		//============
 		$this->load->library('pagination');
+
+		$num_rows = 15;
+		$base_url = base_url() . 'admin/user/lists/';
+
 		$config = array(
-			'base_url' 		=> base_url() . 'admin/user/lists/',
+			'base_url' 		=> $base_url,
 			'prefix'		=> '',
-			'total_rows'	=> $total_rows,
 			'per_page'		=> $num_rows,
 			'uri_segment'	=> 4,
 			'num_links'		=> 5,
@@ -52,6 +46,10 @@ class User extends CI_Controller {
 			'page_query_string'	=> FALSE
 		);
 
+		// 총 결과수
+		$total_rows = $this->user_model->getRowCount($criteria);
+		$config['total_rows'] = $total_rows;
+		
 		// 검색 조건이 있을 경우
 		if(count($criteria)) {
 			$config['suffix'] = '/?' . http_build_query($this->input->get());
@@ -61,10 +59,15 @@ class User extends CI_Controller {
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
 
+		// 목록 데이터
+		$offset = ($page - 1) * $num_rows;
+		$order_by = array('id' => 'desc');
+		$rows = $this->user_model->getListBy($criteria, $order_by, $num_rows, $offset);
+		$data['rows'] = $rows;
+		
 		$data['title'] = '관리자 > 사용자 > 리스트';
 		$data['current'] = 'page-admin-user';
 
-		$data['rows'] = $rows;
 		$data['type'] = $this->input->get('type');		// 회원구분
 		
 		$this->load->view('user_list', $data);

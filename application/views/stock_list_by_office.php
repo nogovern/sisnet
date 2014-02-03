@@ -15,11 +15,11 @@ $this->view('layout/navbar');
         <div class="col-md-12">
 
         <ul class="nav nav-pills">
-          <li class="<?=($this_office == 'all') ?'active':''?>"><a href="<?=base_url()?>stock/lists/all">전체</a></li>
+          <li class="<?=($this_office == 'all') ?'active':''?>"><a href="<?=base_url()?>stock/lists/?office_id=all">전체</a></li>
 <?php
 foreach($office_list as $o):
 ?>
-          <li class="<?=($o->id == $this_office)?'active':''?>"><a href="<?=base_url()?>stock/lists/<?=$o->id?>"><?=$o->name?></a></li>
+          <li class="<?=($o->id == $this_office)?'active':''?>"><a href="<?=base_url()?>stock/lists/?office_id=<?=$o->id?>"><?=$o->name?></a></li>
 <?php
 endforeach;
 ?>          
@@ -91,15 +91,10 @@ endforeach;
 
         </table>
 
-        <ul class="pagination pagination-sm">
-          <li><a href="#">&laquo;</a></li>
-          <li class="active"><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-          <li><a href="#">&raquo;</a></li>
-        </ul>
+        <!-- Pagination -->
+        <div style="text-align:center">
+          <?php echo $pagination; ?>
+        </div>
 
         <p class="well">
           <!-- ie8 호환성 위해 button 태그 대신 span 태그로 변경 -->

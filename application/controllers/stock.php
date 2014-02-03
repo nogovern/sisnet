@@ -19,42 +19,107 @@ class Stock extends CI_Controller
 		}
 	}
 
-	public function index($arg=NULL) {
-		$this->lists($arg);
+	public function index() {
+		$this->lists();
 	}
 
 	// 전체 장비 재고 리스트
-	public function lists($office_id = NULL) {
+	public function lists($page=1) {
 
-		if(is_null($office_id)) {
-			$office_id = $this->session->userdata('office_id');		// 유저 소속 사무소
-		}
-
-		// 세션에 office_id 가 없는 경우
+		$office_id = $this->input->get('office_id');
 		if(!$office_id) {
-			$office_id = 'all';
+			$office_id = $this->session->userdata('office_id');		// 유저 소속 사무소
+			
+			// 세션에 office_id 가 없는 경우
+			if(!$office_id) {
+				$office_id = 'all';
+			}
 		}
 		
 		$data['title'] = '전체 재고 현황';
 		$data['current'] = 'page-stock';
 		$data['this_office'] = $office_id;
+
+		// 검색 조건
+		$criteria = array();
+
+		//============
+		// pagination
+		//============
+		$this->load->library('pagination');
+
+		$num_rows = 15;
+		$base_url = base_url() . 'stock/lists/';
+
+		$config = array(
+			'base_url' 		=> $base_url,
+			'prefix'		=> '',
+			'per_page'		=> $num_rows,
+			'uri_segment'	=> 3,
+			'num_links'		=> 5,
+			'use_page_numbers'	=> TRUE,
+			'page_query_string'	=> FALSE
+		);
 		
 		$this->load->model('office_m', 'office_model');
 		$data['office_list'] = $this->office_model->getList();
 		
 		// 전체 재고		
 		if($office_id == 'all') {
-			$em = $this->stock_model->getEntityManager();
-			$data['rows'] = $em->getRepository('Entity\Part')->findAll();		// part Entity
+			// $em = $this->stock_model->getEntityManager();
+			// $data['rows'] = $em->getRepository('Entity\Part')->findAll();		// part Entity
+
+			$this->load->model('part_m', 'part_model');
+			// 총 결과수
+			$total_rows = $this->part_model->getRowCount($criteria);
+			$config['total_rows'] = $total_rows;
+			
+			// 검색 조건이 있을 경우
+			if($this->input->get()) {
+				$config['suffix'] = '/?' . http_build_query($this->input->get());
+				$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
+			}
+
+			$this->pagination->initialize($config);
+			$data['pagination'] = $this->pagination->create_links();
+
+			// 목록 데이터
+			$offset = ($page - 1) * $num_rows;
+			$order_by = array('id' => 'desc');
+			
+			$rows = $this->part_model->getListBy($criteria, $order_by, $num_rows, $offset);
+			$data['rows'] = $rows;
 
 			$this->load->view('stock_list', $data);
 		} 
 		// 사무소별 장비 재고
 		else {
-			$office = $this->office_model->get($office_id);
+			$criteria['office'] = $this->office_model->get($office_id);
 
-			$rows = $office->getStockList();				// stock Entity
+			// 총 결과수
+			$total_rows = $this->stock_model->getRowCount($criteria);
+			$config['total_rows'] = $total_rows;
+			
+			// 검색 조건이 있을 경우
+			if($this->input->get()) {
+				$config['suffix'] = '/?' . http_build_query($this->input->get());
+				$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
+			}
+
+			$this->pagination->initialize($config);
+			$data['pagination'] = $this->pagination->create_links();
+
+			// 목록 데이터
+			$offset = ($page - 1) * $num_rows;
+			$order_by = array('id' => 'desc');
+			
+			$rows = $this->stock_model->getListBy($criteria, $order_by, $num_rows, $offset);
 			$data['rows'] = $rows;
+
+			// $office = $this->office_model->get($office_id);
+			// $rows = $office->getStockList();				// stock Entity
+
+			// $data['rows'] = $rows;
 
 			$this->load->view('stock_list_by_office', $data);
 		}

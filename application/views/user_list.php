@@ -63,9 +63,12 @@ endforeach;
 ?>
         </tbody>
       </table>
-<?php 
-echo $pagination 
-?>
+
+      <!-- Pagination -->
+      <div style="text-align:center">
+        <?php echo $pagination; ?>
+      </div>
+
     </div>
   </div><!-- end of row -->
   <div class="row">  

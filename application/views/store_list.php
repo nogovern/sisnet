@@ -52,6 +52,8 @@ endforeach;
       </tbody>
 
     </table>
+    
+    <!-- Pagination -->
     <div style="text-align:center">
       <?=$pagination?>
     </div>
