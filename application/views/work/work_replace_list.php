@@ -25,12 +25,13 @@ $this->view('layout/navbar');
             <thead>
               <tr>
                 <th>No</th>
-                <th>작업형태</th>
+                <th>구분</th>
                 <th>요청자</th>
-                <th>재고사무소</th>
+                <th>대상점포</th>
+                <th>담당사무소</th>
                 <th>진행상태</th>
-                <th>상태변경 장비수량</th>
-                <th>등록일</th>
+                <th>철수요청일</th>
+                <th>설치요청일</th>
                 <th>완료일</th>
                 <th>메모</th>
                 <th>&nbsp;</th>
@@ -51,14 +52,15 @@ $this->view('layout/navbar');
   ?>
               <tr class="">
                 <td><?=$row->id?></td>
-                <td><?=$row->type?></td>
+                <td><?=gs2_op_type($row->type)?></td>
                 <td><?=$row->user->name?></td>
+                <td><?=$row->store->name?></td>
                 <td><?=$row->office->name?></td>
                 <td>
                   <span class="label <?=$label_color?>"><?=constant("GS2_OP_CLOSE_STATUS_" .$row->status)?></span>
                 </td>
-                <td>0</td>
-                <td><?=$row->getDateRegister();?></td>
+                <td><?=$row->getDateRequest();?></td>
+                <td><?=$row->getDateRequest();?></td>
                 <td><?=$row->getDateFinish();?></td>
                 <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/replace/view/') . '/' . $row->id ?>">보기</button></td>
