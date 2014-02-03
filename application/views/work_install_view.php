@@ -225,6 +225,7 @@ if($work->status == 2) {
 
 if($work->status == 3):
 ?>
+      <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
       <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
       <button id="btn_complete" class="btn btn-success" type="button" disabled>설치 완료</button>
 <?php
@@ -244,7 +245,7 @@ endif;
 /////////////////////////////
 /// 모달 dialog include
 /////////////////////////////
-$this->view('common/modal_part_register');        // 장비 등록
+$this->view('common/modal_part_register');        // 설치 장비 등록
 $this->view('common/modal_request_ok');           // 요청 확정
 $this->view('common/modal_memo');                 // 작업자 메모
 $this->view('common/modal_change_worker');        // 방문자 변경

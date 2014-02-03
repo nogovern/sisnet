@@ -46,8 +46,8 @@ $this->view('layout/navbar');
     // 상태 색
     switch($row->status) {
       case '1': $label_color = 'label-default';break;
-      case '2': $label_color = 'label-info';break;
-      case '3': $label_color = 'label-warning';break;
+      case '2': $label_color = 'label-danger';break;
+      case '3': $label_color = 'label-info';break;
       case '4': $label_color = 'label-success';break;
       default : $label_color = 'label-default';break;
     }
