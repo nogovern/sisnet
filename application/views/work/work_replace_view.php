@@ -149,7 +149,7 @@ foreach($work->targets as $top) {
     <div class="col-md-12">
       <!-- start: ALERTS PANEL -->
       <div id="install_target_panel" class="panel panel-primary">
-        <div class="panel-heading"><i class="fa fa-tags"></i> 장비 설치 작업 번호: <?php echo $install_target->operation_number; ?> </div>
+        <div class="panel-heading"><i class="fa fa-tags"></i> 설치 작업 번호: <?php echo $install_target->operation_number . anchor("work/install/view/" . $install_target->id, '[바로가기]'); ?> </div>
         <div class="panel-body" style="">
           <table class="table table-condensed">
             <tbody>
@@ -176,7 +176,20 @@ foreach($work->targets as $top) {
               </tr>
             </thead>
             <tbody>
-
+<?php
+foreach($install_target->getItems() as $item):
+?>
+              <tr>
+                <td><?php echo $item->id;?></td>
+                <td><?php echo $item->part->category->name; ?></td>
+                <td><?php echo $item->part_name;?></td>
+                <td><?php echo $item->serial_number; ?></td>
+                <td><?php echo $item->status; ?></td>
+                <td><?php echo $item->qty_complete; ?></td>
+              </tr>
+<?php
+endforeach;
+?>
             </tbody>
           </table>
         </div>
@@ -190,7 +203,7 @@ foreach($work->targets as $top) {
     <div class="col-md-12">
       <!-- start: ALERTS PANEL -->
       <div id="close_target_panel" class="panel panel-danger">
-        <div class="panel-heading"><i class="fa fa-tags"></i> 장비 철수 작업 번호: <?php echo $close_target->operation_number; ?> </div>
+        <div class="panel-heading"><i class="fa fa-tags"></i> 철수 작업 번호: <?php echo $close_target->operation_number . anchor("work/close/view/" . $close_target->id, '[바로가기]'); ?> </div>
         <div class="panel-body" style="">
           <table class="table table-condensed">
             <tbody>
@@ -217,7 +230,20 @@ foreach($work->targets as $top) {
               </tr>
             </thead>
             <tbody>
-
+<?php
+foreach($close_target->getItems() as $item):
+?>
+              <tr>
+                <td><?php echo $item->id;?></td>
+                <td><?php echo $item->part->category->name; ?></td>
+                <td><?php echo $item->part_name;?></td>
+                <td><?php echo $item->serial_number; ?></td>
+                <td><?php echo $item->status; ?></td>
+                <td><?php echo $item->qty_complete; ?></td>
+              </tr>
+<?php
+endforeach;
+?>
             </tbody>
           </table>
         </div>
