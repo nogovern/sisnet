@@ -118,8 +118,19 @@ class MY_Model extends CI_Model {
 		if(NULL === $table_name) {
 			$table_name = $this->entity_name;
 		}
-		$rows = $this->em->getRepository($table_name)->findBy($criteria);
-		return sizeof($rows);
+
+		if(count($criteria)) {
+			$rows = $this->em->getRepository($table_name)->findBy($criteria);
+			return sizeof($rows);
+		} 
+		// 검색 조건이 없을경우 성능 향상 위해서
+		else {
+			$dql = "select count(t.id) FROM {$table_name} t";
+			$query = $this->em->createQuery($dql);
+			$count = $query->getSingleScalarResult();
+
+			return $count;
+		}
 	}
 
 	// 검색
@@ -127,20 +138,6 @@ class MY_Model extends CI_Model {
 		$rows = $this->em->getRepository($this->getEntityName())->findBy($options);
 		
 		return $rows;	
-	}
-
-	// 등록된 row 수 리턴
-	// 성능 상 이게 좋은것 같지만... 검색조건을 어떻게 붙이지?
-	public function getRowCount2($table_name=NULL) {
-		if(!$table_name) {
-			$table_name = $this->entity_name;
-		}
-
-		$dql = "select count(t.id) FROM {$table_name} t";
-		$query = $this->em->createQuery($dql);
-		$count = $query->getSingleScalarResult();
-
-		return $count;
 	}
 
 }
