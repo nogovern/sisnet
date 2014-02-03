@@ -47,7 +47,16 @@ class Ajax extends CI_Controller
 
 		$em = $this->part_m->getEntityManager();
 		$category = $em->getReference("Entity\Category", $category_id);
+		
+		// $qb = $em->createQueryBuilder();
+		// $qb->select("p")->from("Entity\Part", "p");
+		// $qb->where("p.category = :cat");
+		// $qb->andWhere("p.type != '1'");
+		// $qb->setParameter('cat', $category_id);
+		// $parts = $qb->getQuery()->getResult();
+
 		$parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
+
 
 		// 특정 사무소의 재고 수량을 얻을 경우
 		$office_id  = (isset($_POST['office_id']) && !empty($_POST['office_id'])) ? $_POST['office_id'] : NULL;

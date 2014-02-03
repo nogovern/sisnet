@@ -121,7 +121,7 @@ $(document).ready(function(){
   // 장비 종류 선택 시 장비 목록 가져오기
   $(document).on('change', "#select_category", function(){
     var cat = $(":selected", this).val();
-    if( cat == ''){
+    if(cat == 0){
       $("#select_part").html('');
       return false;
     } else {
@@ -142,8 +142,9 @@ $(document).ready(function(){
       dataType: "html",
     })
       .done(function(html) {
+        // gs2_console(html);
         if(html == 1000){
-          alert('error : 해당 카테고리에 등록된 장비가 없어요');
+          alert('해당 카테고리에 등록된 장비가 없습니다');
         } else {
           $("#select_part").html(html);
           $("#btn_part_add").prop("disabled", false);
