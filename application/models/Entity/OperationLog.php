@@ -30,9 +30,6 @@ class OperationLog
 	/** @Column(type="string", length=1) */
 	protected $type = 'S';
 
-	/** @Column(type="string", length=30) */
-	protected $next_status;
-
 	/** @Column(type="string", length=4000) */
 	protected $content;
 
@@ -67,10 +64,6 @@ class OperationLog
 
 	public function setDateView() {
 		$this->date_view = new \DateTime("now");
-	}
-
-	public function setNextStatus($status) {
-		$this->next_status = $status;
 	}
 
 	// magic method

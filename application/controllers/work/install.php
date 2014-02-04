@@ -169,7 +169,6 @@ class Install extends CI_Controller
 				'content' => '작업을 종료합니다',
 				'date_complete' => $this->input->post('date_complete'),
 				'type' => '1',
-				'next_status' => '4',
 				);
 			$this->work_model->addLog($op, $log_data);
 

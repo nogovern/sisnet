@@ -224,7 +224,6 @@ class Work_m extends MY_Model {
 		$log_data = array(
 			'content' 	=> '[시스템] 입고 요청 생성',
 			'type' => '2',
-			'next_status' => '1',
 			);
 
 		$this->addLog($op, $log_data);
@@ -495,15 +494,14 @@ class Work_m extends MY_Model {
 		$log->setOperation($op);
 		$log->setContent($data['content']);
 		$log->setType($data['type']);			// 로그 타입 (1: 시스템, 2:유저)
-		if(isset($data['next_status'])) {
-			$log->setNextStatus($data['next_status']);
-		}
 		$log->setDateRegister();
 
 		$this->em->persist($log);
+		
 		if($do_flush) {
 			$this->em->flush();
 		}
+
 		return $log;
 	}
 

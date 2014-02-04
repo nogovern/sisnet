@@ -308,7 +308,6 @@ class Enter extends CI_Controller
 				'content' => gs2_op_type($work->type) . ' 작업을 완료 합니다',
 				'date_complete' => $this->input->post('date_complete'),
 				'type' => '1',
-				'next_status' => '3',
 				);
 			$this->work_model->addLog($work, $log_data);
 

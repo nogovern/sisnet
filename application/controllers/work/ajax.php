@@ -248,10 +248,9 @@ class Ajax extends CI_Controller
 		
 		// 업무 log 생성
 		$log_data = array(
-			'content' 		=> $this->input->post('memo') . '\n\n -- 점포 완료 입력됨 --',
+			'content' 		=> $this->input->post('memo'),
 			'date_complete' => $this->input->post('date_complete'),
 			'type' 			=> '1',
-			'next_status' 	=> '3',
 		);
 		$this->work_model->addLog($op, $log_data, TRUE);
 
@@ -334,7 +333,6 @@ class Ajax extends CI_Controller
 			'content' => gs2_op_type($op->type) . ' 작업을 작업완료 합니다',
 			'date_complete' => $this->input->post('date_complete'),
 			'type' => '1',
-			'next_status' => '4',
 			);
 		$this->work_model->addLog($op, $log_data, TRUE);
 		
@@ -344,6 +342,17 @@ class Ajax extends CI_Controller
 	// 승인 
 	public function approve() {
 		$id = $this->input->post('id');
+		$op = $this->work_model->get($id);
+
+		$next_status = intval($op->getStatus()) + 1;
+
+		// 다음 상태로 변경
+		$this->work_model->updateOpration($op, array('status' => $next_status));
+
+		$log_data = array(
+			'content' => '승인 완료',
+			'type'		=> '1'
+		);
 	}
 
 	// 입고 - 아이템 정보 갱신
