@@ -22,7 +22,7 @@
     ?>
             </div>
             <div class="col-sm-3">
-              <button class="btn btn-info btn-sm" type="button">사무소 변경</button>
+              <button id="btn_change_office" class="btn btn-info btn-sm" type="button">사무소 변경</button>
             </div>
           </div>
           
@@ -148,6 +148,35 @@ $(document).ready(function(){
         });
     }
   });//end of validate
+  
+  //////////////
+  // 담당사무소 변경
+  //////////////
+  $("#btn_change_office").click(function(){
+    var oId = $("#office_id").val();
+
+    if(oId == operation.office_id) {
+      alert('지정된 사무소와 같습니다.');
+      return false;
+    }
+
+    $.ajax({
+        url: "<?=base_url()?>work/ajax/change_office",
+        type: "POST",
+        data: {
+          id : operation.id,
+          office_id: oId,
+          "csrf_test_name": $.cookie("csrf_cookie_name")
+        },
+        dataType: "html",
+      })
+        .done(function(html) {
+          alert(html);
+        })
+        .fail(function(xhr, textStatus){
+          alert("Request failed: " + textStatus);
+        });
+  });
 
 });//end of ready
 

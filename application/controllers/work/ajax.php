@@ -228,10 +228,33 @@ class Ajax extends CI_Controller
 		$log_data = array(
 			'type'		=> '1',
 			'content'	=> '방문자 변경 되었음',
+			'event'		=> '작업자 변경'
 		);
 		$this->work_model->addLog($op, $log_data, TRUE);
 
-		echo '작업자 변경 완료';
+		echo '작업자를 변경하였습니다';
+	}
+
+	// 담당 사무소 변경
+	public function change_office() {
+		$id = $this->input->post('id');
+		$op = $this->work_model->get($id);
+
+		// 작업자 변경
+		$data = array(
+			'office_id' => $this->input->post('office_id'),
+		);
+		$this->work_model->updateOperation($op, $data);
+
+		// 로그 기록
+		$log_data = array(
+			'type'		=> '1',
+			'content'	=> '담당 사무소 변경 완료',
+			'event'		=> '사무소 변경'
+		);
+		$this->work_model->addLog($op, $log_data, TRUE);
+
+		echo '담당 사무소를 변경하였습니다';
 	}
 
 	// 점포 완료

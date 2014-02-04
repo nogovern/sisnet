@@ -23,7 +23,7 @@
     ?>
             </div>
             <div class="col-sm-3">
-              <button class="btn btn-info btn-sm" type="button">사무소 변경</button>
+              <button id="btn_change_office" class="btn btn-info btn-sm" type="button">사무소 변경</button>
             </div>
           </div>
           <div class="form-group">
@@ -62,54 +62,83 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("#date_request").datepicker({});
+$(document).ready(function(){
+  $("#date_request").datepicker({});
 
-    $("#modal_request_ok form").submit(function(e){
-      e.preventDefault();
+  $("#modal_request_ok form").submit(function(e){
+    e.preventDefault();
 
-      var $form = $("#modal_request_ok form");
-      var $worker_id = $("#worker_id");
-      var $date_expect = $("#date_expect");
+    var $form = $("#modal_request_ok form");
+    var $worker_id = $("#worker_id");
+    var $date_expect = $("#date_expect");
 
-      if($worker_id.val() < 1) {
-        alert('필수 항목 입니다');
-        $worker_id.focus();
-        return false;
-      }
+    if($worker_id.val() < 1) {
+      alert('필수 항목 입니다');
+      $worker_id.focus();
+      return false;
+    }
 
-      if($date_expect.val() == '') {
-        alert('작업 예정일은 필수 항목 입니다');
-        $date_expect.focus();
-        return false;
-      }
+    if($date_expect.val() == '') {
+      alert('작업 예정일은 필수 항목 입니다');
+      $date_expect.focus();
+      return false;
+    }
 
-      var is_ok = confirm("확정 하시겠습니까?\n그리고 작업 예정일 확인 해야 합니다");
+    var is_ok = confirm("확정 하시겠습니까?\n그리고 작업 예정일 확인 해야 합니다");
 
-      if(is_ok == true){
-        $.ajax({
-          url: "<?=base_url()?>work/ajax/accept_request",
-          type: "POST",
-          data: {
-            id : operation.id,
-            office_id: $("#office_id").val(),
-            worker_id: $worker_id.val(),
-            date_work: $date_expect.val(),
-            memo: $("textarea[name=memo]", this).val(),
-            "csrf_test_name": $.cookie("csrf_cookie_name")
-          },
-          dataType: "html",
+    if(is_ok == true){
+      $.ajax({
+        url: "<?=base_url()?>work/ajax/accept_request",
+        type: "POST",
+        data: {
+          id : operation.id,
+          office_id: $("#office_id").val(),
+          worker_id: $worker_id.val(),
+          date_work: $date_expect.val(),
+          memo: $("textarea[name=memo]", this).val(),
+          "csrf_test_name": $.cookie("csrf_cookie_name")
+        },
+        dataType: "html",
+      })
+        .done(function(html) {
+          alert('확정하였습니다.\n 다음단계로 이동합니다.');
+          location.reload();
         })
-          .done(function(html) {
-            alert('확정하였습니다.\n 다음단계로 이동합니다.');
-            location.reload();
-          })
-          .fail(function(xhr, textStatus){
-            alert("Request failed: " + textStatus);
-          });
-      }// end of if
+        .fail(function(xhr, textStatus){
+          alert("Request failed: " + textStatus);
+        });
+    }// end of if
 
-    });//end of submit
-  });//end of ready
+  });//end of submit
+
+  //////////////
+  // 담당사무소 변경
+  //////////////
+  $("#btn_change_office").click(function(){
+    var oId = $("#office_id").val();
+
+    if(oId == operation.office_id) {
+      alert('지정된 사무소와 같습니다.');
+      return false;
+    }
+
+    $.ajax({
+        url: "<?=base_url()?>work/ajax/change_office",
+        type: "POST",
+        data: {
+          id : operation.id,
+          office_id: oId,
+          "csrf_test_name": $.cookie("csrf_cookie_name")
+        },
+        dataType: "html",
+      })
+        .done(function(html) {
+          alert(html);
+        })
+        .fail(function(xhr, textStatus){
+          alert("Request failed: " + textStatus);
+        });
+  });
+});//end of ready
 
 </script>
