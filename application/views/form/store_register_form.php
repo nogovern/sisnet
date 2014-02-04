@@ -23,7 +23,7 @@ if(isset($form_saved)) {
   </div>
   
   <div class="form-group">
-    <label class="control-label col-sm-3">점포 코드</label>
+    <label class="control-label col-sm-3">최초 코드</label>
     <div class="col-sm-6">
       <input type="text" class="form-control" id="code" name="code" placeholder="입력하세요">
     </div>
@@ -31,7 +31,7 @@ if(isset($form_saved)) {
   </div>
 
   <div class="form-group">
-    <label class="control-label col-sm-3">점포 가변 코드</label>
+    <label class="control-label col-sm-3">점포 코드</label>
     <div class="col-sm-6">
       <input type="text" class="form-control " id="code2" name="code2" placeholder="입력하세요">
     </div>

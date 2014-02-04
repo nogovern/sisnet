@@ -11,9 +11,9 @@
       <td colspan="3" id="sinfo_name"><?=$sinfo->name?></td>
     </tr>
     <tr>
-      <th>점포코드</td>
+      <th>최초코드</td>
       <td id="sinfo_code"><?=$sinfo->code?></td>
-      <th>점포가변코드</td>
+      <th>점포코드</td>
       <td id="sinfo_code2"><?=$sinfo->code2?></td>
     </tr>
     <tr>
