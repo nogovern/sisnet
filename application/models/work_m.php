@@ -300,6 +300,11 @@ class Work_m extends MY_Model {
 		else if( $type >= '700' && $type < '800') {
 			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['target_office_id']);
 		}
+		// 상태변경은 사무소
+		else if( $type >= '900' && $type < '999') {
+			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['office_id']);
+		}
+
 
 		$this->em->persist($new);
 
