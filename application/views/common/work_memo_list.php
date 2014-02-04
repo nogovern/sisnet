@@ -9,8 +9,8 @@
 foreach($logs as $log):
 ?>
         <li class="list-group-item">
-          <p class="help-block"><?php echo $log->user->name . "   " . $log->getDateRegister(TRUE); ?></p>
-          <?php echo nl2br($log->content); ?><span class="badge"><?=$log->getDateRegister(TRUE);?></span>
+          <p class="help-block"><span class="badge pull-right"><?=$log->getDateRegister(TRUE);?></span><?php echo $log->user->name?></p>
+          <?php echo nl2br($log->content); ?>
         </li>
 <?php
 endforeach;
