@@ -189,7 +189,6 @@ endif;
         }
       },
       code : {
-        required: true,
         remote: {
           url: "<?=site_url('ajax/is_exist_store_code')?>",
           type: "post",
@@ -205,7 +204,6 @@ endif;
         remote: '등록된 점포명 입니다. 확인 후 입력해주세요'
       },
       code: {
-        required: "필수항목 입니다.",
         remote: '등록된 점포 코드입니다. 확인 후 입력해주세요'
       }
     },
