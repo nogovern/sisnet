@@ -15,7 +15,7 @@ if(isset($form_saved)) {
   ?>
   
   <div class="form-group">
-    <label class="control-label col-sm-3">점포명</label>
+    <label class="control-label col-sm-3">점포명*</label>
     <div class="col-sm-6">
       <input type="text" class="form-control required" id="name" name="name" placeholder="입력하세요" >
     </div>

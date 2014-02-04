@@ -17,7 +17,7 @@ $this->view('layout/navbar', array('current' => 'page-admin-store'));
       <thead>
         <tr>
           <th>No</th>
-          <th>점포코드</th>
+          <th>최초코드</th>
           <th>점포명</th>
           <th>점주명</th>
           <th>점주 연락처</th>
