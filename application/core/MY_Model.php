@@ -133,6 +133,16 @@ class MY_Model extends CI_Model {
 		}
 	}
 
+	// 모든 리스트 불러오기
+	public function getListAll($entity_name=NULL) {
+		if(NULL === $entity_name) {
+			$entity_name = $this->entity_name;
+		}
+
+		$repo = $this->em->getRepository($entity_name); 
+		return $repo->findAll();
+	}
+
 	// 검색
 	public function find($options) {
 		$rows = $this->em->getRepository($this->getEntityName())->findBy($options);
