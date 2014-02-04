@@ -203,6 +203,40 @@ class Part_m extends MY_Model
 		}
 
 		return $stock;
+	} 
+
+	// 재고 테이블을 셋업한다.
+	// 사무소-장비 의 데이터가 없으면 기본 생성
+	public function setupStock(Entity\Part $part) {
+		// $part 는 필수이므로...
+		if(is_null($part)) {
+			return FALSE;
+		}
+
+		// 모든 사무소 리스트
+		$offices = $this->em->getRepository('Entity\Office')->findAll();
+
+		$count = 0;
+		foreach($offices as $office) {
+			$stock = $part->getStock($office->id);
+			// 없으면 생성
+			if(!$stock) {
+				$stock_arr = array(
+					'part'		=> $part,
+					'office'	=> $office,
+				);
+				$stock = $this->createStock($stock_arr);
+				$this->em->persist($stock);
+
+				$count++;
+			}
+		}
+
+		$this->em->flush();
+
+		$result = sprintf("%d 의 재고 데이터가 생성되었습니다", $count);
+
+		return $result;
 	}
 
 	///////////

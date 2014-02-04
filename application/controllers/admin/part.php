@@ -112,9 +112,9 @@ class Part extends CI_Controller {
 		}
 		else 
 		{
-			var_dump($_POST);
+			// var_dump($_POST);
 
-			// 새로운 장비 등록
+			// 새로운 장비 등록 (모델로 이동해야 )
 
 			$part = new Entity\Part();
 			$part->setName($this->input->post('name'));
@@ -132,9 +132,11 @@ class Part extends CI_Controller {
 			$this->part_model->_add($part);
 			$this->part_model->_commit();		// 최종 반영
 
-			// 입력 성공 메세지
+			// 재고 셋업
+			$result = $this->part_model->setupStock($part);
+			alert('신규 장비가 등록되었습니다.\n' .$result, site_url('admin/part'));
 
-			redirect('/admin/part');
+			// redirect('/admin/part');
 		}
 	}
 

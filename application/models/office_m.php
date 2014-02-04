@@ -20,7 +20,7 @@ class Office_m extends MY_Model {
 		return $rows;
 	}
 
-	public function add($post_array) {
+	public function add($post_array, $do_flush=FALSE) {
 
 		$new = new Entity\Office;
 		
@@ -34,7 +34,6 @@ class Office_m extends MY_Model {
 		// 담당자
 		if($post_array['user_id'] != '0') {
 			$user = $this->em->getReference('Entity\User', $post_array['user_id']);
-			echo '=========';
 		} else {
 			$user = NULL;
 		}
@@ -51,9 +50,12 @@ class Office_m extends MY_Model {
 		}
 
 		$this->em->persist($new);
-		$this->em->flush();
 
-		return TRUE;
+		if($do_flush) {
+			$this->em->flush();
+		}
+
+		return $new;
 	}
 	
 	public function save($data) {

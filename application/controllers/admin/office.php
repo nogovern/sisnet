@@ -53,11 +53,21 @@ class Office extends CI_Controller
 		} else {
 			$post = $this->input->post();
 			
-			$this->office_model->add($post);
-			// $this->office_model->_commit();
+			$this->office_model->add($post, TRUE);
 
-			redirect('admin/office');
-			exit;
+			///////////////
+			// 재고 셋업
+			///////////////
+			$this->load->model('part_m', 'part_model');
+			$parts = $this->part_model->getListAll();
+
+			foreach($parts as $part) {
+				$result = $this->part_model->setupStock($part);
+			}
+
+			alert('신규 사무소가 등록되었습니다', site_url('admin/office'));
+
+			// redirect('admin/office');
 		}
 
 	}
