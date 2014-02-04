@@ -75,7 +75,7 @@ class Ajax extends CI_Controller
 		$log_data = array(
 			'content'	=> $this->input->post('memo'),
 			'type'		=> '1',
-			'event'		=> '요청확정'
+			'event'		=> '확정'
 		);
 		// 로그 기록
 		$this->work_model->addLog($op, $log_data, TRUE);
@@ -248,9 +248,9 @@ class Ajax extends CI_Controller
 		
 		// 업무 log 생성
 		$log_data = array(
-			'content' 		=> $this->input->post('memo'),
-			'date_complete' => $this->input->post('date_complete'),
 			'type' 			=> '1',
+			'content' 		=> $this->input->post('memo'),
+			'event'			=> '점포완료'
 		);
 		$this->work_model->addLog($op, $log_data, TRUE);
 
@@ -330,10 +330,10 @@ class Ajax extends CI_Controller
 
 		// 업무 log 생성
 		$log_data = array(
-			'content' => gs2_op_type($op->type) . ' 작업을 작업완료 합니다',
-			'date_complete' => $this->input->post('date_complete'),
 			'type' => '1',
-			);
+			'content' => gs2_op_type($op->type) . ' 작업완료 합니다',
+			'event'			=> '완료'
+		);
 		$this->work_model->addLog($op, $log_data, TRUE);
 		
 		echo 'operation complete is done successfully!';
@@ -350,8 +350,9 @@ class Ajax extends CI_Controller
 		$this->work_model->updateOpration($op, array('status' => $next_status));
 
 		$log_data = array(
+			'type'		=> '1',
 			'content' => '승인 완료',
-			'type'		=> '1'
+			'event'			=> '완료'
 		);
 	}
 

@@ -305,9 +305,9 @@ class Enter extends CI_Controller
 			// 로그 기록 
 			/////////////
 			$log_data = array(
+				'type' => '1',
 				'content' => gs2_op_type($work->type) . ' 작업을 완료 합니다',
 				'date_complete' => $this->input->post('date_complete'),
-				'type' => '1',
 				);
 			$this->work_model->addLog($work, $log_data);
 

@@ -219,16 +219,6 @@ class Work_m extends MY_Model {
 		$stock->setQtyS100($stock->qty_s100 + $request_qty);	// 발주 수량 update
 
 		/////////////////
-		// 업무 log 생성
-		/////////////////
-		$log_data = array(
-			'content' 	=> '[시스템] 입고 요청 생성',
-			'type' => '2',
-			);
-
-		$this->addLog($op, $log_data);
-
-		/////////////////
 		// 한번에 flush
 		/////////////////
 		$this->em->flush();
@@ -312,6 +302,17 @@ class Work_m extends MY_Model {
 		}
 
 		$this->em->persist($new);
+
+		/////////////////
+		// 시스템 로그 생성
+		/////////////////
+		$log_data = array(
+			'type' 		=> '1',
+			'content' 	=> gs2_op_type($type) . ' 요청이 생성',
+			'event'		=> '생성'
+		);
+
+		$this->addLog($new, $log_data);
 
 		if($do_flush) {
 			$this->em->flush();
@@ -495,6 +496,11 @@ class Work_m extends MY_Model {
 		$log->setContent($data['content']);
 		$log->setType($data['type']);			// 로그 타입 (1: 시스템, 2:유저)
 		$log->setDateRegister();
+
+		// 시스템 로그 시 이벤트 기록
+		if($data['type'] == '1' && isset($data['event'])) {
+			$log->setEvent($data['event']);
+		}
 
 		$this->em->persist($log);
 		

@@ -28,7 +28,10 @@ class OperationLog
 	protected $user;
 	
 	/** @Column(type="string", length=1) */
-	protected $type = 'S';
+	protected $type = '1';
+
+	/** @Column(type="string", length=30) */
+	protected $event = '';
 
 	/** @Column(type="string", length=4000) */
 	protected $content;
@@ -66,9 +69,19 @@ class OperationLog
 		$this->date_view = new \DateTime("now");
 	}
 
+	// 시스템 로그 시 이벤트 스트링
+	public function setEvent($value) {
+		$this->event = trim($value);
+	}
+
+	//=====================================================
 	// magic method
 	public function __get($key) {
 		return $this->$key;
+	}
+
+	public function getEvent() {
+		return $this->event;
 	}
 	
 	// 등록일시 얻기
