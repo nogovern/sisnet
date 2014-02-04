@@ -62,9 +62,10 @@ $this->view('layout/navbar');
                 <div class="col-sm-5">
                   <select class="form-control" name="op_type" id="op_type">
                     <option value="301">폐점</option>
-                    <option value="302">휴점S</option>
-                    <option value="303">휴점C</option>
-                    <option value="304">리뉴얼</option>
+                    <option value="303">휴점-보관</option>
+                    <option value="304">휴점-점검</option>
+                    <option value="306">리뉴얼</option>
+                    <option value="302">서비스</option>
                   </select>
                 </div>
               </div>
