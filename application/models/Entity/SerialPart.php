@@ -2,10 +2,12 @@
 namespace Entity;
 
 /**
+ * 시리얼 관리 장비
+ * 
  * @Entity
  * @Table(name="GS2_PART_SERIAL")
  */
-class SerialPart				// 시리얼 관리 장비
+class SerialPart
 {
 	/**
 	 * @Id 
