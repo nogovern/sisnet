@@ -20,7 +20,7 @@ $this->view('layout/navbar');
         <li class=""><a href="#">완료</a></li>
       </ul>
 
-      <table class="table table-hover">
+      <table class="table table-hover ">
         <thead>
           <tr>
             <th>No</th>
@@ -72,7 +72,7 @@ switch($row->status) {
             <!--
             <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
             -->
-            <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/enter/view/') . '/' . $row->id ?>">보기</button></td>
+            <td><button class="btn btn-default btn-xs btn_view" type="button" data-href="<?=site_url('work/enter/view/') . '/' . $row->id ?>">보기</button></td>
           </tr>
 <?php
 endforeach;
