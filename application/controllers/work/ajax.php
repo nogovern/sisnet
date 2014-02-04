@@ -493,6 +493,43 @@ class Ajax extends CI_Controller
 		$data['logs'] = $this->work_model->getLogs($op);
 		
 	}
+	
+	///////////////////
+	// 업무 삭제
+	///////////////////
+	public function remove_operation() {
+		$id = $this->input->post('id');
+		if(!$id) {
+			log_message('error', '업무 ID가 없습니다');
+			return FALSE;
+		}
+
+
+		$op = $this->em->getRepository('Entity\Operation')->find($id);
+		if(!$op) {
+			log_message('error', $id . ' 의 업무가 존재하지 않습니다');
+			echo 'no exist';
+			exit;
+		}
+
+		if($op->status == 1) {
+			// 입고 업무는 재고의 발주 수량을 빼야한
+			if($op->type == '100') {
+				foreach($op->getItems() as $item) {
+					$part = $item->part;
+					$stock = $part->getStock($op->office->id);
+
+					$stock->decrease('s100', intval($item->getQtyRequest()));
+				}
+			}
+
+			// 업무 삭제
+			$this->work_model->removeOperation($op, TRUE);
+			echo 'success';
+		} else {
+			echo 'fail';
+		}
+	}
 }
 
 

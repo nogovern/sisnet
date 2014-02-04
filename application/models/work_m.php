@@ -386,6 +386,15 @@ class Work_m extends MY_Model {
 		return $op;
 	}
 
+	// 업무 메인 삭제
+	public function removeOperation($op, $do_flush = FALSE) {
+		$this->em->remove($op);
+
+		if($do_flush) {
+			$this->em->flush();
+		}
+	}
+
 	// 업무-장비 목록 생성(필요시)
 	public function addItem($op, $data, $do_flush=FALSE) {
 		$this->load->model('part_m', 'part_model');
