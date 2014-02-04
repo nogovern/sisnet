@@ -70,7 +70,7 @@ class Change extends CI_Controller
 			$post_data = array();
 			$post_data['op_type'] = $this->input->post('op_type');
 			$post_data['office_id'] = $this->session->userdata('office_id');
-			$post_data['date_request'] = '';
+			$post_data['date_request'] = date("Y-m-d");
 			$post_data['memo']	= '';
 
 			// 새로 생성된 변경작업 Entity

@@ -268,6 +268,8 @@ class Work_m extends MY_Model {
 		$new->setDateRegister();
 		$new->setStatus('1');
 		$new->setDateRequest($post['date_request']);
+		// 생성 시 작업 예정일에 요청일은 기본으로 설정함
+		$new->setDateExpect($post['date_request']);
 
 		// 요청 메모
 		if(isset($post['memo'])) {
