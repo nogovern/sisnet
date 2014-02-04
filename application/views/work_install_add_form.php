@@ -66,6 +66,7 @@ $this->view('layout/navbar');
                     <option value="202">개점C</option>
                     <option value="203">개점S</option>
                     <option value="204">리뉴얼</option>
+                    <option value="210">서비스</option>
                   </select>
                 </div>
               </div>
