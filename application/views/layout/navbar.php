@@ -135,7 +135,8 @@ endif;
         overflow: hidden;
     }
     </style>
-
+  
+    <!--
     <div id="breadcrumbs" class="container" style="position:relative;top:-10px;">
       <div class="next" style="margin-top:5px;">
         <sapn class="label label-danger"> 예시 입니다 </sapn>
@@ -146,3 +147,5 @@ endif;
         <li><a href='/admin/user'>사용자 리스트</a></li>    
       </ul>
     </div>
+    -->
+    
