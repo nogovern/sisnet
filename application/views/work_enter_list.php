@@ -7,9 +7,43 @@ $this->view('layout/navbar');
 <div class="container">
   <!-- Main hero unit for a primary marketing message or call to action -->
   <div class="page-header">
-    <h1><span class="fa fa-desktop"></span>&nbsp;입고 업무</h1>
+    <h2><span class="fa fa-desktop"></span>&nbsp;입고 업무</h2>
   </div>
- 
+  
+  <!-- filter -->
+  <div class="row well well-sm">
+    <form id="filter-form" class="form-inline" role="search">
+      <div class="form-group">
+        작업구분 : 
+        <select class="form-control">
+          <option value="">입고</option>
+        </select>
+      </div>
+      <div class="form-group">
+        진행상태 : 
+        <select class="form-control">
+          <option value="">--전체--</option>
+          <option value="">요청</option>
+          <option value="">확정</option>
+          <option value="">입력</option> 
+        </select>
+      </div>
+      <div class="form-group">
+        사무소 : 
+        <select class="form-control">
+          <option value="">--전체--</option>
+          <option value="">가산</option>
+          <option value="">부산</option> 
+        </select>
+      </div>
+      <div class="form-group">
+        기간 : 
+        <button type="button" class="btn btn-primary btn-sm">검색</button> 
+        -- 아직 동작 안합니다! --
+      </div>
+    </form>
+  </div>
+
   <!-- Example row of columns -->
   <div class="row">
     <div class="col-md-12">
