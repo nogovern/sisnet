@@ -61,7 +61,8 @@ class Ajax extends CI_Controller
 		// 특정 사무소의 재고 수량을 얻을 경우
 		$office_id  = (isset($_POST['office_id']) && !empty($_POST['office_id'])) ? $_POST['office_id'] : NULL;
 
-		$output = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
+		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+		$output = '';
 		if(count($parts)){
 			$output .= '<option value="0">--선택하세요--</option>';
 			foreach($parts as $p) {
@@ -94,7 +95,8 @@ class Ajax extends CI_Controller
 		$category = $em->getReference("Entity\Category", $category_id);
 		$parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
 
-		$output = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
+		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+		$output = '';
 		if(count($parts)){
 			$output .= '<option value="0">--선택하세요--</option>';
 			foreach($parts as $p) {
