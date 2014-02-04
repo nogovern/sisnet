@@ -61,6 +61,7 @@ define('GS2_OP_TYPE_INSTALL_2', '202');		// 설치 - 개점C
 define('GS2_OP_TYPE_INSTALL_3', '203');		// 설치 - 개점S
 define('GS2_OP_TYPE_INSTALL_4', '204');		// 설치 - 리뉴얼
 define('GS2_OP_TYPE_INSTALL_5', '205');		// 설치 - 교체
+define('GS2_OP_TYPE_INSTALL_10', '210');	// 설치 - 서비스
 
 define('GS2_OP_TYPE_CLOSE',		'300');		// 철수
 define('GS2_OP_TYPE_CLOSE_1',	'301');		// 철수 - 폐점
