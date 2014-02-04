@@ -87,5 +87,12 @@ class Store
 		return ($this->date_register) ? $this->date_register->format($format) : '';
 	}
 
+	// 무인택배함 타입명
+	public function getPostboxType() {
+		$arr = array('0' => '미설치', 'MMK 설치', '일반 설치');
+
+		return $arr[$this->has_postbox];
+	}
+
 }
 

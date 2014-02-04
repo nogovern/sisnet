@@ -116,7 +116,7 @@ foreach($work->targets as $top) {
           </tr>
           <tr>
             <td>무인택배</td>
-            <td><?=($store->has_postbox == 'Y') ? '설치' : '미설치'?></td>
+            <td><td><?=$store->getPostboxType()?></td></td>
           </tr>
           <tr>
             <td>RFC</td>

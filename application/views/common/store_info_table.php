@@ -44,7 +44,7 @@
       <th>가입형태</td>
       <td id="sinfo_join_type"><?=$sinfo->join_type?></td>
       <th>무인택배함 설치</td>
-      <td id="sinfo_postbox"><?=$sinfo->has_postbox?></td>
+      <td id="sinfo_postbox"><?=$sinfo->getPostboxType()?></td>
     </tr>
     <tr>
       <th>상태</td>
