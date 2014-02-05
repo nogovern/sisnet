@@ -152,7 +152,7 @@ $this->view('layout/navbar');
       <div class="panel panel-primary">
         <div class="panel-heading"><i class="fa fa-tags"></i> 장비 리스트</div>
         <div class="panel-body" style="padding:0 15px;">
-          <table class="table table-hover" id="part_table">
+          <table class="table table-hover table-condensed" id="part_table">
             <thead>
               <tr>
                 <th>#</th>
@@ -160,9 +160,9 @@ $this->view('layout/navbar');
                 <th>장비명</th>
                 <th>상태</th>
                 <th>S/N</th>
-                <th>직전위치</th>
                 <th>등록수량</th>
-                <th></th>
+                <th>분실수량</th>
+                <th>삭제</th>
               </tr>
             </thead>
             <tbody>
@@ -180,8 +180,8 @@ foreach($items as $item):
                 <td><?=$item->part_name?></td>
                 <td><?=($item->is_new == 'Y')? '신품' : '중고'?></td>
                 <td><?=($item->part_type == '1') ? $item->serial_number : ''?></td>
-                <td><?=''?></td>
                 <td><?=$item->qty_request?></td>
+                <td><?=$item->qty_lost?></td>
                 <td style="width:150px;">
                   <?php if($work->getStatus() < '4'):?>
                   <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
@@ -319,7 +319,7 @@ $(document).ready(function(){
 });// end of ready
 
 //  장비리스트에 행 추가
-function callback_insert_row(id, type, name, sn, prev, qty, is_new) {
+function callback_insert_row(id, type, name, sn, prev, qty, is_new, is_lost) {
   var type_text = '';
   if( type == '1') type_text = '시리얼';
   if( type == '2') type_text = '수량';
@@ -331,8 +331,11 @@ function callback_insert_row(id, type, name, sn, prev, qty, is_new) {
   tr.append($("<td/>").text(name));
   tr.append($("<td/>").text((is_new == 'Y') ? '신품' : '중고'));
   tr.append($("<td/>").text(sn));
-  tr.append($("<td/>").text(prev));
+  // tr.append($("<td/>").text(prev));
+  var qty_lost = (is_lost == 'Y') ? qty : 0;
+  qty = (is_lost == 'Y') ? 0 : qty;
   tr.append($("<td/>").text(qty));
+  tr.append($("<td/>").text(qty_lost));
   tr.append($("<td/>").html('<button class="btn btn-danger btn-xs remove_item" type="button">X</button>'));
   $("#part_table tbody").append(tr);
 

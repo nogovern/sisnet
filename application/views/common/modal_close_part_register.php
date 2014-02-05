@@ -199,7 +199,7 @@ $(document).ready(function(){
         }
 
         if(response.result == 'success') {
-          callback_insert_row(response.id, item.type, item.name, $("#serial_number").val(), '', qty, is_new);
+          callback_insert_row(response.id, item.type, item.name, $("#serial_number").val(), '', qty, is_new, is_lost);
           
           // 입력창 비우기
           $("#serial_number").val('');
