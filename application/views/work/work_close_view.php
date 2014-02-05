@@ -84,14 +84,15 @@ $this->view('layout/navbar');
       <table class="table table-condensed table-hover">
         <thead>
           <tr>
-            <th class="col-md-4">점포 정보</th>
-            <th class="col-md-8">&nbsp;</th>
+            <th class="col-md-12" colspan="2">점포 정보
+              <a class="btn btn-success btn-xs" href="#" onclick="alert('구현 예정');return false;">상세보기</a>
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>점포명</td>
-            <td><?=$store->name;?></td>
+            <td class="col-md-4">점포명</td>
+            <td class="col-md-8"><?=$store->name;?></td>
           </tr>
           <tr>
             <td>점포 코드</td>

@@ -92,8 +92,19 @@ class Ajax extends CI_Controller
 		$this->load->model('part_m');
 
 		$em = $this->part_m->getEntityManager();
+		
 		$category = $em->getReference("Entity\Category", $category_id);
-		$parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
+		// $parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
+		
+		$qb = $em->createQueryBuilder();
+		$qb->select('p')
+			->from('\Entity\Part', 'p')
+			->where("p.type != '3' ")				// 소모품 제외
+			->andWhere("p.category = :cat")
+			->orderBy('p.name', 'ASC')
+			->setParameter('cat', $category_id);
+		
+		$parts = $qb->getQuery()->getResult();
 
 		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 		$output = '';
