@@ -108,8 +108,8 @@ class Ajax extends CI_Controller
 		);
 
 		// 철수 시 장비 분실 항목 체크 시 처리
-		if(isset($_POST['qty_lost']) && $_POST['qty_lost'] > 0) {
-			$post_data['qty_lost'] = $this->input->post('qty_lost');
+		if(isset($_POST['is_lost']) && $_POST['is_lost'] == 'Y') {
+			$post_data['qty_lost'] = $this->input->post('qty');
 		}
 
 		// id를 얻기 위해 일단 flush

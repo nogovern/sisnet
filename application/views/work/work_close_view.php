@@ -85,7 +85,7 @@ $this->view('layout/navbar');
         <thead>
           <tr>
             <th class="col-md-12" colspan="2">점포 정보
-              <a class="btn btn-success btn-xs" href="#" onclick="alert('구현 예정');return false;">상세보기</a>
+              <a class="btn btn-default btn-xs" href="#" onclick="alert('구현 예정');return false;">상세보기</a>
             </th>
           </tr>
         </thead>

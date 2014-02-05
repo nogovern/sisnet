@@ -93,7 +93,7 @@ class Ajax extends CI_Controller
 
 		$em = $this->part_m->getEntityManager();
 		
-		$category = $em->getReference("Entity\Category", $category_id);
+		// $category = $em->getReference("Entity\Category", $category_id);
 		// $parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
 		
 		$qb = $em->createQueryBuilder();

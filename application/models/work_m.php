@@ -409,6 +409,12 @@ class Work_m extends MY_Model {
 		$item->setPartType($part->type);
 		$item->setPartName($part->name);
 
+		// 분실장비 수량
+		if(isset($data['qty_lost']) && intval($data['qty_lost']) > 0) {
+			$item->setQtyLost($data['qty_lost']);
+			$item->setQtyRequest(0);		// 분실 장비 처리시 요청 수량은 0
+		}
+
 		// 시리얼넘버 장비일 경우
 		// 장비 찾아서 입력
 		if($part->type == '1' && isset($data['serial_number'])) {
