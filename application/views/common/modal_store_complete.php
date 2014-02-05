@@ -52,8 +52,8 @@ $(document).ready(function(){
         type: "POST",
         data: {
           id : operation.id,
-          date_complete:  $("#store_complete_date", this).val(),
-          memo:           $("#store_complete_memo", this).val(),
+          date_complete:  $("#store_complete_date", form).val(),
+          memo:           $("#store_complete_memo", form).val(),
           "csrf_test_name": $.cookie("csrf_cookie_name")
         },
         dataType: "html",
