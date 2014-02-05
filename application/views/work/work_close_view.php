@@ -312,7 +312,7 @@ $(document).ready(function(){
 
   // 요청취소 이벤트
   $("#btn_cancel_request").click(function(){
-    gs2_cancel_operation("<?=base_url()?>work/enter");
+    gs2_cancel_operation("<?=base_url()?>work/close");
   });
 
 });// end of ready
