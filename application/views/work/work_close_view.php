@@ -152,6 +152,39 @@ $this->view('layout/navbar');
       <div class="panel panel-primary">
         <div class="panel-heading"><i class="fa fa-tags"></i> 장비 리스트</div>
         <div class="panel-body" style="padding:0 15px;">
+<?php
+$arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
+$arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
+
+$idx = 1;
+$item_count = count($items);
+
+/////////////////////////////////
+// 휴점-점검 일때 장비 리스트
+/////////////////////////////////
+if($work->type == '304') {
+?>
+          <table class="table table-hover table-condensed" id="part_table">
+            <thead>
+              <tr>
+                <th class="">장비구분</th>
+                <th class="">모 델</th>
+                <th class="">수 량</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="blank">
+                <td colspan="3" style="height:50px;">등록된 장비가 없습니다</td>
+              </tr>
+            </tbody>
+          </table>
+<?php
+} 
+/////////////////////////////////
+///  철수 일반 장비 리스트
+/////////////////////////////////
+else {
+?>          
           <table class="table table-hover table-condensed" id="part_table">
             <thead>
               <tr>
@@ -167,11 +200,6 @@ $this->view('layout/navbar');
             </thead>
             <tbody>
 <?php
-$arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
-$arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
-
-$idx = 1;
-$item_count = count($items);
 foreach($items as $item):
 ?>                  
               <tr data-item_id="<?=$item->id?>">
@@ -195,11 +223,15 @@ endforeach;
 ?>             
             </tbody>
           </table>
+<?php
+}// end of else
+?>
         </div>
       </div>
       <!-- end: ALERTS PANEL -->
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-12">
       <a href="<?=site_url('work/close')?>"><span class="btn btn-default" type="button">리스트</span></a>
@@ -253,8 +285,12 @@ $this->view('common/modal_memo');                 	// 작업자 메모
 $this->view('common/modal_change_worker');        	// 방문자 변경
 $this->view('common/modal_store_complete');       	// 점포 완료
 $this->view('common/modal_op_complete');       		  // 작업 완료
-$this->view('common/modal_close_part_register');   	// 장비 등록 (설치/철수 다름)
-// 작업 완료
+if($work->type == '304') {
+  $this->view('common/modal_close_rest_part_register');   // 휴점S 용 장비 등록
+} else {
+  $this->view('common/modal_close_part_register');   	// 장비 등록 (설치/철수 다름)
+}
+
 ?>
 
 <!-- jquery form validation -->
