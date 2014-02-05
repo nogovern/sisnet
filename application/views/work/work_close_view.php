@@ -229,7 +229,7 @@ if($work->status == 2) {
 if($work->status == 3):
 ?>
       <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_close_part_register">장비 등록</button>
-      <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
+      <button id="btn_op_complete" class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
       <button id="btn_approve" class="btn btn-success" type="button" disabled>승인</button>
 <?php
 endif;
@@ -316,6 +316,8 @@ $(document).ready(function(){
     gs2_cancel_operation("<?=base_url()?>work/close");
   });
 
+  // 작업완료 버튼 활성화 검사
+  checkOperationComplete();
 });// end of ready
 
 //  장비리스트에 행 추가
@@ -339,17 +341,23 @@ function callback_insert_row(id, type, name, sn, prev, qty, is_new, is_lost) {
   tr.append($("<td/>").html('<button class="btn btn-danger btn-xs remove_item" type="button">X</button>'));
   $("#part_table tbody").append(tr);
 
-  $("button[data-target=#modal_store_complete]").attr('disabled', false);
+  checkOperationComplete();
 }
 
 // 행 삭제
 function callback_remove_row(what) {
   $(what).closest('tr').fadeOut('slow').remove();
 
-  // 등록 장비 없을 시 작업완료 비활성
+  checkOperationComplete();
+}
+
+// 작업 완료 가능 여부 검사
+function checkOperationComplete() {
   var len = $("#part_table tbody tr").length;
   if(len == 0) {
-    $("button[data-target=#modal_op_complete]").attr('disabled', true);
+    $("#btn_op_complete").attr('disabled', true);
+  } else {
+    $("#btn_op_complete").attr('disabled', false);
   }
 }
 
