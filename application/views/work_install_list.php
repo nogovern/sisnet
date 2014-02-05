@@ -35,7 +35,6 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
                 <th>요청일</th>
                 <th>예정일</th>
                 <th>완료일</th>
-                <th>메모</th>
                 <th>&nbsp;</th>
               </tr>
             </thead>
@@ -66,7 +65,6 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
                 <td><?=$row->getDateRequest();?></td>
                 <td><?=$row->getDateExpect();?></td>
                 <td><?=$row->getDateFinish();?></td>
-                <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/install/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php

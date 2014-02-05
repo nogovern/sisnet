@@ -103,7 +103,7 @@ $this->view('layout/navbar');
           </tr>
           <tr>
             <td>가맹형태</td>
-            <td><?=$_config['store_join_type'][$store->join_type]?></td>
+            <td><?=($store->join_type) ? $_config['store_join_type'][$store->join_type] : '' ?></td>
           </tr>
           
           <tr>
@@ -211,7 +211,7 @@ if($work->status == 1 && $work->type != '305') {
 }
 
 // 작업메모는 확정 후 부터만 가능 
-if($work->status > 2 && $work->status < 5) {
+if($work->status >= 2 && $work->status < 5) {
 ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
 

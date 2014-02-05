@@ -210,7 +210,7 @@ if($work->status == 1 && $work->type != '205') {
 }
 
 // 작업메모는 확정 후 부터만 가능 
-if($work->status > 2 && $work->status < 5) {
+if($work->status >= 2 && $work->status < 5) {
 ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
 
