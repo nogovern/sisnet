@@ -115,6 +115,7 @@ class Stock extends CI_Controller
 			
 			$rows = $this->stock_model->getListBy($criteria, $order_by, $num_rows, $offset);
 			$data['rows'] = $rows;
+			$data['total_rows'] = $total_rows;
 
 			// $office = $this->office_model->get($office_id);
 			// $rows = $office->getStockList();				// stock Entity

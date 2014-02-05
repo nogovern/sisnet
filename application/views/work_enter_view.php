@@ -63,6 +63,7 @@ endforeach;
 <?php
 if($work->status == 1):
 ?>
+      <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_enter_request_ok">요청확정</button>
 <?php
 endif;
@@ -329,7 +330,10 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 // modal 공통 설정
-$(".modal").modal({backdrop: 'static', show: false});
+$(".modal").modal({
+  backdrop: 'static', 
+  show: false
+});
 
 // 작업 정보 객체
 var operation = {
@@ -388,6 +392,11 @@ $(document).ready(function(){
         });
   });
 
+  // 요청취소 이벤트
+  $("#btn_cancel_request").click(function(){
+    gs2_cancel_operation("<?=base_url()?>work/enter");
+  });
+
   // 사용자 메모 출력
   gs2_display_memo("#memo_panel");
 
@@ -396,6 +405,7 @@ $(document).ready(function(){
 /////////////
 // 공통
 /////////////
+
 function gs2_display_memo(where, op_id) {
   var load_url;
   if(op_id === undefined)
@@ -404,6 +414,41 @@ function gs2_display_memo(where, op_id) {
   load_url = '<?=site_url("work/ajax/loadUserMemo")?>' + '/' + op_id;
   $(where).load(load_url);
 }
+
+// 업무 요청 취소 후 삭제 처리
+function gs2_cancel_operation(ret_url) {
+  if(ret_url === undefined) {
+    ret_url = "<?=base_url()?>schedule";
+  }
+
+  var res = confirm('업무 요청을 취소하고 삭제합니다\n진행하시겠습니까?');
+  if(!res) {
+    return false;
+  }
+
+  $.ajax({
+      url: "<?=base_url()?>work/ajax/remove_operation",
+      type: "POST",
+      data: {
+        id : operation.id,
+        "csrf_test_name": $.cookie("csrf_cookie_name")
+      },
+      dataType: "html",
+    })
+      .done(function(html) {
+        if(html == 'success') {
+          alert('해당 업무를 취소하였습니다');
+          location.href = ret_url;
+        } else {
+          alert('취소 과정에서 오류 발생');
+          return false;
+        }         
+      })
+      .fail(function(xhr, textStatus){
+        alert("Request failed: " + textStatus);
+      });
+}
+
 </script>
 
 <?php
