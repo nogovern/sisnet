@@ -278,6 +278,7 @@ class Enter extends CI_Controller
 							'is_new'	=> 'Y',
 							'qty'		=> 1,
 							'date_enter'=> 'now',
+							'status'	=> '1',
 							'memo'	=> '입고 업무로 들어 왔어',
 						);
 

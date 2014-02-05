@@ -162,7 +162,7 @@ $this->view('layout/navbar');
                 <th>S/N</th>
                 <th>등록수량</th>
                 <th>분실수량</th>
-                <th>삭제</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>

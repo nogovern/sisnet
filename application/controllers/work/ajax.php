@@ -322,9 +322,11 @@ class Ajax extends CI_Controller
 						$sp_data['qty'] = 1;
 						$sp_data['serial_number'] = $item->serial_number;
 						$sp_data['is_new'] = $item->is_new;
+						$sp_data['status'] = '1';
 						$sp_data['is_valid'] = 'N';									// 가용 여부
 
-						$this->part_model->addSerialPart($sp_data);
+
+						$sp = $this->part_model->addSerialPart($sp_data, FALSE);
 					} 
 
 					else {
@@ -332,13 +334,23 @@ class Ajax extends CI_Controller
 						// part_m 안에 updateSerialPart 로 구현하자! 
 						//////////////////////////////////////////////
 						$sp->setPreviousLocation($op->work_location);
-						$sp->setCurrentLocation(gs2_encode_location($op->office));
 						$sp->setDateEnter($op->getDateFinish());
 						$sp->setNewFlag(FALSE);
 						$sp->setValidFlag(FALSE);
+						$sp->setCurrentLocation(gs2_encode_location($op->office));
 
-						$this->part_model->_add($sp);
 					}
+
+					///////////////////////
+					// 분실 장비일 경우 처리 
+					///////////////////////
+					if($item->qty_lost > 0) {
+						$sp->setStatus('L');
+						$sp->setMemo('분실장비');
+					}
+
+					$this->part_model->_add($sp);
+
 				}
 
 				// 재고수량 변경

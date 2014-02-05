@@ -55,6 +55,10 @@ foreach($op->targets as $t):
   $item_count = count($row->getItems());
   $idx = 0;
   foreach($row->getItems() as $item) {
+    // 분실 장비는 skip
+    if($item->qty_request == 0) {
+      continue;
+    }
 ?>      
       <tr data-opid="<?=$row->id?>" data-itemid="<?=$item->id?>" data-qty="<?=$item->qty_request?>" class="op-item">
 <?php
@@ -162,7 +166,7 @@ function makeIt() {
     sums[i] = sum;
   }
 
-  gs2_console(sums);
+  // gs2_console(sums);
 }
 
 function checkCount() {
