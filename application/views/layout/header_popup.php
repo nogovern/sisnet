@@ -55,7 +55,13 @@
     <script src="<?=base_url()?>assets/js/bootstrap.min.js"></script>
     <script src="<?=base_url()?>assets/js/jquery.cookie.js"></script>
     <script src="<?=base_url()?>assets/js/jquery.colorbox.js"></script>
-
+    
+    <!-- 전역 javascript 변수 -->
+    <script type="text/javascript">
+      var _base_url = "<?php echo base_url()?>";
+      var _ajax_log_url = _base_url + "work/ajax/loadUserMemo/";
+    </script>
+    
     <!-- common js file -->
     <script src="<?=base_url()?>assets/js/common.js"></script>
     
