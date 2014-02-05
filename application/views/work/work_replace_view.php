@@ -260,6 +260,7 @@ endforeach;
 if($work->status == 1):
 ?>
       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_replace_request_ok">요청확정</button>
+      <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
 <?php
 endif;
 
@@ -353,7 +354,12 @@ $(document).ready(function(){
   });
 
   // 사용자 메모 출력
-  gs2_display_memo("#memo_panel");
+  gs2_display_memo("#memo_panel", operation.id);
+
+  // 요청취소 이벤트
+  $("#btn_cancel_request").click(function(){
+    gs2_cancel_operation("<?=base_url()?>work/enter");
+  });
 
 });// end of ready
 
@@ -361,14 +367,6 @@ $(document).ready(function(){
 /////////////
 // 공통
 /////////////
-function gs2_display_memo(where, op_id) {
-  var load_url;
-  if(op_id === undefined)
-    op_id = operation.id;
-
-  load_url = '<?=site_url("work/ajax/loadUserMemo")?>' + '/' + op_id;
-  $(where).load(load_url);
-}
 
 </script>
 <?php
