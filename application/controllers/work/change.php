@@ -44,7 +44,10 @@ class Change extends CI_Controller
 			->andWhere('w.type < 400')
 			->andWhere('w.status >= 4')
 			->andWhere("w.is_complete = 'N' ")
+			->andWhere("w.office = :office_id ")
 			->orderBy('w.id', 'DESC');
+
+		$qb->setParameter('office_id', $this->session->userdata('office_id'));
 
 		// 결과 중 gs2_operation_targets 에 등록 안된것만 필터링
 		$data['rows'] = array();
