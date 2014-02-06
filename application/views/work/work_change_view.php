@@ -51,9 +51,18 @@ echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
 <?php
 foreach($op->targets as $t):
   $row = $t->target;        // 대상 작업 Entity
+  
+  // 분실장비 수량을 빼야함
+  $item_count = 0;
+  foreach($row->getItems() as $item) {
+    if( $item->qty_request > 0) {
+      $item_count++;
+    }
+  }
 
-  $item_count = count($row->getItems());
+  // 대상 업무 장비 row index
   $idx = 0;
+
   foreach($row->getItems() as $item) {
     // 분실 장비는 skip
     if($item->qty_request == 0) {
@@ -109,7 +118,9 @@ endforeach;
 if($op->status == '1'):
 ?>
     <button type="submit" class="btn btn-primary">완료</button>
+    <!--
     <button id="btnSample" type="button" class="btn btn-info" data-target="#modal_select_op1" data-toggle="modal">철수 완료 작업 리스트 불러오기</button>
+    -->
 <?php
 endif;
 ?>
