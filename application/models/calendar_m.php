@@ -85,12 +85,29 @@ class Calendar_m extends MY_Model
 		$events = array();
 		if(count($rows)) {
 			foreach($rows as $row) {
+				// 교체 메인은 안 보여줌
+				if($row->type == '400') {
+					continue;
+				}
+
+				// 진행 상태 별 색 지정
+				if($row->status == '1') {
+					$text_style = 'color:red;';
+				} else if($row->status == '2') {
+					$text_style = 'color:blue;';
+				} else {
+					$text_style = 'color:#666;';
+				}
+
 				$day = $row->date_expect->format("j");
-				$content = sprintf("[%s]<a href=\"%s\">%s %s</a>", 
+				$content = sprintf("[%s]<a href=\"%s\" style=\"%s\">%s %s</a>", 
 					$row->office->name, 
-					gs2_hover($row->type) . $row->id, gs2_op_short_type($row->type),
+					gs2_hover($row->type) . $row->id, 
+					$text_style,
+					gs2_op_short_type($row->type),
 					gs2_decode_location($row->work_location)->name 
 				);
+
 				if(array_key_exists($day, $events)){
 					$content = $events[$day] . '<br>' . $content;
 				} 		
