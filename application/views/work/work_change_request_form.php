@@ -61,7 +61,7 @@ echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
       </table>
       <div class="col-sm-12">
         <button type="submit" class="btn btn-primary" >저장</button>
-        <button type="button" class="btn btn-default" >리스트</button>
+        <a href="<?=base_url() . 'work/change'?>" class="btn btn-default" >리스트</a>
       </div>
     </form>
 

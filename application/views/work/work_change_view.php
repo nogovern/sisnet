@@ -16,7 +16,7 @@ $this->view('layout/navbar');
       <tr>
         <td class="col-sm-3">작업번호: <?php echo $op->operation_number; ?></td>
         <td class="col-sm-2">재고사무소: <?php echo $op->office->name; ?></td>
-        <td class="col-sm-2">수량: </td>
+        <td class="col-sm-2">수량: <span id="total_qty" style="font-weight:bold;"></span></td>
         <td class="col-sm-2">등록일: <?php echo $op->getDateRegister(); ?></td>
         <td class="col-sm-3">완료시간: <?php echo $op->getDateFinish(TRUE); ?></td>
       </tr>
@@ -38,10 +38,10 @@ echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
     <thead>
       <tr class="active">
         <th>철수 작업번호</th>
-        <th>시리얼</th>
+        <th>철수점포</th>
         <th>장비종류</th>
         <th>모델</th>
-        <th>철수점포</th>
+        <th>시리얼</th>
         <th>수량</th>
         <th>상태(가용/수리/폐기)</th>
         <th>삭제</th>
@@ -49,14 +49,20 @@ echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
     </thead>
     <tbody>
 <?php
+// 전체 수량 합계
+$total_item_count = 0;
+
 foreach($op->targets as $t):
   $row = $t->target;        // 대상 작업 Entity
   
   // 분실장비 수량을 빼야함
-  $item_count = 0;
+  $row_count = 0;
   foreach($row->getItems() as $item) {
     if( $item->qty_request > 0) {
-      $item_count++;
+      $row_count++;
+
+      // 수량 합계
+      $total_item_count += $item->qty_request;
     }
   }
 
@@ -71,24 +77,24 @@ foreach($op->targets as $t):
 ?>      
       <tr data-opid="<?=$row->id?>" data-itemid="<?=$item->id?>" data-qty="<?=$item->qty_request?>" class="op-item">
 <?php
-    if($item_count == 1 && $idx < $item_count) {
+    if($row_count == 1 && $idx < $row_count) {
 ?> 
         <td><?=$row->operation_number?></td>
 <?php
     } else {
       if( $idx == 0) {
 ?>
-        <td rowspan="<?=$item_count?>"><?=$row->operation_number?></td>
+        <td rowspan="<?=$row_count?>"><?=$row->operation_number?></td>
 <?php    
       }
     }
 
     $input_name = 'items['. $item->id .']'; 
 ?> 
-        <td><?=$item->serial_number?></td>
+        <td><?=gs2_decode_location($row->work_location)->name?></td>
         <td><?=$item->part->category->name?></td>
         <td><?=$item->part_name?></td>
-        <td><?=gs2_decode_location($row->work_location)->name?></td>
+        <td><?=$item->serial_number?></td>
         <td><?=$item->qty_request?></td>
         <td data-itemid="<?=$item->id?>">
 <?php
@@ -124,7 +130,7 @@ if($op->status == '1'):
 <?php
 endif;
 ?>
-    <button type="button" class="btn btn-default btn_go_list" >리스트</button>
+    <a href="<?=base_url() . 'work/change'?>" class="btn btn-default" >리스트</a>
   </div>
   </form>
 
@@ -185,10 +191,8 @@ function checkCount() {
 }
 
 $(document).ready(function(){
-  // 리스트로 가기
-  $(".btn_go_list").click(function(){
-    location.href = "<?=site_url('work/change');?>";
-  });
+  // 수량 합계 표시
+  $("#total_qty").text(<?=$total_item_count?>);
 
   // 장비 수량들 배열 만들기
   $("input").change(makeIt);
