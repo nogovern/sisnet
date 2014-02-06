@@ -25,7 +25,7 @@ endforeach;
 ?>          
         </ul>
           
-        <table class="table table-condensed table-hover " id="stock_list">
+        <table class="table table-condensed table-bordered table-hover " id="stock_list">
           <caption style="text-align: right;">등록 장비수 : <?=number_format($total_rows)?></caption>
           <thead>
             <tr>
@@ -42,7 +42,7 @@ endforeach;
               <th style="background-color: #CCC;">점검</th>
               <th style="background-color: #CCC;">수리</th>
               <th style="background-color: #CCC;">페기</th>
-              <th style="background-color: #CCC;">발주</th>
+              <th>발주</th>
               <th>기능</th>
             </tr>
           </thead>

@@ -52,7 +52,7 @@ endforeach;
                     <td class="col-xs-1" style="background-color: #CCC;">점검</td>
                     <td class="col-xs-1" style="background-color: #CCC;">수리</td>
                     <td class="col-xs-1" style="background-color: #CCC;">페기</td>
-                    <td class="col-xs-1" style="background-color: #CCC;">발주</td>
+                    <td class="col-xs-1">발주</td>
                     <td class="col-xs-1">기능</td>
                   </tbody>
                 </table>
@@ -88,7 +88,7 @@ if(count($row->getStockList())):
 ?>
     <tr class="default">
       <td class="col-xs-2"><?=$stock->office->name?></td>
-      <td class="col-xs-1"><?=$stock->getQtyMinimum()?></td>
+      <td class="col-xs-1"><?=gs2_zero_to_dash($stock->getQtyMinimum())?></td>
       <td class="col-xs-1 active"><?=gs2_zero_to_dash(number_format($stock->getQtyNew()))?></td>
       <td class="col-xs-1 active"><?=gs2_zero_to_dash(number_format($stock->getQtyUsed()))?></td>
       <td class="col-xs-1 active"><?=gs2_zero_to_dash(number_format($stock->getQtyDisabled()))?></td>
