@@ -36,6 +36,7 @@ $this->view('layout/navbar');
 
             <tbody>
   <?php
+  
   foreach($rows as $row):
     switch($row->status) {
       case '1': $label_color = 'label-default';break;
@@ -44,11 +45,20 @@ $this->view('layout/navbar');
       default : $label_color = 'label-default';break;
     }
 
+    // 장비개수 합계
     $item_count = 0;
+
     // $target 은 gs2_operation_targets 의 row 에 해당
     foreach($row->targets as $target) {
       // gs2_dump($target->target->id);
-      $item_count += count($target->target->getItems());
+      
+      // TODO : 합계 부분 Target 엔티티 안에 메소드로 작성 필요
+      $items = $target->target->getItems();
+      foreach($items as $item) {
+        if($item->qty_request > 0) {
+          $item_count += $item->qty_request;
+        }
+      }
     }
 
   ?>
