@@ -150,7 +150,7 @@ $(document).ready(function(){
           $("#btn_part_add").prop("disabled", false);
 
           // 비활성화된 옵션 글자색 변경
-          $("#select_part option:disabled").css('color', 'red');
+          $("#select_part option:disabled").css('background-color', '#CEC');
         }
       })
       .fail(function(xhr, textStatus){
