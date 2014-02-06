@@ -92,6 +92,11 @@ class Operation
 	 */
 	protected $targets;
 
+	/**
+	 * @OneToMany(targetEntity="OperationFile", mappedBy="operation")
+	 */
+	protected $files;			// 첨부파일
+
 	//////////
 	// 생성자 //
 	//////////
