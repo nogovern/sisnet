@@ -609,6 +609,15 @@ class Work_m extends MY_Model {
 
 		return $top;
 	}
+
+	// 대상 업무 삭제
+	public function removeTarget($target, $do_flush = FALSE) {
+		$this->em->remove($target);
+		
+		if($do_flush) {
+			$this->em->flush();
+		}		
+	}
 }
 
 
