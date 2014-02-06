@@ -109,8 +109,8 @@ $this->view('layout/navbar');
             <div class="clearfix"></div>
 
           <p class="row col-sm-offset-2">
-            <button id="btn_save" class="btn btn-primary" type="submit">저 장</button>
-            <button id="btn_close" class="btn btn-default" type="button">닫 기</button>
+            <button id="btn_save" class="btn btn-primary" type="submit">저장</button>
+            <a href="<?=base_url() . 'work/close'?>" class="btn btn-default" >닫기</a>
           </p>
         </form>
 
