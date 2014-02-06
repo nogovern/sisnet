@@ -48,6 +48,16 @@ $this->view('layout/navbar');
       default : $label_color = 'label-default';break;
     }
 
+    // 대상 업무 객체
+    foreach($row->targets as $top) {
+      if( $top->target->type == '205' ) {
+        $install_target = $top->target;
+      }
+      if( $top->target->type == '305' ) {
+        $close_target = $top->target;
+      }
+    }
+
   ?>
               <tr class="">
                 <td><?=$row->id?></td>
@@ -58,8 +68,8 @@ $this->view('layout/navbar');
                 <td>
                   <span class="label <?=$label_color?>"><?=constant("GS2_OP_CLOSE_STATUS_" .$row->status)?></span>
                 </td>
-                <td><?=$row->getDateRequest();?></td>
-                <td><?=$row->getDateWork();?></td>
+                <td><?=$close_target->getDateExpect();?></td>
+                <td><?=$install_target->getDateExpect();?></td>
                 <td><?=$row->getDateFinish();?></td>
               <!--
                 <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>

@@ -524,23 +524,35 @@ class Ajax extends CI_Controller
 			exit;
 		}
 
-		if($op->status == 1) {
-			// 입고 업무는 재고의 발주 수량을 빼야한
-			if($op->type == '100') {
-				foreach($op->getItems() as $item) {
-					$part = $item->part;
-					$stock = $part->getStock($op->office->id);
-
-					$stock->decrease('s100', intval($item->getQtyRequest()));
-				}
-			}
-
-			// 업무 삭제
-			$this->work_model->removeOperation($op, TRUE);
-			echo 'success';
-		} else {
+		// 요청 단계가 아니면 더 이상 진행 못 함
+		if($op->status != '1') {
 			echo 'fail';
+			exit;
 		}
+
+		// 입고 업무는 재고의 발주 수량을 빼야한
+		if($op->type == '100') {
+			foreach($op->getItems() as $item) {
+				$part = $item->part;
+				$stock = $part->getStock($op->office->id);
+
+				$stock->decrease('s100', intval($item->getQtyRequest()));
+			}
+		}
+
+		// 교체 업무 - 대상(target) 업무 먼저 삭제
+		if($op->type == '400') {
+			foreach($op->targets as $top) {
+				$this->work_model->removeTarget($top->target);
+			}
+		}
+
+		// 상태 변경  - 대상 업무 삭제 하고 item flag 도 원복 해야 함
+		// ** 미구현 
+
+		// 업무 삭제
+		$this->work_model->removeOperation($op, TRUE);
+		echo 'success';
 	}
 }
 
