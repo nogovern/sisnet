@@ -181,7 +181,7 @@ foreach($items as $item):
                 <td><?=($item->part_type == '1') ? '' : ''?></td>
                 <td><?=$item->qty_request?></td>
                 <td style="width:150px;">
-                  <?php if($work->getStatus() < '4'):?>
+                  <?php if($work->getStatus() < '3'):?>
                   <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
                   <?php else:?>
                   <i class="fa fa-check scan_status" style="color:green;font-size:20px;"></i>
@@ -213,24 +213,24 @@ if($work->status == 1 && $work->type != '205') {
 if($work->status >= 2 && $work->status < 5) {
 ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
+      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
 
 <?php
 }
 
 if($work->status == 2) {
 ?>
-      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
-      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete">점포 완료</button>
+      <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
+      <button id="btn_store_complete" class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete">점포 완료</button>
 <?php
 }
 
 if($work->status == 3):
 ?>
-      <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
       <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
-      <button id="btn_complete" class="btn btn-success" type="button" disabled>설치 완료</button>
 <?php
 endif;
+
 if($work->status == 4):
 ?>
       <button id="btn_confirm" class="btn btn-success" type="button">승인</button>
@@ -314,6 +314,9 @@ $(document).ready(function(){
     gs2_cancel_operation("<?=base_url()?>work/install");
   });
 
+  // 점포완료 버튼 초기화
+  checkPartRegistered();
+
 });// end of ready
 
 //  장비리스트에 행 추가
@@ -334,7 +337,7 @@ function callback_insert_row(id, type, name, sn, prev, qty, is_new) {
   tr.append($("<td/>").html('<button class="btn btn-danger btn-xs remove_item" type="button">X</button>'));
   $("#part_table tbody").append(tr);
 
-  $("button[data-target=#modal_store_complete]").attr('disabled', false);
+  checkPartRegistered();
 }
 
 // 행 삭제
@@ -342,10 +345,27 @@ function callback_remove_row(what) {
   $(what).closest('tr').fadeOut('slow').remove();
 
   // 등록 장비 없을 시 점포완료 비활성
+  checkPartRegistered();
+}
+
+// 장비가 등록 되어 있는지 확인 
+function checkPartRegistered() {
   var len = $("#part_table tbody tr").length;
-  if(len == 0) {
-    $("button[data-target=#modal_store_complete]").attr('disabled', true);
+  if(len > 0) {
+    enableBtnStoreComplete();
+  } else {
+    disableBtnStoreComplete();
   }
+}
+
+// 점포완료 버튼 활성
+function enableBtnStoreComplete() {
+  $("#btn_store_complete").prop('disabled', false);
+}
+
+// 점포완료 버튼 비활성
+function disableBtnStoreComplete() {
+  $("#btn_store_complete").prop('disabled', true);
 }
 
 /////////////
