@@ -54,7 +54,7 @@ class Replace extends CI_Controller
 			$this->load->view('work/work_replace_register', $data);
 
 		} else {
-			gs2_dump($_POST);
+			// gs2_dump($_POST);
 			$post_data = $this->input->post();
 
 			// 설치 업무 생성

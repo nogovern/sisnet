@@ -116,7 +116,7 @@ foreach($work->targets as $top) {
           </tr>
           <tr>
             <td>무인택배</td>
-            <td><td><?=$store->getPostboxType()?></td></td>
+            <td><?=$store->getPostboxType()?></td>
           </tr>
           <tr>
             <td>RFC</td>

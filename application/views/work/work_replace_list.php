@@ -33,7 +33,6 @@ $this->view('layout/navbar');
                 <th>철수요청일</th>
                 <th>설치요청일</th>
                 <th>완료일</th>
-                <th>메모</th>
                 <th>&nbsp;</th>
               </tr>
             </thead>
@@ -62,7 +61,9 @@ $this->view('layout/navbar');
                 <td><?=$row->getDateRequest();?></td>
                 <td><?=$row->getDateWork();?></td>
                 <td><?=$row->getDateFinish();?></td>
+              <!--
                 <td><a class="popover_memo" href="#" data-toggle="popover" data-original-title="요청메모" data-content="<?=$row->memo?>">[메모보기]</a></td>
+              -->
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/replace/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php
