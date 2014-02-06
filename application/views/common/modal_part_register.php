@@ -148,6 +148,7 @@ $(document).ready(function(){
         } else {
           $("#select_part").html(html);
           $("#btn_part_add").prop("disabled", false);
+          $("#select_part option:disabled").css('color', 'red');
         }
       })
       .fail(function(xhr, textStatus){

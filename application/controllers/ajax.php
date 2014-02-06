@@ -66,7 +66,8 @@ class Ajax extends CI_Controller
 		if(count($parts)){
 			$output .= '<option value="0">--선택하세요--</option>';
 			foreach($parts as $p) {
-				$disabled = ( $p->getNewTotal($office_id) == 0 && $p->getUsedTotal($office_id) == 0) ? 'disabled' : '';
+				// 재고 수량 없거나 시리얼장비일 경우 선택 못함
+				$disabled = ( $p->type == '1' || ($p->getNewTotal($office_id) == 0 && $p->getUsedTotal($office_id) == 0) ) ? 'disabled' : '';
 				$tpl =  '<option value="%d" %s>%s (%d/%d)</option>';
 				$output .= sprintf($tpl, $p->id, $disabled, $p->name, $p->getNewTotal($office_id), $p->getUsedTotal($office_id));
 			}
