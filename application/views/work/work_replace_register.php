@@ -223,18 +223,18 @@ $(document).ready(function(){
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">점포 검색 리스트</h4>
       </div>
-      <div class="modal-body">
-        <h5>점포 검색 결과 : <span id="cnt_result"></span> 건</h5>
-        <table class="table table-hover">
+      <div class="modal-body" >
+        <table class="table table-hover table-condensed table-responsive" style="display:block;overflow-y:auto;height:300px;min-height:100px;">
+          <caption class="text-right">점포 검색 결과 : <span id="cnt_result"></span> 건</caption class="text-right">
           <thead>
             <tr>
-              <th></th>
-              <th>점포명</th>
-              <th>점주</th>
-              <th>주소</th>
-              <th>연락처</th>
-              <th>상태</th>
-              <th>선택</th>
+              <th class="col-sx-1"></th>
+              <th class="col-sx-3">점포명</th>
+              <th class="col-sx-2">점주</th>
+              <th class="col-sx-3">주소</th>
+              <th class="col-sx-2">연락처</th>
+              <th class="col-sx-1">상태</th>
+              <th class="col-sx-1">선택</th>
             </tr>
           </thead>
           <tbody>
