@@ -148,6 +148,8 @@ $(document).ready(function(){
         } else {
           $("#select_part").html(html);
           $("#btn_part_add").prop("disabled", false);
+
+          // 비활성화된 옵션 글자색 변경
           $("#select_part option:disabled").css('color', 'red');
         }
       })
