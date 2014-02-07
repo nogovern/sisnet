@@ -138,12 +138,13 @@ class Install extends CI_Controller
 		        		// DB에 저장
 		        		//////////////
 		        		$file = new Entity\OperationFile;
+		        		$file->setOperation($op);
+		        		$file->setGubun('요청');
 		        		$file->org_name = $f_data['orig_name'];
 		        		$file->save_name = $f_data['file_name'];
 		        		$file->size = $f_data['file_size'];
-		        		$file->type = $f_data['file_type'];
+		        		$file->file_type = $f_data['file_type'];
 		        		$file->setDateRegister();
-		        		$file->setOperation($op);
 
 		        		$this->work_model->_add($file);
 

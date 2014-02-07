@@ -389,7 +389,8 @@ class Work_m extends MY_Model {
 					unlink($file_path);
 				}
 
-				$this->em->remove($f);
+				// 메인 삭제 시 자동 삭제됨
+				// $this->em->remove($f);
 			}
 		}
 		

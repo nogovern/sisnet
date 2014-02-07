@@ -23,14 +23,17 @@ class OperationFile
 	 */
 	protected $operation;
 		
-	/** @Column(type="string", length=255) */
+	/** @Column(type="string", length=20) */
+	protected $gubun;
+
+	/** @Column(type="string", length=100) */
 	protected $org_name;
 
-	/** @Column(type="string", length=255) */
+	/** @Column(type="string", length=100) */
 	protected $save_name;
 
-	/** @Column(type="string", length=20, name="file_type") */
-	protected $type;
+	/** @Column(type="string", length=50) */
+	protected $file_type;
 	
 	/** @Column(type="integer", name="file_size") */
 	protected $size;
@@ -53,7 +56,6 @@ class OperationFile
 		return $this->operation;
 	}
 
-
 	// 등록일시 얻기
 	public function getDateRegister($long = FALSE) {
 		$format = ($long) ? 'Y-m-d H:i:s' : 'Y-m-d';
@@ -67,6 +69,10 @@ class OperationFile
 		$this->operation = $obj;
 	}
 
+	public function setGubun($value) {
+		$this->gubun = $value;
+	}
+
 	public function setOrginalName($obj) {
 		$this->org_name = $obj;
 	}
@@ -75,12 +81,12 @@ class OperationFile
 		$this->save_name = $obj;
 	}
 
-	public function setSize($value) {
-		$this->size = $value;
+	public function setFileType($value) {
+		$this->file_type = $value;
 	}
 
-	public function setType($value) {
-		$this->type = $value;
+	public function setSize($value) {
+		$this->size = $value;
 	}
 
 	// 등록일시
