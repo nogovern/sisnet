@@ -239,6 +239,7 @@ $(document).ready(function(){
           set_serialinfo(response.info);    // 시리얼 장비 정보 셋팅
         } else {
           alert(response.error_msg);
+          $("#query").val('').focus();
         }
       })
       .fail(function(xhr, textStatus){
