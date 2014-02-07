@@ -77,23 +77,42 @@ class Part_m extends MY_Model
  	/**
  	 * 시리얼넘버가 존재 여부
  	 * 
- 	 * @param  string $sn  시리얼 넘버
- 	 * @return boolean     시러얼넘버가 있으면 TRUE
+ 	 * @param string $sn  시리얼 넘버
+ 	 * @param integer $office_id 재고 사무소, NULL 이면 전체 검색
+ 	 * @param boolean $is_all 전체 검색 여부, default FALSE 이면 가용 장비만 
+ 	 * @return boolean     시리얼넘버가 있으면 TRUE
  	 */
-	public function existSerialNumber($sn) {
-		$row = $this->getPartBySerialNumber($sn);
+	public function existSerialNumber($sn, $office_id = NULL, $is_all = FALSE) {
+		$row = $this->getPartBySerialNumber($sn, $office_id, $is_all);
 		return ($row) ? TRUE : FALSE; 
 	}
 
 	/**
 	 * 시리얼넘버로 장비 찾기
 	 * 
-	 * @param  string 	$sn [description]
+	 * @param string  $sn
+ 	 * @param integer $office_id 재고 사무소, NULL 이면 전체 검색
+ 	 * @param boolean $is_all 전체 검색 여부, default FALSE 이면 가용 장비만 
 	 * @return object or NULL     [description]
 	 */
-	public function getPartBySerialNumber($sn) {
+	public function getPartBySerialNumber($sn, $office_id = NULL, $is_all = FALSE) {
 		$repo = $this->em->getRepository('Entity\SerialPart');
-		$row = $repo->findOneBy(array('serial_number' => $sn));
+
+		// 검색 조건
+		$criteria['serial_number'] = trim($sn);
+
+		// 사무소 에 있는 장비만
+		if($office_id && is_numeric($office_id)) {
+			// $office = $this->em->getReference('Entity\Office', $office_id);
+			$criteria['current_location'] = 'O@' . $office_id;
+		}
+
+		// 가용장비에서만 검색 할 경우
+		if(!$is_all) {
+			$criteria['is_valid'] = 'Y';
+		}
+
+		$row = $repo->findOneBy($criteria);
 
 		return($row) ? $row : NULL;
 	}

@@ -156,11 +156,12 @@ class Ajax extends CI_Controller
 		$sn = urldecode($sn);
 
 		$this->load->model('part_m', 'part_model');
-		$s_part = $this->part_model->getPartBySerialNumber($sn);
+		$s_part = $this->part_model->getPartBySerialNumber($sn, $this->input->post('office_id'));
 
 		$result = new stdClass;
 		if(!$s_part) {
-			$error_msg = '해당 시리얼 넘버의 장비가 없습니다.';
+			$error_msg = '입력한 시리얼넘버 의 장비가 없습니다.';
+			$error_msg .= "\n비가용 장비 또는 담당 사무소의 장비가 아닐 수 있습니다";
 		} else {
 			$prev_location = gs2_decode_location($s_part->previous_location);
 			if($prev_location) {

@@ -226,16 +226,14 @@ $(document).ready(function(){
       type: "POST",
       data: {
         "office_id": operation.office_id,
-        "qeury": encodeURIComponent(q),
+        "query": encodeURIComponent(q),
         "extra": "test",
         "csrf_test_name": $.cookie("csrf_cookie_name")
       },
       dataType: "json",
     })
       .done(function(response) {
-        if(window.console) {
-          console.log(response);
-        }
+        gs2_console(response);
 
         if(!response.error) {
           set_serialinfo(response.info);    // 시리얼 장비 정보 셋팅
