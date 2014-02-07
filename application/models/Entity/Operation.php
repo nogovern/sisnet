@@ -104,8 +104,23 @@ class Operation
 		$this->items = new ArrayCollection();
 		$this->logs = new ArrayCollection(); 
 		$this->targets = new ArrayCollection(); 
+		$this->files = new ArrayCollection(); 
 	}
 
+	// 아이템 수
+	public function numItems() {
+		return count($this->items);
+	}
+
+	// 파일 수
+	public function numFiles() {
+		return count($this->files);
+	}
+
+	// 대상 작업 수
+	public function numTargets() {
+		return count($this->targets);
+	}
 
 	// ---------- set -------------
 	public function setOperationNumber($no) {
