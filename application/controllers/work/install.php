@@ -105,17 +105,79 @@ class Install extends CI_Controller
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('work_install_add_form', $data);
 		} else {
-			// var_dump($_POST);
 			$post = $this->input->post();
 			$post['date_store'] = $this->input->post('date_open');
 			
-			$this->work_model->createInstallOperation($this->input->post('op_type'), $post);
-			alert('설치 요청을 등록하였습니다.', site_url('/work/install'));
-			
-			// redirect(site_url('/work/install'));
-			exit;
+			// 설치 업무 생성
+			$op = $this->work_model->createOperation($this->input->post('op_type'), $post);
+
+			//////////////////////////
+			// 첨부 파일 업로드
+			//////////////////////////
+
+			// gs2_dump($_FILES);
+			$this->load->library('upload');
+
+			$files = $_FILES;
+			$file_count = count($files['userfile']['name']);
+
+			for($i=0; $i < $file_count; $i++) {
+				$_FILES['userfile']['name']= $files['userfile']['name'][$i];
+		        $_FILES['userfile']['type']= $files['userfile']['type'][$i];
+		        $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
+		        $_FILES['userfile']['error']= $files['userfile']['error'][$i];
+		        $_FILES['userfile']['size']= $files['userfile']['size'][$i];
+
+		        if($_FILES['userfile']['error'] == 0 && $_FILES['userfile']['size'] > 0) {
+		        	$this->upload->initialize($this->setUploadOption());
+		        	// 업로드 성공시 
+		        	if($this->upload->do_upload()) {
+		        		$f_data = $this->upload->data();
+
+		        		//////////////
+		        		// DB에 저장
+		        		//////////////
+		        		$file = new Entity\OperationFile;
+		        		$file->org_name = $f_data['orig_name'];
+		        		$file->save_name = $f_data['file_name'];
+		        		$file->size = $f_data['file_size'];
+		        		$file->type = $f_data['file_type'];
+		        		$file->setDateRegister();
+		        		$file->setOperation($op);
+
+		        		$this->work_model->_add($file);
+
+		        	} else {
+		        		$upload_error = TRUE;
+		        	}
+		        }
+			}
+
+			if(isset($upload_error) && $upload_error == TRUE) {
+				alert("파일 업로드 중 에러가 발생했습니다\nerror: " . $this->upload->display_errors());
+			} else {
+				$this->work_model->_commit();
+				alert('설치 요청을 등록하였습니다.', site_url('/work/install'));
+			}
+		}
+	}
+
+	// upload option 설정
+	private function setUploadOption() {
+		$upload_path = BASEPATH .'../assets/files/';
+		if(!file_exists($upload_path)) {
+			if(!mkdir($upload_path, 0770)) {
+				die($upload_path . " 파일 저장 폴더 생성 실패: 권한을 확인 또는 관리자에게 문의하세요.");
+			};
 		}
 
+		$config = array();
+		$config['upload_path'] = BASEPATH .'../assets/files/';
+		$config['allowed_types'] = '*';
+		$config['max_size'] = '2048';
+		$config['encrypt_name'] = TRUE;
+
+		return $config;
 	}
 
 	public function open() {

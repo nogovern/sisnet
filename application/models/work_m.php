@@ -227,13 +227,6 @@ class Work_m extends MY_Model {
 	}
 
 	///////////////
-	// 설치 업무 생성
-	///////////////
-	public function createInstallOperation($type, $post) {
-		return $this->addOperation($type, $post, TRUE);
-	}
-
-	///////////////
 	// 철수 업무 생성 //
 	///////////////
 	public function createCloseOperation($type, $post) {

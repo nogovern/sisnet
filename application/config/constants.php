@@ -40,6 +40,10 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
 
+// 파일 업로드
+define('GS2_UPLOAD_PATH', BASEPATH . '../assets/files/');
+define('GS2_MAX_FILE_SIZE', 2);
+
 // 회원 타입
 define('GS2_USER_TYPE_1',	'시스네트');
 define('GS2_USER_TYPE_2',	'GS25');

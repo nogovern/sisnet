@@ -29,10 +29,10 @@ class OperationFile
 	/** @Column(type="string", length=255) */
 	protected $save_name;
 
-	/** @Column(type="string", length=20) */
-	protected $extension;
+	/** @Column(type="string", length=20, name="file_type") */
+	protected $type;
 	
-	/** @Column(type="integer") */
+	/** @Column(type="integer", name="file_size") */
 	protected $size;
 	
 	/** @column(type="datetime", nullable=true) */
@@ -79,8 +79,8 @@ class OperationFile
 		$this->size = $value;
 	}
 
-	public function setExtension($value) {
-		$this->extension = $value;
+	public function setType($value) {
+		$this->type = $value;
 	}
 
 	// 등록일시
