@@ -20,6 +20,18 @@ class Office_m extends MY_Model {
 		return $rows;
 	}
 
+	// 점포 이름 like 검색
+	function findByName($q) {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('s')
+			->from($this->entity_name, 's')
+			->where('s.name LIKE :terms ')
+			->setParameter('terms', "%$q%");
+
+		$rows = $qb->getQuery()->getResult();
+		return $rows;
+	}
+
 	public function add($post_array, $do_flush=FALSE) {
 
 		$new = new Entity\Office;

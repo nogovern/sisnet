@@ -5,7 +5,7 @@ class Office extends CI_Controller
 	public function __construct() {
 		parent::__construct();
 		
-		// load User model...
+		// load default model...
 		$this->load->model('office_m', 'office_model');
 
 	}
@@ -35,7 +35,7 @@ class Office extends CI_Controller
 		//================ refactoring needed ===================
 
 		// master 사무소 dropdown
-		$this->load->model('office_m', 'office_model');
+		// $this->load->model('office_m', 'office_model');
 		$arr_office = gs2_convert_for_dropdown($this->office_model->getMasterList());
 		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control"');
 
@@ -71,5 +71,16 @@ class Office extends CI_Controller
 		}
 
 	}
+
+	////////////
+	// 검색 테스트
+	////////////
+	public function search($q) {
+
+		$q = urldecode($q);	
+		$rows = $this->office_model->findByName($q);
+
+		echo sprintf("<b>%s</b> 검색 결과 : %d", $q, count($rows));
+	} 
 	
 } // END class Office extends CI_Controller

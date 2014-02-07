@@ -282,4 +282,22 @@ class Part extends CI_Controller {
 
 		print_r($_POST);
 	}
+
+	/////////////
+	// 직전위치 검색 테스트 //
+	/////////////
+	public function psearch($term = NULL) {
+		if(!$term) {
+			echo '직전위치를 입력하세요';
+			exit;
+		}
+
+		// 가용장비 에서만 검색
+		$rows = $this->part_model->searchByPreviousLocation($term);
+		gs2_dump(count($rows));
+
+		// 모든 장비에서 검색
+		$rows = $this->part_model->searchByPreviousLocation($term, TRUE);
+		gs2_dump(count($rows));
+	}
 }

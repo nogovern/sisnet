@@ -34,7 +34,7 @@ class Store_m extends MY_Model
 	function findByName($q) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('s')
-			->from('\Entity\Store', 's')
+			->from($this->entity_name, 's')
 			->where('s.name LIKE :terms ')
 			->setParameter('terms', "%$q%");
 
