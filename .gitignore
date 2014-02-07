@@ -16,5 +16,7 @@ application/config/config.php
 application/controllers/tests.php
 application/models/proxies/*
 
+assets/files/*
+
 composer.lock
 

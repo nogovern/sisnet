@@ -381,6 +381,19 @@ class Work_m extends MY_Model {
 
 	// 업무 메인 삭제
 	public function removeOperation($op, $do_flush = FALSE) {
+		// 첨부 파일 있을 경우 먼저 삭제
+		if($op->numFiles() > 0) {
+			foreach($op->files as $f) {
+				$file_path = GS2_UPLOAD_BASEPATH . $f->save_name;
+				if(file_exists($file_path)) {
+					unlink($file_path);
+				}
+
+				$this->em->remove($f);
+			}
+		}
+		
+		// 업무 메인 삭제
 		$this->em->remove($op);
 
 		if($do_flush) {

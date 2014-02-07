@@ -541,13 +541,14 @@ class Ajax extends CI_Controller
 		}
 
 		// 교체 업무 - 대상(target) 업무 먼저 삭제
-		if($op->type == '400') {
+		if($op->type == '400' && $op->type == '900') {
 			foreach($op->targets as $top) {
 				$this->work_model->removeTarget($top->target);
 			}
 		}
 
 		// 상태 변경  - 대상 업무 삭제 하고 item flag 도 원복 해야 함
+		// ( 할필요 없나?? )
 		// ** 미구현 
 
 		// 업무 삭제

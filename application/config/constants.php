@@ -41,7 +41,8 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 /* Location: ./application/config/constants.php */
 
 // 파일 업로드
-define('GS2_UPLOAD_PATH', BASEPATH . '../assets/files/');
+define('GS2_UPLOAD_BASEPATH', BASEPATH . '../assets/files/');		// 실제 파일 저장 폴더 위치
+define('GS2_UPLOAD_BASEURL', 'assets/files/');						// 파일 접근 URL
 define('GS2_MAX_FILE_SIZE', 2);
 
 // 회원 타입
