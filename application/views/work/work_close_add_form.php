@@ -82,9 +82,11 @@ $this->view('layout/navbar');
               <div class="form-group">
                 <label class="control-label col-sm-3">파일 첨부</label>
                 <div class="col-sm-9">
-                  <input type="file" class="form-control" name="file1"></input>
-                  <input type="file" class="form-control" name="file2"></input>
-                  <input type="file" class="form-control" name="file3"></input>
+                  <input type="file" class="form-control" name="userfile[]"></input>
+                  <input type="file" class="form-control" name="userfile[]"></input>
+                  <input type="file" class="form-control" name="userfile[]"></input>
+
+                  <div class="help-block">파일 당 <?=GS2_MAX_FILE_SIZE?> M bytes 까지 업로드 가능합니다 </div>
                 </div>
               </div>
 
