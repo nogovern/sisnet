@@ -73,7 +73,15 @@ foreach($work->targets as $top) {
           </tr>
           <tr>
             <td>첨부파일</td>
-            <td></td>
+            <td>
+<?php
+if($work->numFiles()) {
+  foreach($work->files as $file) {
+    echo anchor(GS2_UPLOAD_BASEURL . $file->save_name, $file->org_name) . '<br>';
+  }
+}
+?>
+            </td>
             <td>&nbsp;</td>
           </tr>
         </tbody>

@@ -74,12 +74,51 @@ class Replace extends CI_Controller
 			$tg1 = $this->work_model->createTargetOperation($op, $install_op);
 			$tg2 = $this->work_model->createTargetOperation($op, $close_op);
 
-			//===========
-			// flush
-			//===========
+			//////////////////////////
+			// 첨부 파일 업로드
+			//////////////////////////
+			$this->load->library('upload');
+			$this->load->model('file_m', 'file_model');
+
+			$files = $_FILES;
+			$file_count = count($files['userfile']['name']);
+
+			for($i=0; $i < $file_count; $i++) {
+				$_FILES['userfile']['name']= $files['userfile']['name'][$i];
+		        $_FILES['userfile']['type']= $files['userfile']['type'][$i];
+		        $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
+		        $_FILES['userfile']['error']= $files['userfile']['error'][$i];
+		        $_FILES['userfile']['size']= $files['userfile']['size'][$i];
+
+		        if($_FILES['userfile']['error'] == 0 && $_FILES['userfile']['size'] > 0) {
+		        	$this->upload->initialize($this->file_model->setUploadOption());
+		        	// 업로드 성공시 
+		        	if($this->upload->do_upload() === FALSE) {
+		        		$upload_error = TRUE;
+		        		
+		        	} else {
+		        		$f_data = $this->upload->data();
+
+		        		//////////////
+		        		//  업로드 저장 배열에 추가 정보를 더해 데이터 넘겨준다
+		        		//////////////
+		        		$f_data['gubun'] = '요청';
+		        		$f_data['op_id'] = $op->id;
+
+		        		$this->file_model->create($f_data);
+		        	}
+		        }
+			}
+
+			// doctrine flush 실행
 			$this->work_model->_commit();
 
-			alert("교체 업무를 등록하였습니다", site_url('work/replace'));
+			if(isset($upload_error) && $upload_error == TRUE) {
+				alert("파일 업로드 중 에러가 발생했습니다\nerror: " . $this->upload->display_errors());
+			} else {
+				$this->work_model->_commit();
+				alert('설치 요청을 등록하였습니다.', site_url('/work/replace'));
+			}
 		}
 	}
 
