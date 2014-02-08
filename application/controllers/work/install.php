@@ -114,9 +114,8 @@ class Install extends CI_Controller
 			//////////////////////////
 			// 첨부 파일 업로드
 			//////////////////////////
-
-			// gs2_dump($_FILES);
 			$this->load->library('upload');
+			$this->load->model('file_m', 'file_model');
 
 			$files = $_FILES;
 			$file_count = count($files['userfile']['name']);
@@ -131,28 +130,25 @@ class Install extends CI_Controller
 		        if($_FILES['userfile']['error'] == 0 && $_FILES['userfile']['size'] > 0) {
 		        	$this->upload->initialize($this->setUploadOption());
 		        	// 업로드 성공시 
-		        	if($this->upload->do_upload()) {
+		        	if($this->upload->do_upload() === FALSE) {
+		        		$upload_error = TRUE;
+		        		
+		        	} else {
 		        		$f_data = $this->upload->data();
 
 		        		//////////////
-		        		// DB에 저장
+		        		//  업로드 저장 배열에 추가 정보를 더해 데이터 넘겨준다
 		        		//////////////
-		        		$file = new Entity\OperationFile;
-		        		$file->setOperation($op);
-		        		$file->setGubun('요청');
-		        		$file->org_name = $f_data['orig_name'];
-		        		$file->save_name = $f_data['file_name'];
-		        		$file->size = $f_data['file_size'];
-		        		$file->file_type = $f_data['file_type'];
-		        		$file->setDateRegister();
+		        		$f_data['gubun'] = '요청';
+		        		$f_data['op_id'] = $op->id;
 
-		        		$this->work_model->_add($file);
-
-		        	} else {
-		        		$upload_error = TRUE;
+		        		$this->file_model->create($f_data);
 		        	}
 		        }
 			}
+
+			// doctrine flush 실행
+			$this->work_model->_commit();
 
 			if(isset($upload_error) && $upload_error == TRUE) {
 				alert("파일 업로드 중 에러가 발생했습니다\nerror: " . $this->upload->display_errors());
