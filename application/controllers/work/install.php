@@ -128,7 +128,7 @@ class Install extends CI_Controller
 		        $_FILES['userfile']['size']= $files['userfile']['size'][$i];
 
 		        if($_FILES['userfile']['error'] == 0 && $_FILES['userfile']['size'] > 0) {
-		        	$this->upload->initialize($this->setUploadOption());
+		        	$this->upload->initialize($this->file_model->setUploadOption());
 		        	// 업로드 성공시 
 		        	if($this->upload->do_upload() === FALSE) {
 		        		$upload_error = TRUE;
@@ -157,24 +157,6 @@ class Install extends CI_Controller
 				alert('설치 요청을 등록하였습니다.', site_url('/work/install'));
 			}
 		}
-	}
-
-	// upload option 설정
-	private function setUploadOption() {
-		$upload_path = BASEPATH .'../assets/files/';
-		if(!file_exists($upload_path)) {
-			if(!mkdir($upload_path, 0770)) {
-				die($upload_path . " 파일 저장 폴더 생성 실패: 권한을 확인 또는 관리자에게 문의하세요.");
-			};
-		}
-
-		$config = array();
-		$config['upload_path'] = BASEPATH .'../assets/files/';
-		$config['allowed_types'] = '*';
-		$config['max_size'] = '2048';
-		$config['encrypt_name'] = TRUE;
-
-		return $config;
 	}
 
 	public function open() {

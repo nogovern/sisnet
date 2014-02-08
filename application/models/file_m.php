@@ -18,6 +18,23 @@ class File_m extends MY_Model
 		$this->load->model('work_m', 'work_model');
 	}
 
+	// upload option 설정
+	public function setUploadOption() {
+		$upload_path = BASEPATH .'../assets/files/';
+		if(!file_exists($upload_path)) {
+			if(!mkdir($upload_path, 0770)) {
+				die($upload_path . " 파일 저장 폴더 생성 실패: 권한을 확인 또는 관리자에게 문의하세요.");
+			};
+		}
+
+		$config = array();
+		$config['upload_path'] = BASEPATH .'../assets/files/';
+		$config['allowed_types'] = '*';
+		$config['max_size'] = '2048';
+		$config['encrypt_name'] = TRUE;
+
+		return $config;
+	}
 
 	// 생성
 	function create($data, $do_flush = FALSE) {
@@ -45,6 +62,12 @@ class File_m extends MY_Model
 	// 생성 2
 	function add($data, $do_flush = FALSE) {
 		$this->create($data, $do_flush);
+	}
+
+	// 삭제
+	// 기본적으로 업무 삭제 시 자동적으로 삭제된다.	
+	function delete($file_id) {
+		;
 	}
 
 	// 수정
