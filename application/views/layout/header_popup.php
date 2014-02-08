@@ -54,7 +54,7 @@
     <script src="<?=base_url()?>assets/js/jquery-1.10.2.min.js"></script>
     <script src="<?=base_url()?>assets/js/bootstrap.min.js"></script>
     <script src="<?=base_url()?>assets/js/jquery.cookie.js"></script>
-    <script src="<?=base_url()?>assets/js/jquery.colorbox.js"></script>
+    <script src="<?=base_url()?>assets/js/jquery.colorbox-min.js"></script>
     
     <!-- 전역 javascript 변수 -->
     <script type="text/javascript">
