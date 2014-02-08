@@ -98,23 +98,15 @@ $(document).ready(function(){
 
   // 장비 검색 방법 선택 
   $(document).on('change', ":radio[name=search_method]", function(e){
+    reset_part_register_form();
     var sm = $(":radio[name=search_method]:checked").val();
+    
     if(sm == '0') {
       $("#search_block").hide();
-      $("#part_qty").val(1).attr('readonly', false);
-
-      // 수량 선택 가능
-      // $("#select_category option").attr('disabled', false);
-      $("#part_id option").attr('disabled', false);
-      $("#part_qty").val(1).attr('readonly', false);
-
+      changeFormLayout(2);              // 수량 장비 양식
     } else {
       $("#search_block").slideDown();
-
-      // 수량 선택 불가
-      // $("#select_category option").attr('disabled', true);
-      $("#part_id option").attr('disabled', true);
-      $("#part_qty").val(1).attr('readonly', true);
+      changeFormLayout(1);              // 시리얼 장비 양식
     }
   });
 
@@ -147,7 +139,7 @@ $(document).ready(function(){
           alert('해당 카테고리에 등록된 장비가 없습니다');
         } else {
           $("#select_part").html(html);
-          $("#btn_part_add").prop("disabled", false);
+          disableAddItem();
 
           // 비활성화된 옵션 글자색 변경
           $("#select_part option:disabled").css('background-color', '#CEC');
@@ -179,12 +171,11 @@ $(document).ready(function(){
       dataType: "json",
     })
       .done(function(html) {
-        item = {};      // empty item
+        item = {};            // empty item
         item = html;
+        enableAddItem();
 
-        if(window.console) {
-          console.log(item);
-        }
+        gs2_console(html);
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
@@ -237,6 +228,7 @@ $(document).ready(function(){
 
         if(!response.error) {
           set_serialinfo(response.info);    // 시리얼 장비 정보 셋팅
+          enableAddItem();                  // 등록 버튼 활성화
         } else {
           alert(response.error_msg);
           $("#query").val('').focus();
@@ -291,10 +283,6 @@ $(document).ready(function(){
       dataType: "json",
     })
       .done(function(response) {
-        if(window.console) {
-          console.log(response);
-        }
-
         if(response.result === 'success') {
           callback_insert_row(response.id, item.type, item.name, $('#serial_number').val(), '', qty, is_new);
           reset_part_register_form();
@@ -340,18 +328,38 @@ $(document).ready(function(){
 
 });//end of ready
 
+// 장비 type에 따라 폼 입력 양식 변경
+function changeFormLayout(part_type) {
+  var form = $("#modal_part_register form");
+
+  // 시리얼, 직전위치 검색 시
+  if( part_type == 1) {
+    $("#select_category", form).val('0').prop('disabled', true)
+    $("#select_part", form).val('').prop('disabled', true);
+    $(':radio[name="is_new"]', form).prop('disabled', true);
+    $("#part_qty", form).val('1').prop('readonly', true);
+  }
+  // 수량 장비 일 경우
+  else {
+    $("#select_category", form).val('0').prop('disabled', false)
+    $("#select_part", form).prop('disabled', false);
+    $(':radio[name="is_new"]', form).prop('disabled', false);
+    $("#part_qty", form).val('').prop('readonly', false);
+  }
+}
+
 // 폼 초기화
 function reset_part_register_form() {
   var form = $("#modal_part_register form");
 
   $("#query").val('');
-  $(':radio[name=search_method][value="0"]', form).click();
-  $("#select_category").val('0');
-  $("#select_part").val('0');
+  $("#select_category").val('0').change();
   $(':radio[name="is_new"]', form).prop('checked', false);
   $('#part_qty').val(0);
   //hidden value
   $("#serial_number").val('');
+
+  disableAddItem();
 }
 
 // 시리얼장비 정보 채우기
@@ -368,6 +376,14 @@ function set_serialinfo(spart) {
   $('#part_qty', form).val(1);
   //hidden value
   $("#serial_number").val(spart.serial_number);
+}
+
+function enableAddItem() {
+  $("#btn_part_add").prop("disabled", false);
+}
+
+function disableAddItem() {
+  $("#btn_part_add").prop("disabled", true);
 }
 
 // 등록된 시리얼넘버 검색
