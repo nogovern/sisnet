@@ -541,7 +541,7 @@ class Ajax extends CI_Controller
 		}
 
 		// 교체 업무 - 대상(target) 업무 먼저 삭제
-		if($op->type == '400' && $op->type == '900') {
+		if($op->type == '400' || $op->type == '900') {
 			foreach($op->targets as $top) {
 				$this->work_model->removeTarget($top->target);
 			}
