@@ -270,10 +270,13 @@ class Part_m extends MY_Model
 
 	}
 
-	//////////////////////
-	// 시리얼 장비 직전위치로 검색
-	//////////////////////
-	public function searchByPreviousLocation($term, $is_all = FALSE) {
+	/**
+	 * 시리얼 장비 직전위치로 검색
+	 *
+	 * @param integer	$office_id	NULL이면 전체 사무소에서 검색
+	 * @param boolean	$is_all 	default FALSE, FALSE 이면 가용 장비에서만 검색	
+	 */
+	public function searchByPreviousLocation($term, $office_id = NULL, $is_all = FALSE) {
 		// 검색어 decoding
 		$term = urldecode($term);
 
@@ -306,9 +309,13 @@ class Part_m extends MY_Model
 			->where('s.previous_location IN (:param_1)')
 			->setParameter('param_1', $results);
 
-			$qb->andWhere("s.current_location = 'O@4' ");
 		if(!$is_all) {
 			$qb->andWhere("s.is_valid = 'Y'");
+		}
+
+		if($office_id) {
+			$qb->andWhere("s.current_location = :param_2 ");
+			$qb->setParameter('param_2', 'O@' . $office_id);
 		}
 
 		$rows = $qb->getQuery()->getResult();

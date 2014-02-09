@@ -70,6 +70,18 @@ class Util extends CI_Controller
 
 			exit;
 		}
+	}
+
+	// 직전 위치 검색 결과를 보여주는 modal 
+	public function loadModalSearchPrevious($term) {
+		$this->load->model('part_m', 'part_model');
+
+		$office_id = $this->input->post('office_id');
+
+		$rows = $this->part_model->searchByPreviousLocation($term, $office_id, FALSE);
+
+		echo '직전 위치 결과 : ' . count($rows);
 
 	}
+
 }

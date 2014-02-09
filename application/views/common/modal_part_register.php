@@ -190,7 +190,7 @@ $(document).ready(function(){
     }
   });
 
-  // 시리얼 장비 검색
+  // 시리얼 장비 검색 or 직전위치 검색
   $("#btn_search_serial").click(function(e){
     var q = $.trim($("#query").val());
     if( q == '') {
@@ -206,7 +206,17 @@ $(document).ready(function(){
     if(sm == '1') {
       target_url = "<?=base_url()?>ajax/get_part_by_serial/" + encodeURIComponent(q);
     } else if(sm == '2') {
-      target_url = "<?=base_url()?>ajax/search_part_by_previos_location/" + encodeURIComponent(q);
+      target_url = "<?=base_url()?>util/loadModalSearchPrevious/" + encodeURIComponent(q);
+
+      // 직전위치 검색 결과
+      $("#modal_search_previous .modal-body").load(target_url, {office_id : operation.office_id},function(response){
+        $("#modal_search_previous").modal('show');
+        $("#modal_part_register").modal('hide');
+
+        gs2_console(response);
+      });
+      return false;
+
     } else {
       alert('잘못된 검색 방법입니다.');
       return false;
