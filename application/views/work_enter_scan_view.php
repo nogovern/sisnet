@@ -130,7 +130,7 @@ endif;
             <div class="col-sm-4">
               <input type="text" class="form-control" name="cnt" value="0">
             </div>
-            <div class="col-sm-4"><button id="btn_register" type="submit" class="btn btn-default">검색</button></div>
+            <div class="col-sm-4"><button type="submit" class="btn btn-default">검색</button></div>
           </div>
         </form>
         <div class="well text-center" style="font-size:34px;">

@@ -349,13 +349,6 @@ $(document).ready(function(){
 
   //--------------------------------------
 
-  // 장비 등록 모달 open (deprecated)
-  $("#btn_register").click(function(){
-      $("#myModal .modal-content").html('').load('/work/close/loadModalContent', function(result){
-        $("#myModal").modal({show:true});
-      });
-  });
-
   // 승인 버튼
   $("#btn_confirm").click(function(){
     alert('승인 합니다... 미구현');
