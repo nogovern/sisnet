@@ -98,28 +98,60 @@ class Ajax extends CI_Controller
 			die( __CLASS__ . __METHOD__ . " 작업이 존재하지 않습니다");
 		}
 
-		$post_data = array(
-			'id'				=> $this->input->post('id'),		// 작업 ID
-			'part_id'			=> $this->input->post('part_id'),
-			'serial_number'		=> $this->input->post('serial_number'),
-			'serial_part_id'	=> $this->input->post('serial_part_id'),
-			'qty'				=> $this->input->post('qty'),
-			'is_new'			=> $this->input->post('is_new'),
-		);
+		// load model
+		$this->load->model('part_m', 'part_model');
 
-		// 철수 시 장비 분실 항목 체크 시 처리
-		if(isset($_POST['is_lost']) && $_POST['is_lost'] == 'Y') {
-			$post_data['qty_lost'] = $this->input->post('qty');
+		// 에러가 없으면 끝까지 NULL 이다
+		$error_msg = NULL;
+
+		$serial_number = $this->input->post('serial_number');	// 시리얼넘버
+
+		// 철수 - 시리얼 장비 일때 처리
+		if($op->type >= '300' && $op->type < '400') {
+			if($this->input->post('part_type')  == '1') {
+				if($serial_number) {
+
+					// 장비목록에 있는 시리얼넘버 인지 검사
+					if($it = $this->work_model->checkSerialPartInItem($op, $serial_number)) {
+						$error_msg = "등록실패:\n철수 장비 리스트에 등록 된 시리얼넘버 입니다";
+					} 
+					
+					// 철수 장비는 입고이므로
+					// 전 사무소의 모든 장비를 검사해야 함
+					if(is_null($error_msg)) {
+						$sp = $this->part_model->getPartBySerialNumber($serial_number, NULL, TRUE);
+						if($sp) {
+							$error_msg = "등록실패:\n" . $sp->part->name . " - 등록 된 시리얼 입니다";
+						}
+					}
+
+				} else {
+					;		// 시리얼넘버 없을 때 그냥 등록
+				}
+			}
 		}
 
-		// id를 얻기 위해 일단 flush
-		$item = $this->work_model->addItem($op, $post_data, TRUE);
-		
-		// json 결과 객체
-		$result = new stdClass;	
+		if(is_null($error_msg)) {
+			$post_data = array(
+				'id'				=> $this->input->post('id'),		// 작업 ID
+				'part_id'			=> $this->input->post('part_id'),
+				'serial_number'		=> $serial_number,
+				'serial_part_id'	=> $this->input->post('serial_part_id'),
+				'qty'				=> $this->input->post('qty'),
+				'is_new'			=> $this->input->post('is_new'),
+			);
 
-		if(!$item) {
-			$result->result = 'failure';
+			// 철수 시 장비 분실 항목 체크 시 처리
+			if(isset($_POST['is_lost']) && $_POST['is_lost'] == 'Y') {
+				$post_data['qty_lost'] = $this->input->post('qty');
+			}
+
+			// id를 얻기 위해 일단 flush
+			$item = $this->work_model->addItem($op, $post_data, TRUE);
+		}
+		
+		if(is_null($error_msg) && !$item) {
+			$error_msg = "장비 등록에 실패하였습니다.\n 관리자에게 문의 바랍니다";
 		} else {
 			//////////////////////////
 			// :: 모델쪽으로 이동해야함 :: //
@@ -134,7 +166,6 @@ class Ajax extends CI_Controller
 					'part'		=> $part,
 					'office'	=> $op->office,
 				);
-				$this->load->model('part_m', 'part_model');
 				$stock = $this->part_model->createStock($stock_arr);
 			}
 
@@ -159,9 +190,18 @@ class Ajax extends CI_Controller
 
 			$this->em->persist($stock);
 			$this->em->flush();
+		}
 
+		// json 결과 객체
+		$result = new stdClass;	
+
+		if($error_msg) {
+			$result->error = TRUE;
+			$result->error_msg = $error_msg;
+		} else {
+			$result->error = FALSE;
 			$result->id = $item->id;			// 새로운 opertaion_parts.id
-			$result->result = 'success';
+			$result->error_msg = '';
 		}
 
 		echo json_encode($result);

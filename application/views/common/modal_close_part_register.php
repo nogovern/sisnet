@@ -184,6 +184,7 @@ $(document).ready(function(){
       data: {
         "id"        : operation.id,         
         "part_id"   : item.id,
+        "part_type" : item.type,
         "serial_number": $("#serial_number").val(),
         "qty"       : qty,   
         'is_new'    : is_new,
@@ -194,20 +195,18 @@ $(document).ready(function(){
       dataType: "json",
     })
       .done(function(response) {
-        if(window.console){
-          console.log(response);
-        }
+        gs2_console(response);
 
-        if(response.result == 'success') {
+        if(!response.error) {
           callback_insert_row(response.id, item.type, item.name, $("#serial_number").val(), '', qty, is_new, is_lost);
           
           // 입력창 비우기
           $("#serial_number").val('');
           $("#part_qty").val('1');
           $(":checkbox[name=is_lost]").prop('checked', false);
-
         } else {
-          alert('에러!');
+          alert(response.error_msg);
+          $("#serial_number").val('').focus();
         }
       })
       .fail(function(xhr, textStatus){

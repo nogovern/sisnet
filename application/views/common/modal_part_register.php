@@ -297,7 +297,7 @@ $(document).ready(function(){
       dataType: "json",
     })
       .done(function(response) {
-        if(response.result === 'success') {
+        if(!response.error) {
           callback_insert_row(response.id, item.type, item.name, $('#serial_number').val(), '', qty, is_new);
           reset_part_register_form();
         } else {
