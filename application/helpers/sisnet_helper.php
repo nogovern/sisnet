@@ -168,6 +168,19 @@ if(!function_exists('gs2_op_short_type')) {
 
         return $op_types[$type];
     }
+}
+
+// 시리얼 장비 상태
+if(!function_exists('gs2_serial_part_status')) {
+    function gs2_serial_part_status($type=NULL) {
+
+        $CI =& get_instance();
+
+        $_config = $CI->config->item('gs2');
+        $op_types = $_config['serial_part_status'];
+
+        return $op_types[$type];
+    }
 }  
 
 // 업무 type 으로 상세보기 link 얻기
