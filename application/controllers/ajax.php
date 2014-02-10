@@ -162,7 +162,7 @@ class Ajax extends CI_Controller
 		$result = new stdClass;
 		if(!$sp) {
 			$error_msg = '입력한 시리얼넘버 의 장비가 없습니다.';
-			$error_msg .= "\n담당 사무소의 장비가 아닐 수 있습니다";
+			$error_msg .= "\n없는 장비 이거나 다른 사무소의 장비 일 수 있습니다";
 		} else {
 			// 해당 시리얼 장비가 비가용 상태 일 경우
 			if($sp->isValid() === FALSE) {
