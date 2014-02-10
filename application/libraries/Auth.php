@@ -35,7 +35,7 @@ class Auth {
 		$session->set_userdata('username', $username);			// 회원 ID
 		$session->set_userdata('user_name', $user->name);
 		$session->set_userdata('user_type', $user->type);
-		$session->set_userdata('user_belongto', '시스네트');
+		$session->set_userdata('user_level', $user->level);
 
 		// 소속 사무소 or 소속 거래처
 		$session->set_userdata('office_id', ($user->office) ? $user->office->id : NULL);

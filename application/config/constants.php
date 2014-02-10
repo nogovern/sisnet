@@ -51,6 +51,14 @@ define('GS2_USER_TYPE_2',	'GS25');
 define('GS2_USER_TYPE_3',	'거래처');
 define('GS2_USER_TYPE_9',	'관리자');
 
+// 회원권한 (실제 기능 제한에 사용)
+define('GS2_USER_LEVEL_COMPANY',	'1');			// 거래처
+define('GS2_USER_LEVEL_GS25',		'2');
+define('GS2_USER_LEVEL_SISNET',		'5');			// 기본 시스네트 유저
+define('GS2_USER_LEVEL_ADMIN',		'8');
+define('GS2_USER_LEVEL_SUPERADMIN',	'9');			// 슈퍼 관리자
+
+// 위치 종류
 define('GS2_LOCATION_TYPE_OFFICE', 	'O');			// 사무소
 define('GS2_LOCATION_TYPE_COMPANY', 'C');			// 거래처
 define('GS2_LOCATION_TYPE_STORE', 	'S');			// 점포

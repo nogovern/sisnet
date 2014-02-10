@@ -133,6 +133,17 @@ class User extends CI_Controller {
 			$user->setDateRegister();
 			$user->setStatus(1);
 
+			// 사용자 권란 설정
+			if($user->type == '1') {
+				$user->setLevel(GS2_USER_LEVEL_SISNET);				// 시스네트
+			} elseif( $user_type == '2') {
+				$user->setLevel(GS2_USER_LEVEL_GS25);				// GS25
+			} elseif( $user_type == '3') {
+				$user->setLevel(GS2_USER_LEVEL_COMPANY);			// 납품처
+			} else {
+				$user->setLevel('0');								// 에러?
+			}
+
 			// 사무소 유저일 경우
 			if($this->input->post('office_id')) {
 				$user->setOffice($em->getReference('Entity\Office', $this->input->post('office_id')));

@@ -6,9 +6,6 @@ namespace Entity;
  *  @Table(name="GS2_USERS")
  */
 class User {
-	const STATUS_DISABLE 	= 0;
-	const STATUS_ENABLE 	= 1;
-
 	/**
 	 * @Id
 	 * @Column(type="integer", nullable=false)
@@ -19,6 +16,9 @@ class User {
 
 	/** @Column(type="string", length=1) */
 	protected $type;
+	
+	/** @Column(name="user_level", type="string", length=1) */
+	protected $level = '1';
 	
 	/** @Column(type="string") */
 	protected $username;
@@ -42,7 +42,7 @@ class User {
 	protected $date_register;
 	
 	/** @Column(type="string", length=1) */
-	protected $status;
+	protected $status = '1';
 
 	/**
 	 * @ManyToOne(targetEntity="Office")
@@ -78,6 +78,11 @@ class User {
 
 	public function setType($val) {
 		$this->type = $val;
+	}
+
+	// 사용자 권한
+	public function setLevel($val = '1') {
+		$this->level = $val;
 	}
 
 	public function setUsername($name) {
