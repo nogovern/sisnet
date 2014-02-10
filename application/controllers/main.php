@@ -26,7 +26,11 @@ class Main extends CI_Controller
 	public function login() {
 		// 로그인 되어 있으면 페이지 이동  
 		if($this->auth->isLoggedIn()) {
-			redirect('schedule');
+			if($this->session->userdata('user_level') == GS2_USER_LEVEL_COMPANY) {
+				redirect('stock');
+			} else {
+				redirect('schedule');
+			}
 		}
 
 		$this->load->helper('form');
@@ -41,8 +45,13 @@ class Main extends CI_Controller
 			if($this->auth->login($this->input->post('username'), $this->input->post('password'))) {
 				$this->load->helper('alert');
 
-				// 로그인 메세지
-				alert('로그인 되었습니다', site_url('schedule'));
+				// 로그인 메세지 후 기본페이지 이동
+				if($this->session->userdata('user_level') == GS2_USER_LEVEL_COMPANY) {
+					alert('로그인 되었습니다', site_url('stock'));
+				} else {
+					alert('로그인 되었습니다', site_url('schedule'));
+				}
+
 			} else {
 				alert('로그인에 실패하였습니다.\n정보 확인 후 다시 시도해 주세요.', site_url('login'));
 			}
