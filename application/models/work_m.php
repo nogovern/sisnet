@@ -599,6 +599,39 @@ class Work_m extends MY_Model {
 		}
 	}
 
+	// 아이템 내 수량 장비 있는지 검사
+	public function checkCountPartInItem($op, $part_id, $is_new) {
+		if($op->numItems() == 0) {
+			return FALSE;
+		}
+		
+		foreach($op->getItems() as $item) {
+			if( $part_id == $item->part->id && $is_new == $item->is_new) {
+				return $item;
+				break;
+			}
+		}
+
+		return FALSE;
+	}
+
+	// 아이템 내 시리얼 장비 있는지 검사
+	public function checkSerialPartInItem($op, $serial_number) {
+		if($op->numItems() == 0) {
+			return FALSE;
+		}
+
+		foreach($op->getItems() as $item) {
+			if($item->serial_number == $serial_number) {
+				return $item;
+				break;
+			}
+		}
+		return FALSE;
+	}
+
+
+	// 로그 얻기
 	public function getLogs($op) {
 		$repo = $this->em->getRepository('Entity\OperationLog');
 		$logs = $repo->findBy(array('operation' => $op), array('id'=>'desc'));
