@@ -80,8 +80,8 @@ class Util extends CI_Controller
 
 		$rows = $this->part_model->searchByPreviousLocation($term, $office_id, FALSE);
 
-		echo '직전 위치 결과 : ' . count($rows);
-
+		echo $this->load->view('common/search_previous_result', array('rows' => $rows));
+		// echo '직전 위치 결과 : ' . count($rows);
 	}
 
 }
