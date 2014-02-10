@@ -34,7 +34,7 @@ if(0) {
             </li>
 <?php endif;    // !-- 관리자 권한 ?>
 
-<?php if($this->session->userdata('user_level') == GS2_USER_LEVEL_COMPANY || $this->session->userdata('user_level') >= GS2_USER_LEVEL_SISNET): ?>            
+<?php if($this->session->userdata('user_level') == GS2_USER_LEVEL_COMPANY): ?>            
             <li id="page-stock"><a href="<?=site_url('/stock')?>">재고</a></li>
             <li id="page-enter"><a href="<?=site_url('/work/enter')?>">입고</a></li>
 <?php endif;    // !-- 납품처 or 시스네트 권한 이상 ?>
