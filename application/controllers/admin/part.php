@@ -93,9 +93,9 @@ class Part extends CI_Controller {
 		}
 
 		// 현재 위치 (사무소)
-		if($this->input->get('office_id')) {
-			//$office = $this->part_model->getReference($this->input->get('office_id'), 'Entity\Office');
-			$criteria['current_location'] = 'O@' . $this->input->get('office_id');
+		if($this->input->get('off_id') && $this->input->get('off_id') != '0') {
+			//$office = $this->part_model->getReference($this->input->get('off_id'), 'Entity\Office');
+			$criteria['current_location'] = 'O@' . $this->input->get('off_id');
 		}
 
 		$num_rows = 15;
@@ -106,6 +106,23 @@ class Part extends CI_Controller {
 		$total_rows = $this->part_model->getRowCount($criteria, 'Entity\SerialPart');
 		// 리스트 가져오기
 		$rows = $this->part_model->getSerialPartsBy($criteria, $order_by, $num_rows, $offset);
+
+
+		// ===========
+		//  필터링 데이터
+		// ===========
+		$this->load->helper('form');
+
+		// 장비 카테고리
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getSubCategories(1);
+		$cats = gs2_convert_for_dropdown($cats);
+		$data['category_filter'] = form_dropdown('cat_id', $cats, 0, 'id="category_filter" class="form-control"');
+
+		// 재고 사무소
+		$this->load->model('office_m', 'office_model');
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$data['office_filter'] = form_dropdown('off_id', $arr_office, $this->input->get('off_id'), 'id="office_filter" class="form-control"');
 
 		// ===========
 		// pagination

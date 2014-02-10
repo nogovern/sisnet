@@ -10,6 +10,27 @@ $this->view('layout/navbar');
     <h2><i class="fa fa-briefcase"></i> 시리얼 관리 장비 리스트</h2>
   </div>
 
+  <!-- filter -->
+  <div class="row well well-sm">
+    <form method="post" id="filter-form" class="form-inline" role="search">
+      <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
+      <div class="form-group">
+        장비종류 : 
+        <?php echo $category_filter; ?>
+      </div>
+
+      <div class="form-group">
+        &nbsp;&nbsp;재고사무소 : 
+        <?php echo $office_filter; ?>
+      </div>
+
+      <div class="form-group">
+        &nbsp;&nbsp;기간 : 
+        <button type="submit" class="btn btn-primary btn-sm">검색</button> 
+      </div>
+    </form>
+  </div>
+
   <!-- Example row of columns -->
   <div class="row">
     <div class="col-md-12">
@@ -172,9 +193,19 @@ $(document).ready(function(){
       });
     //$("#myModal").modal("hide");
   });
+
+  ///////////////////////
+  // 검색 필터 전송 
+  ///////////////////////
+  $("#filter-form").submit(function() {
+    var url = _base_url + 'admin/part/serial/?';
+    var query = $(this).serialize();
+    
+    $(this).prop('action', url + query);
+    // return false;
+  });
 });
 </script>
-
 
 <?php
 $this->view('layout/footer');
