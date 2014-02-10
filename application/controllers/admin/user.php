@@ -5,6 +5,11 @@ class User extends CI_Controller {
 	{
 		parent::__construct();
 
+		// 사용자 권한 검사
+		if($this->session->userdata('user_level') < GS2_USER_LEVEL_ADMIN) {
+			alert('접근 권한이 없습니다');
+		}
+
 		// load User model...
 		$this->load->model('user_m', 'user_model');
 	}

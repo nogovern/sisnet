@@ -41,8 +41,11 @@
 $route['default_controller'] = "main";
 $route['404_override'] = '';
 
-$route['admin']	= 'main/admin';
 $route['login'] = 'main/login';
+
+/* 관리자 페이지 route */
+$route['admin']	= 'main/admin';
+// $route['admin/user'] = 'admin/part';
 
 
 /* End of file routes.php */

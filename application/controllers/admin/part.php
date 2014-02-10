@@ -15,6 +15,9 @@ class Part extends CI_Controller {
 		$this->lists();
 	}
 
+	////////////
+	// 장비 목록
+	////////////
 	public function lists($page=1) {
 		// GET 방식의 검색 조건
 		$criteria = array();
@@ -68,6 +71,70 @@ class Part extends CI_Controller {
 		$data['rows'] = $rows;
 		
 		$this->load->view('part_list', $data);
+	}
+
+	///////////////////////
+	// 시리얼 장비 리스트
+	///////////////////////
+	public function serial($page=1) {
+		// GET 방식의 검색 조건
+		$criteria = array();
+		
+		// 상태
+		if($this->input->get('status')) {
+			$criteria['status'] = $this->input->get('status');
+		}
+
+		// 장비
+		if($this->input->get('replace_part')) {
+			$criteria['type'] = $this->input->get('type');
+			$criteria['replace_part'] = NULL;	// 대체장비 필드
+			$criteria['is_valid']	= 'Y';		// 가용장비 구분
+		}
+
+		// 현재 위치 (사무소)
+		if($this->input->get('office_id')) {
+			//$office = $this->part_model->getReference($this->input->get('office_id'), 'Entity\Office');
+			$criteria['current_location'] = 'O@' . $this->input->get('office_id');
+		}
+
+		$num_rows = 15;
+		$order_by = array('id' => 'desc');
+		$offset = ($page - 1) * $num_rows;
+
+		// 총 결과수
+		$total_rows = $this->part_model->getRowCount($criteria, 'Entity\SerialPart');
+		// 리스트 가져오기
+		$rows = $this->part_model->getSerialPartsBy($criteria, $order_by, $num_rows, $offset);
+
+		// ===========
+		// pagination
+		// ===========
+		$this->load->library('pagination');
+		
+		$config = array(
+			'base_url' 		=> base_url() . 'admin/part/serial/',
+			'prefix'		=> '',
+			'total_rows'	=> $total_rows,
+			'per_page'		=> $num_rows,
+			'uri_segment'	=> 4,
+			'num_links'		=> 5,
+			'use_page_numbers'	=> TRUE
+		);
+
+		// 검색 조건이 있을 경우
+		if(count($criteria)) {
+			$config['suffix'] = '/?' . http_build_query($this->input->get());
+			$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
+		}
+
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['title'] = '관리자 >> 시리얼장비 >> 목록';
+		$data['rows'] = $rows;
+
+		$this->load->view('part_serial_list', $data);
 	}
 	
 	public function add() {
@@ -138,64 +205,6 @@ class Part extends CI_Controller {
 
 			// redirect('/admin/part');
 		}
-	}
-
-	///////////////////////
-	// 시리얼 장비 리스트
-
-	public function serial($page=1) {
-		// GET 방식의 검색 조건
-		$criteria = array();
-		
-		// 상태
-		if($this->input->get('status')) {
-			$criteria['status'] = $this->input->get('status');
-		}
-
-		// 장비
-		if($this->input->get('replace_part')) {
-			$criteria['type'] = $this->input->get('type');
-			$criteria['replace_part'] = NULL;	// 대체장비 필드
-			$criteria['is_valid']	= 'Y';		// 가용장비 구분
-		}
-
-		$num_rows = 15;
-		$order_by = array('id' => 'desc');
-		$offset = ($page - 1) * $num_rows;
-
-		// 총 결과수
-		$total_rows = $this->part_model->getRowCount($criteria, 'Entity\SerialPart');
-		// 리스트 가져오기
-		$rows = $this->part_model->getSerialPartsBy($criteria, $order_by, $num_rows, $offset);
-
-		// ===========
-		// pagination
-		// ===========
-		$this->load->library('pagination');
-		
-		$config = array(
-			'base_url' 		=> base_url() . 'admin/part/serial/',
-			'prefix'		=> '',
-			'total_rows'	=> $total_rows,
-			'per_page'		=> $num_rows,
-			'uri_segment'	=> 4,
-			'num_links'		=> 5,
-			'use_page_numbers'	=> TRUE
-		);
-
-		// 검색 조건이 있을 경우
-		if(count($criteria)) {
-			$config['suffix'] = '/?' . http_build_query($this->input->get());
-			$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
-		}
-
-		$this->pagination->initialize($config);
-		$data['pagination'] = $this->pagination->create_links();
-
-		$data['title'] = '관리자 >> 시리얼장비 >> 목록';
-		$data['rows'] = $rows;
-
-		$this->load->view('part_serial_list', $data);
 	}
 
 	public function serial_add() {
