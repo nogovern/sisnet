@@ -17,7 +17,7 @@
         <div class="form-group">
           <label class="form-label col-sm-3">완료일시</label>
           <div class="input-group col-sm-6">
-            <input type="text" name="date_complete" class="form-control date-picker">
+            <input type="text" name="date_complete" class="form-control date-picker" value="<?=$work->getDateExpect()?>">
             <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
           </div>
         </div>

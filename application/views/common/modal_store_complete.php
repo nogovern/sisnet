@@ -16,7 +16,7 @@
         <div class="form-group">
           <label class="form-label col-sm-3">완료일시</label>
           <div class="input-group col-sm-6">
-            <input type="text" name="store_complete_date" id="store_complete_date" class="form-control date-picker">
+            <input type="text" name="store_complete_date" id="store_complete_date" class="form-control date-picker" value="<?=$work->getDateExpect()?>">
             <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
           </div>
         </div>
@@ -43,8 +43,7 @@
 $(document).ready(function(){
   $("#modal_store_complete form").validate({
     rules : {
-      store_complete_date: 'required',
-      store_complete_memo: 'required'
+      store_complete_date: 'required'
     },
     submitHandler: function(form) {
       $.ajax({
