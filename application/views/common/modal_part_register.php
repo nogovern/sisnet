@@ -217,7 +217,7 @@ $(document).ready(function(){
           $("#modal_search_previous").modal('show');
           $("#modal_part_register").modal('hide');
 
-          gs2_console(response);
+          // gs2_console(response);
       });
       return false;
 
@@ -398,15 +398,6 @@ function enableAddItem() {
 
 function disableAddItem() {
   $("#btn_part_add").prop("disabled", true);
-}
-
-// 등록된 시리얼넘버 검색
-function exist_serial_number(sn, haystack) {
-  if(haystack !== undefined) {
-    return true;
-  }
-
-  return false;
 }
 
 </script>
