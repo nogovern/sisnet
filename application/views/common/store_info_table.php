@@ -41,9 +41,9 @@
       <td id="sinfo_ofc_tel"><?=$sinfo->ofc_tel?></td>
     </tr>
     <tr>
-      <th>가입형태</td>
+      <th>가맹형태</td>
       <td id="sinfo_join_type"><?=$sinfo->join_type?></td>
-      <th>무인택배함 설치</td>
+      <th>무인택배 유무</td>
       <td id="sinfo_postbox"><?=$sinfo->getPostboxType()?></td>
     </tr>
     <tr>
