@@ -166,9 +166,10 @@ $(document).ready(function(){
 
     if(item.type == '1') {
       if( $("#serial_number").val() == '') {
-        alert('시리얼넘버를 입력하세요');
-        $("#serial_number").focus();
-        return false;
+        if(!confirm('========\n확인하세요\n========\n시리얼넘버 가 없이 장비 등록하시겠습니까?')) {
+          $("#serial_number").focus();
+          return false;
+        }
       }
     }
 
