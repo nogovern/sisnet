@@ -57,6 +57,21 @@ class MY_Model extends CI_Model {
 		return $this->em;
 	}
 
+	/**
+	 * doctrine 의 getReference 를 사용하기 위한 wrapper
+	 * 
+	 * @param  integer $id         [description]
+	 * @param  string $entity_name entity type
+	 * @return object              entity object
+	 */
+	public function getReference($id, $entity_name = NULL) {
+		if(is_null($entity_name)) {
+			$entity_name = $this->entity_name;
+		}
+
+		return $this->em->getReference($entity_name, $id);
+	}
+
 	//---------------------------------------------------------
 
 	/**
