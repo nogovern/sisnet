@@ -209,11 +209,15 @@ $(document).ready(function(){
       target_url = "<?=base_url()?>util/loadModalSearchPrevious/" + encodeURIComponent(q);
 
       // 직전위치 검색 결과
-      $("#modal_search_previous .modal-body").load(target_url, {office_id : operation.office_id},function(response){
-        $("#modal_search_previous").modal('show');
-        $("#modal_part_register").modal('hide');
+      $("#modal_search_previous .modal-body").load(target_url, {
+          office_id : operation.office_id,
+          csrf_test_name: $.cookie("csrf_cookie_name")
 
-        gs2_console(response);
+        },function(response) {
+          $("#modal_search_previous").modal('show');
+          $("#modal_part_register").modal('hide');
+
+          gs2_console(response);
       });
       return false;
 
