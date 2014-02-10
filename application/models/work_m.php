@@ -423,12 +423,22 @@ class Work_m extends MY_Model {
 		}
 
 		// 시리얼넘버 장비일 경우
-		// 장비 찾아서 입력
-		if($part->type == '1' && isset($data['serial_number'])) {
+		// - 직전위치 로 검색하는 경우 시리얼넘버가 없는 경우도 있음
+		// - 시리얼넘버가 없을 경우는???
+		if($part->type == '1') {
 			if(!empty($data['serial_number'])) {
 				$item->setSerialNumber($data['serial_number']);
 				$sp = $this->part_model->getPartBySerialNumber($data['serial_number']);
 				$item->setSerialPart($sp);
+			} else {
+
+			}
+
+			// 설치 - 시리얼장비 상태,flag
+			if($op->type >= '200' && $op->type < '300') {
+				$sp->setValidFlag(FALSE);
+				$sp->setStatus('2');
+				$this->em->persist($sp);
 			}
 		}
 

@@ -190,6 +190,16 @@ class Ajax extends CI_Controller
 				$stock->setQtyUsed($stock->qty_used + $qty);
 			}
 
+			// 모델로 가는게 맞을까???
+			// 시리얼장비 (gs2_part_serial) 정보 복구
+			$sp = $this->work_model->getReference($item->serial_part->id, 'Entity\SerialPart');
+			if($sp) {
+				$sp->setValidFlag(TRUE);
+				$sp->setStatus('1');
+
+				$this->em->persist($sp);
+			}
+
 			$this->em->persist($stock);
 		}
 		

@@ -156,26 +156,32 @@ class Ajax extends CI_Controller
 		$sn = urldecode($sn);
 
 		$this->load->model('part_m', 'part_model');
-		$s_part = $this->part_model->getPartBySerialNumber($sn, $this->input->post('office_id'));
+		// 시리얼장비
+		$sp = $this->part_model->getPartBySerialNumber($sn, $this->input->post('office_id'), TRUE);
 
 		$result = new stdClass;
-		if(!$s_part) {
+		if(!$sp) {
 			$error_msg = '입력한 시리얼넘버 의 장비가 없습니다.';
-			$error_msg .= "\n비가용 장비 또는 담당 사무소의 장비가 아닐 수 있습니다";
+			$error_msg .= "\n담당 사무소의 장비가 아닐 수 있습니다";
 		} else {
-			$prev_location = gs2_decode_location($s_part->previous_location);
-			if($prev_location) {
-				$prev_location = $prev_location->name;
-			}
+			// 해당 시리얼 장비가 비가용 상태 일 경우
+			if($sp->isValid() === FALSE) {
+				$error_msg =  "해당 장비가 비가용 상태이므로\n등록할 수 없습니다";
+			} else {
+				$prev_location = gs2_decode_location($sp->previous_location);
+				if($prev_location) {
+					$prev_location = $prev_location->name;
+				}
 
-			$info = array(
-				'spart_id'		=> $s_part->id,			// gs2_part_serial.id
-				'category_id'	=> $s_part->part->category->id,
-				'part_id'		=> $s_part->part->id,
-				'serial_number'	=> $s_part->serial_number,
-				'prev_location' => $prev_location,
-				'is_new'		=> $s_part->is_new,
-			);
+				$info = array(
+					'spart_id'		=> $sp->id,			// gs2_part_serial.id
+					'category_id'	=> $sp->part->category->id,
+					'part_id'		=> $sp->part->id,
+					'serial_number'	=> $sp->serial_number,
+					'prev_location' => $prev_location,
+					'is_new'		=> $sp->is_new,
+				);
+			}
 		}
 
 		if(!empty($error_msg)) {
