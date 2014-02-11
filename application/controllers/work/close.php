@@ -109,7 +109,7 @@ class Close extends CI_Controller
 				alert("파일 업로드 중 에러가 발생했습니다\nerror: " . $this->upload->display_errors());
 			} else {
 				$this->work_model->_commit();
-				alert('설치 요청을 등록하였습니다.', site_url('/work/close'));
+				alert('철수 요청을 등록하였습니다.', site_url('/work/close'));
 			}
 		}
 	}
