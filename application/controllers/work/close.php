@@ -165,7 +165,8 @@ class Close extends CI_Controller
 
 		// 담당자 변경용 dropdown
 		$workers = $this->user_model->getOfficeUsers();
-		$data['select_worker'] = form_dropdown('select_worker', $workers, $work->worker->id, ' id="select_worker" class="form-control"');
+		$this_worker = ($work->worker) ? $work->worker->id : 0;
+		$data['select_worker'] = form_dropdown('select_worker', $workers, $this_worker, ' id="select_worker" class="form-control"');
 
 		$this->load->view('work/work_close_view', $data);
 	}

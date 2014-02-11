@@ -76,8 +76,9 @@ class Install extends CI_Controller
 		$data['select_category'] = form_dropdown('select_category', $cats, 0, 'id="select_category" class="form-control"');
 
 		// 담당자 변경용 dropdown
+		$this_worker = ($work->worker) ? $work->worker->id : 0;
 		$workers = $this->user_model->getOfficeUsers();
-		$data['select_worker'] = form_dropdown('select_worker', $workers, $work->worker->id, ' id="select_worker" class="form-control"');
+		$data['select_worker'] = form_dropdown('select_worker', $workers, $this_worker, ' id="select_worker" class="form-control"');
 
 		$this->load->view('work_install_view', $data);
 	}
