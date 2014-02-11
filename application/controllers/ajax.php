@@ -144,7 +144,7 @@ class Ajax extends CI_Controller
 
 	// 시리얼장비 로 장비 정보 json 형식으로 반환
 	// 	- 출고 시 시리얼장비인 경우 검색
-	public function get_part_by_serial($sn='') {
+	public function get_serial_by_sn($sn='') {
 		$error_msg= '';
 
 		$sn = (isset($_POST['serial_number'])) ? $this->input->post('serial_number') : $sn;
@@ -159,7 +159,6 @@ class Ajax extends CI_Controller
 		// 시리얼장비
 		$sp = $this->part_model->getPartBySerialNumber($sn, $this->input->post('office_id'), TRUE);
 
-		$result = new stdClass;
 		if(!$sp) {
 			$error_msg = '입력한 시리얼넘버 의 장비가 없습니다.';
 			$error_msg .= "\n없는 장비 이거나 다른 사무소의 장비 일 수 있습니다";
@@ -184,6 +183,55 @@ class Ajax extends CI_Controller
 			}
 		}
 
+		$result = new stdClass;
+		if(!empty($error_msg)) {
+			$result->error = TRUE;
+		} else {
+			$result->error = FALSE;
+			$result->info = $info;
+		}
+
+		$result->error_msg = $error_msg;
+		echo json_encode($result);
+	}
+
+	// 시리얼장비 정보를 json 으로 형식으로 반환
+	public function get_serial($sp_id) {
+		$error_msg = '';
+
+		if(!$sp_id) {
+			$error_msg = '시리얼장비 ID 는 필수 인자 입니다';
+		}
+
+		$this->load->model('part_m', 'part_model');
+		$sp = $this->part_model->getSerialPart($this->input->post('sp_id'));
+
+		if(!$sp) {
+			$error_msg = '입력한 시리얼넘버 의 장비가 없습니다.';
+			$error_msg .= "\n없는 장비 이거나 다른 사무소의 장비 일 수 있습니다";
+		} else {
+			// 해당 시리얼 장비가 비가용 상태 일 경우
+			if($sp->isValid() === FALSE) {
+				$error_msg =  "해당 장비가 비가용 상태이므로\n등록할 수 없습니다";
+			} else {
+				$prev_location = gs2_decode_location($sp->previous_location);
+				if($prev_location) {
+					$prev_location = $prev_location->name;
+				}
+
+				$info = array(
+					'spart_id'		=> $sp->id,			// gs2_part_serial.id
+					'category_id'	=> $sp->part->category->id,
+					'part_id'		=> $sp->part->id,
+					'serial_number'	=> $sp->serial_number,
+					'prev_location' => $prev_location,
+					'is_new'		=> $sp->is_new,
+				);
+			}
+		}
+
+		// 결과 class 생성
+		$result = new stdClass;
 		if(!empty($error_msg)) {
 			$result->error = TRUE;
 		} else {

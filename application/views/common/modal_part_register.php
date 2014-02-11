@@ -204,7 +204,7 @@ $(document).ready(function(){
     var target_url = '';
 
     if(sm == '1') {
-      target_url = "<?=base_url()?>ajax/get_part_by_serial/" + encodeURIComponent(q);
+      target_url = "<?=base_url()?>ajax/get_serial_by_sn/" + encodeURIComponent(q);
     } else if(sm == '2') {
       target_url = "<?=base_url()?>util/loadModalSearchPrevious/" + encodeURIComponent(q);
 
