@@ -59,12 +59,12 @@ class Replace extends CI_Controller
 
 			// 설치 업무 생성
 			$post_data['op_type'] = '205';
-			$post_data['date_request'] = $post_data['date_open'];
+			$post_data['date_request'] = sprintf("%s %02d:00:00", $post_data['date_open'], $post_data['date_open_hour']);
 			$install_op = $this->work_model->createOperation('205', $post_data, TRUE);
 			
 			// 철수 업무 생성
 			$post_data['op_type'] = '305';
-			$post_data['date_request'] = $post_data['date_close'];
+			$post_data['date_request'] = sprintf("%s %02d:00:00", $post_data['date_close'], $post_data['date_close_hour']);
 			$close_op = $this->work_model->createOperation('305', $post_data, TRUE);
 
 			// 교체 업무 생성

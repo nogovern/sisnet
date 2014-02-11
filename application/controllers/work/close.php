@@ -64,6 +64,9 @@ class Close extends CI_Controller
 			$post = $this->input->post();
 			$post['date_store'] = $this->input->post('date_close');
 			
+			// 작업요청일에 시간 포맷 추가
+			$post['date_request'] .= sprintf(" %02d:00:00", $post['date_request_hour']);
+			
 			$op = $this->work_model->createOperation($this->input->post('op_type'), $post);
 
 			//////////////////////////

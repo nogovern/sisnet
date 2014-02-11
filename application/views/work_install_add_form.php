@@ -50,9 +50,9 @@ $this->view('layout/navbar');
                   </div>
                 </div>
                 <div class="col-sm-2">
-                  <select class="form-control" name="date_request_hour">
+                  <select class="form-control" id="date_request_hour" name="date_request_hour">
                     <?php for($i=0; $i < 25; $i++):?>
-                    <option value="<?=$i?>"><?=$i?>시</option>
+                    <option value="<?=$i?>"><?=sprintf("%02d",$i)?>시</option>
                     <?php endfor; ?>
                   </select>
                 </div>

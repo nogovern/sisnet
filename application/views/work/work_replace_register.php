@@ -35,23 +35,6 @@ $this->view('layout/navbar');
         </div>
         
         <div class="form-group">
-          <label class="control-label col-sm-3">설치요청일</label>
-          <div class="col-sm-6">
-            <div class="input-group">
-              <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly>
-              <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
-            </div>
-          </div>
-          <div class="col-sm-2">
-            <select class="form-control" id="date_open_hour" name="date_open_hour">
-              <?php for($i=0; $i < 25; $i++):?>
-              <option value="<?=$i?>"><?=$i?>시</option>
-              <?php endfor; ?>
-            </select>
-          </div>
-        </div>
-        
-        <div class="form-group">
           <label class="control-label col-sm-3">철수요청일</label>
           <div class="col-sm-6">
             <div class="input-group">
@@ -68,20 +51,23 @@ $this->view('layout/navbar');
           </div>
         </div>
 
-        <!-- 교체 업무는 type 이 없음 
         <div class="form-group">
-          <label class="control-label col-sm-3">교체 형태</label>
-          <div class="col-sm-5">
-            <select class="form-control" name="op_type" id="op_type">
-              <option value="301">폐점</option>
-              <option value="302">휴점S</option>
-              <option value="303">휴점C</option>
-              <option value="304">리뉴얼</option>
+          <label class="control-label col-sm-3">설치요청일</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <input type="text" id="date_open" name="date_open" class="form-control date-picker" readonly>
+              <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control" id="date_open_hour" name="date_open_hour">
+              <?php for($i=0; $i < 25; $i++):?>
+              <option value="<?=$i?>"><?=$i?>시</option>
+              <?php endfor; ?>
             </select>
           </div>
         </div>
-        -->
-
+        
         <div class="form-group">
           <label class="control-label col-sm-3">교체 사무소</label>
           <div class="col-sm-5">

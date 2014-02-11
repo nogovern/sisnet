@@ -107,6 +107,9 @@ class Install extends CI_Controller
 		} else {
 			$post = $this->input->post();
 			$post['date_store'] = $this->input->post('date_open');
+
+			// 작업요청일에 시간 포맷 추가
+			$post['date_request'] .= sprintf(" %02d:00:00", $post['date_request_hour']);
 			
 			// 설치 업무 생성
 			$op = $this->work_model->createOperation($this->input->post('op_type'), $post);
