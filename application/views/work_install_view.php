@@ -162,8 +162,9 @@ $this->view('layout/navbar');
             <thead>
               <tr>
                 <th>#</th>
-                <th>종류</th>
-                <th>장비명</th>
+                <th>타입</th>
+                <th>장비종류</th>
+                <th>모델명</th>
                 <th>상태</th>
                 <th>S/N</th>
                 <th>직전위치</th>
@@ -181,8 +182,9 @@ $item_count = count($items);
 foreach($items as $item):
 ?>                  
               <tr data-item_id="<?=$item->id?>">
-                <td><?=$item->id?></td>
+                <td><?=$i++?></td>
                 <td><?=$arr_type_text[$item->part_type]?></td>
+                <td><?=$item->part->category->name?></td>
                 <td><?=$item->part_name?></td>
                 <td><?=($item->is_new == 'Y')? '신품' : '중고'?></td>
                 <td><?=$item->serial_number?></td>
@@ -328,10 +330,13 @@ function callback_insert_row(id, type, name, sn, prev, qty, is_new) {
   if( type == '2') type_text = '수량';
   if( type == '3') type_text = '소모품';
 
+  var idx = $("#part_table tbody tr").length + 1;
+
   var tr = $("<tr/>").attr('data-item_id', id);
-  tr.append($("<td/>").text(id));
+  tr.append($("<td/>").text(idx));
   tr.append($("<td/>").text(type_text));
   tr.append($("<td/>").text(name));
+  tr.append($("<td/>").text(item.cat_name));
   tr.append($("<td/>").text((is_new == 'Y') ? '신품' : '중고'));
   tr.append($("<td/>").text(sn));
   tr.append($("<td/>").text(prev));

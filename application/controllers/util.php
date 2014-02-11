@@ -61,6 +61,7 @@ class Util extends CI_Controller
 			
 			$json = new stdClass;
 			$json->id = $part->id;
+			$json->cat_name = $part->category->name;
 			$json->name = $part->name;
 			$json->type = $part->type;
 			$json->qty_new = $part->getNewTotal($_POST['office_id']);		// 설치 사무소 신품 재고 수량

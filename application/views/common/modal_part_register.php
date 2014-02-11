@@ -17,7 +17,7 @@
           <label class="form-label col-sm-4">장비 검색</label>
           <div class="col-sm-5">
             <label class="radio-inline">
-              <input type="radio" name="search_method" value="0" checked> 없음
+              <input type="radio" name="search_method" value="0" checked> 수량
             </label> 
             <label class="radio-inline">
               <input type="radio" name="search_method" value="1"> 시리얼
