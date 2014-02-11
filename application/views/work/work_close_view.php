@@ -129,11 +129,11 @@ $this->view('layout/navbar');
           </tr>
           <tr>
             <td>RFC</td>
-            <td><?=$store->rfc_tel?></td>
+            <td><?=$store->rfc_name?>/<?=$store->rfc_tel?></td>
           </tr>
           <tr>
             <td>OFC</td>
-            <td><?=$store->ofc_tel?></td>
+            <td><?=$store->ofc_name?>/<?=$store->ofc_tel?></td>
           </tr>
           <tr>
             <td>작업메모</td>
