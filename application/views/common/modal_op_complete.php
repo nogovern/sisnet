@@ -9,9 +9,10 @@
       <!-- start form -->
       <form enctype="multipart/form-data" role="form" class="form form-horizontal">
       <div class="modal-body">
-        <ul class="well well-md" style="list-style: none;">
+        <ul class="well well-sm" style="list-style: none;">
           <li> <span class="text-danger">작업 완료 하려고 합니다.</span></li>
           <li> <span class="text-danger">(주의) 실제 설치 수량이 재고에 반영됩니다.</span></li>
+          <li> <span class="text-danger">첨부파일 기능은 아직 미구현...</span></li>
         </ul>
           
         <div class="form-group">
@@ -23,9 +24,12 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label col-sm-3">파일 첨부</label>
+          <label class="form-label col-sm-3">파일 첨부 (테스트중)</label>
           <div class="col-sm-8">
-            <input type="file" class="form-control" name="file1"></input>
+            <input type="file" class="form-control" name="userfile[]"></input>
+            <input type="file" class="form-control" name="userfile[]"></input>
+            <input type="file" class="form-control" name="userfile[]"></input>
+            <div class="help-block">파일 당 <?=GS2_MAX_FILE_SIZE?> M bytes 까지 업로드 가능합니다 </div>
           </div>
         </div>
 
@@ -55,6 +59,8 @@
       $.ajax({
         url: target_url,
         type: "POST",
+        cache: false,
+        async: false,
         data: {
           id : operation.id,
           office_id: $("#office_id").val(),
@@ -66,7 +72,7 @@
       })
         .done(function(html) {
           alert(html);
-          location.reload();
+          // location.reload();
         })
         .fail(function(xhr, textStatus){
           alert("Request failed: " + textStatus);

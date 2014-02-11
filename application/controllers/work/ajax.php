@@ -440,7 +440,7 @@ class Ajax extends CI_Controller
 		);
 		$this->work_model->addLog($op, $log_data, TRUE);
 		
-		echo 'operation complete is done successfully!';
+		echo "업무를 완료하였습니다.";
 	}
 
 	// 승인 
