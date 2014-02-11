@@ -163,6 +163,10 @@ class Close extends CI_Controller
 		$cats = gs2_convert_for_dropdown($cats);
 		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
 
+		// 담당자 변경용 dropdown
+		$workers = $this->user_model->getOfficeUsers();
+		$data['select_worker'] = form_dropdown('select_worker', $workers, $work->worker->id, ' id="select_worker" class="form-control"');
+
 		$this->load->view('work/work_close_view', $data);
 	}
 

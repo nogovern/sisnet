@@ -271,6 +271,14 @@ class Ajax extends CI_Controller
 		$id = $this->input->post('id');
 		$op = $this->work_model->get($id);
 
+		if($op->worker->id == $this->input->post("worker_id")) {
+			$result['error'] = TRUE;
+			$result['error_msg'] = '현재의 담당 직원입니다';
+
+			echo json_encode($result);
+			exit;
+		}
+
 		// 작업자 변경
 		$data = array(
 			'worker_id' => $this->input->post('worker_id'),
@@ -280,12 +288,16 @@ class Ajax extends CI_Controller
 		// 로그 기록
 		$log_data = array(
 			'type'		=> '1',
-			'content'	=> '방문자 변경 되었음',
+			'content'	=> $this->input->post('memo'),
 			'event'		=> '작업자 변경'
 		);
 		$this->work_model->addLog($op, $log_data, TRUE);
 
-		echo '작업자를 변경하였습니다';
+		// 결과
+		$result['error'] = FALSE;
+		$result['error_msg'] = '';
+
+		echo json_encode($result);
 	}
 
 	// 담당 사무소 변경

@@ -34,6 +34,31 @@ class User_m extends MY_Model {
 
 		return $rows;
 	}
+
+	// 사무소별 사용자
+	public function getOfficeUsers() {
+		$this->load->model('office_m', 'office_model');
+
+		$arr = array();
+
+		$offices = $this->em->getRepository('Entity\Office')->findBy(array(), array('name' => 'ASC'));
+		foreach($offices as $o) {
+			$users = $this->em->getRepository('Entity\User')->findBy(array('office' => $o, 'status' => '1'), array('name' => 'ASC'));
+			
+			if(!count($users)) {
+				continue;
+			}
+			
+			$arr2 = array();
+			foreach($users as $u) {
+				$arr2[$u->id] = $u->name;
+			}
+
+			$arr[$o->name] = $arr2;
+		}
+
+		return $arr;
+	}
 	
 }
 

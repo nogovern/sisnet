@@ -75,6 +75,10 @@ class Install extends CI_Controller
 		$cats = gs2_convert_for_dropdown($cats);
 		$data['select_category'] = form_dropdown('select_category', $cats, 0, 'id="select_category" class="form-control"');
 
+		// 담당자 변경용 dropdown
+		$workers = $this->user_model->getOfficeUsers();
+		$data['select_worker'] = form_dropdown('select_worker', $workers, $work->worker->id, ' id="select_worker" class="form-control"');
+
 		$this->load->view('work_install_view', $data);
 	}
 

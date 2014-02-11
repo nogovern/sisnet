@@ -9,18 +9,14 @@
       <!-- start form -->
       <form role="form" class="form form-horizontal">
       <div class="modal-body">
-        <p class="help-block">
-          방문자를 변경합니다. 어적구 저쩌구
+        <p class="well well-sm">
+          방문자를 변경합니다.
         </p>
 
         <div class="form-group">
           <label class="form-label col-sm-4">방문자 선택</label>
           <div class="col-sm-7">
-            <select name="change_worker" class="form-control">
-              <option value="1">--샘플 유저 1--</option>
-              <option value="2">--샘플 유저 2--</option>
-              <option value="3">--샘플 유저 3--</option>
-            </select>
+            <?php echo $select_worker ?>
           </div>
         </div>
 
@@ -46,8 +42,35 @@ $(document).ready(function(){
   $("#modal_change_worker form").submit(function(e){
     e.preventDefault();
 
-    var changer = $("select", this).val();
-    alert('debug: ' + changer + '\nSorry, 아직 구현되지 않음');
+    var changer = $("#select_worker", this).val();
+    var memo = $("textarea", this).val();
+    
+    // 작업자 요청 변경
+    $.ajax({
+      url: "<?=base_url()?>work/ajax/change_worker",
+      type: "POST",
+      data: {
+        id: operation.id,
+        worker_id: changer,
+        memo: memo,   
+        extra: "request change worker",
+        "csrf_test_name": $.cookie("csrf_cookie_name")
+      },
+      dataType: "json",
+    })
+      .done(function(response) {
+        gs2_console(response);
+        if(!response.error) {
+          alert("담당자를 변경하였습니다\n페이지를 갱신합니다");
+          location.reload();
+        } else {
+          alert(response.error_msg);
+          return false;
+        }
+      })
+      .fail(function(xhr, textStatus){
+        alert("Request failed: " + textStatus);
+      });
   });
 });
 </script>
