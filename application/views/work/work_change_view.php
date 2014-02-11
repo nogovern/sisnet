@@ -44,7 +44,7 @@ echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
         <th>시리얼</th>
         <th>수량</th>
         <th>상태(가용/수리/폐기)</th>
-        <th>삭제</th>
+        <th style="width:10%;"></th>
       </tr>
     </thead>
     <tbody>
@@ -108,8 +108,15 @@ if($op->status == '1') {
   $results = unserialize($item->extra);
   echo join('/', $results);
 }
+
+    if($row_count == 1 && $idx < $row_count) {
+      echo sprintf('<td>%s</td>', ($op->status == '1') ? 삭제 : '');
+    } else {
+      if( $idx == 0) {
+        echo sprintf("<td rowspan=\"%d\">%s</td>", $row_count, ($op->status == '1') ? 삭제 : '');
+      }
+    }
 ?>
-        <td>삭제</td>
       </tr>
 <?php
     $idx = $idx + 1;
