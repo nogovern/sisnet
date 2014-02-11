@@ -7,7 +7,8 @@
     <div class="modal-content">
       <!-- start form -->
       <form role="form" class="form form-horizontal">
-      <input type="hidden" name="serail_number" id="serial_number" value="">
+      <input type="hidden" name="serial_number" id="serial_number" value="">
+      <input type="hidden" name="serial_part_id" id="serial_part_id" value="">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">장비 등록</h4>
@@ -281,13 +282,16 @@ $(document).ready(function(){
       return false;
     }
 
+    // 시리얼장비 id
+    var spart_id = (item.type == '1') ? $("#serial_part_id").val() : '';
+
     $.ajax({
       url: "<?=base_url()?>work/ajax/add_item",
       type: "POST",
       data: {
         "id": operation.id,         
         "part_id": item.id,
-        "serial_part_id": '',
+        "serial_part_id": spart_id,
         "serial_number": $('#serial_number').val(),
         "qty": qty,   
         'is_new': is_new,
@@ -388,7 +392,9 @@ function set_serialinfo(spart) {
     $(':radio[name="is_new"][value="N"]').prop('checked', true);
   }
   $('#part_qty', form).val(1);
+
   //hidden value
+  $("#serial_part_id").val(spart.spart_id);
   $("#serial_number").val(spart.serial_number);
 }
 

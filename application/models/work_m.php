@@ -426,13 +426,13 @@ class Work_m extends MY_Model {
 		// - 직전위치 로 검색하는 경우 시리얼넘버가 없는 경우도 있음
 		// - 시리얼넘버가 없을 경우는???
 		if($part->type == '1') {
-			if(!empty($data['serial_number'])) {
-				$item->setSerialNumber($data['serial_number']);
-				$sp = $this->part_model->getPartBySerialNumber($data['serial_number']);
+			// 등록된 시리얼 장비이면
+			if(!empty($data['serial_part_id'])) {
+				$sp = $this->part_model->getSerialPart($data['serial_part_id']);
 				$item->setSerialPart($sp);
-			} else {
-
 			}
+			
+			$item->setSerialNumber($data['serial_number']);
 
 			// 설치 - 시리얼장비 상태,flag
 			if($op->type >= '200' && $op->type < '300') {
@@ -576,13 +576,15 @@ class Work_m extends MY_Model {
 			$stock = $part->getStock($op->office->id);
 
 			// 시리얼장비 내용 변경
+			// 설치된 장비는 우리 재고가 아님
 			if($item->part_type == '1') {
 				$sp = $item->serial_part;
 				if($sp) {
-					$sp->setValidFlag(FALSE);		// 유효 재고에서 빠짐
 					$sp->setPreviousLocation($item->prev_location);
 					$sp->setCurrentLocation($op->work_location);
 					$sp->setDateModify();
+					$sp->setValidFlag(FALSE);		// 유효 재고에서 빠짐
+					$sp->setStatus('1');			// 정상설치 상태로 변경
 					// 신품일떄 최초 설치일
 					if($item->isNew()) {
 						$sp->setDateInstall($op->getDateWork());

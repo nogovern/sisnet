@@ -105,6 +105,7 @@ $(document).ready(function(){
       dataType: "html",
     })
       .done(function(html) {
+        gs2_console(html);
         if(html == 'none'){
           alert('해당 카테고리에 등록된 장비가 없습니다.\n관리자에게 장비 등록을 요청하세요');
           $("#category_id").val(0).change();

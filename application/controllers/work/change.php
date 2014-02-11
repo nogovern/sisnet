@@ -113,7 +113,9 @@ class Change extends CI_Controller
 			$this->load->view('work/work_change_view', $data);
 
 		} else {
+			
 			// gs2_dump($_POST);
+
 			$em = $this->work_model->getEntityManager();
 			$this->load->model('part_m', 'part_model');
 			
@@ -138,12 +140,17 @@ class Change extends CI_Controller
 				// 장비 재고량을 변경
 				/////////////////////////////////
 				foreach($top->getItems() as $item) {
+					// 분실 장비는 skip
+					if($item->isLost() === TRUE) {
+						continue;
+					}
+
 					// 대상 업무의 사무소의 재고
 					$stock = $item->part->getStock($top->office->id);
 
 					$sp = NULL;
 					if($item->part_type == '1') {
-						$sp = $this->part_model->getPartBySerialNumber($item->serial_number);
+						$sp = $this->part_model->getSerialPart($item->serial_part->id);
 					}
 
 					// 상태변경 수량 배열
@@ -194,7 +201,7 @@ class Change extends CI_Controller
 					// gs2_dump($stock->qty_used);
 				}
 			}
-			
+
 			///////////////
 			// log 기록 //
 			///////////////
@@ -204,7 +211,7 @@ class Change extends CI_Controller
 			);
 			$this->work_model->addLog($op, $log_data, TRUE);
 
-			redirect('work/change');
+			alert('상태변경을 완료하였습니다', site_url('work/change'));
 		}
 
 	}

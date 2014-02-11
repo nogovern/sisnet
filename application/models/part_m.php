@@ -128,6 +128,20 @@ class Part_m extends MY_Model
 		return($row) ? $row : NULL;
 	}
 
+
+	/**
+	 * 설치 업무용 시리얼장비 얻기 (미완성)
+	 * 	시리얼넘버로 gs2_part_serial 테이블에서 비가용, 해당 사무소, status = 1,2 인 경우 반환
+	 * 
+	 * @param  [type] $sn        [description]
+	 * @param  [type] $office_id [description]
+	 * @return [type]            [description]
+	 */
+	public function getSerialPartForClose($sn, $office_id=NULL) {
+		$qb = $this->em->createBuilder();
+		$qb->select("sp")->from("Entity\SeriapPart sp");
+	}
+
 	/**
 	 * 시리얼관리장비 추가
 	 * 

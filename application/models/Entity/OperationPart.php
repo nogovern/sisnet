@@ -106,9 +106,22 @@ class OperationPart {
 		return $this->qty_scan;
 	}
 
+	public function getQtyLost() {
+		return $this->qty_scan;
+	}
+
 	public function isScan()
 	{
 		return ($this->is_scan == 'Y') ? TRUE : FALSE;
+	}
+
+	/**
+	 * 장비 분실 여부
+	 * 
+	 * @return boolean 분실했으면 TRUE
+	 */
+	public function isLost() {
+		return ($this->qty_lost > 0) ? TRUE : FALSE;
 	}
 
 	// ---------- set -------------

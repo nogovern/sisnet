@@ -116,27 +116,30 @@ class Ajax extends CI_Controller
 						$error_msg = "등록실패:\n철수 장비 리스트에 등록 된 시리얼넘버 입니다";
 					} 
 					
-					// 철수 장비는 입고이므로
-					// 전 사무소의 모든 장비를 검사해야 함
+					// 등록 된 시리얼장비 라면 사무소,비가용여부,상태 비교
 					if(is_null($error_msg)) {
 						$sp = $this->part_model->getPartBySerialNumber($serial_number, NULL, TRUE);
+
 						if($sp) {
-							$error_msg = "등록실패:\n" . $sp->part->name . " - 등록 된 시리얼 입니다";
+							if($sp->is_valid == 'Y' || $sp->status != '1') {
+								$error_msg = "등록실패:\n" . $sp->part->name . "	 - 사용할 수 없는 시리얼 입니다";
+							}
 						}
 					}
-
 				} else {
-					;		// 시리얼넘버 없을 때 그냥 등록
+					$sp = NULL;
 				}
 			}
 		}
+
+		$serial_part_id = isset($sp) ? $sp : $this->input->post('serial_part_id');
 
 		if(is_null($error_msg)) {
 			$post_data = array(
 				'id'				=> $this->input->post('id'),		// 작업 ID
 				'part_id'			=> $this->input->post('part_id'),
 				'serial_number'		=> $serial_number,
-				'serial_part_id'	=> $this->input->post('serial_part_id'),
+				'serial_part_id'	=> $serial_part_id,
 				'qty'				=> $this->input->post('qty'),
 				'is_new'			=> $this->input->post('is_new'),
 			);
@@ -360,7 +363,7 @@ class Ajax extends CI_Controller
 			foreach($items as $item) {
 				if($item->part_type == '1') {
 					// 기존 시리얼넘버가 존재하면 기존 정보 update
-					$sp = $this->part_model->getPartBySerialNumber($item->serial_number);
+					$sp = ($item->serial_part) ? $this->part_model->getSerialPart($item->serial_part->id): NULL;
 
 					// 없는 시리얼넘버이면 생성
 					if(!$sp) 
@@ -372,7 +375,7 @@ class Ajax extends CI_Controller
 						$sp_data['qty'] = 1;
 						$sp_data['serial_number'] = $item->serial_number;
 						$sp_data['is_new'] = $item->is_new;
-						$sp_data['status'] = '1';
+						$sp_data['status'] = '3';
 						$sp_data['is_valid'] = 'N';									// 가용 여부
 
 
@@ -387,6 +390,7 @@ class Ajax extends CI_Controller
 						$sp->setDateEnter($op->getDateFinish());
 						$sp->setNewFlag(FALSE);
 						$sp->setValidFlag(FALSE);
+						$sp->setStatus('3');
 						$sp->setCurrentLocation(gs2_encode_location($op->office));
 
 					}
@@ -399,8 +403,11 @@ class Ajax extends CI_Controller
 						$sp->setMemo('분실장비');
 					}
 
-					$this->part_model->_add($sp);
+					$this->work_model->_add($sp);
 
+					// 새로 생성된 serial_part_id 를 opeartion_parts 테이블에 update
+					$item->setSerialPart($sp);
+					$this->work_model->_add($item);			
 				}
 
 				// 재고수량 변경
