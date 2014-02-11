@@ -22,14 +22,14 @@ if(0) {
             <li class="dropdown" id="page-admin">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리자 <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li id="page-admin-user"><a href="<?=site_url('/admin/user')?>">사용자</a></li>
-                <li id="page-admin-office"><a href="<?=site_url('/admin/office')?>">사무소</a></li>
-                <li id="page-admin-company"><a href="<?=site_url('/admin/company')?>">거래처</a></li>
-                <li id="page-admin-store"><a href="<?=site_url('/admin/store')?>">점포</a></li>
+                <li id="page-admin-user"><a href="<?=site_url('/admin/user')?>">사용자 관리</a></li>
+                <li id="page-admin-office"><a href="<?=site_url('/admin/office')?>">사무소 관리</a></li>
+                <li id="page-admin-company"><a href="<?=site_url('/admin/company')?>">거래처 관리</a></li>
+                <li id="page-admin-store"><a href="<?=site_url('/admin/store')?>">점포 관리</a></li>
                 <li class="divider"></li>
-                <li id="page-admin-part"><a href="<?=site_url('/admin/part')?>">장비</a></li>
-                <li id="page-admin-serialpart"><a href="<?=site_url('/admin/part/serial')?>">시리얼관리장비</a></li>
-                <li id="page-admin-category"><a href="<?=site_url('/admin/category')?>">장비 카테고리</a></li>
+                <li id="page-admin-category"><a href="<?=site_url('/admin/category')?>">장비그룹 관리</a></li>
+                <li id="page-admin-part"><a href="<?=site_url('/admin/part')?>">장비모델 관리</a></li>
+                <li id="page-admin-serialpart"><a href="<?=site_url('/admin/part/serial')?>">시리얼장비 리스트</a></li>
               </ul>
             </li>
 <?php endif;    // !-- 관리자 권한 ?>

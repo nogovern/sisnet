@@ -45,8 +45,8 @@ foreach($part_type as $idx => $type_name) {
             <th>No</th>
             <th>타입</th>
             <th>장비종류</th>
-            <th>제조사명</th>
             <th>모델명</th>
+            <th>제조사명</th>
             <th>납품처</th>
             <th>등록일</th>
             <th>재고수량</th>
@@ -68,8 +68,8 @@ foreach($part_type as $idx => $type_name) {
               <span class="label <?=$arr_type_class[$row->type]?>"> <?=$arr_type_text[$row->type];?> </span>
             </td>
             <td><?=$row->category->name?></td>
-            <td><?=$row->manufacturer?></td>
             <td><?=$row->name?></td>
+            <td><?=$row->manufacturer?></td>
             <td><?=$row->getCompany()?></td>
             <td><?=(is_object($row->date_register)) ? $row->date_register->format('Y-m-d'): '';?></td>
             <td><?=$row->getNewTotal()?>/<?=$row->getUsedTotal()?></td>

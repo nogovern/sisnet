@@ -7,7 +7,7 @@
       <th>모델</th>
       <th>신품</th>
       <th>상태</th>
-      <th>현재위치</th>
+      <th>직전위치</th>
       <th></th>
     </tr>
   </thead>
@@ -24,7 +24,7 @@ if(count($rows)) {
       <td><?php echo $row->part->name;?></td>
       <td><?php echo ($row->is_new == 'Y') ? '신품' : '중고';?></td>
       <td><?php echo $row->status;?></td>
-      <td><?php echo gs2_decode_location($row->current_location)->name;?></td>
+      <td><?php echo gs2_decode_location($row->previous_location)->name;?></td>
       <td><button class="btn btn-info btn-xs select_me" data-spID="<?=$row->id?>" type="button">선택</button></td>
     </tr>
 <?php
