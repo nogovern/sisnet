@@ -37,6 +37,17 @@ class Part_m extends MY_Model
 	/////////////////////////////
 	// 시리얼 관리 장비 전용 //
 	////////////////////////////
+
+	/**
+	 * gs2_part_serial.id 로 시리얼장비 Entity 1개 반환
+	 * 
+	 * @param  integer $sp_id [description]
+	 * @return object        [description]
+	 */
+	public function getSerialPart($sp_id){
+		$sp = $this->em->getRepository('Entity\SerialPart')->find($sp_id);
+		return $sp;
+	}	
 	
 	/**
 	 * 시리얼 관리 제품 리스트
