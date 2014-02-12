@@ -14,7 +14,7 @@
       </div>
       <div class="modal-body" style="padding:10px 20px;">
 
-        <p class="text-info">점포 검색 결과 : <span class="nuw_rows"></span> 건</p>
+        <p class="text-info">결과수 : <span class="num_rows"></span> 건</p>
         <div class="row table-scroll" style="margin:0;padding:0;overflow-y:auto;height:250px;">
           <table class="table table-hover table-condensed">
             <thead>

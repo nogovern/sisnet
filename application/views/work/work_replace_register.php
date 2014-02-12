@@ -150,7 +150,7 @@ $(document).ready(function(){
     }
   });
 
-  // colorbox - 점포 검색
+  // 점포 검색
   $("#btn_search_store").click(function(){
     var query = $.trim($("#store_name").val());      // 점포명
     if(query === '') {
@@ -171,12 +171,12 @@ $(document).ready(function(){
         dataType: "html",
       })
       .done(function(text) {
-        var modal = $("#modal_store_search_result");
-
-        // clear & fit
-        $("#modal_store_search_result table tbody").html('').html(text);  
+        // 함수화 해도 되겠는데요
+        $("#modal_store_search_result table tbody").html('').html(text);
+        // 검색결과 표시
+        var len = $("#modal_store_search_result table tbody tr").length;
+        $("#modal_store_search_result .num_rows").text(len);
         $("#modal_store_search_result").modal('show');
-        
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
