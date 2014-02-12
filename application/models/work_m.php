@@ -589,6 +589,7 @@ class Work_m extends MY_Model {
 					// 신품일떄 최초 설치일
 					if($item->isNew()) {
 						$sp->setDateInstall($op->getDateWork());
+						$sp->setMemo('');
 					}
 
 					$this->em->persist($sp);

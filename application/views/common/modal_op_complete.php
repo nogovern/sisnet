@@ -72,7 +72,7 @@
       })
         .done(function(html) {
           alert(html);
-          // location.reload();
+          location.reload();
         })
         .fail(function(xhr, textStatus){
           alert("Request failed: " + textStatus);
