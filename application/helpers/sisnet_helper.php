@@ -227,6 +227,18 @@ if(!function_exists('gs2_zero_to_dash')) {
     }
 }
 
+// 장비 타입 문구
+if(!function_exists('gs2_part_type')) {
+    function gs2_part_type($idx) {
+        $CI =& get_instance();
+
+        $_config = $CI->config->item('gs2');
+        $arr = $_config['part_type'];
+
+        return $arr[$idx];
+    }
+}
+
  
 
 

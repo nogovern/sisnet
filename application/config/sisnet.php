@@ -101,6 +101,7 @@ $config['gs2']['store_join_type'] = array(
 	'8' => 'S타입',
 );
 
+// 시리얼장비 상태 텍스트
 $config['gs2']['serial_part_status'] = array(
 	'1' => '',
 	'2' => '설치대기',
@@ -109,6 +110,14 @@ $config['gs2']['serial_part_status'] = array(
 	'5' => '수리대기',
 	'6' => '폐기대기',
 	'L'	=> '분실'
+);
+
+// 장비타입 텍스트
+$config['gs2']['part_type'] = array(
+	'0'	=> '--',	
+	'1'	=> '시리얼',	
+	'2'	=> '수량',	
+	'3'	=> '소모품',	
 );
 
 $config['gs2']['close'] = array(
