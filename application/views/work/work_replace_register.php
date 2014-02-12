@@ -150,7 +150,9 @@ $(document).ready(function(){
     }
   });
 
+  //////////////
   // 점포 검색
+  //////////////
   $("#btn_search_store").click(function(){
     var query = $.trim($("#store_name").val());      // 점포명
     if(query === '') {
