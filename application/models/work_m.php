@@ -207,7 +207,8 @@ class Work_m extends MY_Model {
 		// 시리얼장비 수량 만큼 반복
 		if( $part->type == 1) {
 			for($i = 0; $i < $request_qty; $i++) {
-				$post_data['qty'] = 1;					// 시리얼 장비는 1개 
+				$post_data['qty'] = 1;					// 시리얼 장비는 1개
+				$post_data['serial_number'] = '';
 				$this->addItem($op, $post_data);
 			}
 		} else {
