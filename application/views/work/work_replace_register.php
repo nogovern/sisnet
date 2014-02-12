@@ -116,6 +116,10 @@ $this->view('layout/navbar');
   </div>
 </div><!-- start of div.container -->
 
+<?php
+$this->view('common/modal_search_store');     // 점포 검색 modal
+?>
+
 <!-- jquery form validation -->
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
@@ -171,7 +175,7 @@ $(document).ready(function(){
 
         // clear & fit
         $("#modal_store_search_result table tbody").html('').html(text);  
-        $("#modal_store_search_result").css('top', '20%').modal('show');
+        $("#modal_store_search_result").modal('show');
         
       })
       .fail(function(xhr, textStatus){
@@ -200,100 +204,38 @@ $(document).ready(function(){
   });
   
 }); //end of jQuery ready
-</script>
 
-<!-- 점포 검색 modal dialog -->
-<div class="modal fade" id="modal_store_search_result" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">점포 검색 리스트</h4>
-      </div>
-      <div class="modal-body" >
-        <table class="table table-hover table-condensed table-responsive" style="display:block;overflow-y:auto;height:300px;min-height:100px;">
-          <caption class="text-right">점포 검색 결과 : <span id="cnt_result"></span> 건</caption class="text-right">
-          <thead>
-            <tr>
-              <th class="col-sx-1"></th>
-              <th class="col-sx-3">점포명</th>
-              <th class="col-sx-2">점주</th>
-              <th class="col-sx-3">주소</th>
-              <th class="col-sx-2">연락처</th>
-              <th class="col-sx-1">상태</th>
-              <th class="col-sx-1">선택</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button id="btn_modal_store_register" type="button" class="btn btn-primary">신규 등록</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-      </div>
-    </div>
-  </div>
-</div><!-- /.modal -->
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    $("#btn_modal_store_register").click(function(e){
-      $("#modal_store_search_result").modal("hide");
-      callback_store_register();
-    });
+///////////////////////////////////
+// 점포 검색용 callback function
+///////////////////////////////////
+function callback_store_info(id, name) {
+  $("#store_id").val(id);
+  $("#store_name").val(name);
+
+  // 점포 정보
+  var url2 = "<?=site_url("admin/store/showTableFormat")?>" + "/" + id;
+  $("#store_info .panel-body").load(url2);
+}
+
+// 점포 검색 창에서 점포 신규 등록시 
+// 기존 colorbox 를 닫은 후 colorbox 다시 열기
+function callback_store_register() {
+  // close() 를 사용하면 이후 colorbox 가 열리지 않음
+  // $.colorbox.close();
+
+  var url = '<?=site_url("/admin/store/register/popup")?>';
+  // alert(url);
+
+  $.colorbox({
+    href  : url,
+    iframe  : true,
+    opacity : 0.5,
+    width   : '70%',
+    height  : '90%',
+    overlayClose: false
   });
-
-  $(document).on('click', '.select_me', function(e){
-    // 상점 id, name
-    var store_id = $(this).closest('tr').find('td:eq(0)').text();
-    var store_name = $(this).closest('tr').find('td:eq(1)').text();
-
-    // callback 함수 사용하여 부모창 element 에 설정
-    callback_store_info(store_id, store_name);
-
-    $("#modal_store_search_result").modal("hide");
-  });
-
-  ///////////////////////////////////
-  // 점포 검색용 callback function
-  ///////////////////////////////////
-  function callback_store_info(id, name) {
-    $("#store_id").val(id);
-    $("#store_name").val(name);
-
-    // 점포 정보
-    var url2 = "<?=site_url("admin/store/showTableFormat")?>" + "/" + id;
-    $("#store_info .panel-body").load(url2);
-  }
-
-  // 점포 검색 창에서 점포 신규 등록시 
-  // 기존 colorbox 를 닫은 후 colorbox 다시 열기
-  function callback_store_register() {
-    // close() 를 사용하면 이후 colorbox 가 열리지 않음
-    // $.colorbox.close();
-
-    var url = '<?=site_url("/admin/store/register/popup")?>';
-    // alert(url);
-
-    $.colorbox({
-      href  : url,
-      iframe  : true,
-      opacity : 0.5,
-      width   : '70%',
-      height  : '90%',
-      overlayClose: false
-    });
-  }
+}
 </script>
 
 <?php

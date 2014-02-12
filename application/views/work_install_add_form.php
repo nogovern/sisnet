@@ -120,7 +120,7 @@ $this->view('layout/navbar');
       </div>
     </div><!-- start of div.container -->
 <?php
-$this->view('common/modal_search_store');
+$this->view('common/modal_search_store');     // 점포 검색 modal
 ?>
 
     <!-- jquery form validation -->
@@ -178,7 +178,7 @@ $this->view('common/modal_search_store');
 
             // clear & fit
             $("#modal_store_search_result table tbody").html('').html(text);  
-            $("#modal_store_search_result").css('top', '20%').modal('show');
+            $("#modal_store_search_result").modal('show');
           })
           .fail(function(xhr, textStatus){
             alert("Request failed: " + textStatus);
