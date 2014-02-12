@@ -142,6 +142,12 @@ class Close extends CI_Controller
 		$data['store'] = gs2_decode_location($work->work_location);	// 점포 
 		$data['items'] = $work->getItemList();
 		
+		// 휴점점검 - 점포 보관 장비 목록
+		if($work->type == '304') {
+			$this->load->model('store_m', 'store_model');
+			$data['store_items'] = $this->store_model->getStoreItems($work->id);
+		}
+
 		////////////////
 		// 요청확정용 
 		////////////////
@@ -162,6 +168,8 @@ class Close extends CI_Controller
 		$cats = $this->category_model->getSubCategories(1);
 		$cats = gs2_convert_for_dropdown($cats);
 		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
+		// 휴점-점검용
+		$data['select_category2'] = form_dropdown('select_cat', $cats, 0, 'id="select_cat" class="form-control"');
 
 		// 담당자 변경용 dropdown
 		$workers = $this->user_model->getOfficeUsers();

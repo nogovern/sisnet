@@ -85,4 +85,37 @@ class Util extends CI_Controller
 		// echo '직전 위치 결과 : ' . count($rows);
 	}
 
+	////////////////////
+	// 점포 휴점 장비
+	////////////////////
+
+	public function addStoreItem() {
+		$this->load->model('store_m', 'store_model');
+
+		$post_data= $this->input->post();
+
+		$rest = $this->store_model->addRestPart($post_data, TRUE);
+
+		if($rest) {
+			$result['error'] = FALSE;
+			$result['item_id'] = $rest->id;
+		} else {
+			$result['error'] = TRUE;
+			$result['error_msg'] = '에러 - 휴점 장비 등록에 실패';
+		}
+		echo json_encode($result);
+
+	}
+
+	public function removeStoreItem($item_id) {
+		$this->load->model('store_m', 'store_model');
+		$result = $this->store_model->removeRestPart($item_id);
+
+		gs2_dump($_POST);
+		return ($result) ? 'success': 'failure';
+	}
+
+	public function getStoreItems($store_id) {
+		;
+	}
 }

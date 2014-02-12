@@ -243,7 +243,7 @@ endif;
 
 if($work->status == 4):
 ?>
-      <button id="btn_confirm" class="btn btn-success" type="button">승인</button>
+      <button id="btn_approve" class="btn btn-success" type="button">승인</button>
 <?php
 endif;
 ?>
@@ -306,7 +306,7 @@ $(document).ready(function(){
   //--------------------------------------
 
   // 승인 버튼
-  $("#btn_confirm").click(function(){
+  $("#btn_approve").click(function(){
     alert('승인 합니다... 미구현');
   });
 

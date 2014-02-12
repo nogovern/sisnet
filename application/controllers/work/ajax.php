@@ -624,7 +624,6 @@ class Ajax extends CI_Controller
 		$this->work_model->removeOperation($op, TRUE);
 		echo 'success';
 	}
+
 }
-
-
 

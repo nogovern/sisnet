@@ -217,7 +217,7 @@ $(document).ready(function(){
   });
 
   // 장비 삭제 이벤트 등록
-  $(document).on('click', '.remove_item', function(e){
+  $("#part_table tbody").on('click', '.remove_item', function(e){
     var item_id = $(this).closest('tr').data('item_id');
     var that = this;
     if(!confirm(item_id + ' 를 목록에서 삭제하시겠습니까?')) {
@@ -225,7 +225,7 @@ $(document).ready(function(){
     }
 
     $.ajax({
-        url: "<?=base_url()?>work/ajax/remove_item/" + operation.id,
+        url: "<?=base_url()?>work/ajax/remove_item/" + item_id,
         type: "POST",
         data: {
           id: operation.id,         

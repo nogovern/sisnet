@@ -90,6 +90,19 @@ class Store_m extends MY_Model
 		return $store;
 	}
 
+	// 점포 상태 변경
+	public function updateStatus($store_id, $status, $do_flush = FALSE) {
+		$store = $this->get($store_id);
+
+		$store->setStatus($status);
+
+		$this->em->persist($store);
+
+		if($do_flush) {
+			$this->em->flush();
+		}
+	}
+
 	// 휴점 장비 리스트 (기본적으로 operation 으로 검색)
 	public function getRestPartList($op) {
 		$repo = $this->em->getRpository('Entity\RestPart');
@@ -98,14 +111,35 @@ class Store_m extends MY_Model
 		return $items;
 	}
 
+	// 휴점 장비 리스트 - 작업 id 로 검색
+	public function getStoreItems($op_id) {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select("rp")->from("Entity\RestPart", "rp")
+			->where('rp.operation = :opId')
+			->setParameter('opId', $op_id);
+
+		$items = $qb->getQuery()->getResult();
+		return $items;
+	}
+
 
 	// 휴점 장비 리스트 - 점포 id 로 검색
 	public function getRestPartListByStore($store_id) {
-		$repo = $this->em->getRpository('Entity\RestPart');
+		if(0) {
+			$repo = $this->em->getRpository('Entity\RestPart');
 
-		$store = $this->em->getReference('Entity\Store', $store_id);
-		$items = $repo->findBy(array('store' => $store));
+			$store = $this->em->getReference('Entity\Store', $store_id);
+			$items = $repo->findBy(array('store' => $store));
+		} else {
+			$qb = $this->em->createQueryBuilder();
+			$qb->select("rp")->from("Entity\RestPart", "rp")
+				->where('rp.store = :sId')
+				->setParameter('sId', $store_id);
 
+			$items = $qb->getQuery()->getResult();
+		}	
+
+		return $items;
 	}
 
 	// 휴점 장비 등록(추가)
@@ -115,16 +149,22 @@ class Store_m extends MY_Model
 		$item = new Entity\RestPart;
 
 		$op = $this->em->getReference('Entity\Operation', $data['id']);
-		$item->operation = $op;
+		$item->setOperation ($op);
 
 		$part = $this->em->getReference('Entity\Part', $data['part_id']);
-		$item->part = $part;
+		$item->setPart($part);
 
 		$store = $this->em->getReference('Entity\Store', $data['store_id']);
-		$item->store = $store;
+		$item->setStore($store);
 
-		$item->qty = $data['qty'];		// 수량
-		$item->is_install = 'N';		// 휴점 장비 설치 flag
+		$item->setQty($data['qty']);		// 수량
+		$item->setInstallFlag(FALSE);		// 휴점 장비 설치 flag
+
+		if(isset($data['serial_number'])) {
+			$item->setSerialNumber($data['serial_number']);
+		}
+
+		$item->setHujumType(($op->type == '304') ? 'S' : 'C');
 
 		$item->setDateRegister();
 		
@@ -138,8 +178,16 @@ class Store_m extends MY_Model
 	}
 
 	// 휴점 장비 삭제
-	public function removeRestPart($item_id) {
-		;
+	public function removeRestPart($item_id, $do_flush = FALSE) {
+		$rest = $this->em->getRepository('Entity\RestPart')->find($item_id);
+		if(!$rest) {
+			return FALSE;
+		}
+
+		$this->em->remove($rest);
+		$this->em->flush();
+
+		return TRUE;
 	}
 
 	// 철수 가능한 점포 리스트 (status = 1)
@@ -153,17 +201,5 @@ class Store_m extends MY_Model
 		return FALSE;
 	}
 
-	// 점포 상태 변경
-	public function setStatus($store_id, $status, $do_flush = FALSE) {
-		$store = $this->get($store_id);
-
-		$store->setStatus($status);
-
-		$this->em->persist($store);
-
-		if($do_flush) {
-			$this->em->flush();
-		}
-	}
 }
 

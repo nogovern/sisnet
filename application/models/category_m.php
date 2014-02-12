@@ -2,7 +2,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* 
+* 카테고리 모델
 */
 class Category_m extends MY_Model
 {
