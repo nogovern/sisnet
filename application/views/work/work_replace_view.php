@@ -128,11 +128,11 @@ if($work->numFiles()) {
           </tr>
           <tr>
             <td>RFC</td>
-            <td><?=$store->rfc_tel?></td>
+            <td><?=$store->rfc_name?>/<?=$store->rfc_tel?></td>
           </tr>
           <tr>
             <td>OFC</td>
-            <td><?=$store->ofc_tel?></td>
+            <td><?=$store->ofc_name?>/<?=$store->ofc_tel?></td>
           </tr>
           <tr>
             <td>작업메모</td>
@@ -172,27 +172,30 @@ if($work->numFiles()) {
               </tr>
             </tbody>
           </table>
-          <table class="table table-condensed table-hover">
+          <table class="table table-hover table-condensed table-responsive">
             <thead>
               <tr class="active">
-                <th>#</th>
-                <th>장비구분</th>
-                <th>모델</th>
-                <th>시리얼</th>
-                <th>장비상태</th>
-                <th>수량</th>
+                <th class="col-xs-1">#</th>
+                <th class="col-xs-1">장비타입</th>
+                <th class="col-xs-2">장비종류</th>
+                <th class="col-xs-2">모델명</th>
+                <th class="col-xs-2">시리얼</th>
+                <th class="col-xs-2">상태</th>
+                <th class="col-xs-2">수량</th>
               </tr>
             </thead>
             <tbody>
 <?php
+$idx = 1;
 foreach($install_target->getItems() as $item):
 ?>
               <tr>
-                <td><?php echo $item->id;?></td>
+                <td><?php echo $idx++;?></td>
+                <td><?php echo gs2_part_type($item->part_type);?></td>
                 <td><?php echo $item->part->category->name; ?></td>
                 <td><?php echo $item->part_name;?></td>
                 <td><?php echo $item->serial_number; ?></td>
-                <td><?php echo $item->status; ?></td>
+                <td><?=($item->is_new == 'Y')? '신품' : '중고'?></td>
                 <td><?php echo $item->qty_request; ?></td>
               </tr>
 <?php
@@ -226,27 +229,30 @@ endforeach;
               </tr>
             </tbody>
           </table>
-          <table class="table table-condensed table-hover">
+          <table class="table table-hover table-condensed table-responsive">
             <thead>
               <tr class="active">
-                <th>#</th>
-                <th>장비구분</th>
-                <th>모델</th>
-                <th>시리얼</th>
-                <th>장비상태</th>
-                <th>수량</th>
+                <th class="col-xs-1">#</th>
+                <th class="col-xs-1">장비타입</th>
+                <th class="col-xs-2">장비종류</th>
+                <th class="col-xs-2">모델명</th>
+                <th class="col-xs-2">시리얼</th>
+                <th class="col-xs-2">상태</th>
+                <th class="col-xs-2">수량</th>
               </tr>
             </thead>
             <tbody>
 <?php
+$idx = 1;
 foreach($close_target->getItems() as $item):
 ?>
               <tr>
-                <td><?php echo $item->id;?></td>
+                <td><?php echo $idx++;?></td>
+                <td><?php echo gs2_part_type($item->part_type);?></td>
                 <td><?php echo $item->part->category->name; ?></td>
                 <td><?php echo $item->part_name;?></td>
                 <td><?php echo $item->serial_number; ?></td>
-                <td><?php echo $item->status; ?></td>
+                <td><?=($item->is_new == 'Y')? '신품' : '중고'?></td>
                 <td><?php echo $item->qty_request; ?></td>
               </tr>
 <?php

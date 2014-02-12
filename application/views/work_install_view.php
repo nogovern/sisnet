@@ -157,19 +157,19 @@ $this->view('layout/navbar');
       <!-- start: ALERTS PANEL -->
       <div class="panel panel-primary">
         <div class="panel-heading"><i class="fa fa-tags"></i> 장비 리스트</div>
-        <div class="panel-body" style="padding:0 15px;">
-          <table class="table table-hover" id="part_table">
+        <div class="panel-body">
+          <table class="table table-hover table-condensed table-responsive" id="part_table">
             <thead>
               <tr>
-                <th>#</th>
-                <th>타입</th>
-                <th>장비종류</th>
-                <th>모델명</th>
-                <th>상태</th>
-                <th>S/N</th>
-                <th>직전위치</th>
-                <th>등록수량</th>
-                <th></th>
+                <th class="col-xs-1">#</th>
+                <th class="col-xs-1">타입</th>
+                <th class="col-xs-2">장비종류</th>
+                <th class="col-xs-2">모델명</th>
+                <th class="col-xs-1">상태</th>
+                <th class="col-xs-1">S/N</th>
+                <th class="col-xs-1">직전위치</th>
+                <th class="col-xs-1">등록수량</th>
+                <th class="col-xs-1"></th>
               </tr>
             </thead>
             <tbody>
@@ -335,8 +335,8 @@ function callback_insert_row(id, type, name, sn, prev, qty, is_new) {
   var tr = $("<tr/>").attr('data-item_id', id);
   tr.append($("<td/>").text(idx));
   tr.append($("<td/>").text(type_text));
-  tr.append($("<td/>").text(name));
   tr.append($("<td/>").text(item.cat_name));
+  tr.append($("<td/>").text(name));
   tr.append($("<td/>").text((is_new == 'Y') ? '신품' : '중고'));
   tr.append($("<td/>").text(sn));
   tr.append($("<td/>").text(prev));
