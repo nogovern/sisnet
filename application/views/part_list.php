@@ -56,7 +56,6 @@ foreach($part_type as $idx => $type_name) {
 
         <tbody>
   <?php
-  $arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
   $arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
   $arr_status_text = array('단종', '정상', '일시품절');
 
@@ -65,7 +64,7 @@ foreach($part_type as $idx => $type_name) {
           <tr class="">
             <td><?=$row->id?></td>
             <td>
-              <span class="label <?=$arr_type_class[$row->type]?>"> <?=$arr_type_text[$row->type];?> </span>
+              <span class="label <?=$arr_type_class[$row->type]?>"> <?=gs2_part_type($row->type);?> </span>
             </td>
             <td><?=$row->category->name?></td>
             <td><?=$row->name?></td>

@@ -174,7 +174,6 @@ $this->view('layout/navbar');
             </thead>
             <tbody>
 <?php
-$arr_type_text = array('1' => '시리얼', '2'=>'수량', '3'=>'소모품');
 $arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
 
 $i = 1;
@@ -183,7 +182,7 @@ foreach($items as $item):
 ?>                  
               <tr data-item_id="<?=$item->id?>">
                 <td><?=$i++?></td>
-                <td><?=$arr_type_text[$item->part_type]?></td>
+                <td><?=gs2_part_type($item->part_type)?></td>
                 <td><?=$item->part->category->name?></td>
                 <td><?=$item->part_name?></td>
                 <td><?=($item->is_new == 'Y')? '신품' : '중고'?></td>

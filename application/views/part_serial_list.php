@@ -80,7 +80,7 @@ foreach($rows as $row):
             ?>
           </td>
           <td><?=$row->isNew() ? '신품' : '중고'?></td>
-          <td><?=$row->isValid() ? '' : '비가용'?></td>
+          <td><?=$row->isValid() ? '가용' : '비가용'?></td>
           <td><?=gs2_serial_part_status($row->status);?></td>
           <td><?=$row->getDateInstall()?></td>
           <td><?=$row->getDateEnter()?></td>
