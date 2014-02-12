@@ -51,17 +51,23 @@ endforeach;
 <?php
 $arr_type_class= array('1' => 'label-success', '2'=>'label-default', '3'=>'label-warning');
 $arr_status_text = array('단종', '정상', '일시품절');
+
 foreach($rows as $row):
-  $part = $row->part;
+  $part = $row->part;   // 편의상
+  $notice = '';         // 기준 수량 비교용
+  
+  if($row->getQtyMinimum() && $row->getQtyUsable() < $row->getQtyMinimum()) {
+    $notice = 'danger';
+  }
 ?>
-            <tr class="">
-              <td><?=$row->part->id?></td>
+            <tr class="<?=$notice?>">
+              <td><?=$part->id?></td>
               <td>
-                <span class="label <?=$arr_type_class[$row->part->type]?>"> <?=gs2_part_type($row->type);?> </span>
+                <span class="label <?=$arr_type_class[$part->type]?>"> <?=gs2_part_type($part->type);?> </span>
               </td>
-              <td><?=$row->part->category->name?></td>
-              <td><?=$row->part->name?></td>
-              <td><?=$arr_status_text[$row->part->status]?></td>
+              <td><?=$part->category->name?></td>
+              <td><?=$part->name?></td>
+              <td><?=$arr_status_text[$part->status]?></td>
               <td><?=gs2_zero_to_dash($row->qty_minimum)?></td>
               <td class="active"><?=gs2_zero_to_dash($row->getQtyNew())?></td>
               <td class="active"><?=gs2_zero_to_dash($row->getQtyUsed())?></td>
@@ -74,9 +80,9 @@ foreach($rows as $row):
               <td>
 <?php
   // 사무소가 master 이고 장비 상태가 정상인 경우만 입고 버튼 보임
-  if($row->office->isMaster() === TRUE && $row->part->status > '0'):
+  if($row->office->isMaster() === TRUE && $part->status > '0'):
 ?>
-                        <button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$row->part->id, $row->office->id)?>">입고</button>
+                        <button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$part->id, $row->office->id)?>">입고</button>
 <?php
   endif;
 ?>

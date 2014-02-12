@@ -109,6 +109,11 @@ class Stock
 		return $this->qty_used;
 	}
 
+	// 가용 수량
+	public function getQtyUsable() {
+		return $this->qty_new + $this->qty_used;
+	}
+
 	// 중고 비가용 수량 가져오기
 	public function getQtyDisabled() {
 		$sum = ($this->qty_s200 + $this->qty_s500 + $this->qty_s600 + $this->qty_s900); 

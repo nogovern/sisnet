@@ -84,8 +84,13 @@ if(count($row->getStockList())):
   <tbody>
 <?php
   foreach($row->getStockList() as $stock):
+    
+    $notice = '';         // 기준 수량 비교용
+    if($stock->getQtyMinimum() && $stock->getQtyUsable() < $stock->getQtyMinimum()) {
+      $notice = 'danger';
+    }
 ?>
-    <tr class="default">
+    <tr class="<?=$notice?>">
       <td class="col-xs-2"><?=$stock->office->name?></td>
       <td class="col-xs-1"><?=gs2_zero_to_dash($stock->getQtyMinimum())?></td>
       <td class="col-xs-1 active"><?=gs2_zero_to_dash(number_format($stock->getQtyNew()))?></td>
