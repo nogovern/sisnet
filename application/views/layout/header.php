@@ -45,8 +45,12 @@
         padding-bottom: 40px;
         font-size: 13px;
       }
-
+      
+      // 선택된 열 표시
       tr.selected {background-color:#FFD700;}
+
+      /** 일정표 **/
+      #calendar tbody tr td {height: 50px;}
     </style>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
