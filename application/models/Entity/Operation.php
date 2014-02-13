@@ -251,6 +251,11 @@ class Operation
 		return $this->work_location;
 	}
 
+	// 대상 작업 목록
+	public function getTargets() {
+		return $this->targets;
+	}
+
 	// 업무 아이템(장비) 목록 
 	public function getItemList() {
 		return $this->items;

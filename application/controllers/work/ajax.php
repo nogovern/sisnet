@@ -443,7 +443,12 @@ class Ajax extends CI_Controller
 			}
 		}
 
-		// 점포 상태 변경 (설치 - 정상, 철수 - 폐점, 휴점, 리뉴얼, 교체)
+		// 교체 업무 시 부모,형제 업무 파악
+		if($op->type == '205' || $op->type == '305') {
+			$this->work_model->checkFamily($op);
+		}
+
+		// 점포 상태 변경 ( 0-폐점, 1-정상, 2-휴점)
 		
 
 		// 업무 log 생성

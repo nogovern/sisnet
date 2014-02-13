@@ -6,11 +6,14 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
 class Tests extends CI_Controller {
+	private $em = NULL;
 
 	public function __construct() {
 		parent::__construct();
 
-		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+		// 기본 work 모델 로드 & EntityManager 정의
+		$this->load->model('work_m', 'work_model');
+		$this->em = $this->work_model->getEntityManager();
 	}
 
 	public function index() {
@@ -196,5 +199,36 @@ class Tests extends CI_Controller {
 		$objWriter->setOffice2003Compatibility(true);
 		$objWriter->save('php://output');
 		// $objWriter->save(BASEPATH . '../assets/files/' . $save_filename);
+	}
+
+	// 교체 업무  - 대상 업무에서 부모 or 형제 찾기
+	public function replace($target_id = NULL) {
+		if(!$target_id){
+			echo '에러 - 자식 업무 ID 를 지정하셔야 함';
+			exit;
+		}
+
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('t')->from('Entity\OperationTarget', 't')
+			->where('t.target = :t_id')
+			->setParameter('t_id', $target_id);
+
+		$me = $qb->getQuery()->getSingleResult();
+
+		// 부모 찾기
+		$parent = ($me) ? $me->operation : NULL;
+
+		if($parent) {
+			gs2_dump($parent->id);
+		}
+
+		// 형제 찾기
+		$targets = $parent->getTargets();
+		foreach( $targets as $t) {
+			if($t->target->id != $me->target->id)
+				$sibling = $t->target;
+		}
+		gs2_dump($sibling->id);
+
 	}
 }

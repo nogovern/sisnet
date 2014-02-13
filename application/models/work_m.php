@@ -683,6 +683,47 @@ class Work_m extends MY_Model {
 			$this->em->flush();
 		}		
 	}
+
+	// 교체 업무에서 설치, 철수 모두 완료 될시 같이 완료 되도록 함
+	public function checkFamily($me) {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('t')->from('Entity\OperationTarget', 't')
+			->where('t.target = :t_id')
+			->setParameter('t_id', $me->id);
+
+		$row = $qb->getQuery()->getSingleResult();
+
+		// 부모 찾기
+		$parent = ($row) ? $row->operation : NULL;
+
+		if($parent && $parent->type == '400') {
+			// 형제 찾기
+			$targets = $parent->getTargets();
+			foreach( $targets as $t) {
+				if($t->target->id != $me->id)
+					$sibling = $t->target;
+			}
+
+			// 다른 작업이 이미 '완료' 상태이면 교체 업무을 완료로 변경한다.
+			if($sibling->status == '4') {
+				$data['status'] 		= '4';
+				$data['date_finish']	=  $me->getDateFinish(TRUE);
+
+				$this->updateOperation($parent, $data);
+
+				// 업무 log 생성
+				$log_data = array(
+					'type' => '1',
+					'content' => gs2_op_type($me->type) . ' 완료  =>  교체 업무를 완료 합니다',
+					'event'			=> '완료'
+				);
+
+				$this->addLog($parent, $log_data);
+			}
+			return TRUE;
+		}
+		return FALSE;
+	}
 }
 
 
