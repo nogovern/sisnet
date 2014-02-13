@@ -42,13 +42,13 @@
     </tr>
     <tr>
       <th>가맹형태</td>
-      <td id="sinfo_join_type"><?=$sinfo->join_type?></td>
+      <td id="sinfo_join_type"><?=gs2_store_join_type($sinfo->join_type)?></td>
       <th>무인택배 유무</td>
       <td id="sinfo_postbox"><?=$sinfo->getPostboxType()?></td>
     </tr>
     <tr>
       <th>상태</td>
-      <td id="sinfo_status"><?=$sinfo->status?></td>
+      <td id="sinfo_status"><?=gs2_store_status($sinfo->status)?></td>
       <td></td>
       <td></td>
     </tr>

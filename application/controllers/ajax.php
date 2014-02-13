@@ -312,7 +312,7 @@ class Ajax extends CI_Controller
 			if( $value == 'date_register') {
 				$result->$value = $store->getDateRegister();
 			} elseif( $value == 'join_type') {
-				$result->$value = gs2_get_store_join_type($store->$value);
+				$result->$value = gs2_store_join_type($store->$value);
 			} elseif( $value == 'has_postbox') {
 				if(is_null($store->$value)){ 
 					$val = '';

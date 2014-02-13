@@ -114,8 +114,8 @@ if(!function_exists('gs2_decode_location')) {
 }
 
 // 점포 - 가맹 타입
-if(!function_exists('gs2_get_store_join_type')) {
-    function gs2_get_store_join_type($type) {
+if(!function_exists('gs2_store_join_type')) {
+    function gs2_store_join_type($type) {
         if(!$type)
             return NULL;
         
@@ -126,10 +126,13 @@ if(!function_exists('gs2_get_store_join_type')) {
     }
 }
 
-// 점포 - 가맹 타입 리스트
-if(!function_exists('gs2_get_store_join_types')) {
-    function gs2_get_store_join_types() {
+// 점포 - 상태
+if(!function_exists('gs2_store_status')) {
+    function gs2_store_status($type) {
+        $CI =& get_instance();
+        $_config = $CI->config->item('gs2');
 
+        return $_config['store_status'][$type];
     }
 }
 

@@ -101,6 +101,13 @@ $config['gs2']['store_join_type'] = array(
 	'8' => 'S타입',
 );
 
+// 점포 상태
+$config['gs2']['store_status'] = array(
+	'0' => '폐점',
+	'1' => '정상',
+	'2' => '휴점',
+);
+
 // 시리얼장비 상태 텍스트
 $config['gs2']['serial_part_status'] = array(
 	'1' => '',
