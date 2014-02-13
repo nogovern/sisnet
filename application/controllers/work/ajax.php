@@ -453,13 +453,16 @@ class Ajax extends CI_Controller
 		$next_status = intval($op->getStatus()) + 1;
 
 		// 다음 상태로 변경
-		$this->work_model->updateOpration($op, array('status' => $next_status));
+		$this->work_model->updateOperation($op, array('status' => $next_status));
 
 		$log_data = array(
 			'type'		=> '1',
-			'content' => '승인 완료',
-			'event'			=> '완료'
+			'content' 	=> '승인 완료',
+			'event'		=> '승인'
 		);
+
+		$this->work_model->addLog($op, $log_data, TRUE);
+		echo 'success';
 	}
 
 	// 입고 - 아이템 정보 갱신
