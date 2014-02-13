@@ -306,13 +306,14 @@ $(document).ready(function(){
 
   // 승인 버튼
   $("#btn_approve").click(function(){
+    if(!confirm("이 업무를 승인하시겠습니까?")) {
+      return false;
+    }
+
     var url = _base_url  + 'work/ajax/approve';
     $.post(url, { id: operation.id, csrf_test_name: $.cookie("csrf_cookie_name")} )
       .done(function(data){
-        // alert('승인하였습니다\n리스트로 이동합니다');
-        alert(data)
         location.reload();
-        // location.href = _base_url + 'work/install';
       });
   });
 
