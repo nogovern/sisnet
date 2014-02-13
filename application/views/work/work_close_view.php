@@ -421,6 +421,11 @@ function callback_remove_row(what) {
 
 // 작업 완료 가능 여부 검사
 function checkOperationComplete() {
+  // 서비스(302), 휴점점검(304) 인 경우 장비등록 없이 완료할 수 있음
+  if( operation.type == '302' || operation.type == '304') {
+    return true;
+  }
+
   var len = $("#part_table tbody tr").length;
   if(len == 0) {
     $("#btn_op_complete").attr('disabled', true);
