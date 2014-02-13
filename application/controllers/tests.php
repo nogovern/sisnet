@@ -9,6 +9,8 @@ class Tests extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct();
+
+		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 	}
 
 	public function index() {
