@@ -37,6 +37,7 @@ class CI_Calendar {
 	var $day_type		= 'abr';
 	var $show_next_prev	= FALSE;
 	var $next_prev_url	= '';
+	var $query			= '';
 
 	/**
 	 * Constructor
@@ -161,7 +162,7 @@ class CI_Calendar {
 			$this->next_prev_url = preg_replace("/(.+?)\/*$/", "\\1/",  $this->next_prev_url);
 
 			$adjusted_date = $this->adjust_date($month - 1, $year);
-			$out .= str_replace('{previous_url}', $this->next_prev_url.$adjusted_date['year'].'/'.$adjusted_date['month'], $this->temp['heading_previous_cell']);
+			$out .= str_replace('{previous_url}', $this->next_prev_url.$adjusted_date['year'].'/'.$adjusted_date['month']. $this->addQuery(), $this->temp['heading_previous_cell']);
 			$out .= "\n";
 		}
 
@@ -178,7 +179,7 @@ class CI_Calendar {
 		if ($this->show_next_prev == TRUE)
 		{
 			$adjusted_date = $this->adjust_date($month + 1, $year);
-			$out .= str_replace('{next_url}', $this->next_prev_url.$adjusted_date['year'].'/'.$adjusted_date['month'], $this->temp['heading_next_cell']);
+			$out .= str_replace('{next_url}', $this->next_prev_url.$adjusted_date['year'].'/'.$adjusted_date['month']. $this->addQuery(), $this->temp['heading_next_cell']);
 		}
 
 		$out .= "\n";
@@ -464,6 +465,18 @@ class CI_Calendar {
 					$this->temp[$val] = $this->temp[str_replace('_today', '', $val)];
 				}
 			}
+		}
+	}
+
+	/**
+	 * (custom method) prev, next 링크에 GET 스트링이 있으면 연결한다
+	 * 
+ 	 */
+	public function addQuery() {
+		if(!empty($this->query)) {
+			return '/?' . http_build_query($this->query);
+		} else {
+			return '';
 		}
 	}
 
