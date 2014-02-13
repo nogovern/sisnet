@@ -21,6 +21,7 @@ class Calendar_m extends MY_Model
 			'next_prev_url'		=> site_url('schedule/calendar/'),
 			'month_type'		=> 'long',
 			'day_type'			=> 'short',
+			'query'				=> $this->input->get(),
 			'template' => '
 			{table_open}<table id="calendar" class="table table-bordered">{/table_open}
 
@@ -61,7 +62,15 @@ class Calendar_m extends MY_Model
 		');
 	}
 
-	public function getCalnedarData($year, $month) {
+	/**
+	 * 일정 데이터 반환
+	 * 
+	 * @param  integer $year     [description]
+	 * @param  integer $month    [description]
+	 * @param  array  $criteria [description]
+	 * @return array           	[description]
+	 */
+	public function getCalnedarData($year, $month, $criteria = array()) {
 		$start = new DateTime($year . $month . '01');
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
@@ -69,12 +78,13 @@ class Calendar_m extends MY_Model
 			->where("w.date_expect >= :from")
 			->andWhere("w.date_expect < :to");
 		
-		// 특정 사무소 의 일정만 볼 경우		
-		if(!$this->session->userdata('office_id')) {
+		// 사무소별
+		if( $criteria['office'] != 'all' && $criteria['office'] > 0) {
 			$qb->andWhere("w.office = :office");
-			$qb->setParameter('office', $this->session->userdata('office_id'));
+			$qb->setParameter('office', $criteria['office']);
 		}
-			
+		
+		// 이번달
 		$qb->orderBy('w.id', 'DESC')
 			->setParameter('from', $start->format('Y-m-d'))
 			->setParameter('to', $start->add(new DateInterval("P1M"))->format('Y-m-d'));
@@ -126,12 +136,20 @@ class Calendar_m extends MY_Model
 	public function generate($year=null, $month=null) {
 		$this->load->library('calendar', $this->config);
 
-		$data = $this->getCalnedarData($year, $month);
-		// $data = array(
-		// 	'6' => 'Smaple day', 
-		// 	'10' => '1. enter<br>2. Install<br/>3. Evacuation',
-		// 	'28' => '1. enter<br>2. Install<br/>3. Evacuation'
-		// );
+		// 검색 조건이 있을 경우
+		$criteria = array();
+		if($this->input->get('office') !== FAlSE) {
+			$criteria['office'] = $this->input->get('office');
+		} else {
+			if( $this->session->userdata('user_type') == '1') {
+				$criteria['office'] = $this->session->userdata('office_id');
+			} elseif ($this->session->userdata('user_type' == '3')) {
+				$criteria['company'] = $this->session->userdata('company_id');
+			} 
+		}
+		// gs2_dump($criteria);
+
+		$data = $this->getCalnedarData($year, $month, $criteria);
 
 		return $this->calendar->generate($year, $month, $data);
 	}

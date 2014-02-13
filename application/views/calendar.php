@@ -7,15 +7,36 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
 ?>
 	<!-- start of div.container -->
     <div class="container">
-		<!-- Main hero unit for a primary marketing message or call to action -->
-		<div class="page-header">
-			<h1><span class="fa fa-calendar"></span>&nbsp;일정표</h1>
-		</div>
+  		<div class="page-header">
+  			<h1><span class="fa fa-calendar"></span>&nbsp;일정표</h1>
+  		</div>
 
-		<?php
+      <div class="well well-sm">
+        <form method="post" id="filter-form" class="form-inline" role="search">
+          <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
+          <!--
+          <div class="form-group">
+            업무종류 : 
+            <?php echo $operation_filter; ?>
+          </div>
+          -->
+
+          <div class="form-group">
+            &nbsp;&nbsp;사무소 : 
+            <?php echo $office_filter; ?>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-sm">검색</button> 
+          </div>
+        </form>
+      </div>
+<?php
 		echo $calendar; 
-		?>
-  	</div><!-- end of calendar -->
+?>
+  	</div><!-- end of container -->
+
+
   	<script type="text/javascript">
   	$(document).ready(function(){
   		$("#calendar tr:eq(1) th").each(function(){
@@ -36,6 +57,21 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
   				$(this).removeClass('success');
   			}
   		);
+
+      ///////////////////////
+      // 검색 필터 전송 
+      ///////////////////////
+      $("#filter-form").submit(function() {
+        // var url = location.href;
+        var url = _base_url + 'schedule';
+        var query = $(this).serialize();
+
+        url = url + '/?' + query;
+        $(this).prop('action', url);
+
+        // alert(url);
+        // return false;
+      });
   	});
   	</script>
 <?php

@@ -21,7 +21,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label col-sm-4">변경 메모</label>
+          <label class="form-label col-sm-4">변경 사유</label>
           <div class="col-sm-7">
             <textarea name="memo" class="form-control"></textarea>
           </div>
