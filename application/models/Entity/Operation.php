@@ -36,7 +36,7 @@ class Operation
 	 * @OneToOne(targetEntity="User")
 	 * @JoinColumn(name="user_id", referencedColumnName="id")
 	 */
-	protected $user;						// 등록 유저
+	protected $user;					// 등록 유저
 
 	/**
 	 * @OneToOne(targetEntity="User")
@@ -45,7 +45,7 @@ class Operation
 	protected $worker;					// 담당 유저
 
 	/** @Column(name="work_location", type="string", length=20) */
-	protected $work_location;				// 대상 장소 ( office  or company or store) 
+	protected $work_location;			// 대상 장소 ( office  or company or store) 
 
 	/** @Column(type="datetime", nullable=true) */
 	protected $date_register;	// 요청서 등록일시

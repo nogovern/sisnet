@@ -249,10 +249,17 @@ class Work_m extends MY_Model {
 		$new->setType($post['op_type']);
 		$new->setOperationNumber($this->makeOperationNumber());		
 		$new->setDateRegister();
-		$new->setStatus('1');
 		$new->setDateRequest($post['date_request']);
+		
 		// 생성 시 작업 예정일에 요청일은 기본으로 설정함
-		$new->setDateExpect($post['date_request']);
+		if(!isset($post['date_expect'])) {
+			$new->setDateExpect($post['date_request']);
+		} else {
+			$new->setDateExpect($post['date_expect']);
+		}
+
+		// 상태가 지정되어 생성되는 경우
+		$new->setStatus( isset($post['status']) ? $post['status'] : '1');
 
 		// 요청 메모
 		if(isset($post['memo'])) {
@@ -272,8 +279,12 @@ class Work_m extends MY_Model {
 			$new->setDateStore($post['date_close']);
 		}
 
-		// 요청자
-		$user = $this->em->getReference('Entity\User', $this->session->userdata('user_id'));
+		// 요청자 (넘어온 데이터에 user_id 가 없다면 세션 사용)
+		if(!isset($post['user_id'])) {
+			$user = $this->em->getReference('Entity\User', $this->session->userdata('user_id'));
+		} else {
+			$user = $this->em->getReference('Entity\User', $post['user_id']);
+		}
 		$new->setUser($user);
 
 		// 담당 사무소

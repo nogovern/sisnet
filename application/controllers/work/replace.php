@@ -55,24 +55,18 @@ class Replace extends CI_Controller
 
 		} else {
 			// gs2_dump($_POST);
-			$post_data = $this->input->post();
-
-			// 설치 업무 생성
-			$post_data['op_type'] = '205';
-			$post_data['date_request'] = sprintf("%s %02d:00:00", $post_data['date_open'], $post_data['date_open_hour']);
-			$install_op = $this->work_model->createOperation('205', $post_data, TRUE);
+			// exit;
 			
-			// 철수 업무 생성
-			$post_data['op_type'] = '305';
-			$post_data['date_request'] = sprintf("%s %02d:00:00", $post_data['date_close'], $post_data['date_close_hour']);
-			$close_op = $this->work_model->createOperation('305', $post_data, TRUE);
+			$post_data = $this->input->post();
 
 			// 교체 업무 생성
 			$post_data['op_type'] = '400';
-			$op = $this->work_model->createOperation('400', $post_data);
+			// 철수 요청일시
+			$post_data['date_request'] = sprintf("%s %02d:00:00", $post_data['date_close'], $post_data['date_close_hour']);
+			// 설치 요청 일시
+			$post_data['date_expect'] = sprintf("%s %02d:00:00", $post_data['date_open'], $post_data['date_open_hour']);
 
-			$tg1 = $this->work_model->createTargetOperation($op, $install_op);
-			$tg2 = $this->work_model->createTargetOperation($op, $close_op);
+			$op = $this->work_model->createOperation('400', $post_data);
 
 			//////////////////////////
 			// 첨부 파일 업로드
@@ -117,7 +111,7 @@ class Replace extends CI_Controller
 				alert("파일 업로드 중 에러가 발생했습니다\nerror: " . $this->upload->display_errors());
 			} else {
 				$this->work_model->_commit();
-				alert('설치 요청을 등록하였습니다.', site_url('/work/replace'));
+				alert('교체 요청을 등록하였습니다.', site_url('/work/replace'));
 			}
 		}
 	}

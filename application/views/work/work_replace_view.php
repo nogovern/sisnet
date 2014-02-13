@@ -58,12 +58,12 @@ foreach($work->targets as $top) {
           </tr>
           <tr class="warning">
             <td>철수 요청일</td>
-            <td><?=$close_target->getDateRequest(TRUE);?></td>
+            <td><?=$work->getDateRequest(TRUE);?></td>
             <td>&nbsp;</td>
           </tr>
           <tr class="warning">
             <td>설치 요청일</td>
-            <td><?=$install_target->getDateRequest(TRUE);?></td>
+            <td><?=$work->getDateExpect(TRUE);?></td>
             <td>&nbsp;</td>
           </tr>
           <tr>
@@ -152,11 +152,14 @@ if($work->numFiles()) {
 
   </div><!-- end of row -->
 
+<?php
+if($work->status >= '2'):
+?>
   <!-- 설치 작업 -->
   <div class="row">
     <div class="col-md-12">
       <!-- start: ALERTS PANEL -->
-      <div id="install_target_panel" class="panel panel-primary">
+      <div id="install_target_panel" class="panel panel-info">
         <div class="panel-heading"><i class="fa fa-tags"></i> 설치 작업 번호: <?php echo $install_target->operation_number . anchor("work/install/view/" . $install_target->id, '[바로가기]'); ?> </div>
         <div class="panel-body" style="">
           <table class="table table-condensed">
@@ -265,6 +268,10 @@ endforeach;
       <!-- end: ALERTS PANEL -->
     </div>
   </div>
+
+<?php
+endif;
+?>
 
   <div class="row">
     <div class="col-md-12">

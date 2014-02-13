@@ -70,7 +70,7 @@
                 <label class="form-label col-sm-5">설치 예정일</label>
                 <div class="col-sm-7">
                   <div class="input-group">
-                    <input type="text" id="install_expect_date" name="install_expect_date" class="form-control date-picker" value="<?php echo $work->getDateRequest(); ?>">
+                    <input type="text" id="install_expect_date" name="install_expect_date" class="form-control date-picker" value="<?php echo $work->getDateExpect(); ?>">
                     <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
                   </div>
                 </div>
@@ -141,6 +141,7 @@ $(document).ready(function(){
       })
         .done(function(html) {
           gs2_console(html);
+          alert('교체 요청을 확정하였습니다.\n설치,철수 요청서가 생성되었습니다.');
           location.reload();
         })
         .fail(function(xhr, textStatus){

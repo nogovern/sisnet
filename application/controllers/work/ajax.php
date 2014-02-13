@@ -28,31 +28,43 @@ class Ajax extends CI_Controller
 			'status'		=> '2'
 		);
 
-		// 교체업무
+		// 교체업무 - 확정 시 설치,교체 업무 생성
 		if($op->type == '400') {
-			$post_data['date_expect'] = $this->input->post('close_expect_date');	// 교체 철수 요청일
-			$post_data['date_work'] = $this->input->post('install_expect_date');	// 교체 설치 요청일
+			$store = gs2_decode_location($op->work_location);
+			
+			// 설치 업무 생성
+			$op_data['op_type'] 		= '205';
+			$op_data['office_id'] 		= $op->office->id;
+			$op_data['user_id']			= $op->user->id;
+			$op_data['store_id'] 		= $store->id;
+			$op_data['date_request'] 	= $op->getDateExpect(TRUE);
+			$op_data['memo']			= $this->input->post('memo');
+			$op_data['status']			= '2';
 
-			foreach($op->targets as $top) {
-				// 설치 확정
-				if($top->target->type == '205') {
-					$t_data = array(
-						'worker_id'		=> $this->input->post('install_worker_id'),
-						'date_expect' 	=> $this->input->post('install_expect_date'),
-						'status'		=> '2'
-					);
-					$this->work_model->updateOperation($top->target, $t_data); 
-				} 
-				// 철수 확정
-				else {
-					$t_data = array(
-						'worker_id'		=> $this->input->post('close_worker_id'),
-						'date_expect' 	=> $this->input->post('close_expect_date'),
-						'status'		=> '2'
-					);
-					$this->work_model->updateOperation($top->target, $t_data); 
-				}
-			}
+			$install_op = $this->work_model->createOperation('205', $op_data);
+			
+			$t_data = array(
+				'worker_id'		=> $this->input->post('install_worker_id'),
+				'date_expect' 	=> $this->input->post('install_expect_date'),
+			);
+			$this->work_model->updateOperation($install_op, $t_data, TRUE); 
+
+			// 철수 업무 생성
+			$op_data['op_type'] = '305';
+			$op_data['date_request'] 	= $op->getDateRequest(TRUE);
+			$close_op = $this->work_model->createOperation('305', $op_data);
+
+			$t_data = array(
+				'worker_id'		=> $this->input->post('close_worker_id'),
+				'date_expect' 	=> $this->input->post('close_expect_date'),
+			);
+
+			$this->work_model->updateOperation($close_op, $t_data, TRUE); 
+
+			// 대상 업무로 등록
+			$tg1 = $this->work_model->createTargetOperation($op, $install_op);
+			$tg2 = $this->work_model->createTargetOperation($op, $close_op);
+			
 		} else {
 			// 작업 예정일
 			if(!$this->input->post('date_expect')) {
