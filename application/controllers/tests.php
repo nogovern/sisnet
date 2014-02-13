@@ -71,7 +71,6 @@ class Tests extends CI_Controller {
 		$data['title'] = '테스트 장비 선택 페이지';
 
 		$this->load->view('sample/part_select_form', $data);
-
 	}
 
 	// 
@@ -172,4 +171,30 @@ class Tests extends CI_Controller {
 
 		gs2_dump($sheet);
 	} 
+
+	// Excel 템플릿 파일을 기반으로 수정하여 download 받게 하는 예제
+	public function excel_edit() {
+		$this->load->library('excel');
+		
+		// read in the existing file
+		$objPHPExcel = PHPExcel_IOFactory::load(BASEPATH . '../assets/files/test.xlsx');
+
+		// modify/insert data in worksheet cells
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', 'New Data by 장광희');
+
+		// redirect output to client browser
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Content-Type: application/octet-stream");
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="newFile.xls"');
+		header('Cache-Control: max-age=0');
+
+		$save_filename = uniqid() . '.xlsx';
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->setOffice2003Compatibility(true);
+		$objWriter->save('php://output');
+		// $objWriter->save(BASEPATH . '../assets/files/' . $save_filename);
+	}
 }
