@@ -315,7 +315,7 @@ class Enter extends CI_Controller
 			// at last, flush
 			$em->flush();
 			
-			echo  '완료 : '. $complete_count .'\\n입고 업무를 종료함';
+			echo  '완료수량 : '. $complete_count . "\n입고 업무를 완료합니다.";
 
 		} else {
 			echo '[error] 등록되지 않은 요청임다!';

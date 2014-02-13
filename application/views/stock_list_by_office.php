@@ -54,8 +54,8 @@ $arr_status_text = array('단종', '정상', '일시품절');
 
 foreach($rows as $row):
   $part = $row->part;   // 편의상
-  $notice = '';         // 기준 수량 비교용
   
+  $notice = '';         // 기준 수량 비교용
   if($row->getQtyMinimum() && $row->getQtyUsable() < $row->getQtyMinimum()) {
     $notice = 'danger';
   }
