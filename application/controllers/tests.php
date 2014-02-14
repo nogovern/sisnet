@@ -231,4 +231,39 @@ class Tests extends CI_Controller {
 		gs2_dump($sibling->id);
 
 	}
+
+	// 업무 장비 소트 
+	public function sort($op_id) {
+		$op = $this->em->getRepository('Entity\Operation')->find($op_id);
+		$items = $op->getItems();
+
+		echo get_class($items);
+
+		$res1 = array();
+		foreach($items as $it) {
+			$res1[] = $it->part->id;
+		}
+		gs2_dump($res1);
+
+		/*sorting...*/
+		$arr = $items->toArray();
+
+		uasort($arr, function($first, $second) {
+			$a = (int)$first->part->id;
+			$b = (int)$second->part->id;
+
+			if($a == $b)
+				return 0;
+			return ($a > $b) ? -1 : 1;
+		});
+
+		$res2 = array();
+		foreach($arr as $it) {
+			$res2[] = $it->part->id;
+		}
+		gs2_dump($res2);
+
+
+
+	}
 }

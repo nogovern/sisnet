@@ -263,7 +263,25 @@ class Operation
 
 	// 업무 장비 목록 반환
 	public function getItems() {
-		return $this->items;
+		// $iterator = $this->items->getIterator();
+		$arr = $this->items->toArray();
+
+		// 타입별 모델별 sort
+		uasort($arr, function($first, $second) {
+			$a = (int)$first->part_type;
+			$b = (int)$second->part_type;
+
+			if($a == $b){
+				$a1 = $first->part->id;
+				$b1 = $second->part->id;
+
+				if($a1 == $b1) return 0;
+				return ($a1 < $b1) ? -1: 1;
+			}
+			return ($a < $b) ? -1 : 1;
+		});
+
+		return $arr;
 	}
 
 	// 업무 관련 아이템 index 로 1개 얻기, default = 0
