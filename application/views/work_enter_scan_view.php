@@ -32,11 +32,17 @@ $this->view('work/work_enter_view_header');
             </thead>
             <tbody>
 <?php
+$arr_serials = array();   // 시리얼 넘버 배열
 $idx = 1;
 foreach($work->getItems() as $item):
   // 납품처 에서 등록 한 장비만 보여줌
   if($item->getQtyComplete() < 1) {
     continue;
+  }
+
+  // 시리얼 넘버가 등록되어 있으면 배열에 저장
+  if($item->isScan() && $item->qty_scan > 0) {
+    $arr_serials[] = $item->serial_number;
   }
   
 ?>                  
@@ -103,7 +109,7 @@ endif;
           </div>
         </form>
         <div class="well text-center" style="font-size:34px;">
-          <span><?=$work->getTotalCompleteQty()?></span>/<span id="scan_count_text">0</span>
+          <span><?=$work->getTotalCompleteQty()?></span>/<span id="scan_count_text"><?=$work->getTotalScanQty()?></span>
         </div>
       </div>
       <div class="modal-footer">
@@ -134,7 +140,7 @@ endif;
           </div>
         </form>
         <div class="well text-center" style="font-size:34px;">
-          <span><?=$work->getTotalCompleteQty()?></span>/<span id="count_count">0</span>
+          <span><?=$work->getTotalCompleteQty()?></span>/<span id="count_count"><?=$work->getTotalScanQty()?></span>
         </div>
       </div>
       <div class="modal-footer">
@@ -170,11 +176,10 @@ var equipment = {
 
 var qty_request = <?=$work->getTotalRequestQty()?>;       // 요청 수량
 var qty_complete = <?=$work->getTotalCompleteQty()?>;     // 등록 수량
-var scan_count  = <?=$work->getTotalScanQty()?>;;
+var scan_count  = <?=$work->getTotalScanQty()?>;
 
-
-// 등록된 장비 목록 갯수
-var scanned_serials = [];
+// 등록된 시리얼넘버 배열
+var scanned_serials = <?php echo json_encode($arr_serials); ?>;
 
 function checkScanCount() {
   if(scan_count < qty_complete) {
@@ -214,11 +219,9 @@ $(document).ready(function(){
       return false;
     }
     
+    // 장비리스트의 SN 열을 돌면서 확인한다
     $("#part_table tbody tr td:nth-child(4)").each(function(n){
       var sn = $(this).text();
-      if(window.console) {
-        console.log(n, sn);
-      }
       
       // 시리얼번호가 일치할 경우
       if( v === sn) {
@@ -228,7 +231,11 @@ $(document).ready(function(){
         scan_success = true;
         $("#scan_count").text(scan_count);
         $("#scan_count_text").text(scan_count);
-        return false;         // escape each loop
+        // 장비리스트 스캔 수량 업데이트
+        $(this).closest('tr').find("td:eq(6)").text("1");
+
+        // escape each loop
+        return false;
       }
     });
 
@@ -321,7 +328,9 @@ $(document).ready(function(){
     }
   });
 
+  /////////////////
   // 스캔 초기화
+  /////////////////
   $("#btn_reset").click(function(){
     var ok = confirm("재입력을 위해 입력된 정보를 초기화합니다.");
     if(ok === true) {
@@ -344,6 +353,7 @@ $(document).ready(function(){
           $(".scan_status").addClass('hide');
           $(":input[name=q]").attr('disabled', false);
           $("#btn_search").attr('disabled', false);
+          $("#part_table tbody tr td:nth-child(7)").text('0');
 
           // 완료 버튼 상태 변경
           checkScanCount();
