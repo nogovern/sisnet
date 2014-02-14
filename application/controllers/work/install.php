@@ -52,7 +52,7 @@ class Install extends CI_Controller
 		$work = $this->work_model->get($id);
 		$data['work'] = $work;
 		$data['store'] = gs2_decode_location($work->work_location);	// 점포 
-		$data['items'] = $work->getItemList();
+		$data['items'] = $work->getItems();
 		
 		////////////////
 		// 요청확정용 

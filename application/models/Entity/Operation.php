@@ -256,11 +256,12 @@ class Operation
 		return $this->targets;
 	}
 
-	// 업무 아이템(장비) 목록 
+	// deprecated 업무 아이템(장비) 목록
 	public function getItemList() {
 		return $this->items;
 	}
 
+	// 업무 장비 목록 반환
 	public function getItems() {
 		return $this->items;
 	}
