@@ -10,6 +10,16 @@
  * 전역 변수는 '_' 로 시작함
  */
 
+// 먼저 jquery.validate 가 import 되어야 함
+// 기본 에러 메세지 재정의
+jQuery.extend(jQuery.validator.messages,{
+  required: "필수 항목입니다",
+  email: "올바른 이메일 형식이 아닙니다",
+  number: "숫자 형식만 가능합니다",
+  min: "필수 항목입니다. 올바른 값을 선택하세요."
+});
+
+// 디버깅용 출력 함수
 function gs2_console(msg) {
 	if(window.console) {
 		console.log(msg);
