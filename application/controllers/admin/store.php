@@ -159,9 +159,23 @@ class Store extends CI_Controller {
 			$rows = $this->store_model->findByName($q);
 
 			$output = '';
-			$status_text = array('페점', '정상', '휴점C', '휴점S' );
 			foreach($rows as $row) {
-				$format = "<tr>
+				switch($row->status) {
+					case '0':
+						$tr_color = 'class="danger"';
+						break;
+					case '1':
+						$tr_color = '';
+						break;
+					case '2':
+						$tr_color = 'class="success"';
+						break;
+
+					default:
+						$tr_color = '';
+				}
+
+				$format = "<tr %s>
 	              <td>%d</td>
 	              <td>%s</td>
 	              <td>%s</td>
@@ -171,13 +185,14 @@ class Store extends CI_Controller {
 	              <td>%s</td>
 	            </tr>";
 
-	            $output .= sprintf($format, 
+	            $output .= sprintf($format,
+	            	$tr_color,				// 색 지정 
 	            	$row->id, 
 	            	$row->name, 
 	            	$row->owner_name, 
 	            	$row->address, 
 	            	$row->tel,
-	            	$status_text[$row->status],
+	            	gs2_store_status($row->status),
 	            	'<a href="#" class="select_me">[선택]</a>'
 	            );
 	        }

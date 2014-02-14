@@ -16,34 +16,47 @@ $this->view('layout/navbar', array('current' => 'page-admin-store'));
     <table class="table table-hover table-condensed">
       <thead>
         <tr>
-          <th>No</th>
-          <th>최초코드</th>
-          <th>점포명</th>
-          <th>점주명</th>
-          <th>점주 연락처</th>
-          <th>점포 연락처</th>
-          <th>주  소</th>
-          <th>등록일</th>
-          <th>상  태</th>
-          <th></th>
+          <th class="col-sm-1"></th>
+          <th class="col-sm-1">최초코드</th>
+          <th class="col-sm-1">점포코드</th>
+          <th class="col-sm-2">점포명</th>
+          <th class="col-sm-1">점주명</th>
+          <th class="col-sm-1">연락처</th>
+          <th class="col-sm-2">주  소</th>
+          <th class="col-sm-1">등록일</th>
+          <th class="col-sm-1">상  태</th>
+          <th class="col-sm-1"></th>
         </tr>
       </thead>
 
       <tbody>
 <?php
-$status_text = array('페점', '정상', '휴점C', '휴점S' );
 foreach($rows as $row):
+  switch($row->status) {
+    case '0':
+      $tr_color = 'class="danger"';
+      break;
+    case '1':
+      $tr_color = '';
+      break;
+    case '2':
+      $tr_color = 'class="success"';
+      break;
+
+    default:
+      $tr_color = '';
+  }
 ?>
-        <tr class="" data-storeid="<?=$row->id?>">
+        <tr <?=$tr_color?> data-storeid="<?=$row->id?>">
           <td><?=$row->id?></td>
           <td><?=$row->code?></td>
+          <td><?=$row->code2?></td>
           <td><?=$row->name?></td>
           <td><?=$row->owner_name?></td>
-          <td><?=$row->owner_tel?></td>
           <td><?=$row->tel?></td>
           <td><?=$row->address?></td>
           <td><?=$row->getDateRegister()?></td>
-          <td><?=$status_text[$row->status]?></td>
+          <td><?=gs2_store_status($row->status)?></td>
           <td><button class="btn btn-info btn-sm click_me">상세</button></td>
         </tr>
 <?php

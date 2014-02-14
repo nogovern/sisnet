@@ -368,6 +368,7 @@ class Ajax extends CI_Controller
 		}
 
 		$op = $this->work_model->get($id);
+
 		// 추가 모델 로딩
 		$this->load->model('part_m', 'part_model');
 
@@ -449,7 +450,26 @@ class Ajax extends CI_Controller
 		}
 
 		// 점포 상태 변경 ( 0-폐점, 1-정상, 2-휴점)
-		
+		if($op->type >= '200' && $op->type < '400') {
+			$store = gs2_decode_location($op->getWorkLocation());
+			
+			// 폐점
+			if($op->type == '301') {
+				$store->setStatus('0');
+			}
+
+			// 휴점 
+			if($op->type == '303' || $op->type == '304') {
+				$store->setStatus('2');
+			}
+
+			// 설치
+			if($op->type >= '200' && $op->type < '300') {
+				$store->setStatus('1');
+			}
+
+			$this->em->persist($store);			
+		}
 
 		// 업무 log 생성
 		$log_data = array(
