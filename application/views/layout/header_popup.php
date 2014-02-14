@@ -40,8 +40,9 @@
 
       body {
         padding: 0 10px;
-        font-size: 13px;
       }
+
+      
     </style>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

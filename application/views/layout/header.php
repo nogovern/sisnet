@@ -43,13 +43,13 @@
       body {
         padding-top: 60px;
         padding-bottom: 40px;
-        font-size: 13px;
       }
-      
+
       // 선택된 열 표시
       tr.selected {background-color:#FFD700;}
 
       /** 일정표 **/
+      #calendar tbody td { font-size:12px; }
       #calendar tbody tr td {height: 50px;}
     </style>
 
