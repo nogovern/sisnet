@@ -96,8 +96,6 @@ echo $select_company;
   </div><!-- end of row -->
 </div><!-- start of div.container -->
 
-<!-- jquery form validation -->
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   $("#register_form").validate({

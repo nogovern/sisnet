@@ -120,8 +120,6 @@ $this->view('layout/navbar');
 <!-- start of div.container -->
 </div>
 
-<!-- jquery form validation -->
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript">
 jQuery.validator.setDefaults({
   onkeyup: false,

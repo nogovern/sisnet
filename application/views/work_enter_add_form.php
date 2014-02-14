@@ -80,10 +80,6 @@ echo form_hidden('user_id', '');        // 사용자
     <!-- start of div.container -->
     </div>
 
-    <!-- jquery form validation -->
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-
     <script type="text/javascript">
     $(document).ready(function(){
       // datepicker...

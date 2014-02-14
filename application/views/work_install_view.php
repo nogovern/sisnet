@@ -265,10 +265,6 @@ $this->view('common/modal_op_complete');          // 작업 완료
 $this->view('common/modal_search_previous');      // 직전위치 검색용
 ?>
 
-<!-- jquery form validation -->
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
 <script type="text/javascript">
 // 작업 정보 객체
 var operation = {

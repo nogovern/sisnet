@@ -69,10 +69,6 @@ echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
   </div><!-- /end of row -->
 </div><!-- start of div.container -->
 
-<!-- jquery form validation -->
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-
 <script type="text/javascript">
 $(document).ready(function(){
   // ajax 로 외부 페이지 load 하여 modal 여는 방법

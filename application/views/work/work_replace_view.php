@@ -310,10 +310,6 @@ endif;
   </div>
 </div><!-- end of div.container -->
 
-<!-- jquery form validation -->
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
 <?php
 /////////////////////////////
 /// 모달 dialog include

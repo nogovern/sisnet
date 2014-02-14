@@ -152,10 +152,6 @@ endif;
   </div>
 </div><!-- /.modal -->
 
-<!-- jquery form validation -->
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-
 <script type="text/javascript">
 var items = [];
 var sums = [];

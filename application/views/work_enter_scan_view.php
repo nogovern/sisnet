@@ -151,10 +151,6 @@ endif;
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!-- jquery form validation -->
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
 <script type="text/javascript">
 // modal 공통 설정
 $(".modal").modal({backdrop: 'static', show: false});
