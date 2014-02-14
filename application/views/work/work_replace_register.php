@@ -125,6 +125,9 @@ $this->view('common/modal_search_store');     // 점포 검색 modal
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
 <script type="text/javascript">
+// 점포 검색이 되었는지 구분 변수
+var is_store_setted = false;
+
 $(document).ready(function(){
   // datepicker...
   $(".date-picker").each(function(){
@@ -148,6 +151,11 @@ $(document).ready(function(){
       e.preventDefault();   // submit 막기 
       $('#btn_search_store').click();
     }
+  });
+
+  // 점포명 텍스트 변경시 결과 reset
+  $("#store_name").change(function(){
+    is_store_setted = false;
   });
 
   //////////////
@@ -201,6 +209,15 @@ $(document).ready(function(){
       date_open: "required"
     }, 
     submitHandler: function(form) {
+      if(!is_store_setted) {
+        alert("점포가 제대로 선택되지 않았습니다.\n올바른 점포명으로 검색하여 선택하세요.");
+        $("#store_name").focus();
+        $('html, body').animate({
+          scrollTop: $("#store_name").offset().top - 500
+        }, 1000);
+        return false;
+      }
+
       form.submit();
     }
   });
@@ -212,12 +229,14 @@ $(document).ready(function(){
 // 점포 검색용 callback function
 ///////////////////////////////////
 function callback_store_info(id, name) {
-  $("#store_id").val(id);
-  $("#store_name").val(name);
-
   // 점포 정보
   var url2 = "<?=site_url("admin/store/showTableFormat")?>" + "/" + id;
   $("#store_info .panel-body").load(url2);
+
+  // 점포 검색 되었음을 나타냄
+  is_store_setted = true;
+  $(":hidden[name=store_id]").val(id);
+  $("#store_name").val(name);
 }
 
 // 점포 검색 창에서 점포 신규 등록시 
