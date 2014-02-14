@@ -11,7 +11,12 @@ $this->view('layout/navbar');
 <?php
     // 에러 출력
     echo validation_errors();
-    echo form_open_multipart('', 'role="form" class="form-horizontal" ');
+    $attributes = array(
+      'id'    => 'op_request_form',
+      'role'  => 'form',
+      'class' => 'form-horizontal'
+    );
+    echo form_open_multipart('', $attributes);
 
     // echo form_hidden('store_id', '', ' id="store_id"');
 ?>
@@ -123,10 +128,6 @@ $this->view('layout/navbar');
 $this->view('common/modal_search_store');     // 점포 검색 modal
 ?>
 
-<!-- jquery form validation -->
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-
 <script type="text/javascript">
 // 점포 검색이 되었는지 구분 변수
 var is_store_setted = false;
@@ -198,13 +199,34 @@ $(document).ready(function(){
   });
 
   // 저장
-  $("form").submit(function(e){
-    if(!is_store_setted) {
-      alert("점포가 제대로 선택되지 않았습니다.\n올바른 점포명으로 검색하여 선택하세요.");
-      $("#store_name").focus();
-      return false;
+  $("form").validate({
+    rules: {
+      store_id: {
+        required: true,
+        min: 1
+      },
+      office_id: {
+        required: true,
+        min: 1
+      },
+      store_name: "required",
+      date_open: "required",
+      date_request: "required"
+    },
+    submitHandler: function(form) {
+      if(!is_store_setted) {
+        alert("점포가 제대로 선택되지 않았습니다.\n올바른 점포명으로 검색하여 선택하세요.");
+        $("#store_name").focus();
+        $('html, body').animate({
+          scrollTop: $("#store_name").offset().top - 500
+        }, 1000);
+        return false;
+      }
+
+      form.submit();
     }
   });
+
 }); //end of jQuery ready
 
 ///////////////////////////////////

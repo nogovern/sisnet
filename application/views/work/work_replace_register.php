@@ -120,10 +120,6 @@ $this->view('layout/navbar');
 $this->view('common/modal_search_store');     // 점포 검색 modal
 ?>
 
-<!-- jquery form validation -->
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-
 <script type="text/javascript">
 // 점포 검색이 되었는지 구분 변수
 var is_store_setted = false;
