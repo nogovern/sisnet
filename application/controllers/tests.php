@@ -263,7 +263,31 @@ class Tests extends CI_Controller {
 		}
 		gs2_dump($res2);
 
+	}
 
+	// jquery file upload 
+	public function upload() {
+		$this->load->library('upload');
+
+		$data = array();
+		$this->load->view('sample/jquery-file-upload', $data);
+	}
+
+	// 실제 파일 업로드
+	public function do_upload() {
+		$options = array();
+
+		$options['script_url'] = base_url() . '/tests/do_upload';
+		$options['upload_dir'] = BASEPATH . '../assets/files/';
+		$options['upload_url'] = base_url() . '/assets/files/';
+		$options['max_file_size'] = NULL;
+		$options['mkdir_mode'] = '0775';
+		$options['param_name'] = 'files';
+
+
+		$this->load->library('uploadhandler', $options);
 
 	}
 }
+
+

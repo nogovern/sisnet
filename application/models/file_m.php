@@ -20,7 +20,8 @@ class File_m extends MY_Model
 
 	// upload option 설정
 	public function setUploadOption() {
-		$upload_path = BASEPATH .'../assets/files/';
+		$upload_path = FCPATH .'assets/files/';
+		
 		if(!file_exists($upload_path)) {
 			if(!mkdir($upload_path, 0770)) {
 				die($upload_path . " 파일 저장 폴더 생성 실패: 권한을 확인 또는 관리자에게 문의하세요.");
@@ -28,7 +29,7 @@ class File_m extends MY_Model
 		}
 
 		$config = array();
-		$config['upload_path'] = BASEPATH .'../assets/files/';
+		$config['upload_path'] = $upload_path;
 		$config['allowed_types'] = '*';
 		$config['max_size'] = intval(GS2_MAX_FILE_SIZE) * 1024;
 		$config['encrypt_name'] = TRUE;
