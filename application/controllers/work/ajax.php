@@ -371,6 +371,16 @@ class Ajax extends CI_Controller
 
 		// 추가 모델 로딩
 		$this->load->model('part_m', 'part_model');
+		$this->load->model('file_m', 'file_model');
+
+		// 첨부파일 배열
+		$files = $this->input->post('files');
+		foreach($files as $f) {
+			$f['gubun'] = '완료';
+    		$f['op_id'] = $op->id;
+
+    		$this->file_model->create($f);
+		}
 
 		// 업무 메인 변경
 		$op_data['status'] = '4';

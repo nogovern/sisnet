@@ -9,7 +9,7 @@
       <!-- start form -->
       <form method="post" enctype="multipart/form-data" role="form" class="form form-horizontal">
         <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
-        <input type="hidden" name="operation_id" value="<?=$work->id?>">
+        <input type="hidden" name="op_id" value="<?=$work->id?>">
     
       <div class="modal-body">
         <ul class="well well-sm" style="list-style: none;">
@@ -50,6 +50,8 @@
 <script src="<?=base_url()?>assets/js/jquery.iframe-transport.js"></script>
 <script src="<?=base_url()?>assets/js/jquery.fileupload.js"></script>
 <script>
+var attachments = [];   //첨부파일
+
 $(function () {
   'use strict';
 
@@ -57,9 +59,10 @@ $(function () {
         dataType: 'json',
         done: function (e, data) {
           console.log(data.result);
-            $.each(data.result.files, function (index, file) {
-                $('<li/>').addClass("list-group-item").text(file.client_name).appendTo("#attachments");
-            });
+          $.each(data.result.files, function (index, file) {
+            attachments.push(file);
+            $('<li/>').addClass("list-group-item").text(file.client_name).appendTo("#attachments");
+          });
         }
     });
 });
@@ -88,6 +91,7 @@ $(function () {
           office_id: $("#office_id").val(),
           date_complete: date_complete,
           memo: $("textarea[name=memo]", this).val(),
+          files: attachments,
           "csrf_test_name": $.cookie("csrf_cookie_name")
         },
         dataType: "html",
