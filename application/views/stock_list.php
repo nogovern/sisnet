@@ -53,7 +53,7 @@ endforeach;
                     <td class="col-xs-1" style="background-color: #CCC;">수리</td>
                     <td class="col-xs-1" style="background-color: #CCC;">페기</td>
                     <td class="col-xs-1">발주</td>
-                    <td class="col-xs-1">기능</td>
+                    <td class="col-xs-1"></td>
                   </tbody>
                 </table>
               </th>
@@ -103,8 +103,8 @@ if(count($row->getStockList())):
       <td class="col-xs-1"><b><?=gs2_zero_to_dash($stock->getQtyS100())?></b></td>
       <td class="col-xs-1">
 <?php
-      // 사무소가 master 이고 장비 상태가 정상인 경우만 입고 버튼 보임
-      if($stock->office->isMaster() === TRUE && $row->status > '0'):
+      // 입고요청 버튼 - 마스터 사무소, 장비상태, 시트네트 or GS25 유저만 가능
+      if( $this->session->userdata('user_type') != '3' && $stock->office->isMaster() === TRUE && $row->status > '0'):
 ?>
         <button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$row->id, $stock->office->id)?>">입고</button>
 <?php

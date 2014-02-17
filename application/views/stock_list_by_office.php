@@ -35,15 +35,15 @@ endforeach;
               <th>장비명</th>
               <th>상태</th>
               <th>기준</th>
-              <th>신가</th>
-              <th>중가</th>
-              <th>중비</th>
-              <th style="background-color: #CCC;">설치</th>
-              <th style="background-color: #CCC;">점검</th>
-              <th style="background-color: #CCC;">수리</th>
-              <th style="background-color: #CCC;">페기</th>
-              <th>발주</th>
-              <th>기능</th>
+              <th style="width:5%;">신가</th>
+              <th style="width:5%;">중가</th>
+              <th style="width:5%;">중비</th>
+              <th style="width:5%;background-color: #CCC;">설치</th>
+              <th style="width:5%;background-color: #CCC;">점검</th>
+              <th style="width:5%;background-color: #CCC;">수리</th>
+              <th style="width:5%;background-color: #CCC;">페기</th>
+              <th style="width:5%;">발주</th>
+              <th style="width:5%;"></th>
             </tr>
           </thead>
 
@@ -80,9 +80,9 @@ foreach($rows as $row):
               <td>
 <?php
   // 사무소가 master 이고 장비 상태가 정상인 경우만 입고 버튼 보임
-  if($row->office->isMaster() === TRUE && $part->status > '0'):
+  if( $this->session->userdata('user_type') != '3' && $stock->office->isMaster() === TRUE && $row->status > '0'):
 ?>
-                        <button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$part->id, $row->office->id)?>">입고</button>
+                <button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$part->id, $row->office->id)?>">입고</button>
 <?php
   endif;
 ?>
