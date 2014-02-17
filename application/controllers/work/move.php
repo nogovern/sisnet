@@ -44,10 +44,9 @@ class Move extends CI_Controller
 			echo '작업중';
 		} else {
 
-			$post_data['op_type'] =  GS2_OP_TYPE_MOVE;
+			$post_data['op_type'] =  GS2_OP_TYPE_MOVE;		// 700
 			$post_data['office_id'] = $this->input->post('send_office_id');
-			$post_data['date_request'] = date("Y-m-d");
-
+			$post_data['work_location'] = $this->input->post('target_office_id');
 
 			// 업무 생성
 			$op = $this->work_model->createOperation( GS2_OP_TYPE_MOVE, $post_data);
@@ -56,6 +55,7 @@ class Move extends CI_Controller
 			$log_data = array(
 				'type'		=> '1',
 				'content'	=> '이동 업무가 생성되었음',
+				'event'		=> '생성'
 			);
 			$this->work_model->addLog($op, $log_data, TRUE);
 

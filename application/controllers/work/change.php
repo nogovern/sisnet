@@ -49,7 +49,7 @@ class Change extends CI_Controller
 
 		$qb->setParameter('office_id', $this->session->userdata('office_id'));
 
-		// 결과 중 gs2_operation_targets 에 등록 안된것만 필터링
+		// 결과 중 gs2_operation_targets 에서 상태변경 이면서 등록 안된것만 필터링
 		$data['rows'] = array();
 		$rows = $qb->getQuery()->getResult();
 		foreach($rows as $row) {
@@ -58,7 +58,7 @@ class Change extends CI_Controller
 				continue;
 			}
 
-			$find = $em->getRepository('Entity\OperationTarget')->findOneBy(array('target' => $row));
+			$find = $em->getRepository('Entity\OperationTarget')->findOneBy(array('target' => $row, 'gubun' => 'change'));
 			if(!$find) {
 				$data['rows'][] = $row;
 			}

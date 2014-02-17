@@ -27,6 +27,9 @@ class OperationTarget
 	 */
 	protected $target;
 
+	/** @Column(type="string", length=10) */
+	protected $gubun = 'change';
+
 	//=====================================================
 	
 	public function __construct($op, $target) {
@@ -46,6 +49,11 @@ class OperationTarget
 
 	public function setCompleteFlag($flag) {
 		$this->is_complete = ($flag == TRUE) ? 'Y' : 'N';
+	}
+
+	// 업무 구분 설정
+	public function setGubun($value) {
+		$this->gubun = $value;
 	}
 
 	public function __get($key){

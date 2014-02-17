@@ -305,6 +305,10 @@ class Work_m extends MY_Model {
 		else if( $type >= '700' && $type < '800') {
 			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['target_office_id']);
 		}
+		// 폐기, 이관, 수리 는 외부 업체
+		else if( $type >= '500' && $type <= '700'    || ($type >= '800' && $type < '900')) {
+			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['target_office_id']);
+		}
 		// 상태변경은 사무소
 		else if( $type >= '900' && $type < '999') {
 			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['office_id']);
@@ -666,6 +670,14 @@ class Work_m extends MY_Model {
 	 */
 	public function createTargetOperation($op, $target, $do_flush=FALSE) {
 		$top = new Entity\OperationTarget($op, $target);
+		
+		// 상태변경, 교체 업무 구분
+		if($op->type == '400') {
+			$top->setGubun('replace');
+		} else if ($op->type == '900') {
+			$top->setGubun('change');
+		}
+
 		$this->em->persist($top);
 
 		if($do_flush) {
@@ -689,6 +701,7 @@ class Work_m extends MY_Model {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('t')->from('Entity\OperationTarget', 't')
 			->where('t.target = :t_id')
+			->andWhere("t.gubun = 'replace' ")
 			->setParameter('t_id', $me->id);
 
 		$row = $qb->getQuery()->getSingleResult();

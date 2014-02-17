@@ -211,6 +211,7 @@ class Tests extends CI_Controller {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('t')->from('Entity\OperationTarget', 't')
 			->where('t.target = :t_id')
+			->andWhere("t.gubun = 'replace' ")
 			->setParameter('t_id', $target_id);
 
 		$me = $qb->getQuery()->getSingleResult();
