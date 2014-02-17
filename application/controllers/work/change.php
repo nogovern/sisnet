@@ -53,6 +53,11 @@ class Change extends CI_Controller
 		$data['rows'] = array();
 		$rows = $qb->getQuery()->getResult();
 		foreach($rows as $row) {
+			// 장비가 없는 철수일 경우 pass
+			if($row->numItems() == 0) {
+				continue;
+			}
+
 			$find = $em->getRepository('Entity\OperationTarget')->findOneBy(array('target' => $row));
 			if(!$find) {
 				$data['rows'][] = $row;

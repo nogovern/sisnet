@@ -85,7 +85,11 @@
         dataType: "html",
       })
         .done(function(html) {
-          alert('확정하였습니다.\n 다음단계로 이동합니다.');
+          if(html == 'success') {
+            alert('확정하였습니다.\n 다음단계로 이동합니다.');
+          } else {
+            alert("에러가 발생했습니다.");
+          }
           location.reload();
         })
         .fail(function(xhr, textStatus){
