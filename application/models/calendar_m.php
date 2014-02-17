@@ -77,7 +77,9 @@ class Calendar_m extends MY_Model
 			->from('\Entity\Operation', 'w')
 			->where("w.date_expect >= :from")
 			->andWhere("w.date_expect < :to");
-		
+
+		// gs2_dump($criteria);
+
 		// 사무소별
 		if( $criteria['office'] != 'all' && $criteria['office'] > 0) {
 			$qb->andWhere("w.office = :office");
@@ -138,12 +140,14 @@ class Calendar_m extends MY_Model
 
 		// 검색 조건이 있을 경우
 		$criteria = array();
-		if($this->input->get('office') !== FAlSE) {
+		if($this->input->get('office') !== false) {
 			$criteria['office'] = $this->input->get('office');
 		} else {
 			if( $this->session->userdata('user_type') == '1') {
 				$criteria['office'] = $this->session->userdata('office_id');
-			} elseif ($this->session->userdata('user_type' == '3')) {
+			} elseif ($this->session->userdata('user_type') == '2') {
+				$criteria['office'] = 'all';
+			} elseif ($this->session->userdata('user_type') == '3') {
 				$criteria['company'] = $this->session->userdata('company_id');
 			} 
 		}

@@ -12,6 +12,10 @@ class Schedule extends CI_Controller
 		parent::__construct();
 
 		$this->load->model('calendar_m');
+
+		if($this->session->userdata('user_level') == GS2_USER_LEVEL_COMPANY) {
+			alert("접근권한이 없습니다");
+		}
 	}
 
 	public function index()
@@ -52,6 +56,7 @@ class Schedule extends CI_Controller
 		$this->load->model('office_m', 'office_model');
 		$selected_office = ($this->input->get('office') === FALSE) ? $this->session->userdata('office_id') : $this->input->get('office');
 		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$arr_office['0'] = '전체';
 		$data['office_filter'] = form_dropdown('office', $arr_office, $selected_office, 'id="office_filter" class="form-control"');
 
 		$this->load->view('calendar', $data);	
