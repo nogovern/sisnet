@@ -113,7 +113,7 @@ if($op->status == '1') {
       echo sprintf('<td>%s</td>', ($op->status == '1') ? 삭제 : '');
     } else {
       if( $idx == 0) {
-        echo sprintf("<td rowspan=\"%d\">%s</td>", $row_count, ($op->status == '1') ? 삭제 : '');
+        echo sprintf("<td rowspan=\"%d\">%s</td>", $row_count, ($op->status == '1') ? '삭제' : '');
       }
     }
 ?>
