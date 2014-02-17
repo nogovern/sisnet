@@ -347,8 +347,8 @@ $(document).ready(function(){
   // datepicker...
   $(".date-picker").each(function(){
     $(this).datepicker({
-      dateFormat: "yy-mm-dd",
       minDate: new Date(),
+      dateFormat: "yy-mm-dd",
       changeMonth: true,
       changeYear: true
     });

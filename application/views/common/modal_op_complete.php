@@ -21,7 +21,7 @@
         <div class="form-group">
           <label class="form-label col-sm-3">완료일시</label>
           <div class="input-group col-sm-6">
-            <input type="text" name="date_complete" class="form-control date-picker" value="<?=$work->getDateExpect()?>">
+            <input type="text" name="date_complete" class="form-control date-picker" value="<?=date('Y-m-d');?>">
             <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span>
           </div>
         </div>
@@ -49,60 +49,70 @@
 <script src="<?=base_url()?>assets/js/vendor/jquery.ui.widget.js"></script>
 <script src="<?=base_url()?>assets/js/jquery.iframe-transport.js"></script>
 <script src="<?=base_url()?>assets/js/jquery.fileupload.js"></script>
-<script>
-var attachments = [];   //첨부파일
-
-$(function () {
-  'use strict';
-
-    $('#fileupload').fileupload({
-        dataType: 'json',
-        done: function (e, data) {
-          gs2_console(data.result);
-          $.each(data.result.files, function (index, file) {
-            attachments.push(file);
-            $('<li/>').addClass("list-group-item").text(file.client_name).appendTo("#attachments");
-          });
-        }
-    });
-});
-</script>
-
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("#modal_op_complete form").submit(function(e){
-      e.preventDefault();
+var attachments = [];   //첨부파일
+// ie8 디버깅 용 메세지
+var my_error;
+var my_data;
 
-      var target_url = "<?=base_url()?>work/ajax/complete";
-      var date_complete = $("input[name=date_complete]", this).val();
-      if(date_complete == ''){
-        alert('작업 완료일시를 입력하세요');
-        $("input[name=date_complete]", this).focus();
-        return false;
-      }
 
-      $.ajax({
-        url: target_url,
-        type: "POST",
-        cache: false,
-        async: false,
-        data: {
-          id : operation.id,
-          office_id: $("#office_id").val(),
-          date_complete: date_complete,
-          memo: $("textarea[name=memo]", this).val(),
-          files: attachments,
-          "csrf_test_name": $.cookie("csrf_cookie_name")
-        },
-        dataType: "html",
-      })
-        .done(function(html) {
-          alert(html);
-          location.reload();
-        })
-        .fail(function(xhr, textStatus){
-          alert("Request failed: " + textStatus);
-        });
-    });
+$(document).ready(function() {
+  
+  $("#date_complete").datepicker({
+    minDate: new Date()
   });
+
+  $('#fileupload').fileupload({
+      dataType: 'json',
+      done: function (e, data) {
+        //alert(data.result);
+        $.each(data.result.files, function (index, file) {
+          attachments.push(file);
+          $('<li/>').addClass("list-group-item").text(file.client_name).appendTo("#attachments");
+        });
+      },
+      fail: function(e, data) {
+        alert("Fail!");
+
+        my_error = e;
+        my_data = data;
+      }
+  });
+
+  // 완료 처리
+  $("#modal_op_complete form").submit(function(e){
+    e.preventDefault();
+
+    var target_url = "<?=base_url()?>work/ajax/complete";
+    var date_complete = $("input[name=date_complete]", this).val();
+    if(date_complete == ''){
+      alert('작업 완료일시를 입력하세요');
+      $("input[name=date_complete]", this).focus();
+      return false;
+    }
+
+    $.ajax({
+      url: target_url,
+      type: "POST",
+      cache: false,
+      async: false,
+      data: {
+        id : operation.id,
+        office_id: $("#office_id").val(),
+        date_complete: date_complete,
+        memo: $("textarea[name=memo]", this).val(),
+        files: attachments,
+        "csrf_test_name": $.cookie("csrf_cookie_name")
+      },
+      dataType: "html",
+    })
+      .done(function(html) {
+        alert(html);
+        location.reload();
+      })
+      .fail(function(xhr, textStatus){
+        alert("Request failed: " + textStatus);
+      });
+  });
+});
 </script>

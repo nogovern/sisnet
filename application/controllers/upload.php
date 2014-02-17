@@ -55,6 +55,14 @@ class Upload extends CI_Controller {
             $files[] = $data;
             //this is why we put this in the constants to pass only json data
             if (IS_AJAX) {
+                header('Vary: Accept');
+                if (isset($_SERVER['HTTP_ACCEPT']) &&
+                    (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)) {
+                    header('Content-type: application/json');
+                } else {
+                    header('Content-type: text/plain');
+                }
+                
                 echo json_encode(array("files" => $files));
                 //this has to be the only data returned or you will get an error.
                 //if you don't give this a json array it will give you a Empty file upload result error

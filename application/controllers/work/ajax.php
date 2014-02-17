@@ -373,13 +373,16 @@ class Ajax extends CI_Controller
 		$this->load->model('part_m', 'part_model');
 		$this->load->model('file_m', 'file_model');
 
-		// 첨부파일 배열
+		// 첨부파일 저장
+		// 2014.02.17 by JKH - ie 첨부파일 에러 때문에 파일 수 검증 추가
 		$files = $this->input->post('files');
-		foreach($files as $f) {
-			$f['gubun'] = '완료';
-    		$f['op_id'] = $op->id;
+		if($files && count($files)) {
+			foreach($files as $f) {
+				$f['gubun'] = '완료';
+	    		$f['op_id'] = $op->id;
 
-    		$this->file_model->create($f);
+	    		$this->file_model->create($f);
+			}
 		}
 
 		// 업무 메인 변경
