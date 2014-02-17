@@ -58,7 +58,7 @@ $(function () {
     $('#fileupload').fileupload({
         dataType: 'json',
         done: function (e, data) {
-          console.log(data.result);
+          gs2_console(data.result);
           $.each(data.result.files, function (index, file) {
             attachments.push(file);
             $('<li/>').addClass("list-group-item").text(file.client_name).appendTo("#attachments");

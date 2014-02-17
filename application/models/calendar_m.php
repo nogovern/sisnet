@@ -145,11 +145,9 @@ class Calendar_m extends MY_Model
 		} else {
 			if( $this->session->userdata('user_type') == '1') {
 				$criteria['office'] = $this->session->userdata('office_id');
-			} elseif ($this->session->userdata('user_type') == '2') {
+			} else {
 				$criteria['office'] = 'all';
-			} elseif ($this->session->userdata('user_type') == '3') {
-				$criteria['company'] = $this->session->userdata('company_id');
-			} 
+			}
 		}
 		// gs2_dump($criteria);
 
