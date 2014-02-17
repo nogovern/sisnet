@@ -54,7 +54,7 @@ $this->view('layout/navbar');
         <li class=""><a href="#">완료</a></li>
       </ul>
 
-      <table class="table table-hover ">
+      <table id="op_list" class="table table-hover ">
         <thead>
           <tr>
             <th>No</th>
@@ -140,8 +140,12 @@ $(document).ready(function(){
     // 상세 보기 페이지로 이동
   $("button.btn_view").click(function(){
     var href = $(this).data('href');
-    location.href = href;
-    return false;
+    gs2_go_page(href);
+  });
+
+  $("#op_list tbody tr").dblclick(function(event) {
+    var href = $("td .btn_view", this).data('href');
+    gs2_go_page(href);
   });
 
   /////////////////////////
@@ -150,6 +154,12 @@ $(document).ready(function(){
   $(".popover_memo").popover({trigger: 'hover', placement: 'left'});
   $(".popover").click(function(e){e.preventDefault();});
 });
+
+// 페이지 이동
+function gs2_go_page(page_url) {
+  location.href = page_url;
+}
+
 </script>
 
 <?php
