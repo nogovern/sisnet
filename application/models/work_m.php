@@ -250,6 +250,18 @@ class Work_m extends MY_Model {
 		$new->setOperationNumber($this->makeOperationNumber());		
 		$new->setDateRegister();
 		$new->setDateRequest($post['date_request']);
+
+		// 요청자 (넘어온 데이터에 user_id 가 없다면 세션 사용)
+		if(!isset($post['user_id'])) {
+			$user = $this->em->getReference('Entity\User', $this->session->userdata('user_id'));
+		} else {
+			$user = $this->em->getReference('Entity\User', $post['user_id']);
+		}
+		$new->setUser($user);
+
+		// 담당 사무소
+		$office = $this->em->getReference('Entity\Office', $post['office_id']);
+		$new->setOffice($office);
 		
 		// 생성 시 작업 예정일에 요청일은 기본으로 설정함
 		if(!isset($post['date_expect'])) {
@@ -279,18 +291,6 @@ class Work_m extends MY_Model {
 			$new->setDateStore($post['date_close']);
 		}
 
-		// 요청자 (넘어온 데이터에 user_id 가 없다면 세션 사용)
-		if(!isset($post['user_id'])) {
-			$user = $this->em->getReference('Entity\User', $this->session->userdata('user_id'));
-		} else {
-			$user = $this->em->getReference('Entity\User', $post['user_id']);
-		}
-		$new->setUser($user);
-
-		// 담당 사무소
-		$office = $this->em->getReference('Entity\Office', $post['office_id']);
-		$new->setOffice($office);
-
 		// 입고 업무시 납품처
 		if($type >= '100' && $type < '200') {
 			$part = $this->em->getReference('Entity\Part', $post['part_id']);
@@ -305,8 +305,8 @@ class Work_m extends MY_Model {
 		else if( $type >= '700' && $type < '800') {
 			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['target_office_id']);
 		}
-		// 폐기, 이관, 수리 는 외부 업체
-		else if( $type >= '500' && $type <= '700'    || ($type >= '800' && $type < '900')) {
+		// 수리,폐기,이관 은 외부 업체
+		else if( ($type >= '500' && $type <= '700') || ($type >= '800' && $type < '900')) {
 			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['target_office_id']);
 		}
 		// 상태변경은 사무소
