@@ -66,7 +66,15 @@ class Move extends CI_Controller
 	}
 
 	public function view($id) {
-		echo '작업중';
+		
+		$data['title'] = "이동 업무 상세 보기";
+		$data['current'] = 'page-move';
+		$data['_config'] = $this->config->item('gs2');
+
+		$op = $this->work_model->get($id);
+		$data['op'] = $op;
+
+		$this->load->view('work/work_move_view', $data);
 	}
 
 	public function update($id) {
