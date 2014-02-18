@@ -52,12 +52,12 @@ foreach($rows as $row):
             <td><?=$row->id?></td>
             <td><?=gs2_op_type($row->type)?></td>
             <td>
-              <span class="label <?=$label_color?>"><?=constant("GS2_OP_CLOSE_STATUS_" .$row->status)?></span>
+              <span class="label <?=$label_color?>"><?=constant("GS2_OP_MOVE_STATUS_" .$row->status)?></span>
             </td>
             <td><?=$row->user->name?></td>
             <td><?=$row->office->name?></td>
             <td><?=$receiver->name?></td>
-            <td>0</td>
+            <td><?=$row->getTotalRequestQty()?></td>
             <td><?=$row->getDateRegister();?></td>
             <td><?=$row->getDateFinish();?></td>
             <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/move/view/') . '/' . $row->id ?>">보기</button></td>

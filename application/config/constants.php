@@ -114,6 +114,12 @@ define('GS2_OP_CLOSE_STATUS_3', 	'점포완료');
 define('GS2_OP_CLOSE_STATUS_4', 	'완료');
 define('GS2_OP_CLOSE_STATUS_5', 	'승인');
 
+// 이동
+define('GS2_OP_MOVE_STATUS_1', 	'요청');		// 요청 - 장비등록
+define('GS2_OP_MOVE_STATUS_2', 	'입력');		// 장비 스캔 & 확인
+define('GS2_OP_MOVE_STATUS_3', 	'완료');		// 완료
+
+
 // 상태변경
 define('GS2_OP_CHANGE_STATUS_1', 	'생성'); 
 define('GS2_OP_CHANGE_STATUS_2', 	'완료');

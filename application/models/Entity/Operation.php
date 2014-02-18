@@ -308,11 +308,11 @@ class Operation
 			return 0;
 		} 
 
-		$qty = 0;
+		$total = 0;
 		foreach($this->items as $item) {
-			$qty += $item->qty_request;
+			$total += $item->qty_request;
 		}
-		return $qty;
+		return $total;
 	}
 
 	// 총 완료 수량
@@ -321,11 +321,11 @@ class Operation
 			return 0;
 		} 
 
-		$qty = 0;
+		$total = 0;
 		foreach($this->items as $item) {
-			$qty += $item->qty_complete;
+			$total += $item->qty_complete;
 		}
-		return $qty;
+		return $total;
 	}
 
 	// 총 스캔 수량 (입고에서만 사용???)
@@ -334,11 +334,11 @@ class Operation
 			return 0;
 		} 
 
-		$qty = 0;
+		$total = 0;
 		foreach($this->items as $item) {
-			$qty += $item->qty_scan;
+			$total += $item->qty_scan;
 		}
-		return $qty;
+		return $total;
 	}
 
 	// log 리스트를 반환

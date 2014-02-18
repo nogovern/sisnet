@@ -88,4 +88,31 @@ class Move extends CI_Controller
 		echo '작업중';
 	}
 
+	public function send() {
+
+		$error = false;
+		$op = $this->work_model->get($this->input->post('id'));
+
+		if(!$op) {
+			$error = true;
+			$error_msg = '해당 업무가 없습니다';
+		} else {
+			$this->work_model->updateOperation($op, array('status' => '2'));
+		}
+
+		// 로그 기록
+   		$log_data = array(
+   			'type'		=> '1',
+   			'content'	=> '[system] 수신 사무소로 발송합니다',
+   			'event'		=> '입력'
+   		);
+   		$this->work_model->addLog($op, $log_data, TRUE);
+
+		$oResult = new stdClass;
+		$oResult->error = $error;
+		$oResult->error_msg = ($error) ? $error_msg : '';
+
+		echo json_encode($oResult);
+	}
+
 }
