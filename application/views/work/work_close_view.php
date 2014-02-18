@@ -269,7 +269,7 @@ endforeach;
 
   <div class="row">
     <div class="col-md-12">
-      <a href="<?=site_url('work/close')?>"><span class="btn btn-default" type="button">리스트</span></a>
+      <a href="<?=site_url('work/close')?>"><span class="btn btn-default" type="button"><i class="fa fa-list"></i>&nbsp;리스트</span></a>
 <?php
 if($work->status == 1 && $work->type != '305') {
 ?>

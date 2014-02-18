@@ -125,10 +125,13 @@ define('GS2_PART_TYPE_3', 	'소모품');				// 소모품
 
 // 시리얼장비 상태
 define('GS2_SERIAL_STATUS_OK', 		'1');
-define('GS2_SERIAL_STATUS_NOTOK', 	'0');
-define('GS2_SERIAL_STATUS_FIX', 	'5');
-define('GS2_SERIAL_STATUS_DESTORY', '6');
-define('GS2_SERIAL_STATUS_INSPECT', '9');
+define('GS2_SERIAL_STATUS_NOTOK', 	'0');			
+define('GS2_SERIAL_STATUS_INSTALL',	'2');			// 설치중
+define('GS2_SERIAL_STATUS_FIX', 	'5');			// 수리대기		
+define('GS2_SERIAL_STATUS_DESTORY', '6');			// 폐기대기
+define('GS2_SERIAL_STATUS_MOVE', '7');			// 이동
+define('GS2_SERIAL_STATUS_INSPECT', '9');			// 점검중
+define('GS2_SERIAL_STATUS_LOST', 	'L');
 
 // 점포 상태
 define('GS2_STORE_STATUS_0',	'폐점');

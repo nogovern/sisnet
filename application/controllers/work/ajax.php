@@ -189,19 +189,32 @@ class Ajax extends CI_Controller
 
 			// 입고 업무 시
 			if( $op->type == '100') {
-				$stock->setQtyS100($stock->qty_s100 + $qty);	// 발주 수량 update
+				$stock->increase('s100', $qty);					// 발주 수량 update
 			} 
 			// 설치 업무일 경우
 			elseif( $op->type >= '200' && $op->type < '300') {
 				// 신품,중고 구별
 				if($is_new) {
-					$stock->setQtyNew($stock->qty_new - $qty);
+					$stock->decrease('new', $qty);
 				} else {
-					$stock->setQtyUsed($stock->qty_used - $qty);
+					$stock->decrease('used', $qty);
 				}
 
-				$stock->setQtyS200($stock->qty_s200 + $qty);
+				// 설치중 수량 증가
+				$stock->increase('s200', $qty);
 			}
+			// 이동업무
+			elseif ($op->type == '700') {
+				// 신품,중고 구별
+				if($is_new) {
+					$stock->decrease('new', $qty);
+				} else {
+					$stock->decrease('used', $qty);
+				}
+
+				// 이동중 수량은 어디에???
+				// $stock->increase('s200', $qty);
+			} 
 
 			$this->em->persist($stock);
 			$this->em->flush();
@@ -227,42 +240,51 @@ class Ajax extends CI_Controller
 		$op = $this->em->getReference('Entity\Operation', $_POST['id']);
 		$item = $this->em->getReference('Entity\OperationPart', $_POST['item_id']);
 			
-		$this->work_model->removeItem($item);
+		// 장비 재고량 수정
+		$part = $item->part;
+		$stock = $part->getStock($op->office->id);
 
-		if($item->operation->type >= '200' && $item->operation->type < '300')
-		{
-			// 장비 재고량 수정
-			$part = $this->em->getReference('Entity\Part', $item->part->id);
-			$stock = $part->getStock($op->office->id);
+		// 수량
+		$qty = intval($item->qty_request);
 
-			$qty = $item->qty_request;
-			$stock->setQtyS200($stock->qty_s200 - $qty);
+		// 설치 	
+		if($op->type >= '200' && $op->type < '300') {
+			
+			$stock->decrease('s200', $qty);
 
 			// 신품,중고 구별
 			if($item->isNew()) {
-				$stock->setQtyNew($stock->qty_new + $qty);
+				$stock->increase('new', $qty);
 			} else {
-				$stock->setQtyUsed($stock->qty_used + $qty);
+				$stock->increase('used', $qty);
 			}
 
-			// 모델로 가는게 맞을까???
-			// 시리얼장비 (gs2_part_serial) 정보 복구
-			if($item->part_type == '1' && $item->serial_part) {
-				$sp = $this->work_model->getReference($item->serial_part->id, 'Entity\SerialPart');
-				if($sp) {
-					$sp->setValidFlag(TRUE);
-					$sp->setStatus('1');
-
-					$this->em->persist($sp);
-				}
-			}
-
-			$this->em->persist($stock);
+		} elseif($op->type == '700') {
+			// 신품,중고 구별
+			if($item->isNew()) {
+				$stock->increase('new', $qty);
+			} else {
+				$stock->increase('used', $qty);
+			}			
 		}
-		
+		$this->em->persist($stock);
+
+		// 모델로 가는게 맞을까???
+		// 시리얼장비 (gs2_part_serial) 정보 복구
+		if($item->part_type == '1' && $item->serial_part) {
+			$sp = $this->work_model->getReference($item->serial_part->id, 'Entity\SerialPart');
+			if($sp) {
+				$sp->setValidFlag(TRUE);
+				$sp->setStatus('1');
+
+				$this->em->persist($sp);
+			}
+		}
+
+		$this->work_model->removeItem($item);
 		$this->em->flush();			
 
-		echo '[Install] remove_item action is done';
+		echo sprintf('%s 장비를 목록에서 삭제하였습니다', $item->part_name);
 	}
 
 	// 작업자 메모
