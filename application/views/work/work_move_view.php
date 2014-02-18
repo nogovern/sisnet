@@ -87,7 +87,7 @@ if($item_count == 0) {
     </div>
     
     <div class="col-md-12">
-      <a class="btn btn-default" href="<?=base_url() . 'work/change'?>"><i class="fa fa-list"></i> 리스트</a>
+      <a class="btn btn-default" href="<?=base_url() . 'work/move'?>"><i class="fa fa-list"></i> 리스트</a>
 <?php if($op->status == '1'): ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
       <button id="btn_move_edit_form" type="button" class="btn btn-info">요청서 수정</button>
