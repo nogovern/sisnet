@@ -80,7 +80,7 @@ foreach($rows as $row):
               <td>
 <?php
   // 사무소가 master 이고 장비 상태가 정상인 경우만 입고 버튼 보임
-  if( $this->session->userdata('user_type') != '3' && $stock->office->isMaster() === TRUE && $row->status > '0'):
+  if( $this->session->userdata('user_type') != '3' && $row->office->isMaster() === TRUE && $part->status > '0'):
 ?>
                 <button class="btn btn-info btn-xs btn_order" type="button" data-query="<?=sprintf('?part_id=%d&office_id=%d',$part->id, $row->office->id)?>">입고</button>
 <?php
