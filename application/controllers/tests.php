@@ -287,6 +287,17 @@ class Tests extends CI_Controller {
 
 
 		$this->load->library('uploadhandler', $options);
+	}
+
+	// 장비 카테고리 테스트 
+	public function category() {
+		$this->load->model('category_m', 'category_model');
+
+		$arr1 = $this->category_model->getAllPartCategories();
+		gs2_dump(count($arr1));
+		
+		$arr2 = $this->category_model->getValidPartCategories();
+		gs2_dump(count($arr2));
 
 	}
 }

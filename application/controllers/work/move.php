@@ -77,7 +77,7 @@ class Move extends CI_Controller
 
 		// 장비 카테고리 dropdown
 		$this->load->model('category_m', 'category_model');
-		$cats = $this->category_model->getSubCategories(1);
+		$cats = $this->category_model->getValidPartCategories();
 		$cats = gs2_convert_for_dropdown($cats);
 		$data['select_category'] = form_dropdown('select_category', $cats, 0, 'id="select_category" class="form-control"');
 

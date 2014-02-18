@@ -109,9 +109,12 @@ if($item_count == 0) {
  * modal include 
  */
 
+$this->view('common/modal_search_previous');    // 직전위치 검색용
+
 if($op->status == '1') {
   $this->view('common/modal_part_register');      // 설치 장비등록 사용
-  $this->view('common/modal_search_previous');    // 직전위치 검색용
+} elseif ($op->status == '2') {
+  $this->view('common/modal_part_scan');          // 장비스캔
 }
 ?>
 
@@ -188,7 +191,7 @@ $(document).ready(function(){
 
   // 장비스캔
   $("#btn_move_part_scan").click(function(){
-
+    $("#modal_part_scan").modal("show");
   });
 
   // 완료
