@@ -327,22 +327,23 @@ $(document).ready(function(){
 });// end of ready
 
 //  장비리스트에 행 추가
-function callback_insert_row(id, type, name, sn, prev, qty, is_new) {
+function callback_insert_row(id, is_new, qty) {
   var type_text = '';
-  if( type == '1') type_text = '시리얼';
-  if( type == '2') type_text = '수량';
-  if( type == '3') type_text = '소모품';
+  if( item.type == '1') type_text = '시리얼';
+  if( item.type == '2') type_text = '수량';
+  if( item.type == '3') type_text = '소모품';
 
   var idx = $("#part_table tbody tr").length + 1;
+  var sn = $("#serial_number").val();
 
   var tr = $("<tr/>").attr('data-item_id', id);
   tr.append($("<td/>").text(idx));
   tr.append($("<td/>").text(type_text));
   tr.append($("<td/>").text(item.cat_name));
-  tr.append($("<td/>").text(name));
+  tr.append($("<td/>").text(item.name));
   tr.append($("<td/>").text((is_new == 'Y') ? '신품' : '중고'));
   tr.append($("<td/>").text(sn));
-  tr.append($("<td/>").text(prev));
+  tr.append($("<td/>").text(''));
   tr.append($("<td/>").text(qty));
   tr.append($("<td/>").html('<button class="btn btn-danger btn-xs remove_item" type="button">X</button>'));
   $("#part_table tbody").append(tr);

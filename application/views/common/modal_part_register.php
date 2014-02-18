@@ -39,18 +39,6 @@
           </div>
         </div>
 
-        <!--
-        <div class="form-group" class="search_block">
-          <label class="form-label col-sm-4">직전 위치 검색</label>
-          <div class="col-sm-5">
-            <input class="form-control" type="text" name="serach_prev_location" id="serach_prev_location">
-          </div>
-          <div class="col-sm-3">
-              <button class="btn btn-info btn-sm btn_search" type="button">검색</button>
-          </div>
-        </div>
-        -->
-
         <div class="form-group">
           <label class="form-label col-sm-4">장비 종류</label>
           <div class="col-sm-6">
@@ -302,7 +290,9 @@ $(document).ready(function(){
     })
       .done(function(response) {
         if(!response.error) {
-          callback_insert_row(response.id, item.type, item.name, $('#serial_number').val(), '', qty, is_new);
+          // gs2_console(response);
+          // 신규 item.id, 신품여부, 수량
+          callback_insert_row(response.id, is_new, qty);
           reset_part_register_form();
         } else {
           alert('에러');
