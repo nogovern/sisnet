@@ -15,24 +15,27 @@ class Part_m extends MY_Model
 		$this->setEntityName('Part');
 	}
 
+	// 특정 카테고리의 장비 모델 목록
+	public function getModels($category_id ) {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('p')
+			->from('\Entity\Part', 'p')
+			->where("p.category = :cat")
+			->orderBy('p.name', 'ASC')
+			->setParameter('cat', $category_id);
+		
+		$result = $qb->getQuery()->getResult();
+
+		return $result;
+	}
+
 	// 시리얼 장비 모델 
 	// gs2_parts 내 type = 1 인 장비 검색 
-	function getSerialPartModelList() {
+	public function getSerialPartModelList() {
 		$criteria = array( 'type' => '1');
 		return $this->find($criteria);
 	}
 
-	/**
-	 * 재고가 있는 장비 목록
-	 * 
-	 * @param  string $part_type 인자가 없으면 전체
-	 * @return array of objects   장비 object
-	 */
-	function getListInStock($part_type = '') {
-		if(empty($part_type)) {
-
-		}
-	}
 
 	/////////////////////////////
 	// 시리얼 관리 장비 전용 //

@@ -9,13 +9,16 @@
       <form role="form" class="form form-horizontal">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">장비 등록</h4>
+        <h4 class="modal-title">장비 스캔</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label col-sm-4">시리얼넘버</label>
           <div class="col-sm-5">
             <input type="text" class="form-control" id="serial_number">
+          </div>
+          <div class="col-sm-3" style="padding-left:0;">
+            <button type="button" class="btn btn-warning">검색</button>
           </div>
         </div>
 
@@ -83,7 +86,7 @@ $(document).ready(function(){
       return false;
     } 
       
-    var target_url = _base_url + "ajax/get_model_list_for_warehousing/" + cat;
+    var target_url = _base_url + "ajax/get_models_for_scan/" + cat;
     $.ajax({
       url: target_url,
       type: "POST",
@@ -136,7 +139,6 @@ $(document).ready(function(){
 
         // 장비 구분 하여 폼 컨트롤 형식 변경
         changeFormLayout(item.type);
-        enableAddItem();
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
@@ -166,69 +168,9 @@ $(document).ready(function(){
     // 철수 시 장비는 모두 중고 상태임
     var is_new = 'N';
 
-    // 장비 분실 여부
-
-    $.ajax({
-      url: "<?=base_url()?>work/ajax/add_item/" + operation.id,
-      type: "POST",
-      data: {
-        "id"        : operation.id,         
-        "part_id"   : item.id,
-        "part_type" : item.type,
-        "serial_number": $("#serial_number").val(),
-        "qty"       : qty,   
-        'is_new'    : is_new,
-        "extra": "add_item_for_close_op",
-        "csrf_test_name": $.cookie("csrf_cookie_name")
-      },
-      dataType: "json",
-    })
-      .done(function(response) {
-        gs2_console(response);
-
-        if(!response.error) {
-          
-          // 입력창 비우기
-          $("#serial_number").val('');
-          $("#part_qty").val('1');
-        } else {
-          alert(response.error_msg);
-          $("#serial_number").val('').focus();
-        }
-      })
-      .fail(function(xhr, textStatus){
-        alert("Request failed: " + textStatus);
-      });
   });
 
-  // 장비 삭제 이벤트 등록
-  $("#part_table tbody").on('click', '.remove_item', function(e){
-    var item_id = $(this).closest('tr').data('item_id');
-    var that = this;
-    if(!confirm(item_id + ' 를 목록에서 삭제하시겠습니까?')) {
-      return false;
-    }
 
-    $.ajax({
-        url: "<?=base_url()?>work/ajax/remove_item/" + item_id,
-        type: "POST",
-        data: {
-          id: operation.id,         
-          item_id: item_id,
-          csrf_test_name: $.cookie("csrf_cookie_name")
-        },
-        dataType: "html",
-      })
-        .done(function(html) {
-          alert(html);
-          callback_remove_row(that);
-        })
-        .fail(function(xhr, textStatus){
-          alert("Request failed: " + textStatus);
-        });
-  });
-
-  $("#select_category").change();
 });//end of ready
 
 

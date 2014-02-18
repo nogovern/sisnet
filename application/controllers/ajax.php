@@ -91,7 +91,6 @@ class Ajax extends CI_Controller
 		}
 
 		$this->load->model('part_m');
-
 		$em = $this->part_m->getEntityManager();
 		
 		// $category = $em->getReference("Entity\Category", $category_id);
@@ -122,9 +121,44 @@ class Ajax extends CI_Controller
 		}
 	}
 
-	// 직전위치로 장비 검색
-	public function search_part_by_previous_location($query) {
+	/**
+	 * 장비 스캔용 모델 리스트
+	 * 
+	 * @param  integer $category_id 
+	 * @return string              	select/option html 엘리먼트
+	 */
+	public function get_models_for_scan($category_id) {
+		if(!$category_id) {
+			echo 'error - 카테고리 id 가 없음';
+			exit;
+		}
 
+		$this->load->model('part_m');
+		$em = $this->part_m->getEntityManager();
+		
+		// 이부분을 part model 로 이동해야겠다		
+		$qb = $em->createQueryBuilder();
+		$qb->select('p')
+			->from('\Entity\Part', 'p')
+			->where("p.category = :cat")
+			->orderBy('p.name', 'ASC')
+			->setParameter('cat', $category_id);
+		
+		$parts = $qb->getQuery()->getResult();
+
+		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+		$output = '';
+		if(count($parts)){
+			$output .= '<option value="0">--선택하세요--</option>';
+			foreach($parts as $p) {
+				$tpl =  '<option value="%d">%s</option>';
+				$output .= sprintf($tpl, $p->id, $p->name);
+			}	
+
+			echo $output;
+		} else {
+			echo 'none';
+		}
 	}
 
 	// 시리얼로  장비 검색

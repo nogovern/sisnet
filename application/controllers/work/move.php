@@ -88,6 +88,7 @@ class Move extends CI_Controller
 		echo '작업중';
 	}
 
+	// 장비 발송 ajax 처리
 	public function send() {
 
 		$error = false;
