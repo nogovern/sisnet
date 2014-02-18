@@ -20,4 +20,30 @@ class Category_m extends MY_Model
 		$rows = $this->repo->findBy(array('parent' => $parent_id), array('id' => 'asc'));
 		return $rows;
 	}
+
+	// 장비 있는 카테고리 목록만 
+	public function getValidPartCategories() {
+		$rows = $this->getAllPartCategories();
+
+		$cats = array();
+		foreach($rows as $row) {
+			if(count($row->entries)) {
+				$cats[] = $row;
+			}
+		}
+
+		return $cats;
+	}
+
+	// 모든 카테고리 목록 
+	public function getAllPartCategories() {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('c')
+			->from('Entity\Category', 'c')
+			->where("c.parent = 1");
+
+		$cats = $qb->getQuery()->getResult();
+
+		return $cats;
+	}
 }

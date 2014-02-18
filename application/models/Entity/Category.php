@@ -31,9 +31,14 @@ class Category
 	/** @Column(type="string", length=1) */
 	protected $status;
 
+	/**
+	 * @OneToMany(targetEntity="Part", mappedBy="category")
+	 */
+	protected $entries;
+
 	// --------------------------------------------
 	public function __construct() {
-		;
+		$this->entries = new ArrayCollection();
 	}
 	
 	public function __get($key) {

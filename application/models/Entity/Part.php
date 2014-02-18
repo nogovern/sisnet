@@ -9,12 +9,27 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Part
 {
+	/*
+	 상태 정의
+	 */
+	const STATUS_DISABLE 	= 0;	// 단종
+	const STATUS_ENABLE 	= 1;	// 정상
+	const STATUS_OUTOFSTOCK = 2;	// 
+	
 	/**
 	 * @Id @Column(type="integer", nullable=false) 
 	 * @GeneratedValue(strategy="AUTO")
 	 * @SequenceGenerator(sequenceName="gs2_part_seq")
 	 */
 	protected $id;
+
+	/** 
+	 * 장비 카테고리
+	 * 
+	 * @OneToOne(targetEntity="Category") 
+	 * @JoinColumn(name="category_id", referencedColumnName="id")
+	 */
+	protected $category;					// 2013.12.11 추가 - 장비 카테고리
 
 	/** @column(type="string", length=1) */
 	protected $type;
@@ -52,21 +67,6 @@ class Part
 
 	/** @OneToMany(targetEntity="Stock", mappedBy="part") */
 	protected $stock_list;
-
-	/** 
-	 * 장비 카테고리
-	 * 
-	 * @OneToOne(targetEntity="Category") 
-	 * @JoinColumn(name="category_id", referencedColumnName="id")
-	 */
-	protected $category;					// 2013.12.11 추가 - 장비 카테고리
-
-	/*
-	 상태 정의
-	 */
-	const STATUS_DISABLE 	= 0;	// 단종
-	const STATUS_ENABLE 	= 1;	// 정상
-	const STATUS_OUTOFSTOCK = 2;	// 
 
 	/* ------------------------------ */
 	public function __construct() {
