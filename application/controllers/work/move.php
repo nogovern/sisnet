@@ -88,8 +88,18 @@ class Move extends CI_Controller
 		echo '작업중';
 	}
 
-	// 장비 발송 ajax 처리
-	public function send() {
+	/**
+	 * 이동 - ajax 요청 처리 전 공통 루틴 
+	 * 
+	 * @return boolean [description]
+	 */
+	private function ajax_setup() {
+		
+		return true;
+	}
+
+	// 이동 - 장비 발송 ajax 처리
+	public function ajax_send() {
 
 		$error = false;
 		$op = $this->work_model->get($this->input->post('id'));
@@ -116,4 +126,155 @@ class Move extends CI_Controller
 		echo json_encode($oResult);
 	}
 
+	// 이동 - 스캔 시리얼넙머 조회 ajax 응답
+	// 	등록된 장비 리스트에서 조회한다
+	public function ajax_retrieve($id = NULL) {
+		$post= $this->input->post();
+		
+		// 응답 객체
+		$response = new stdClass;
+		$error = false;
+
+		$op = $this->work_model->get($post['id']);
+		// 업무 없을시 에러
+		if(!$op) {
+			$response->error = true;
+			$response->error_msg = '존재하지 않는 업무 번호 입니다';
+			echo json_encode($response);
+			exit;
+		} 
+
+		// 시리얼넘버 없을시 에러
+		if(strlen($post['serial_number']) == 0) {
+			$response->error = true;
+			$response->error_msg = '시리얼넘버를 입력하세요';
+			echo json_encode($response);
+			exit;
+		}
+
+		// 스캔 안된 장비 수 확인 
+
+		// 이미 스캔된 장비인지 확인
+		$items = $op->getItems();
+
+		$is_found = false;
+		foreach($items as $item) {
+			// 있으면 gs2_operation_parts.id 를 반환한다
+			if(!strcmp($item->serial_number, $post['serial_number'])) {
+				$response->item['id'] = $item->id;
+				$response->item['cat_id'] = $item->part->category->id;
+				$response->item['part_id'] = $item->part->id;
+				$response->item['is_new'] = $item->isNew();
+				$response->item['qty'] = $item->qty_request;
+				
+				$is_found = true;
+				break;
+			}
+		}
+
+		if(!$is_found) {
+			$error = true;
+			$error_msg = '해당 시리얼넘버 장비를 찾을 수 없습니다';
+		}
+
+		$response->error = $error;
+		$response->error_msg = ($error) ? $error_msg : '';
+
+		echo json_encode($response);
+	}
+
+	// 이동 - 스캔 결과 저장
+	// 	시리얼넘버 조회 안한 장비는 여기서 체크한다
+	public function ajax_register_scan() {
+		$post = $this->input->post();
+
+		// 응답 객체
+		$response = new stdClass;
+		$error = false;
+
+		$op = $this->work_model->get($post['id']);
+		// 업무 없을시 에러
+		if(!$op) {
+			$response->error = true;
+			$response->error_msg = '존재하지 않는 업무 번호 입니다';
+			echo json_encode($response);
+			exit;
+		}
+
+		// 스캔 안된 장비 수 확인
+
+		// 이미 스캔된 장비인지 확인
+		$items = $op->getItems();
+		
+		$found = false;				// 검색된 item entity
+		// 조회 안된 장비를 찾는 경우
+		if($post['item_id'] > 0) {
+			foreach($items as $item) {
+				if( $item->id  == $post['item_id']) {
+					$found = $item;
+					break;
+				}
+			}
+		}
+		// 조회안된 장비를 찾는 경우 
+		else {
+			foreach($items as $item) {
+				if( $post['part_id'] == $item->part->id 
+					&& $post['is_new'] == $item->is_new
+					&& $post['qty'] == $item->qty_request ) 
+				{
+					$found = $item;
+					break;	
+				}
+			}
+		}
+
+		if(!$found) {
+			$error = true;
+			$error_msg = "조건과 맞는 장비가 없습니다";
+		} else {
+			$argv = array(
+				'is_scan'		=> true,
+				'qty_scan'		=> $post['qty'],
+				'qty_complete'	=> $post['qty'],
+			);
+
+			$this->work_model->updateItem($found, $argv, TRUE);
+
+			// 결과에 추가
+			$response->item_id = $found->id;
+		}
+
+		$response->error = $error;
+		$response->error_msg = ($error) ? $error_msg : '';
+
+		echo json_encode($response);
+	}
+
+	// 스캔 결과 초기화
+	public function ajax_reset_scan($id) {
+		$op = $this->work_model->get($id);
+
+		$items = $op->getItems();
+
+		foreach($items as $item) {
+			$argv = array(
+				'is_scan'		=> false,
+				'qty_scan'		=> 0,
+				'qty_complete'	=> 0,
+			);
+
+			$this->work_model->updateItem($item, $argv);
+		}
+
+		$this->work_model->_commit();
+
+		// 응답 객체
+		$response = new stdClass;
+
+		$response->error = false;
+		$response->error_msg = '';
+
+		echo json_encode($response);
+	}
 }

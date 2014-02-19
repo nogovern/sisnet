@@ -51,6 +51,8 @@ $this->view('layout/navbar');
 <?php
 
 $item_count = $op->numItems();
+$scan_count = 0;
+
 if($item_count == 0) {
 ?>    
               <tr class="no-item">
@@ -60,6 +62,10 @@ if($item_count == 0) {
 } else {
   $idx = 1;
   foreach($op->getItems() as $item):
+    // scan 카운트 증가
+    if($item->isScan()) {
+      $scan_count = $scan_count + 1;
+    }
 ?>
               <tr class="op-item" data-item_id="<?=$item->id?>">
                 <td><?php echo $idx++; ?></td>
@@ -71,9 +77,11 @@ if($item_count == 0) {
                 <td><?php echo $item->getQtyRequest(); ?></td>
                 <td><?php echo $item->isComplete(); ?></td>
                 <td>
-<?php if($op->status == '1'): ?>
+<?php if($op->status == '1'){ ?>
                   <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
-<?php endif; ?>                  
+<?php } else { ?>
+                  <i class="fa fa-check scan_status <?=($item->isScan()) ? '' : 'hide'?>" style="color:green;font-size:20px;"></i>
+<?php } ?>
                 </td>
               </tr>
 <?php
@@ -138,7 +146,10 @@ var operation = {
 // 장비 변수
 var items = []; 
 var item = {};          // 현재 선택된 장비 정보
-var numItemRows = 0;    
+
+/* 스캔 작업에서는 numItem == numSacn 이어야 완료 가능 */
+var numItem = 0;    // 등록된 장비 모델 수
+var numScan = <?php echo $scan_count; ?>;        // 스캔된 장비 모델 수
 
 $(document).ready(function(){
   // modal 공통 설정
@@ -165,7 +176,7 @@ $(document).ready(function(){
 
     // 장비발송 실행
     $.ajax({
-      url: "<?=base_url()?>work/move/send",
+      url: "<?=base_url()?>work/move/ajax_send",
       type: "POST",
       data: {
         "id": operation.id,   
@@ -217,7 +228,7 @@ function checkPartRegistered() {
     });
   }
 
-  numItemRows = len;
+  numItem = len;
   $("#total_qty").text(total);
 }
 

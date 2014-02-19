@@ -510,10 +510,16 @@ class Work_m extends MY_Model {
 			$item->setQtyLost($data['qty_lost']);
 		}
 
+		// 스캔 수량
+		if(isset($data['qty_scan'])) {
+			$item->setQtyScan($data['qty_scan']);
+		}
+
 		// 스캔 여부
 		if(isset($data['is_scan'])) {
-			$item->setSacnFlag($data['is_scan']);
+			$item->setScanFlag($data['is_scan']);
 		}
+
 
 		$this->em->persist($item);
 		if($do_flush) {
