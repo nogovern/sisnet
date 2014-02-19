@@ -245,7 +245,52 @@ class Part_m extends MY_Model
 		}
 
 		return $stock;
-	} 
+	}
+
+	/**
+	 * 시리얼장비 정보 변경
+	 * 	- 이것을 사용해야 위치 변경 시 log를 통합하여 관리 가능
+	 * 	
+	 * @param  [type]  $sp       [description]
+	 * @param  array   $data     [description]
+	 * @param  boolean $do_flush [description]
+	 * @return [type]            [description]
+	 */
+	public function updateSerialPart($sp, $data = array(), $do_flush = false) {
+
+		// 위치 정보는 location 형식 string 으로 받는다
+		if(isset($data['current_location'])) {
+			$sp->setCurrentLocation($data['current_location']);
+		}
+
+		if(isset($data['previous_location'])) {
+			$sp->setPreviousLocation($data['previous_location']);
+		}
+
+		if(isset($data['status'])) {
+			$sp->setStatus($data['status']);
+		}
+
+		if(isset($data['is_valid'])) {
+			$sp->setValidFlag($data['is_valid']);
+		}
+
+		if(isset($data['is_new'])) {
+			$sp->setNewFlag($data['is_new']);
+		}
+
+		if(isset($data['date_enter'])) {
+			$sp->setDateEnter($data['date_enter']);
+		}
+
+		$this->em->persist($sp);
+		
+		if($do_flush) {
+			$this->em->flush();
+		}
+
+		return $sp;
+	}
 
 	// 재고 테이블을 셋업한다.
 	// 사무소-장비 의 데이터가 없으면 기본 생성

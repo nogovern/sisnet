@@ -455,7 +455,9 @@ class Work_m extends MY_Model {
 				$sp->setValidFlag(FALSE);
 				$sp->setStatus('2');
 				$this->em->persist($sp);
-			} elseif ($op->type == '700') {
+			}
+			// 이동업무 시 
+			elseif ($op->type == '700') {
 				$sp->setValidFlag(FALSE);
 				$sp->setStatus('7');
 				$this->em->persist($sp);
