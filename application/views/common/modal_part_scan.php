@@ -18,7 +18,7 @@
             <input type="text" class="form-control" id="serial_number">
           </div>
           <div class="col-sm-3" style="padding-left:0;">
-            <button type="button" class="btn btn-warning">검색</button>
+            <button id="btn_retrieve_sn" type="button" class="btn btn-warning">조회</button>
           </div>
         </div>
 
@@ -58,8 +58,8 @@ echo $select_category;
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">초기화</button>
-        <button type="button" class="btn btn-primary">확인 저장</button>
+        <button id="btn_scan_save" type="button" class="btn btn-primary">확인 저장</button>
+        <button id="btn_scan_reset" type="button" class="btn btn-info">초기화</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
       </div>
       </form>
@@ -69,10 +69,16 @@ echo $select_category;
 
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#query").keypress(function(e){
+  // 모달 설정 - 보일때 포커스 설정
+  $("#modal_part_scan").on('shown.bs.modal', function() {
+    $("#serial_number").focus();
+  });
+
+  // 시리얼넘버 텍스트창에서 enter 처리
+  $("#serial_number").keypress(function(e){
     if(e.keyCode == 13) {
       e.preventDefault();
-      $("#btn_search_serial").click();
+      $("#btn_retrieve_sn").click();
     }
   });
 
@@ -167,9 +173,7 @@ $(document).ready(function(){
 
     // 철수 시 장비는 모두 중고 상태임
     var is_new = 'N';
-
   });
-
 
 });//end of ready
 
