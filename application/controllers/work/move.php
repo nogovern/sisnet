@@ -159,6 +159,10 @@ class Move extends CI_Controller
 
 		$is_found = false;
 		foreach($items as $item) {
+			if($item->isScan()) {
+				continue;
+			}
+
 			// 있으면 gs2_operation_parts.id 를 반환한다
 			if(!strcmp($item->serial_number, $post['serial_number'])) {
 				$response->item['id'] = $item->id;
@@ -207,7 +211,7 @@ class Move extends CI_Controller
 		$items = $op->getItems();
 		
 		$found = false;				// 검색된 item entity
-		// 조회 안된 장비를 찾는 경우
+		// 조회한 장비를 찾는 경우
 		if($post['item_id'] > 0) {
 			foreach($items as $item) {
 				if( $item->id  == $post['item_id']) {
@@ -219,6 +223,16 @@ class Move extends CI_Controller
 		// 조회안된 장비를 찾는 경우 
 		else {
 			foreach($items as $item) {
+				// 시리얼넘버 가 없는 시리얼 장비일때 스캔 된 장비 skip
+				if($item->isScan()) {
+					continue;
+				}
+
+				// 시리얼넘버 장비는 조회 후 넘어와야 함
+				if($item->part_type == '1' && strlen($item->serial_number) > 0) {
+					continue;
+				}
+
 				if( $post['part_id'] == $item->part->id 
 					&& $post['is_new'] == $item->is_new
 					&& $post['qty'] == $item->qty_request ) 
