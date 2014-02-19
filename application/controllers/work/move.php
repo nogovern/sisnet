@@ -277,4 +277,11 @@ class Move extends CI_Controller
 
 		echo json_encode($response);
 	}
+
+	// 이동 - 업무 완료
+	public function complete($id) {
+		$op = $this->work_model->get($id);
+
+		$items = $op->getItems();
+	}
 }
