@@ -173,6 +173,11 @@ class Work_m extends MY_Model {
 		return $this->_getOpList(400);
 	}
 
+	// 폐기 업무 목록
+	public function getDestroyList() {
+		return $this->_getOpList(600);
+	}
+
 	// 이동 업무 목록
 	public function getMoveList() {
 		$qb = $this->em->createQueryBuilder();
@@ -306,8 +311,10 @@ class Work_m extends MY_Model {
 			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['target_office_id']);
 		}
 		// 수리,폐기,이관 은 외부 업체
-		else if( ($type >= '500' && $type <= '700') || ($type >= '800' && $type < '900')) {
-			$new->setWorkLocation(GS2_LOCATION_TYPE_OFFICE, $post['target_office_id']);
+		else if( ($type >= '500' && $type < '700') || ($type >= '800' && $type < '900')) {
+			if(isset($post['company_id'])) {
+				$new->setWorkLocation(GS2_LOCATION_TYPE_COMPANY, $post['company_id']);
+			}
 		}
 		// 상태변경은 사무소
 		else if( $type >= '900' && $type < '999') {

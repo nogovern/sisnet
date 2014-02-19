@@ -24,38 +24,38 @@ class Destroy extends CI_Controller
 		$data['current'] = 'page-destroy';
 
 		$data['status'] = '';
-		$data['rows'] = $this->work_model->getListBy(array('type' => '600'));
+		$data['rows'] = $this->work_model->getDestroyList();
 
 		// 사무소 select 생성
 		$this->load->model('office_m', 'office_model');
 		$rows = $this->office_model->getList();
 		$arr_office = gs2_convert_for_dropdown($rows);
-		$data['select_sender'] = form_dropdown('send_office_id', $arr_office, $this->session->userdata('office_id'), 'id="send_office_id" class="form-control required"');
-		$data['select_receiver'] = form_dropdown('target_office_id', $arr_office, 0, 'id="target_office_id" class="form-control required"');
+		$data['select_office'] = form_dropdown('select_office', $arr_office, $this->session->userdata('office_id'), 'id="select_office" class="form-control required"');
 		
 		$this->load->view('work/work_destroy_list', $data);
 	}
 
 	public function register() {
-		$post_data = $this->input->post();
+		// $post_data = $this->input->post();
 
 
-		if(!count($post_data)) {
+		if(!count($this->input->post())) {
 			echo '작업중';
 		} else {
 
-			$post_data['op_type'] =  GS2_OP_TYPE_DESTROY;
-			$post_data['office_id'] = $this->input->post('send_office_id');
-			$post_data['date_request'] = date("Y-m-d");
+			$post_data['op_type'] =  $this->input->post('op_type');
+			$post_data['office_id'] = $this->input->post('select_office');
+			$post_data['date_request'] = date("now");
 
 
 			// 업무 생성
-			$op = $this->work_model->createOperation( GS2_OP_TYPE_DESTROY, $post_data);
+			$op = $this->work_model->createOperation( $this->input->post('op_type'), $post_data);
 
 			// 로그 기록
 			$log_data = array(
 				'type'		=> '1',
 				'content'	=> '폐기 업무가 생성되었음',
+				'event'		=> '생성'
 			);
 			$this->work_model->addLog($op, $log_data, TRUE);
 

@@ -332,7 +332,7 @@ class Move extends CI_Controller
 		// 업무 메인 변경
 		///////////
 		$op_data['status'] = '3';
-		$op_data['date_finish'] = '';
+		$op_data['date_finish'] = 'now';
 		$this->work_model->updateOperation($op, $op_data);
 
 		// 로그 기록
