@@ -217,7 +217,19 @@ $(document).ready(function(){
     });
   });
 
-  // 취소
+  //////////
+  // 요청취소 
+  //////////
+  $("#btn_cancel_request").click(function(){
+    if(numItem > 0) {
+      alert("먼저 등록된 장비를 삭제 후 진행해 주십시요");
+      return false;
+    }
+
+    // 이 함수 내에서 confirm 으로 확인
+    gs2_cancel_operation(_base_url + "work/move");
+  });
+
 });
 
 // 장비가 등록 되어 있는지 확인 
