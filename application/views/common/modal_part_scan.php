@@ -81,7 +81,7 @@ $(document).ready(function(){
   $(document).on('change', "#select_category", function(){
     var cat = $(":selected", this).val();
     if( cat == '0'){
-      $("#select_part").html('<option>not loaded...</option>');
+      $("#select_part").html('<option value="0">not loaded...</option>');
       return false;
     } 
       
@@ -205,6 +205,21 @@ $(document).ready(function(){
     var is_new = $(':radio[name="is_new"]:checked').val();
     var part_id = $("#select_part").val();
 
+    if(part_id == "0") {
+      alert("장비 모델을 선택하세요");
+      return false;
+    }
+
+    if(is_new == undefined) {
+      alert('장비 상태를 선택하세요');
+      return false;
+    }
+
+    if(qty < 1) {
+      alert('장비 수량을 입력하세요');
+      return false;
+    }
+
     $.ajax({
       url: "<?=base_url()?>work/move/ajax_register_scan",
       type: "POST",
@@ -256,7 +271,6 @@ $(document).ready(function(){
   });
 
 });//!-- end of ready
-
 
 // 장비 type에 따라 폼 입력 양식 변경
 function changeFormLayout(part_type) {
