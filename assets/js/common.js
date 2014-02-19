@@ -67,7 +67,7 @@ function gs2_cancel_operation(ret_url) {
     })
       .done(function(html) {
         if(html == 'success') {
-          alert('해당 업무를 취소하였습니다');
+          alert('해당 업무를 취소하였습니다\n리스트 페이지로 이동합니다');
           location.href = ret_url;
         } else {
           alert('취소 과정에서 오류 발생');
