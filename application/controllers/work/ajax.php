@@ -213,6 +213,7 @@ class Ajax extends CI_Controller
 				}
 
 				// 이동중 수량은 어디에???
+				// 비가용 수량으로 넣어야 하나???
 				// $stock->increase('s200', $qty);
 			} 
 

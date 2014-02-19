@@ -271,6 +271,7 @@ $(document).ready(function(){
     });
   });
 
+  // 메인으로 가야겠다
   display();
 });//!-- end of ready
 

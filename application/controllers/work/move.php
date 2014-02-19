@@ -281,7 +281,52 @@ class Move extends CI_Controller
 	// 이동 - 업무 완료
 	public function complete($id) {
 		$op = $this->work_model->get($id);
+		$this->load->model('part_m', 'part_model');
 
 		$items = $op->getItems();
+
+		foreach($items as $item) {
+			$part = $item->part;
+			$recv_office = gs2_decode_location($op->work_location);
+
+			$send_stock = $part->getStock($op->office->id);		// 송신 재고
+			$recv_stock = $part->getStock($recv_office->id);	// 수신 재고
+
+			// 재고량 변경
+			$qty =  $item->getQtyScan();
+			if($item->isNew()){
+				$recv_stock->increase('new', $qty);
+			} else {
+				$recv_stock->increase('used', $qty);
+			}
+			$this->work_model->_add($recv_stock);
+
+			// 시리얼장비 처리
+			if($item->part_type == '1') {
+
+				$arr['previous_location'] 	= gs2_encode_location($op->office);
+				$arr['current_location'] 	= $op->work_location;
+				$arr['is_valid'] 			= true;
+				$arr['status'] 				= '1';
+				$arr['date_enter'] 			= '';	// 입고일
+
+				$sp = $this->part_model->updateSerialPart($item->serial_part, $arr);
+			}
+		}
+
+		///////////
+		// 업무 메인 변경
+		///////////
+		$op_data['status'] = '3';
+		$op_data['date_finish'] = '';
+		$this->work_model->updateOperation($op, $op_data);
+
+		// 로그 기록
+		$log_data = array(
+			'type'		=> '1',
+			'content'	=> '이동 업무 완료합니다.',
+			'event'		=> '완료'
+		);
+		$this->work_model->addLog($op, $log_data, TRUE);
 	}
 }

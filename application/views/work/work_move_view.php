@@ -207,7 +207,14 @@ $(document).ready(function(){
 
   // 완료
   $("#btn_move_op_complete").click(function(){
+    if(!confirm("이동 업무를 완료합니다.\n완료 시 실제 재고량이 변경됩니다.\n계속 하시겠습니까?")){
+      return false;
+    }
 
+    $.get( _base_url + "work/move/complete/" + operation.id, function( data ) {
+      alert( "업무 완료!" );
+      gs2_console(data);
+    });
   });
 
   // 취소
