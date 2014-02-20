@@ -254,7 +254,21 @@ if(!function_exists('gs2_part_type')) {
     }
 }
 
- 
+// 유저 type 반환
+if(!function_exists('gs2_user_type')) {
+    function gs2_user_type() {
+        $CI =& get_instance();
+        return $CI->session->userdata('user_type');
+    }
+}
+
+// 유저 level 반환
+if(!function_exists('gs2_user_level')) {
+    function gs2_user_level() {
+        $CI =& get_instance();
+        return $CI->session->userdata('user_level');
+    }
+} 
 
 
 
