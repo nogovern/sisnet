@@ -270,5 +270,27 @@ if(!function_exists('gs2_user_level')) {
     }
 } 
 
+// 업무상태 명 리턴
+if(!function_exists('gs2_op_status')) {
+    function gs2_op_status($status, $type = 1) {
+        $CI =& get_instance();
 
+        $_config = $CI->config->item('gs2');
+        $arr = $_config['op_type' . $type];
+
+        return $arr[$status];
+    }
+} 
+
+// 업무상태 배열 리턴
+if(!function_exists('gs2_op_status_list')) {
+    function gs2_op_status_list($type = 1) {
+        $CI =& get_instance();
+
+        $_config = $CI->config->item('gs2');
+        $arr = $_config['op_type' . $type];
+
+        return $arr;
+    }
+} 
 
