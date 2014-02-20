@@ -57,7 +57,7 @@ foreach($rows as $row):
             <td><?=gs2_op_type($row->type)?></td>
             <td><?=$row->user->name?></td>
             <td><?=$company_name?></td>
-            <td>0</td>
+            <td><?=$row->getTotalRequestQty()?></td>
             <td><?=$row->office->name?></td>
             <td>
               <span class="label <?=$label_color?>"><?=constant("GS2_OP_MOVE_STATUS_" .$row->status)?></span>

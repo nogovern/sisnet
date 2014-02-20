@@ -105,15 +105,16 @@ if($item_count == 0) {
     </div>
     
     <div class="col-md-12">
-      <a class="btn btn-default" href="<?=base_url() . 'work/move'?>"><i class="fa fa-list"></i> 리스트</a>
+      <a class="btn btn-default" href="<?=base_url() . 'work/destroy'?>"><i class="fa fa-list"></i> 리스트</a>
 <?php if($op->status == '1'): ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
       <button id="btn_move_edit_form" type="button" class="btn btn-info">요청서 수정</button>
       <button id="btn_move_part_add" type="button" class="btn btn-warning">장비 등록</button>
-      <button id="btn_move_send" type="button" class="btn btn-primary">장비 발송</button>
+      <button id="btn_part_reg_complete" type="button" class="btn btn-primary">장비 등록 완료</button>
 <?php endif; ?>
 
 <?php if($op->status == '2'): ?> 
+      <button id="btn_excel_download" class="btn btn-success"><i class="fa fa-download"></i> 엑셀 다운</button>
       <button id="btn_move_part_scan" type="button" class="btn btn-primary">스캔</button>
       <button id="btn_move_op_complete" type="button" class="btn btn-success">완료</button>
 <?php endif; ?>
@@ -179,7 +180,7 @@ $(document).ready(function(){
   });
 
   // 장비발송
-  $("#btn_move_send").click(function(){
+  $("#btn_part_reg_complete").click(function(){
     if(!confirm("등록된 장비를 수신사무소로 보냅니다.\n수신처에서 장비 확인 해야 합니다")) {
       return false;
     }
@@ -248,9 +249,9 @@ function checkPartRegistered() {
   var total = 0;
 
   if(len == 0) {
-    $("#btn_move_send").prop('disabled', true);
+    $("#btn_part_reg_complete").prop('disabled', true);
   } else {
-    $("#btn_move_send").prop('disabled', false);
+    $("#btn_part_reg_complete").prop('disabled', false);
 
     $("#item_list tbody tr.op-item td:nth-child(7)").each(function(n){
       total += parseInt($(this).text(), 10);

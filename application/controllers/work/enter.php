@@ -272,14 +272,14 @@ class Enter extends CI_Controller
 							'part'		=> $item->part,
 							'part_id'	=> $item->part->id,
 							'serial_number'		=> $item->serial_number,
-							'previous_location'	=> $item->prev_location,
+							'previous_location'	=> $work->work_location,
 							'current_location'	=> $location_string,
 							'is_valid'	=> 'Y',
 							'is_new'	=> 'Y',
 							'qty'		=> 1,
 							'date_enter'=> 'now',
 							'status'	=> '1',
-							'memo'	=> '입고 업무로 들어 왔어',
+							'memo'	=> '',
 						);
 
 						$new = $this->part_model->addSerialPart($data, FALSE);
