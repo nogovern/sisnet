@@ -117,7 +117,7 @@ class Calendar_m extends MY_Model
 					gs2_hover($row->type) . $row->id, 
 					$text_style,
 					gs2_op_short_type($row->type),
-					($row->work_location) ? gs2_decode_location($row->work_location)->name : ''
+					gs2_location_name($row->getWorkLocation())
 				);
 
 				if(array_key_exists($day, $events)){

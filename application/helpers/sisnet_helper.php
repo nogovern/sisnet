@@ -113,6 +113,18 @@ if(!function_exists('gs2_decode_location')) {
     }
 }
 
+// location name 얻기
+// $location 은 [S|O|C]@ID 형식이어야 함
+if(!function_exists('gs2_location_name')) {
+    function gs2_location_name($location) {
+        if(!$location || strlen($location) < 1)
+            return "";
+        
+        $obj = gs2_decode_location($location);
+        return $obj->name;
+    }
+}
+
 // 점포 - 가맹 타입
 if(!function_exists('gs2_store_join_type')) {
     function gs2_store_join_type($type) {

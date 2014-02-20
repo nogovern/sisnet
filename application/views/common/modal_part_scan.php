@@ -315,19 +315,5 @@ function setPartInfo(info) {
   scanned_item = info.id;
 }
 
-// 스캔 처리 에 따른 화면 요소 변경
-function display() {
-  if(numScan == 0) {
-    $("#btn_scan_reset").prop('disabled', true);
-  } else {
-    $("#btn_scan_reset").prop('disabled', false);
-  }
-
-  if(numItem > 0 && numScan == numItem) {
-    $("#btn_move_op_complete").prop('disabled', false);
-  } else {
-    $("#btn_move_op_complete").prop('disabled', true);
-  }
-}
 </script>
 

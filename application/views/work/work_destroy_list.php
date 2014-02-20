@@ -48,7 +48,7 @@ foreach($rows as $row):
   if( $row->type == '601') {
     $company_name = 'GS';
   } else {
-    $company_name = is_null($row->work_location) ? '' : gs2_decode_location($row->work_location);
+    $company_name = gs2_location_name($row->work_location);
   }
 
 ?>
