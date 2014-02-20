@@ -53,7 +53,7 @@ if( $op->type == '601') {
                 <th class="col-xs-2">모델명</th>
                 <th class="col-xs-1">상태</th>
                 <th class="col-xs-1">수량</th>
-                <th class="col-xs-1">확인</th>
+                <th class="col-xs-1">직전위치</th>
                 <th class="col-xs-1"></th>
               </tr>
             </thead>
@@ -85,7 +85,7 @@ if($item_count == 0) {
                 <td><?php echo $item->part_name; ?></td>
                 <td><?php echo $item->isNew() ? '신품' : '중고'; ?></td>
                 <td><?php echo $item->getQtyRequest(); ?></td>
-                <td><?php echo $item->isComplete(); ?></td>
+                <td><?php echo gs2_location_name($item->prev_location); ?></td>
                 <td>
 <?php if($op->status == '1'){ ?>
                   <button class="btn btn-danger btn-xs remove_item" type="button">X</button>

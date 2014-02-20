@@ -441,7 +441,6 @@ class Ajax extends CI_Controller
 						$sp_data['status'] = '3';
 						$sp_data['is_valid'] = 'N';									// 가용 여부
 
-
 						$sp = $this->part_model->addSerialPart($sp_data, FALSE);
 					} 
 
@@ -450,11 +449,11 @@ class Ajax extends CI_Controller
 						// part_m 안에 updateSerialPart 로 구현하자! 
 						//////////////////////////////////////////////
 						$sp->setPreviousLocation($op->work_location);
-						$sp->setDateEnter($op->getDateFinish());
+						$sp->setCurrentLocation(gs2_encode_location($op->office));
 						$sp->setNewFlag(FALSE);
 						$sp->setValidFlag(FALSE);
 						$sp->setStatus('3');
-						$sp->setCurrentLocation(gs2_encode_location($op->office));
+						$sp->setDateEnter($op->getDateFinish());
 
 					}
 

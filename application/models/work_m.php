@@ -469,20 +469,15 @@ class Work_m extends MY_Model {
 				$sp->setStatus('7');
 				$this->em->persist($sp);
 			}
-		}
 
-		// 직전위치 저장
-		$location = '';
-		if($op->type == '100') {
-			$location = $op->work_location;		// 입고시는 납품처
-		} elseif( $op->type >= '200' && $op->type < '300') {
-			$location = 'O@' . $op->office->id;		// 설치시는 사무소
-		} elseif( $op->type >= '300' && $op->type < '400') {
-			$location = $op->work_location;		// 철수시는 점포
-		} else {
-			;
+			////////////////////
+			// 직전위치 저장 
+			////////////////////
+
+			// 시리얼넘버 없이 입고되는 장비인 경우 null 로 저장
+			$location = isset($sp) ? $sp->getPreviousLocation() : null;
+			$item->setPreviousLocation($location);
 		}
-		$item->setPreviousLocation($location);
 
 		// 여분 필드 extra 배열이 있을경우
 		if( isset($data['extra']) && count($data['extra'])) {
@@ -615,7 +610,7 @@ class Work_m extends MY_Model {
 			if($item->part_type == '1') {
 				$sp = $item->serial_part;
 				if($sp) {
-					$sp->setPreviousLocation($item->prev_location);
+					$sp->setPreviousLocation($op->office);
 					$sp->setCurrentLocation($op->work_location);
 					$sp->setDateModify();
 					$sp->setValidFlag(FALSE);		// 유효 재고에서 빠짐

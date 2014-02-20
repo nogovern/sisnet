@@ -32,7 +32,7 @@
         <div class="form-group" id="search_block" style="display:none;">
           <label class="form-label col-sm-4">&nbsp;</label>
           <div class="col-sm-5">
-            <input class="form-control" type="text" name="query" id="query">
+            <input class="form-control" type="text" name="query" id="query" style="ime-mode:disabled;">
           </div>
           <div class="col-sm-3">
               <button id="btn_search_serial" class="btn btn-info btn-sm" type="button">검색</button>
