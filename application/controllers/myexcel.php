@@ -121,16 +121,8 @@ class Myexcel extends CI_Controller {
 		$highestRow = $sheet->getHighestRow(); 
 		$highestColumn = $sheet->getHighestColumn();
 
-		//  Loop through each row of the worksheet in turn
-		for ($row_num = 1; $row_num <= $highestRow; $row_num++){ 
-		    //  Read a row of data into an array
-		    $rowData = $sheet->rangeToArray('A' . $row_num . ':' . $highestColumn . $row_num,
-		                                    NULL,
-		                                    TRUE,
-		                                    FALSE);
-		    //  Insert row data array into your database of choice here
-		    gs2_dump($rowData);
-		}
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A8', 'Hello');
 
 		echo $row_num;
 	}

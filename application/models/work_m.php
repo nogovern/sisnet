@@ -139,13 +139,32 @@ class Work_m extends MY_Model {
 	}
 
 	// 철수 목록
-	public function getCloseList() {
+	public function getCloseList($criteria = array()) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
 			->from('\Entity\Operation', 'w')
 			->where('w.type >= 300')
 			->andWhere('w.type < 400')
 			->orderBy('w.id', 'DESC');
+
+		// 검색 조건 있을 경우
+		if(count($criteria)) {
+			foreach($criteria as $key => $val) {
+				if($key == '0' || $key == 'all')
+					continue;
+				if($key == 'status') {
+					$qb->andWhere("w.status = $val");
+				} 
+
+				if($key == 'type') {
+					$qb->andWhere("w.type = $val");
+				}
+
+				if($key == 'office') {
+					$qb->andWhere("w.office = $val");
+				}
+			}
+		}
 
 		$rows = $qb->getQuery()->getResult();
 

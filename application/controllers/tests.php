@@ -346,6 +346,20 @@ class Tests extends CI_Controller {
 		);
 		$this->work_model->addLog($op, $log_data);
 	}
+
+	///////////////////////////
+	// doctrine Qeury Debug //
+	///////////////////////////
+	public function dql() {
+		$qb = $this->em->createQueryBuilder(); 
+		$qb->select("s")
+			->from("Entity\SerialPart", "s");
+
+		$query = $qb->getQuery();
+
+		gs2_dump($query->getSQL());
+		gs2_dump($query->getParameters());
+	}
 }
 
 

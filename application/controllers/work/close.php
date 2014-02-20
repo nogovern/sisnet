@@ -27,8 +27,55 @@ class Close extends CI_Controller
 		$data['title'] = '철수 >> 업무 목록';
 		$data['current'] = 'page-close';
 		$data['type'] = '';
+
+		// GET 방식의 검색 조건
+		$criteria = array();
 		
-		$data['rows'] = $this->work_model->getCloseList();
+		// 상태
+		if($this->input->get('status')) {
+			$criteria['status'] = $this->input->get('status');
+		}
+
+		// 형태
+		if($this->input->get('type')) {
+			$criteria['type'] = $this->input->get('type');
+		}
+
+		// 현재 위치 (사무소)
+		if($this->input->get('off_id') && $this->input->get('off_id') != '0') {
+			$criteria['office'] = $this->input->get('off_id');
+		}
+
+		$data['rows'] = $this->work_model->getCloseList($criteria);
+
+		// ===========
+		//  필터링 데이터
+		// ===========
+		$this->load->helper('form');
+
+		// 진행상태
+		$data['status_filter'] = form_dropdown('status', gs2_op_status_list(), $this->input->get('status'), 'id="status_filter" class="form-control"');
+
+		// 작업형태
+		$type_list = array(
+			'0'	=> '-- 전체 --',	
+			'301'	=> '폐점',	
+			'302'	=> '서비스',	
+			'303'	=> '휴점보관',	
+			'304'	=> '휴점점검',	
+			'305'	=> '교체',	
+			'306'	=> '리뉴얼',	
+		);
+		
+		$data['type_filter'] = form_dropdown('type', $type_list, $this->input->get('type'), 'id="type_filter" class="form-control"');
+
+		// 담당 사무소
+		$this->load->model('office_m', 'office_model');
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$arr_office['0'] = '--전체--';
+		$data['office_filter'] = form_dropdown('off_id', $arr_office, $this->input->get('off_id'), 'id="office_filter" class="form-control"');
+		
+		
 		$this->load->view('work/work_close_list', $data);
 	}
 
