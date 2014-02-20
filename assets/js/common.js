@@ -78,3 +78,14 @@ function gs2_cancel_operation(ret_url) {
         alert("Request failed: " + textStatus);
       });
 }
+
+// 한글 입력 검사
+//  입력값에 한글이 있으면 true 를 리턴함
+function gs2_is_hangul(str) {
+  if(str.length == 0)
+    return false;
+
+  var re = /[^A-Za-z0-9_\`\~\!\@\#\$\%\^\&\*\(\)\-\=\+\\\{\}\[\]\'\"\;\:\<\,\>\.\?\/\s]/gm;
+  
+  return re.test(str);
+}
