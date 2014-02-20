@@ -93,8 +93,24 @@ class Move extends CI_Controller
 	 * 
 	 * @return boolean [description]
 	 */
-	private function ajax_setup() {
+	private function ajax_initialize($op, $data_type = 'json') {
+		$response = new stdClass;
 		
+		// 업무 없을시 에러 처리
+		if(!$op) {
+			$error_msg = '존재하지 않는 업무 번호 입니다';
+
+			if($data_type == 'json') {
+				$response->error = true;
+				$response->error_msg = $error_msg;
+				
+				echo json_encode($response);
+			} else {
+				echo $error_msg;
+			}
+			exit;
+		} 
+
 		return true;
 	}
 
@@ -136,14 +152,10 @@ class Move extends CI_Controller
 		$error = false;
 
 		$op = $this->work_model->get($post['id']);
-		// 업무 없을시 에러
-		if(!$op) {
-			$response->error = true;
-			$response->error_msg = '존재하지 않는 업무 번호 입니다';
-			echo json_encode($response);
-			exit;
-		} 
 
+		// 에러 처러 - 응답은 json 형식
+		$this->ajax_initialize($op, 'json');
+		
 		// 시리얼넘버 없을시 에러
 		if(strlen($post['serial_number']) == 0) {
 			$response->error = true;
@@ -197,13 +209,9 @@ class Move extends CI_Controller
 		$error = false;
 
 		$op = $this->work_model->get($post['id']);
-		// 업무 없을시 에러
-		if(!$op) {
-			$response->error = true;
-			$response->error_msg = '존재하지 않는 업무 번호 입니다';
-			echo json_encode($response);
-			exit;
-		}
+		
+		// 에러 처러 - 응답은 json 형식
+		$this->ajax_initialize($op, 'json');
 
 		// 스캔 안된 장비 수 확인
 

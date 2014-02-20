@@ -35,6 +35,9 @@ class Destroy extends CI_Controller
 		$this->load->view('work/work_destroy_list', $data);
 	}
 
+	////////////
+	// 요청 등록
+	////////////
 	public function register() {
 		// $post_data = $this->input->post();
 
@@ -65,7 +68,22 @@ class Destroy extends CI_Controller
 	}
 
 	public function view($id) {
-		echo '작업중';
+		$this->load->helper('form');
+
+		$data['title'] = "폐기 업무 상세 보기";
+		$data['current'] = 'page-destroy';
+		$data['_config'] = $this->config->item('gs2');
+
+		$op = $this->work_model->get($id);
+		$data['op'] = $op;
+
+		// 장비 카테고리 dropdown
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getValidPartCategories();
+		$cats = gs2_convert_for_dropdown($cats);
+		$data['select_category'] = form_dropdown('select_category', $cats, 0, 'id="select_category" class="form-control"');
+
+		$this->load->view('work/work_destroy_view', $data);
 	}
 
 	public function update($id) {

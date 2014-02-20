@@ -45,7 +45,7 @@ foreach($rows as $row):
     default : $label_color = 'label-default';break;
   }
 
-  $receiver = gs2_decode_location($row->work_location);
+  $receiver_name = gs2_location_name($row->work_location);
 
 ?>
           <tr class="">
@@ -56,7 +56,7 @@ foreach($rows as $row):
             </td>
             <td><?=$row->user->name?></td>
             <td><?=$row->office->name?></td>
-            <td><?=$receiver->name?></td>
+            <td><?=$receiver_name?></td>
             <td><?=$row->getTotalRequestQty()?></td>
             <td><?=$row->getDateRegister();?></td>
             <td><?=$row->getDateFinish();?></td>
