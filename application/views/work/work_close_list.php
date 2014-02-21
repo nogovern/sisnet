@@ -24,7 +24,7 @@ $this->view('layout/navbar');
           </div>
 
           <div class="form-group">
-            &nbsp;&nbsp;사무소
+            &nbsp;&nbsp;사무소:
             <?php echo $office_filter; ?>
           </div>
 
@@ -58,15 +58,18 @@ $this->view('layout/navbar');
 
             <tbody>
   <?php
-  foreach($rows as $row):
-    // 상태 색
-    switch($row->status) {
-      case '1': $label_color = 'label-default';break;
-      case '2': $label_color = 'label-danger';break;
-      case '3': $label_color = 'label-info';break;
-      case '4': $label_color = 'label-success';break;
-      default : $label_color = 'label-default';break;
-    }
+  if(!count($rows)) {
+    echo '<tr><td colspan="12" class="text-center" style="">검색된 결과가 없습니다</td></tr>';
+  } else {
+    foreach($rows as $row):
+      // 상태 색
+      switch($row->status) {
+        case '1': $label_color = 'label-default';break;
+        case '2': $label_color = 'label-danger';break;
+        case '3': $label_color = 'label-info';break;
+        case '4': $label_color = 'label-success';break;
+        default : $label_color = 'label-default';break;
+      }
 
     // row 색 지정
     $tr_class = ''
@@ -88,7 +91,8 @@ $this->view('layout/navbar');
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/close/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php
-  endforeach;
+    endforeach;
+  }
   ?>
             </tbody>
 

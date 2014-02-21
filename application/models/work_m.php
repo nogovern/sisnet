@@ -160,7 +160,7 @@ class Work_m extends MY_Model {
 					$qb->andWhere("w.type = $val");
 				}
 
-				if($key == 'office') {
+				if($key == 'office' && $val > 0) {
 					$qb->andWhere("w.office = $val");
 				}
 			}
