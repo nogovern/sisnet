@@ -28,7 +28,9 @@ class Close extends CI_Controller
 		$data['current'] = 'page-close';
 		$data['type'] = '';
 
-		// GET 방식의 검색 조건
+		///////////////
+		// 검색 조건
+		///////////////
 		$criteria = array();
 		
 		// 상태
@@ -41,8 +43,7 @@ class Close extends CI_Controller
 			$criteria['type'] = $this->input->get('type');
 		}
 
-		// 사무소 
-		// 	- GET 유무 확인시 없을떄 false 로 타입까지 비교해야 함
+		// 사무소 - GET 유무 확인시 없을떄 false 로 타입까지 비교해야 함
 		if($this->input->get('off_id') === false) {
 			$criteria['office'] = (gs2_user_type() == '1') ? $this->session->userdata('office_id') : 0;
 		} else {
