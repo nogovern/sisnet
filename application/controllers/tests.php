@@ -369,7 +369,7 @@ class Tests extends CI_Controller {
 			$qb->select("s, p")
 				->from("Entity\Stock", "s")
 				->leftJoin("s.part", "p")		// JOIN
-				->where("s.office = 1")
+				// ->andWhere("s.office = 1")
 				// ->andWhere("p.category = 18")
 				->orderBy('p.id', 'ASC');
 
@@ -378,12 +378,17 @@ class Tests extends CI_Controller {
 			$query = $this->em->createQuery("SELECT s, p FROM Entity\Stock s JOIN s.part p ORDER BY p.id");
 		}
 
-		$query->setFirstResult(20)->setmaxResults(20);
+		// $query->setFirstResult(20)->setmaxResults(20);
 		$result = $query->getResult();
 		echo count($result);
-		gs2_dump($query->getSQL());
+		$arr = array();
+		foreach ($result as $idx => $row) {
+			$arr[] = $row->part->id;
+		}	
+		gs2_dump($arr);
+/*		gs2_dump($query->getSQL());
 		gs2_dump($query->getParameters());
-	}
+*/	}
 }
 
 

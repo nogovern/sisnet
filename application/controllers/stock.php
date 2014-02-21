@@ -26,19 +26,18 @@ class Stock extends CI_Controller
 	// 전체 장비 재고 리스트
 	public function lists($page=1) {
 
-		$office_id = $this->input->get('office_id');
-		if(!$office_id) {
+		$office_id = $this->input->get('off_id');
+		if($office_id === false) {
 			$office_id = $this->session->userdata('office_id');		// 유저 소속 사무소
 			
 			// 세션에 office_id 가 없는 경우
 			if(!$office_id) {
 				$office_id = 'all';
 			}
-		}
+		} 
 		
-		$data['title'] = '전체 재고 현황';
+		$data['title'] = '재고 현황 - 전체';
 		$data['current'] = 'page-stock';
-		$data['this_office'] = $office_id;
 
 		// 검색 조건
 		$criteria = array();
@@ -61,19 +60,17 @@ class Stock extends CI_Controller
 			'page_query_string'	=> FALSE
 		);
 		
-		$this->load->model('office_m', 'office_model');
-		$data['office_list'] = $this->office_model->getList();
-		
-		// 전체 재고		
-		if($office_id == 'all') {
-			// $em = $this->stock_model->getEntityManager();
-			// $data['rows'] = $em->getRepository('Entity\Part')->findAll();		// part Entity
+		//////////////////
+		// 전체 재고 
+		//////////////////
+		if($office_id == '0') {
 
 			$this->load->model('part_m', 'part_model');
+
 			// 총 결과수
 			$total_rows = $this->part_model->getRowCount($criteria);
 			$config['total_rows'] = $total_rows;
-			
+
 			// 검색 조건이 있을 경우
 			if($this->input->get()) {
 				$config['suffix'] = '/?' . http_build_query($this->input->get());
@@ -86,20 +83,33 @@ class Stock extends CI_Controller
 			// 목록 데이터
 			$offset = ($page - 1) * $num_rows;
 			$order_by = array('id' => 'desc');
+			//---------------
 			
 			$rows = $this->part_model->getListBy($criteria, $order_by, $num_rows, $offset);
 			$data['rows'] = $rows;
 
 			$this->load->view('stock_list', $data);
 		} 
-		// 사무소별 장비 재고
+		//////////////////
+		// 사무소별 장비 재고 
+		//////////////////
 		else {
-			$criteria['office'] = $this->office_model->get($office_id);
+			$criteria['office'] = $office_id;
+
+			// 장비 종류
+			if($this->input->get('cat_id')){
+				$criteria['category'] = $this->input->get('cat_id');
+			}
+
+			// 장비 모델 
+			if($this->input->get('part_id')){
+				$criteria['part'] = $this->input->get('part_id');
+			}
 
 			// 총 결과수
-			$total_rows = $this->stock_model->getRowCount($criteria);
-			$config['total_rows'] = $total_rows;
-			
+			$total_rows = $this->stock_model->numRows($criteria);
+			$config['total_rows'] = $total_rows;			
+
 			// 검색 조건이 있을 경우
 			if($this->input->get()) {
 				$config['suffix'] = '/?' . http_build_query($this->input->get());
@@ -112,19 +122,119 @@ class Stock extends CI_Controller
 			// 목록 데이터
 			$offset = ($page - 1) * $num_rows;
 			$order_by = array('id' => 'desc');
-			
-			$rows = $this->stock_model->getListBy($criteria, $order_by, $num_rows, $offset);
+			//---------------
+
+			$rows = $this->stock_model->getStocksWithPart($criteria, $num_rows, $offset);
 			$data['rows'] = $rows;
 			$data['total_rows'] = $total_rows;
 
-			// $office = $this->office_model->get($office_id);
-			// $rows = $office->getStockList();				// stock Entity
+			////////////////////
+			//  필터링 데이터
+			////////////////////
+			$this->load->helper('form');
 
-			// $data['rows'] = $rows;
+			// 장비 카테고리
+			$this->load->model('category_m', 'category_model');
+			$cats = $this->category_model->getAllPartCategories();
+			$cats = gs2_convert_for_dropdown($cats);
+			$cats['0'] = '--- 전체 ---';
+			$data['category_filter'] = form_dropdown('cat_id', $cats, $this->input->get('cat_id'), 'id="category_filter" class="form-control"');
+
+			// 담당 사무소
+			$this->load->model('office_m', 'office_model');
+			$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+			$arr_office['0'] = '--- 전체 ---';
+			$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
 
 			$this->load->view('stock_list_by_office', $data);
 		}
+	}
 
+	// 사무소별 재고 office
+	public function office($office_id = 0) {
+		if($office_id < 1) {
+			redirect('stock/lists/?office_id=all');
+		}
+
+		$data['title'] = '재고 현황 - 사무소별';
+		$data['current'] = 'page-stock';
+
+		///////////////
+		// 검색 조건
+		///////////////
+		$criteria = array();
+
+		// 재고사무소
+		if($this->input->get('off_id') !== false) {
+			$criteria['office'] = $this->input->get('off_id');
+		}
+
+		// 장비 종류
+		if($this->input->get('cat_id')){
+			$criteria['category'] = $this->input->get('cat_id');
+		}
+
+		// 장비 모델 
+		if($this->input->get('part_id')){
+			$criteria['part'] = $this->input->get('part_id');
+		}
+
+		// 재고-장비 리스트는 join 된 테이블 이므로 MY_Mydel 의 getRowCount() 를 사용할 수 없음
+		// 그래서 numRows 새로 정의
+		$total_rows= $this->stock_model->numRows($criteria);
+		$data['rows'] = $this->stock_model->getStocksWithPart($criteria);
+
+		//============
+		// pagination
+		//============
+		$this->load->library('pagination');
+
+		$num_rows = 5;
+		$base_url = base_url() . 'stock/office/';
+
+		$config = array(
+			'base_url' 		=> $base_url,
+			'prefix'		=> '',
+			'per_page'		=> $num_rows,
+			'uri_segment'	=> 4,
+			'num_links'		=> 5,
+			'use_page_numbers'	=> TRUE,
+			'page_query_string'	=> FALSE
+		);
+
+		// 총 결과수
+		$config['total_rows'] = $total_rows;
+		
+		// 검색 조건이 있을 경우
+		if($this->input->get()) {
+			$config['suffix'] = '/?' . http_build_query($this->input->get());
+			$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
+		}
+
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+		$data['total_rows'] = $total_rows;
+		
+
+		/////////////
+		//  필터링 
+		/////////////
+		$this->load->helper('form');
+
+		// 장비 카테고리
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getAllPartCategories();
+		$cats = gs2_convert_for_dropdown($cats);
+		$cats['0'] = '--- 전체 ---';
+		$data['category_filter'] = form_dropdown('cat_id', $cats, $this->input->get('cat_id'), 'id="category_filter" class="form-control"');
+
+		// 담당 사무소
+		$this->load->model('office_m', 'office_model');
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$arr_office['0'] = '--- 전체 ---';
+		$data['office_filter'] = form_dropdown('off_id', $arr_office, $office_id, 'id="office_filter" class="form-control"');
+
+		$this->load->view('stock_list_by_office', $data);
 	}
 
 	public function add() {
