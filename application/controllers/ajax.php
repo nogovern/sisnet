@@ -29,20 +29,8 @@ class Ajax extends CI_Controller
 			$category_id = $this->input->post('category_id');
 		}
 
-		$this->load->model('part_m');
-
-		$em = $this->part_m->getEntityManager();
-		$category = $em->getReference("Entity\Category", $category_id);
-		
-		// $qb = $em->createQueryBuilder();
-		// $qb->select("p")->from("Entity\Part", "p");
-		// $qb->where("p.category = :cat");
-		// $qb->andWhere("p.type != '1'");
-		// $qb->setParameter('cat', $category_id);
-		// $parts = $qb->getQuery()->getResult();
-
-		$parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
-
+		$this->load->model('part_m', 'part_model');
+		$parts = $this->part_model->getModels($category_id);
 
 		// 특정 사무소의 재고 수량을 얻을 경우
 		$office_id  = (isset($_POST['office_id']) && !empty($_POST['office_id'])) ? $_POST['office_id'] : NULL;
@@ -76,22 +64,11 @@ class Ajax extends CI_Controller
 			exit;
 		}
 
+		// 소모품 제외한 모델 목록
 		$this->load->model('part_m');
-		$em = $this->part_m->getEntityManager();
+		$parts = $this->part_m->getModelsExceptAccessory($category_id);		
 		
-		// $category = $em->getReference("Entity\Category", $category_id);
-		// $parts = $em->getRepository('Entity\Part')->findBy(array('category' => $category));
-		
-		$qb = $em->createQueryBuilder();
-		$qb->select('p')
-			->from('\Entity\Part', 'p')
-			->where("p.type != '3' ")				// 소모품 제외
-			->andWhere("p.category = :cat")
-			->orderBy('p.name', 'ASC')
-			->setParameter('cat', $category_id);
-		
-		$parts = $qb->getQuery()->getResult();
-
+		// 결과 출력
 		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 		$output = '';
 		if(count($parts)){
@@ -120,17 +97,7 @@ class Ajax extends CI_Controller
 		}
 
 		$this->load->model('part_m');
-		$em = $this->part_m->getEntityManager();
-		
-		// 이부분을 part model 로 이동해야겠다		
-		$qb = $em->createQueryBuilder();
-		$qb->select('p')
-			->from('\Entity\Part', 'p')
-			->where("p.category = :cat")
-			->orderBy('p.name', 'ASC')
-			->setParameter('cat', $category_id);
-		
-		$parts = $qb->getQuery()->getResult();
+		$parts = $this->part_m->getModels($category_id);
 
 		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 		$output = '';

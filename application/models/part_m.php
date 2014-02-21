@@ -17,17 +17,43 @@ class Part_m extends MY_Model
 
 	// 특정 카테고리의 장비 모델 목록
 	public function getModels($category_id ) {
+		return $this->getModelsBy($category_id);		
+	}
+
+	// 특정 카테고리 + 조건 장비 모델 검색
+	public function getModelsBy($category_id, $criteria = array()) {
 		$qb = $this->em->createQueryBuilder();
+		
 		$qb->select('p')
 			->from('\Entity\Part', 'p')
 			->where("p.category = :cat")
 			->orderBy('p.name', 'ASC')
 			->setParameter('cat', $category_id);
+
+		if(count($criteria)) {
+			foreach($criteria as $key => $val) {
+				$qb->andWhere("p.$key = $val");
+			}
+		}
 		
 		$result = $qb->getQuery()->getResult();
-
 		return $result;
 	}
+
+	// 소모품 제외한 모델 목록
+	public function getModelsExceptAccessory($category_id) {
+		$qb = $this->em->createQueryBuilder();
+		
+		$qb->select('p')
+			->from('\Entity\Part', 'p')
+			->where("p.category = :cat")
+			->andWhere("p.type != '3' ")				// 소모품 제외
+			->orderBy('p.name', 'ASC')
+			->setParameter('cat', $category_id);
+
+		$result = $qb->getQuery()->getResult();
+		return $result;
+	} 
 
 	// 시리얼 장비 모델 
 	// gs2_parts 내 type = 1 인 장비 검색 
