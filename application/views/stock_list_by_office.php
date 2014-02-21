@@ -180,12 +180,8 @@ $(document).ready(function() {
     var query = $(this).serialize();
     var office = $("#office_filter").val();
 
-    if(office == '0') {
-      gs2_go_page(_base_url + "stock/lists/?off_id=all");
-    } else {
-      url = _base_url + 'stock/lists/?' + query ;
-      $(this).prop('action', url);
-    }
+    url = _base_url + 'stock/lists/?' + query ;
+    $(this).prop('action', url);
 
   });
 

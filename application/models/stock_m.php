@@ -36,7 +36,7 @@ class Stock_m extends MY_Model
 			}
 
 			if($key == 'part') {
-				$qb->andWhere("p.part = $val");
+				$qb->andWhere("p.id = $val");
 			}
 		}
 
@@ -61,7 +61,7 @@ class Stock_m extends MY_Model
 			}
 
 			if($key == 'part') {
-				$qb->andWhere("p.part = $val");
+				$qb->andWhere("p.id = $val");
 			}
 		}
 

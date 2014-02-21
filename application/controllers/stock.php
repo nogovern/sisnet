@@ -27,12 +27,13 @@ class Stock extends CI_Controller
 	public function lists($page=1) {
 
 		$office_id = $this->input->get('off_id');
+
 		if($office_id === false) {
 			$office_id = $this->session->userdata('office_id');		// 유저 소속 사무소
 			
 			// 세션에 office_id 가 없는 경우
 			if(!$office_id) {
-				$office_id = 'all';
+				$office_id = '0';
 			}
 		} 
 		
@@ -87,6 +88,25 @@ class Stock extends CI_Controller
 			
 			$rows = $this->part_model->getListBy($criteria, $order_by, $num_rows, $offset);
 			$data['rows'] = $rows;
+
+			////////////////////
+			//  필터링 데이터
+			////////////////////
+			$this->load->helper('form');
+
+			// 장비 카테고리
+			$this->load->model('category_m', 'category_model');
+			$cats = $this->category_model->getAllPartCategories();
+			$cats = gs2_convert_for_dropdown($cats);
+			$cats['0'] = '--- 전체 ---';
+			$data['category_filter'] = form_dropdown('cat_id', $cats, $this->input->get('cat_id'), 'id="category_filter" class="form-control"');
+
+			// 담당 사무소
+			$this->load->model('office_m', 'office_model');
+			$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+			$arr_office['0'] = '--- 전체 ---';
+			$data['office_filter'] = form_dropdown('off_id', $arr_office, $office_id, 'id="office_filter" class="form-control"');
+
 
 			$this->load->view('stock_list', $data);
 		} 
@@ -144,7 +164,7 @@ class Stock extends CI_Controller
 			$this->load->model('office_m', 'office_model');
 			$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
 			$arr_office['0'] = '--- 전체 ---';
-			$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
+			$data['office_filter'] = form_dropdown('off_id', $arr_office, $office_id, 'id="office_filter" class="form-control"');
 
 			$this->load->view('stock_list_by_office', $data);
 		}
