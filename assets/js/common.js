@@ -89,3 +89,8 @@ function gs2_is_hangul(str) {
   
   return re.test(str);
 }
+
+// 페이지 이동
+function gs2_go_page(page_url) {
+  location.href = page_url;
+}
