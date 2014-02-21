@@ -11,35 +11,22 @@ $this->view('layout/navbar');
   </div>
   
   <!-- filter -->
-  <div class="row well well-sm">
-    <form id="filter-form" class="form-inline" role="search">
-      <div class="form-group">
-        작업구분 : 
-        <select class="form-control">
-          <option value="">입고</option>
-        </select>
-      </div>
+  <div class="well well-sm">
+    <form method="post" id="filter-form" class="form-inline" role="search">
+      <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
       <div class="form-group">
         진행상태 : 
-        <select class="form-control">
-          <option value="">--전체--</option>
-          <option value="">요청</option>
-          <option value="">확정</option>
-          <option value="">입력</option> 
-        </select>
+        <?php echo $status_filter; ?>
       </div>
+
       <div class="form-group">
-        사무소 : 
-        <select class="form-control">
-          <option value="">--전체--</option>
-          <option value="">가산</option>
-          <option value="">부산</option> 
-        </select>
+        &nbsp;&nbsp;입고처:
+        <?php echo $office_filter; ?>
       </div>
+
       <div class="form-group">
-        기간 : 
-        <button type="button" class="btn btn-primary btn-sm">검색</button> 
-        -- 아직 동작 안합니다! --
+        &nbsp;&nbsp; 
+        <button type="submit" class="btn btn-primary btn-sm">검색</button> 
       </div>
     </form>
   </div>
@@ -47,12 +34,6 @@ $this->view('layout/navbar');
   <!-- Example row of columns -->
   <div class="row">
     <div class="col-md-12">
-      <ul class="nav nav-pills">
-        <li class="<?=($type=='')?'active':''?>"><a href="#">전체</a></li>
-        <li class=""><a href="#">처리중</a></li>
-        <li class=""><a href="#">확인중</a></li>
-        <li class=""><a href="#">완료</a></li>
-      </ul>
 
       <table id="op_list" class="table table-hover ">
         <thead>
@@ -67,8 +48,7 @@ $this->view('layout/navbar');
             <th>수량(요청/리스트/입고)</th>
             <th>상태</th>
             <th>등록일</th>
-            <th>입고요청일</th>
-            <th>입고예정일</th>
+            <th>요청일</th>
             <th>완료일</th>
             <th>&nbsp;</th>
           </tr>
@@ -100,7 +80,6 @@ switch($row->status) {
               <span class="label <?=$label_color?>"><?=constant("GS2_OP_ENTER_STATUS_" .$row->status)?></span>
             </td>
             <td><?=$row->getDateRegister();?></td>
-            <td><?=$row->getDateRequest();?></td>
             <td><?=$row->getDateExpect();?></td>
             <td><?=$row->getDateFinish();?></td>
             <!--
@@ -112,7 +91,6 @@ switch($row->status) {
 endforeach;
 ?>
         </tbody>
-
       </table>
       
       <div class="well well-sm">
@@ -153,12 +131,18 @@ $(document).ready(function(){
   /////////////////////////
   $(".popover_memo").popover({trigger: 'hover', placement: 'left'});
   $(".popover").click(function(e){e.preventDefault();});
-});
 
-// 페이지 이동
-function gs2_go_page(page_url) {
-  location.href = page_url;
-}
+  ///////////////////////
+  // 검색 필터 전송 
+  ///////////////////////
+  $("#filter-form").submit(function() {
+    var url = _base_url + 'work/enter/?';
+    var query = $(this).serialize();
+    
+    $(this).prop('action', url + query);
+    // return false;
+  });
+});
 
 </script>
 

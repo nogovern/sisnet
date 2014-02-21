@@ -103,13 +103,32 @@ class Work_m extends MY_Model {
 	 * 
 	 * @return [type] [description]
 	 */
-	public function getEnterList() {
+	public function getEnterList($criteria = array()) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
 			->from('\Entity\Operation', 'w')
 			->where('w.type >= 100')
 			->andWhere('w.type < 200')
 			->orderBy('w.id', 'DESC');
+
+		// 검색 조건 있을 경우
+		if(count($criteria)) {
+			foreach($criteria as $key => $val) {
+				if($key == '0' || $key == 'all')
+					continue;
+				if($key == 'status') {
+					$qb->andWhere("w.status = $val");
+				} 
+
+				if($key == 'type') {
+					$qb->andWhere("w.type = $val");
+				}
+
+				if($key == 'office' && $val > 0) {
+					$qb->andWhere("w.office = $val");
+				}
+			}
+		}
 
 		$rows = $qb->getQuery()->getResult();
 

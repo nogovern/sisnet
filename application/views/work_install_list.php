@@ -58,14 +58,18 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
 
             <tbody>
   <?php
-  foreach($rows as $row):
-    switch($row->status) {
-      case '1': $label_color = 'label-default';break;
-      case '2': $label_color = 'label-danger';break;
-      case '3': $label_color = 'label-info';break;
-      case '4': $label_color = 'label-success';break;
-      default : $label_color = 'label-default';break;
-    }
+  if(!count($rows)) {
+    echo '<tr><td colspan="12" class="text-center" style="">검색된 결과가 없습니다</td></tr>';
+  } 
+  else {
+    foreach($rows as $row):
+      switch($row->status) {
+        case '1': $label_color = 'label-default';break;
+        case '2': $label_color = 'label-danger';break;
+        case '3': $label_color = 'label-info';break;
+        case '4': $label_color = 'label-success';break;
+        default : $label_color = 'label-default';break;
+      }
 
   ?>
               <tr class="">
@@ -85,7 +89,8 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
                 <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/install/view/') . '/' . $row->id ?>">보기</button></td>
               </tr>
   <?php
-  endforeach;
+    endforeach;
+  }
   ?>
             </tbody>
 

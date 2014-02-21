@@ -26,8 +26,39 @@ class Enter extends CI_Controller
 		$data['title'] = '입고업무';
 		$data['current'] = 'page-enter';
 
-		$data['type'] = '';
-		$data['rows'] = $this->work_model->getEnterList();
+		///////////////
+		// 검색 조건
+		///////////////
+		$criteria = array();
+		
+		// 상태
+		if($this->input->get('status')) {
+			$criteria['status'] = $this->input->get('status');
+		}
+
+		// 사무소 - GET 유무 확인시 없을떄 false 로 타입까지 비교해야 함
+		if($this->input->get('off_id') === false) {
+			$criteria['office'] = (gs2_user_type() == '1') ? $this->session->userdata('office_id') : 0;
+		} else {
+			$criteria['office'] = $this->input->get('off_id');
+		}
+
+		// 목록
+		$data['rows'] = $this->work_model->getEnterList($criteria);
+
+		////////////////////
+		//  필터링 데이터
+		////////////////////
+		$this->load->helper('form');
+
+		// 진행상태
+		$data['status_filter'] = form_dropdown('status', gs2_op_status_list(3), $this->input->get('status'), 'id="status_filter" class="form-control"');
+
+		// 담당 사무소
+		$this->load->model('office_m', 'office_model');
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$arr_office['0'] = '--전체--';
+		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
 
 		$this->load->view('work_enter_list', $data);
 	}
