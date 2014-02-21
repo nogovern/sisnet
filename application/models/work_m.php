@@ -132,7 +132,22 @@ class Work_m extends MY_Model {
 
 		$rows = $qb->getQuery()->getResult();
 
-		return $rows;
+		// 장비종류 검색이 있을 경우 
+		if(isset($criteria['category']) && $criteria['category'] > 0) {
+			$result = array();
+			foreach($rows as $op) {
+				$part = $op->getItem(0)->part;
+				if($part->category->id == $criteria['category']) {
+					$result[] = $op;
+				}
+
+			}
+			return $result;
+
+		} else {
+			return $rows;
+		}
+
 	}
 
 	/**

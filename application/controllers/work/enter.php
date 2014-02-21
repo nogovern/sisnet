@@ -43,6 +43,16 @@ class Enter extends CI_Controller
 			$criteria['office'] = $this->input->get('off_id');
 		}
 
+		// 장비 종류
+		if($this->input->get('cat_id') !== false){
+			$criteria['category'] = $this->input->get('cat_id');
+		}
+
+		// 장비 모델 
+		if($this->input->get('part_id') !== false){
+			$criteria['part'] = $this->input->get('part_id');
+		}
+
 		// 목록
 		$data['rows'] = $this->work_model->getEnterList($criteria);
 
@@ -54,10 +64,17 @@ class Enter extends CI_Controller
 		// 진행상태
 		$data['status_filter'] = form_dropdown('status', gs2_op_status_list(3), $this->input->get('status'), 'id="status_filter" class="form-control"');
 
+		// 장비 카테고리
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getAllPartCategories();
+		$cats = gs2_convert_for_dropdown($cats);
+		$cats['0'] = '--- 전체 ---';
+		$data['category_filter'] = form_dropdown('cat_id', $cats, $this->input->get('cat_id'), 'id="category_filter" class="form-control"');
+
 		// 담당 사무소
 		$this->load->model('office_m', 'office_model');
 		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
-		$arr_office['0'] = '--전체--';
+		$arr_office['0'] = '--- 전체 ---';
 		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
 
 		$this->load->view('work_enter_list', $data);

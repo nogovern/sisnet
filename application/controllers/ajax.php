@@ -90,7 +90,7 @@ class Ajax extends CI_Controller
 	 * @param  integer $category_id 
 	 * @return string              	select/option html 엘리먼트
 	 */
-	public function get_models_for_scan($category_id) {
+	public function get_models_for_scan($category_id, $use_type = 'modal') {
 		if(!$category_id) {
 			echo 'error - 카테고리 id 가 없음';
 			exit;
@@ -102,7 +102,12 @@ class Ajax extends CI_Controller
 		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 		$output = '';
 		if(count($parts)){
-			$output .= '<option value="0">--선택하세요--</option>';
+			if($use_type == 'modal') {
+				$output .= '<option value="0">--선택하세요--</option>';
+			} else {
+				$output .= '<option value="0">--- 전체 ---</option>';
+			}
+
 			foreach($parts as $p) {
 				$tpl =  '<option value="%d">%s</option>';
 				$output .= sprintf($tpl, $p->id, $p->name);

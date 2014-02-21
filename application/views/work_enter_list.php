@@ -20,6 +20,18 @@ $this->view('layout/navbar');
       </div>
 
       <div class="form-group">
+        장비종류 : 
+        <?php echo $category_filter; ?>
+      </div>
+
+      <div class="form-group">
+        장비모델: 
+        <select id="part_id" name="part_id" class="form-control">
+          <option value="0">--- 전체 ---</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         &nbsp;&nbsp;입고처:
         <?php echo $office_filter; ?>
       </div>
@@ -56,17 +68,18 @@ $this->view('layout/navbar');
 
         <tbody>
 <?php
-foreach($rows as $row):
-switch($row->status) {
-  case '1': $label_color = 'label-default';break;
-  case '2': $label_color = 'label-info';break;
-  case '3': $label_color = 'label-warning';break;
-  case '4': $label_color = 'label-success';break;
-  default : $label_color = 'label-default';break;
-}
 
+foreach($rows as $row):
+  
+  switch($row->status) {
+    case '1': $label_color = 'label-default';break;
+    case '2': $label_color = 'label-danger';break;
+    case '3': $label_color = 'label-info';break;
+    case '4': $label_color = 'label-success';break;
+    default : $label_color = 'label-default';break;
+  }
 ?>
-          <tr class="">
+          <tr data-pID="<?=$row->getItem()->part->id?>">
             <td><?=$row->id?></td>
             <td><?=gs2_get_work_name($row->type)?></td>
             <td><?=$row->user->name?></td>
@@ -106,7 +119,6 @@ endforeach;
 
 <script type="text/javascript">
 $(document).ready(function(){
-  
   // colorbox      
   $(".ajax").colorbox({'opacity': '0.6', 'width': '80%'});
   $(".iframe").colorbox({
@@ -126,6 +138,34 @@ $(document).ready(function(){
     gs2_go_page(href);
   });
 
+  // 장비 종류 선택 시 장비 목록 가져오기
+  $(document).on('change', "#category_filter", function(){
+    var cat = $(":selected", this).val();
+      
+    var target_url = _base_url + "ajax/get_models_for_scan/" + cat + '/filter';
+    $.ajax({
+      url: target_url,
+      type: "POST",
+      data: {
+        "category_filter": cat,
+        "extra": "test",
+        "csrf_test_name": $.cookie("csrf_cookie_name")
+      },
+      dataType: "html",
+    })
+      .done(function(html) {
+        gs2_console(html);
+        if(html == 'none'){
+          $("#category_filter").val(0).change();
+        } else {
+          $("#part_id").html(html);
+        }
+      })
+      .fail(function(xhr, textStatus){
+        alert("Request failed: " + textStatus);
+      });
+  });
+
   /////////////////////////
   // bootstrap 3 popover //
   /////////////////////////
@@ -142,6 +182,13 @@ $(document).ready(function(){
     $(this).prop('action', url + query);
     // return false;
   });
+
+  // 장비 종류가 선택된 경우
+  var cat_id = $("#category_filter").val();
+  if( cat_id != '0') {
+    $("#category_filter").change();
+  }
+
 });
 
 </script>
