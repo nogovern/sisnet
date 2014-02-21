@@ -142,9 +142,10 @@ $(document).ready(function(){
   $(document).on('change', "#category_filter", function(){
     var cat = $(":selected", this).val();
       
-    var target_url = _base_url + "ajax/get_models_for_scan/" + cat + '/filter';
+    var target_url = _base_url + "ajax/get_models_for_filter/" + cat + '/filter';
     $.ajax({
       url: target_url,
+      async: false,
       type: "POST",
       data: {
         "category_filter": cat,
@@ -154,12 +155,7 @@ $(document).ready(function(){
       dataType: "html",
     })
       .done(function(html) {
-        gs2_console(html);
-        if(html == 'none'){
-          $("#category_filter").val(0).change();
-        } else {
-          $("#part_id").html(html);
-        }
+        $("#part_id").html(html);
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);

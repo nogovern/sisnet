@@ -90,7 +90,7 @@ class Ajax extends CI_Controller
 	 * @param  integer $category_id 
 	 * @return string              	select/option html 엘리먼트
 	 */
-	public function get_models_for_scan($category_id, $use_type = 'modal') {
+	public function get_models_for_scan($category_id) {
 		if(!$category_id) {
 			echo 'error - 카테고리 id 가 없음';
 			exit;
@@ -102,11 +102,7 @@ class Ajax extends CI_Controller
 		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 		$output = '';
 		if(count($parts)){
-			if($use_type == 'modal') {
-				$output .= '<option value="0">--선택하세요--</option>';
-			} else {
-				$output .= '<option value="0">--- 전체 ---</option>';
-			}
+			$output .= '<option value="0">--선택하세요--</option>';
 
 			foreach($parts as $p) {
 				$tpl =  '<option value="%d">%s</option>';
@@ -117,6 +113,32 @@ class Ajax extends CI_Controller
 		} else {
 			echo 'none';
 		}
+	}
+
+	/**
+	 * 필터용 장비 모델 리스트
+	 * 
+	 * @param  integer $category_id 
+	 * @return string              	select/option html 엘리먼트
+	 */
+	public function get_models_for_filter($category_id) {
+		if(empty($category_id)) {
+			$parts = array();
+		} else {
+			$this->load->model('part_m');
+			$parts = $this->part_m->getModels($category_id);
+		}
+
+		header('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+		$output = '';
+		$output .= '<option value="0">--- 전체 ---</option>';
+
+		foreach($parts as $p) {
+			$tpl =  '<option value="%d">%s</option>';
+			$output .= sprintf($tpl, $p->id, $p->name);
+		}	
+
+		echo $output;
 	}
 
 	// 시리얼로  장비 검색

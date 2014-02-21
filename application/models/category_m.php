@@ -40,7 +40,8 @@ class Category_m extends MY_Model
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('c')
 			->from('Entity\Category', 'c')
-			->where("c.parent = 1");
+			->where("c.parent = 1")
+			->orderBy("c.name", "DESC");
 
 		$cats = $qb->getQuery()->getResult();
 

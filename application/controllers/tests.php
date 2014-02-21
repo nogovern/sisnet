@@ -1,4 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * 테스트 컨트롤러
  */
@@ -357,6 +359,28 @@ class Tests extends CI_Controller {
 
 		$query = $qb->getQuery();
 
+		gs2_dump($query->getSQL());
+		gs2_dump($query->getParameters());
+	}
+
+	public function dql_stock() {
+		if(1) {
+			$qb = $this->em->createQueryBuilder(); 
+			$qb->select("s, p")
+				->from("Entity\Stock", "s")
+				->leftJoin("s.part", "p")		// JOIN
+				->where("s.office = 1")
+				// ->andWhere("p.category = 18")
+				->orderBy('p.id', 'ASC');
+
+			$query = $qb->getQuery();
+		} else {
+			$query = $this->em->createQuery("SELECT s, p FROM Entity\Stock s JOIN s.part p ORDER BY p.id");
+		}
+
+		$query->setFirstResult(20)->setmaxResults(20);
+		$result = $query->getResult();
+		echo count($result);
 		gs2_dump($query->getSQL());
 		gs2_dump($query->getParameters());
 	}
