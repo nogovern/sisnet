@@ -14,21 +14,7 @@ class Ajax extends CI_Controller
 	public function index() {
 		show_404();
 	}
-
-	public function request_enter_form($part_id) {
-		if(empty($part_id)){
-			trigger_error("장비 ID는 필수입니다.");
-			exit;
-		}
-
-		$this->load->library('form_validation');
-		$this->load->helper('form');
-
-		$data['title'] = '장비 입고 요청서';
-
-		$this->load->view('popup_request_enter_form', $data);
-	}
-
+	
 	/**
 	 * 출고용 장비 모델 리스트 반환
 	 * - 담당 사무소의 재고량 도 함께 불러온다 
