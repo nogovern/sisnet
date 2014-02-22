@@ -26,7 +26,6 @@ class Close extends CI_Controller
 	public function lists() {
 		$data['title'] = '철수 >> 업무 목록';
 		$data['current'] = 'page-close';
-		$data['type'] = '';
 
 		///////////////
 		// 검색 조건

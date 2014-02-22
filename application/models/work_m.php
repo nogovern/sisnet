@@ -78,7 +78,7 @@ class Work_m extends MY_Model {
 	protected function _getOpList($type) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select("w")
-			->from("\Entity\Operation", "w")
+			->from("Entity\Operation", "w")
 			->where("w.type >= :type")
 			->andWhere("w.type < :type2")
 			->orderBy("w.id", "DESC");
@@ -106,7 +106,7 @@ class Work_m extends MY_Model {
 	public function getEnterList($criteria = array()) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
-			->from('\Entity\Operation', 'w')
+			->from('Entity\Operation', 'w')
 			->where('w.type >= 100')
 			->andWhere('w.type < 200')
 			->orderBy('w.id', 'DESC');
@@ -158,7 +158,7 @@ class Work_m extends MY_Model {
 	public function getInstallList($criteria = array()) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
-			->from('\Entity\Operation', 'w')
+			->from('Entity\Operation', 'w')
 			->where('w.type >= 200')
 			->andWhere('w.type < 300')
 			->orderBy('w.id', 'DESC');
@@ -195,7 +195,7 @@ class Work_m extends MY_Model {
 	public function getCloseList($criteria = array()) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
-			->from('\Entity\Operation', 'w')
+			->from('Entity\Operation', 'w')
 			->where('w.type >= 300')
 			->andWhere('w.type < 400')
 			->orderBy('w.id', 'DESC');
@@ -230,10 +230,9 @@ class Work_m extends MY_Model {
 
 	// 상태변경 업무 목록
 	public function getChangeList() {
-		// return $this->_getOpList(900);
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
-			->from('\Entity\Operation', 'w')
+			->from('Entity\Operation', 'w')
 			->where('w.type >= 900')
 			->orderBy('w.id', 'DESC');
 
@@ -241,8 +240,31 @@ class Work_m extends MY_Model {
 	}
 
 	// 교체 업무 목록
-	public function getReplaceList() {
-		return $this->_getOpList(400);
+	public function getReplaceList($criteria = array(), $limit=0, $offset=0) {
+		
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w')
+			->from('Entity\Operation', 'w')
+			->where('w.type >= 400')
+			->andWhere('w.type < 500')
+			->orderBy('w.id', 'DESC');
+
+		foreach($criteria as $key => $val) {
+			if($val > 0) {
+				$qb->andWhere("w.$key = $val");
+			}
+		}
+		//////// 여기 까지 공통 ////////
+
+		if($offset > 0) {
+			$qb->setFirstResult($offset);
+		}
+
+		if($limit > 0) {
+			$qb->setmaxResults($limit);
+		}
+
+		return $qb->getQuery()->getResult();
 	}
 
 	// 폐기 업무 목록
@@ -254,7 +276,7 @@ class Work_m extends MY_Model {
 	public function getMoveList() {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('w')
-			->from('\Entity\Operation', 'w')
+			->from('Entity\Operation', 'w')
 			->where('w.type >= 700')
 			->andWhere('w.type < 800')
 			->orderBy('w.id', 'DESC');
@@ -805,7 +827,7 @@ class Work_m extends MY_Model {
 
 			// 다른 작업이 이미 '완료' 상태이면 교체 업무을 완료로 변경한다.
 			if($sibling->status == '4') {
-				$data['status'] 		= '4';
+				$data['status'] 		= '3';
 				$data['date_finish']	=  $me->getDateFinish(TRUE);
 
 				$this->updateOperation($parent, $data);

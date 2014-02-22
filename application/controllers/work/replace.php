@@ -21,8 +21,51 @@ class Replace extends CI_Controller
 		$data['title'] = '교체 업무';
 		$data['current'] = 'page-replace';
 
-		$data['status'] = '';
-		$data['rows'] = $this->work_model->getReplaceList();
+		///////////////
+		// 검색 조건
+		///////////////
+		$criteria = array();
+		
+		$criteria['status'] = $this->input->get('status'); 		// 상태
+		$criteria['type'] = $this->input->get('type');			// 형태
+
+		// 사무소 - GET 유무 확인시 없을떄 false 로 타입까지 비교해야 함
+		if($this->input->get('off_id') === false) {
+			$criteria['office'] = (gs2_user_type() == '1') ? $this->session->userdata('office_id') : 0;
+		} else {
+			$criteria['office'] = $this->input->get('off_id');
+		}
+
+		$data['rows'] = $this->work_model->getReplaceList($criteria);
+
+		// ===============
+		//  필터링 데이터
+		// ===============
+		$this->load->helper('form');
+
+		// 진행상태
+		$st_list = array(
+			'0'	=> '-- 전체 --',	
+			'1'	=> '요청',	
+			'2'	=> '확정',	
+			'3'	=> '완료',	
+			'4'	=> '승인',	
+		);
+		$data['status_filter'] = form_dropdown('status', $st_list, $this->input->get('status'), 'id="status_filter" class="form-control"');
+
+		// 작업형태
+		$type_list = array(
+			'0'	=> '-- 전체 --',	
+		);
+		
+		$data['type_filter'] = form_dropdown('type', $type_list, $this->input->get('type'), 'id="type_filter" class="form-control"');
+
+		// 담당 사무소
+		$this->load->model('office_m', 'office_model');
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$arr_office['0'] = '--전체--';
+		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
+		
 		
 		$this->load->view('work/work_replace_list', $data);
 	}
