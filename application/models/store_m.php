@@ -2,7 +2,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* Storm 모델
+* Store 모델
 */
 class Store_m extends MY_Model
 {

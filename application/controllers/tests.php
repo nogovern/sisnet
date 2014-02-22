@@ -405,6 +405,28 @@ class Tests extends CI_Controller {
 
 	}
 
+	// 폐기,수리 대기 장비
+	public function wait_part() {
+		$this->load->model('waitpart_m');
+
+		$result = $this->waitpart_m->all();
+		echo count($result);
+
+		$post['gubun']		= 'R';
+		$post['op_id']		= 3;
+		$post['part_id']	= 5;
+		$post['qty']		= 5;
+		$post['part_type']	= '1';
+		$post['serial_id']	= '10';		// 시리얼넘버는 자동으로 채운다
+
+		$new = $this->waitpart_m->create($post);
+		echo $new->id;
+
+		// $this->waitpart_m->remove($new);
+		$this->em->flush();
+
+	}
+
 }
 
 
