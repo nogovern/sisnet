@@ -1,5 +1,6 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class Work_m extends MY_Model {
 	private $operation;
@@ -69,34 +70,6 @@ class Work_m extends MY_Model {
 		;
 	}
 
-	/**
-	 * [공통] 업무 목록 
-	 * 
-	 * @param  string $type 100/200/300 ...
-	 * @return [type]       [description]
-	 */
-	protected function _getOpList($type) {
-		$qb = $this->em->createQueryBuilder();
-		$qb->select("w")
-			->from("Entity\Operation", "w")
-			->where("w.type >= :type")
-			->andWhere("w.type < :type2")
-			->orderBy("w.id", "DESC");
-
-		$qb->setParameter('type', $type);
-		$qb->setParameter('type2', $type+100);
-
-		$rows = $qb->getQuery()->getResult();
-
-		// need refactoring
-		// -- 기능의 최소화
-		// -- 여기서 하는것 보다 컨드롤 에서 하는게 나을 듯...
-		foreach($rows as $row) {
-			$row->store = ($row->work_location) ? gs2_decode_location($row->work_location) : '';
-		}
-		
-		return $rows;
-	}
 
 	/**
 	 * 입고 목록
@@ -150,138 +123,77 @@ class Work_m extends MY_Model {
 
 	}
 
+	////////////////
+	// 업무 리스트 공통 (입고만 예외)
+	////////////////
+	public function getOperations($type, $criteria=array(), $limit = 0, $offset = 0, $order=array()) {
+		$next_type = $type + 99;
+
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('w');
+		$qb->from('Entity\Operation', 'w')
+			->where("w.type >= $type")
+			->andWhere("w.type <= $next_type")
+			->orderBy('w.id', 'DESC');
+
+		// 올바른 검색키 배열
+		$valid_key = array('type', 'office', 'worker', 'status');
+
+		foreach($criteria as $key => $val) {
+			$key = ($key == 'all') ? 0 : $key;
+
+			if(!in_array($key, $valid_key)) {
+				log_message('error', "$key 는 허용되지 않는 검색 옵션입니다");
+			} else {
+				if($val > 0) {
+					$qb->andWhere("w.$key = $val");
+				}
+			}
+		}
+
+		$query = $qb->setFirstResult($offset)->setMaxResults($limit)->getQuery();
+		return $query->getResult();
+
+	}
+
 	/**
-	 * 설치 업무 목록 - doctrine query builder 사용
+	 * 설치 업무 목록
 	 * 
 	 * @return  array of objects [description]
 	 */
 	public function getInstallList($criteria = array()) {
-		$qb = $this->em->createQueryBuilder();
-		$qb->select('w')
-			->from('Entity\Operation', 'w')
-			->where('w.type >= 200')
-			->andWhere('w.type < 300')
-			->orderBy('w.id', 'DESC');
-
-		// 검색 조건 있을 경우
-		if(count($criteria)) {
-			foreach($criteria as $key => $val) {
-				if($key == '0' || $key == 'all')
-					continue;
-				if($key == 'status') {
-					$qb->andWhere("w.status = $val");
-				} 
-
-				if($key == 'type') {
-					$qb->andWhere("w.type = $val");
-				}
-
-				if($key == 'office' && $val > 0) {
-					$qb->andWhere("w.office = $val");
-				}
-			}
-		}
-
-		$rows = $qb->getQuery()->getResult();
-
-		// 설치 업무의 작업 장소는 "점포"
-		foreach($rows as $row) {
-			$row->store = gs2_decode_location($row->work_location);
-		}
-		return $rows;
+		$result = $this->getOperations(GS2_OP_TYPE_INSTALL, $criteria);
+		return $result;
 	}
 
 	// 철수 목록
 	public function getCloseList($criteria = array()) {
-		$qb = $this->em->createQueryBuilder();
-		$qb->select('w')
-			->from('Entity\Operation', 'w')
-			->where('w.type >= 300')
-			->andWhere('w.type < 400')
-			->orderBy('w.id', 'DESC');
-
-		// 검색 조건 있을 경우
-		if(count($criteria)) {
-			foreach($criteria as $key => $val) {
-				if($key == '0' || $key == 'all')
-					continue;
-				if($key == 'status') {
-					$qb->andWhere("w.status = $val");
-				} 
-
-				if($key == 'type') {
-					$qb->andWhere("w.type = $val");
-				}
-
-				if($key == 'office' && $val > 0) {
-					$qb->andWhere("w.office = $val");
-				}
-			}
-		}
-
-		$rows = $qb->getQuery()->getResult();
-
-		// 작업 장소는 "점포"
-		foreach($rows as $row) {
-			$row->store = gs2_decode_location($row->work_location);
-		}
-		return $rows;
+		$result = $this->getOperations(GS2_OP_TYPE_CLOSE, $criteria);
+		return $result;
 	}
 
 	// 상태변경 업무 목록
-	public function getChangeList() {
-		$qb = $this->em->createQueryBuilder();
-		$qb->select('w')
-			->from('Entity\Operation', 'w')
-			->where('w.type >= 900')
-			->orderBy('w.id', 'DESC');
-
-		return $qb->getQuery()->getResult();
+	public function getChangeList($criteria = array()) {
+		$result = $this->getOperations(GS2_OP_TYPE_CHANGE, $criteria);
+		return $result;
 	}
 
 	// 교체 업무 목록
 	public function getReplaceList($criteria = array(), $limit=0, $offset=0) {
-		
-		$qb = $this->em->createQueryBuilder();
-		$qb->select('w')
-			->from('Entity\Operation', 'w')
-			->where('w.type >= 400')
-			->andWhere('w.type < 500')
-			->orderBy('w.id', 'DESC');
-
-		foreach($criteria as $key => $val) {
-			if($val > 0) {
-				$qb->andWhere("w.$key = $val");
-			}
-		}
-		//////// 여기 까지 공통 ////////
-
-		if($offset > 0) {
-			$qb->setFirstResult($offset);
-		}
-
-		if($limit > 0) {
-			$qb->setmaxResults($limit);
-		}
-
-		return $qb->getQuery()->getResult();
+		$result = $this->getOperations(GS2_OP_TYPE_REPLACE, $criteria, $limit, $offset);
+		return $result;
 	}
 
 	// 폐기 업무 목록
 	public function getDestroyList() {
-		return $this->_getOpList(600);
+		$result = $this->getOperations(GS2_OP_TYPE_DESTROY);
+		return $result;
 	}
 
 	// 이동 업무 목록
-	public function getMoveList() {
-		$qb = $this->em->createQueryBuilder();
-		$qb->select('w')
-			->from('Entity\Operation', 'w')
-			->where('w.type >= 700')
-			->andWhere('w.type < 800')
-			->orderBy('w.id', 'DESC');
-
-		return $qb->getQuery()->getResult();
+	public function getMoveList($criteria=array()) {
+		$result = $this->getOperations(GS2_OP_TYPE_MOVE, $criteria);
+		return $result;
 	}
 
 	///////////////

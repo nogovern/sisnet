@@ -70,23 +70,8 @@ define('GS2_LOCATION_TYPE_STORE', 	'S');			// 점포
 // 작업 관려
 //////////////
 define('GS2_OP_TYPE_ENTER', 	'100');		// 입고
-
 define('GS2_OP_TYPE_INSTALL', 	'200');		// 설치
-define('GS2_OP_TYPE_INSTALL_1', '201');		// 설치 - 신규
-define('GS2_OP_TYPE_INSTALL_2', '202');		// 설치 - 서비스
-define('GS2_OP_TYPE_INSTALL_3', '203');		// 설치 - 개점C (보관)
-define('GS2_OP_TYPE_INSTALL_4', '204');		// 설치 - 개점S (점검)
-define('GS2_OP_TYPE_INSTALL_5', '205');		// 설치 - 교체
-define('GS2_OP_TYPE_INSTALL_6', '206');		// 설치 - 리뉴얼
-
 define('GS2_OP_TYPE_CLOSE',		'300');		// 철수
-define('GS2_OP_TYPE_CLOSE_1',	'301');		// 철수 - 폐점
-define('GS2_OP_TYPE_CLOSE_2',	'302');		// 철수 - 서비스
-define('GS2_OP_TYPE_CLOSE_3',	'303');		// 철수 - 휴점C (보관)
-define('GS2_OP_TYPE_CLOSE_4',	'304');		// 철수 - 휴점S (점검)
-define('GS2_OP_TYPE_CLOSE_5',	'305');		// 철수 - 교체
-define('GS2_OP_TYPE_CLOSE_6',	'306');		// 철수 - 리뉴얼
-
 define('GS2_OP_TYPE_REPLACE', 	'400');		// 교체
 define('GS2_OP_TYPE_REPAIR', 	'500');		// 수리
 define('GS2_OP_TYPE_DESTROY', 	'600');		// 폐기

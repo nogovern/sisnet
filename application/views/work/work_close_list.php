@@ -72,12 +72,16 @@ $this->view('layout/navbar');
       }
 
     // row 색 지정
-    $tr_class = ''
+    $tr_class = '';
+
+    // 점포명
+    $store = gs2_decode_location($row->work_location);
+    $store_name = ($store) ? $store->name : '';
   ?>
               <tr class="<?=$tr_class?>">
                 <td><?=$row->id?></td>
                 <td><?=gs2_op_type($row->type)?></td>
-                <td><?=$row->store->name?></td>
+                <td><?=$store_name?></td>
                 <td><?=$row->user->name?></td>
                 <td><?=$row->office->name?></td>
                 <td>
@@ -138,7 +142,6 @@ $this->view('layout/navbar');
         var query = $(this).serialize();
         
         $(this).prop('action', url + query);
-        // return false;
       });
     });
 

@@ -71,11 +71,15 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
         default : $label_color = 'label-default';break;
       }
 
+      // 점포명
+    $store = gs2_decode_location($row->work_location);
+    $store_name = ($store) ? $store->name : '';
+
   ?>
               <tr class="">
                 <td><?=$row->id?></td>
                 <td><?=gs2_op_type($row->type)?></td>
-                <td><?=$row->store->name?></td>
+                <td><?=$store_name?></td>
                 <td><?=$row->user->name?></td>
                 <td><?=$row->office->name?></td>
                 <td>
