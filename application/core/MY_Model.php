@@ -148,6 +148,12 @@ class MY_Model extends CI_Model {
 		}
 	}
 
+	// 결과행 수를 dql 형식으로 계산
+	public function getRowCount2($criteria) {
+		$qb = $this->em->createQueryBuilder();
+
+	}
+
 	// 모든 리스트 불러오기
 	public function getListAll($entity_name=NULL) {
 		if(NULL === $entity_name) {
@@ -164,6 +170,8 @@ class MY_Model extends CI_Model {
 		
 		return $rows;	
 	}
+
+
 
 }
 

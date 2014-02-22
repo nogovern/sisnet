@@ -180,6 +180,49 @@ $(document).ready(function() {
       'height'  : '90%'
     });
   });
+
+  // 장비 종류 선택 시 장비 목록 가져오기
+  $(document).on('change', "#category_filter", function(){
+    var cat = $(":selected", this).val();
+      
+    var target_url = _base_url + "ajax/get_models_for_filter/" + cat + '/filter';
+    $.ajax({
+      url: target_url,
+      async: false,
+      type: "POST",
+      data: {
+        "category_filter": cat,
+        "extra": "test",
+        "csrf_test_name": $.cookie("csrf_cookie_name")
+      },
+      dataType: "html",
+    })
+      .done(function(html) {
+        $("#part_id").html(html);
+      })
+      .fail(function(xhr, textStatus){
+        alert("Request failed: " + textStatus);
+      });
+  });
+
+  ///////////////////////
+  // 검색 필터 전송 
+  ///////////////////////
+  $("#filter-form").submit(function() {
+    var url;
+    var query = $(this).serialize();
+
+    url = _base_url + 'stock/lists/?' + query ;
+    $(this).prop('action', url);
+
+  });
+
+  // 장비 종류가 선택된 경우
+  var cat_id = $("#category_filter").val();
+  if( cat_id != '0') {
+    $("#category_filter").change();
+  }
+  
 });
 </script>
 

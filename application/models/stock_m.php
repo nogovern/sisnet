@@ -16,7 +16,15 @@ class Stock_m extends MY_Model
 		$this->setEntityName('Stock');
 	}
 
-	// 재고 - 장비 리스트를 반환
+	// 
+	/**
+	 * 재고 - 장비 리스트를 반환
+	 * 
+	 * @param  array   $criteria 	검색조건 배열
+	 * @param  integer $limit 	한페이에 보일 행수
+	 * @param  integer $offset 	가져올 offset
+	 * @return [type]
+	 */
 	public function getStocksWithPart($criteria=array(), $limit=20, $offset=0) {
 		
 		$qb = $this->em->createQueryBuilder(); 
@@ -27,45 +35,51 @@ class Stock_m extends MY_Model
 
 		// 검색조건
 		foreach($criteria as $key => $val) {
-			if($key == 'office') {
+			if($val > 0 && $key == 'office') {
 				$qb->andWhere("s.office = $val");
 			}
 
-			if($key == 'category') {
+			if($val > 0 && $key == 'category') {
 				$qb->andWhere("p.category = $val");
 			}
 
-			if($key == 'part') {
+			if($val > 0 && $key == 'part') {
 				$qb->andWhere("p.id = $val");
 			}
 		}
 
-		$query = $qb->setFirstResult($offset)->setmaxResults($limit)->getQuery();
+		$qb->setFirstResult($offset)->setmaxResults($limit);
+		$query = $qb->getQuery();
+
 		return $query->getResult();
 	} 
 
+	// 테이블 row 수 계산
 	public function numRows($criteria=array()) {
-		$qb = $this->em->createQueryBuilder(); 
-		$qb->select("s, p")
-			->from("Entity\Stock", "s")
-			->leftJoin("s.part", "p")		// JOIN
-			->orderBy('p.id', 'ASC');
 
+		$qb = $this->em->createQueryBuilder(); 
+		$qb->select("COUNT(s.id)")
+			->from("Entity\Stock", "s")
+			->leftJoin("s.part", "p");		
+
+		// 검색조건
 		foreach($criteria as $key => $val) {
-			if($key == 'office') {
+			if($val > 0 && $key == 'office') {
 				$qb->andWhere("s.office = $val");
 			}
 
-			if($key == 'category') {
+			if($val > 0 && $key == 'category') {
 				$qb->andWhere("p.category = $val");
 			}
 
-			if($key == 'part') {
+			if($val > 0 && $key == 'part') {
 				$qb->andWhere("p.id = $val");
 			}
 		}
 
-		$result = $qb->getQuery()->getResult();
-		return count($result);
+		$query = $qb->getQuery();
+		$count = $query->getSingleScalarResult();
+
+		return $count;
 	}
 }

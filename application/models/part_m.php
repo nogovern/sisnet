@@ -17,27 +17,58 @@ class Part_m extends MY_Model
 
 	// 특정 카테고리의 장비 모델 목록
 	public function getModels($category_id ) {
-		return $this->getModelsBy($category_id);		
+		$criteria['category'] = $category_id;
+		return $this->getModelsBy($criteria);		
 	}
 
 	// 특정 카테고리 + 조건 장비 모델 검색
-	public function getModelsBy($category_id, $criteria = array()) {
-		$qb = $this->em->createQueryBuilder();
+	public function getModelsBy($criteria = array(), $limit=0, $offset=0) {
 		
+		$qb = $this->em->createQueryBuilder();
 		$qb->select('p')
 			->from('\Entity\Part', 'p')
-			->where("p.category = :cat")
-			->orderBy('p.name', 'ASC')
-			->setParameter('cat', $category_id);
+			->orderBy('p.category', 'ASC');
 
-		if(count($criteria)) {
-			foreach($criteria as $key => $val) {
+		foreach($criteria as $key => $val) {
+			if($val > 0) {
+
+				if( $key == 'part') {
+					$key = "id";
+				}
+
 				$qb->andWhere("p.$key = $val");
 			}
 		}
 		
+		$qb->setFirstResult($offset)->setmaxResults($limit);
 		$result = $qb->getQuery()->getResult();
+
 		return $result;
+	}
+
+	// 결과 수 반환
+	public function numRows($criteria = array()) {
+
+		$qb = $this->em->createQueryBuilder(); 
+		$qb->select('count(p.id)')
+			->from('\Entity\Part', 'p')
+			->orderBy('p.category', 'ASC');
+
+		foreach($criteria as $key => $val) {
+			if($val > 0) {
+
+				if( $key == 'part') {
+					$key = "id";
+				}
+
+				$qb->andWhere("p.$key = $val");
+			}
+		}
+
+		$query = $qb->getQuery();
+		$count = $query->getSingleScalarResult();
+
+		return $count;
 	}
 
 	// 소모품 제외한 모델 목록

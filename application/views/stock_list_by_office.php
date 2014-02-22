@@ -165,6 +165,7 @@ $(document).ready(function() {
       dataType: "html",
     })
       .done(function(html) {
+        // gs2_console(html);
         $("#part_id").html(html);
       })
       .fail(function(xhr, textStatus){
@@ -178,7 +179,6 @@ $(document).ready(function() {
   $("#filter-form").submit(function() {
     var url;
     var query = $(this).serialize();
-    var office = $("#office_filter").val();
 
     url = _base_url + 'stock/lists/?' + query ;
     $(this).prop('action', url);

@@ -388,7 +388,23 @@ class Tests extends CI_Controller {
 		gs2_dump($arr);
 /*		gs2_dump($query->getSQL());
 		gs2_dump($query->getParameters());
-*/	}
+*/	
+	}
+
+	// 결과수를 계산하는 예제
+	public function row_count() {
+		$qb = $this->em->createQueryBuilder(); 
+		$qb->select("count(s.id)")
+			->from("Entity\SerialPart", "s");
+
+		$query = $qb->getQuery();
+		$count = $query->getSingleScalarResult();
+
+		gs2_dump($query->getSQL());
+		echo $count;
+
+	}
+
 }
 
 
