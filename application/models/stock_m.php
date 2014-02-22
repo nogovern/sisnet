@@ -82,4 +82,20 @@ class Stock_m extends MY_Model
 
 		return $count;
 	}
+
+	// 생성
+	public function create($data, $do_flush = false) {
+
+	}
+
+	// 수정	
+	public function update($id, $data, $do_flush = false) {
+
+	}
+
+	// 삭제
+	public function remove($id, $do_flush = false) {
+
+	}
 }
+

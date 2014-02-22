@@ -383,23 +383,6 @@ class Part_m extends MY_Model
 		return $result;
 	}
 
-	///////////
-	// 틀만 만들어 놓은 - 사용 여부는 미정
-	////////////
-	public function getStock($office_id) {
-		$stock_arr = array(
-			'part'		=> $part,
-			'office'	=> $op->office,
-			'new'		=> 0,
-			'used' 		=> 0,
-			'minimum'	=> 0
-		);
-	}
-
-	public function getStockIfExist($office_id) {
-
-	}
-
 	/**
 	 * 시리얼 장비 직전위치로 검색
 	 *
@@ -450,6 +433,38 @@ class Part_m extends MY_Model
 
 		$rows = $qb->getQuery()->getResult();
 		return $rows;
+	}
+
+	// 생성
+	public function create($data, $do_flush = false) {
+
+	}
+
+	// 수정	
+	public function update($id, $data, $do_flush = false) {
+
+	}
+
+	// 삭제
+	public function remove($id, $do_flush = false) {
+
+	}
+
+	///////////
+	// 틀만 만들어 놓은 - 사용 여부는 미정
+	////////////
+	public function getStock($office_id) {
+		$stock_arr = array(
+			'part'		=> $part,
+			'office'	=> $op->office,
+			'new'		=> 0,
+			'used' 		=> 0,
+			'minimum'	=> 0
+		);
+	}
+
+	public function getStockIfExist($office_id) {
+
 	}
 }
 
