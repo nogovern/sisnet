@@ -23,13 +23,55 @@ class Destroy extends CI_Controller
 		$data['title'] = '폐기 업무';
 		$data['current'] = 'page-destroy';
 
-		$data['status'] = '';
-		$data['rows'] = $this->work_model->getDestroyList();
+		///////////////
+		// 검색 조건
+		///////////////
+		$criteria = array();
+		
+		// 상태
+		if($this->input->get('status')) {
+			$criteria['status'] = $this->input->get('status');
+		}
 
-		// 사무소 select 생성
+		// 형태
+		if($this->input->get('type')) {
+			$criteria['type'] = $this->input->get('type');
+		}
+
+		// 사무소 - GET 유무 확인시 없을떄 false 로 타입까지 비교해야 함
+		if($this->input->get('off_id') === false) {
+			$criteria['office'] = (gs2_user_type() == '1') ? $this->session->userdata('office_id') : 0;
+		} else {
+			$criteria['office'] = $this->input->get('off_id');
+		}
+
+		$data['rows'] = $this->work_model->getOperations(GS2_OP_TYPE_DESTROY, $criteria);
+
+		// ===============
+		//  필터링 데이터
+		// ===============
+		$this->load->helper('form');
+
+		// 진행상태
+		$data['status_filter'] = form_dropdown('status', gs2_op_status_list('2'), $this->input->get('status'), 'id="status_filter" class="form-control"');
+
+		// 작업형태
+		$type_list = array(
+			'0'	=> '-- 전체 --',	
+			'601'	=> '폐기-승인',	
+			'602'	=> '폐기-출고',	
+		);
+		
+		$data['type_filter'] = form_dropdown('type', $type_list, $this->input->get('type'), 'id="type_filter" class="form-control"');
+
+		// 담당 사무소
 		$this->load->model('office_m', 'office_model');
-		$rows = $this->office_model->getList();
-		$arr_office = gs2_convert_for_dropdown($rows);
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$arr_office['0'] = '--전체--';
+		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
+
+		/////////////////////////// modal 요청서 용 ////////
+		// 사무소 select 생성
 		$data['select_office'] = form_dropdown('select_office', $arr_office, $this->session->userdata('office_id'), 'id="select_office" class="form-control required"');
 		
 		$this->load->view('work/work_destroy_list', $data);

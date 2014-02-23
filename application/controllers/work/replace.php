@@ -36,7 +36,7 @@ class Replace extends CI_Controller
 			$criteria['office'] = $this->input->get('off_id');
 		}
 
-		$data['rows'] = $this->work_model->getReplaceList($criteria);
+		$data['rows'] = $this->work_model->getOperations(GS2_OP_TYPE_REPLACE, $criteria);
 
 		// ===============
 		//  필터링 데이터
@@ -52,13 +52,6 @@ class Replace extends CI_Controller
 			'4'	=> '승인',	
 		);
 		$data['status_filter'] = form_dropdown('status', $st_list, $this->input->get('status'), 'id="status_filter" class="form-control"');
-
-		// 작업형태
-		$type_list = array(
-			'0'	=> '-- 전체 --',	
-		);
-		
-		$data['type_filter'] = form_dropdown('type', $type_list, $this->input->get('type'), 'id="type_filter" class="form-control"');
 
 		// 담당 사무소
 		$this->load->model('office_m', 'office_model');

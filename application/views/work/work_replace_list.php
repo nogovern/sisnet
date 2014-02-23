@@ -23,11 +23,6 @@ $this->view('layout/navbar');
           </div>
 
           <div class="form-group">
-            &nbsp;&nbsp;작업형태 : 
-            <?php echo $type_filter; ?>
-          </div>
-
-          <div class="form-group">
             &nbsp;&nbsp;사무소:
             <?php echo $office_filter; ?>
           </div>

@@ -12,12 +12,32 @@ $this->view('layout/navbar');
   <!-- Example row of columns -->
   <div class="row">
     <div class="col-md-12">
-      <ul class="nav nav-pills">
-        <li class="<?=($status=='')?'active':''?>"><a href="#">전체</a></li>
-        <li class=""><a href="#">요청</a></li>
-        <li class=""><a href="#">입력</a></li>
-        <li class=""><a href="#">완료</a></li>
-      </ul>
+      
+      <!-- filter -->
+      <div class="well well-sm">
+        <form method="post" id="filter-form" class="form-inline" role="search">
+          <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
+          <div class="form-group">
+            진행상태 : 
+            <?php echo $status_filter; ?>
+          </div>
+
+          <div class="form-group">
+            &nbsp;&nbsp;작업형태 : 
+            <?php echo $type_filter; ?>
+          </div>
+
+          <div class="form-group">
+            &nbsp;&nbsp;사무소:
+            <?php echo $office_filter; ?>
+          </div>
+
+          <div class="form-group">
+            &nbsp;&nbsp; 
+            <button type="submit" class="btn btn-primary btn-sm">검색</button> 
+          </div>
+        </form>
+      </div>
 
       <table class="table table-hover">
         <thead>
@@ -176,6 +196,17 @@ $(document).ready(function(){
   /////////////////////////
   $(".popover_memo").popover({trigger: 'hover', placement: 'left'});
   $(".popover").click(function(e){e.preventDefault();});
+
+  ///////////////////////
+  // 검색 필터 전송 
+  ///////////////////////
+  $("#filter-form").submit(function() {
+    var url = _base_url + 'work/destroy/?';
+    var query = $(this).serialize();
+    
+    $(this).prop('action', url + query);
+  });
+
 });
 </script>
 
