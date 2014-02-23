@@ -77,7 +77,7 @@ class Enter extends CI_Controller
 		$arr_office['0'] = '--- 전체 ---';
 		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
 
-		$this->load->view('work_enter_list', $data);
+		$this->load->view('work/work_enter_list', $data);
 	}
 
 	// 입고요청
@@ -88,7 +88,7 @@ class Enter extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->helper('form');
 
-		$this->load->view('work_enter_add_form', $data);
+		$this->load->view('work/work_enter_add_form', $data);
 	}
 
 	// 납품처 기능 
@@ -145,7 +145,7 @@ class Enter extends CI_Controller
 			$data['office_name'] = $office->name;
 			$data['part_name'] = $part->name;
 
-			$this->load->view('work_enter_popup_form', $data);
+			$this->load->view('work/work_enter_popup_form', $data);
 
 		} else {
 			// var_dump($_POST);
@@ -177,9 +177,9 @@ class Enter extends CI_Controller
 		$data['work'] = $work;
 
 		if($work->status >= "3") {
-			$this->load->view('work_enter_scan_view', $data);
+			$this->load->view('work/work_enter_scan_view', $data);
 		} else {
-			$this->load->view('work_enter_view', $data);
+			$this->load->view('work/work_enter_view', $data);
 		}
 	}
 

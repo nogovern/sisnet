@@ -78,7 +78,7 @@ class Install extends CI_Controller
 		$arr_office['0'] = '--전체--';
 		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');	
 
-		$this->load->view('work_install_list', $data);
+		$this->load->view('work/work_install_list', $data);
 	}
 
 	/**
@@ -128,7 +128,7 @@ class Install extends CI_Controller
 		$workers = $this->user_model->getOfficeUsers();
 		$data['select_worker'] = form_dropdown('select_worker', $workers, $this_worker, ' id="select_worker" class="form-control"');
 
-		$this->load->view('work_install_view', $data);
+		$this->load->view('work/work_install_view', $data);
 	}
 
 	///////////////
@@ -156,7 +156,7 @@ class Install extends CI_Controller
 		$data['select_office'] = form_dropdown('office_id', $arr_office, 0, 'id="office_id" class="form-control required"');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('work_install_add_form', $data);
+			$this->load->view('work/work_install_add_form', $data);
 		} else {
 			$post = $this->input->post();
 			$post['date_store'] = $this->input->post('date_open');
