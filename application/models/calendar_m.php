@@ -78,7 +78,18 @@ class Calendar_m extends MY_Model
 			->where("w.date_expect >= :from")
 			->andWhere("w.date_expect < :to");
 
-		// gs2_dump($criteria);
+		// 업무 구분,형태 필터링 
+		if($this->input->get('opCategory')) {
+			$op_cat = $this->input->get('opCategory');
+			$op_type = $this->input->get('opType');
+			if( $op_type > 0) {
+				$qb->andWhere("w.type = $op_type");
+			} else {
+				$next_type = $op_cat + 99;
+				$qb->andWhere("w.type >= $op_cat");
+				$qb->andWhere("w.type <= $next_type");
+			}
+		}
 
 		// 사무소별
 		if( $criteria['office'] != 'all' && $criteria['office'] > 0) {
@@ -97,10 +108,6 @@ class Calendar_m extends MY_Model
 		$events = array();
 		if(count($rows)) {
 			foreach($rows as $row) {
-				// 교체 메인은 안 보여줌
-				if($row->type == '400') {
-					continue;
-				}
 
 				// 진행 상태 별 색 지정
 				if($row->status == '1') {

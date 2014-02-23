@@ -42,6 +42,8 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
 
 
   	<script type="text/javascript">
+    var sel_type = <?=$selected_type?>;
+
   	$(document).ready(function(){
   		$("#calendar tr:eq(1) th").each(function(){
   			$(this).css('background-color', '#EEE');
@@ -68,16 +70,25 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
       $("#op_category").change(function(){
         var val = $(this).val();
 
+        $.ajaxSetup({
+          async: false
+        });
+        
         // 업무 형태 option 설정
         $.getJSON(_base_url + 'ajax/get_operation_type/' + val, function(data) {
           gs2_console(data);
 
+          // 받은 json 데이터로 옵션 생성 
           $("#op_type").empty();
           for(var idx in data) {
             $("#op_type").append('<option value="' + idx + '">' + data[idx] + '</option>');
           }
         });
       }).change(); 
+
+      if(sel_type > 0) {
+        $("#op_type").val(sel_type).change();
+      }
 
       ///////////////////////
       // 검색 필터 전송 

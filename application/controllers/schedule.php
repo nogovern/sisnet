@@ -37,6 +37,7 @@ class Schedule extends CI_Controller
 		}
 
 		$data['title'] = '일정';
+		$data['selected_type'] = $this->input->get('opType');		// 선택 위해
 
 		$this->load->model('calendar_m');
 		$data['calendar'] = $this->calendar_m->generate($year, $month);
