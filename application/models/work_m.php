@@ -157,7 +157,7 @@ class Work_m extends MY_Model {
 	////////////////
 	// 업무 리스트 공통 (입고만 예외)
 	////////////////
-	public function getOperations($type, $criteria=array(), $limit = 0, $offset = 0, $order=array()) {
+	public function getOperations($type, $criteria=array(), $limit = 0, $page = 1, $order=array()) {
 		$next_type = $type + 99;
 
 		$qb = $this->em->createQueryBuilder();
@@ -182,6 +182,7 @@ class Work_m extends MY_Model {
 			}
 		}
 
+		$offset = ($page - 1) * GS2_LIST_PER_PAGE;
 		$query = $qb->setFirstResult($offset)->setMaxResults($limit)->getQuery();
 		return $query->getResult();
 
@@ -787,6 +788,33 @@ class Work_m extends MY_Model {
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+	//====================
+	// pagination config
+	//====================
+	public function setPaginationConfig($url = '') {
+		
+		$this->load->library('pagination');
+
+		$base_url = base_url() . $url;		//변경
+		$config = array(
+			'base_url' 		=> $base_url,
+			'prefix'		=> '',
+			'per_page'		=> GS2_LIST_PER_PAGE,
+			'uri_segment'	=> 4,
+			'num_links'		=> 5,
+			'use_page_numbers'	=> TRUE,
+			'page_query_string'	=> FALSE
+		);
+
+		// 검색 조건이 있을 경우
+		if($this->input->get()) {
+			$config['suffix'] = '/?' . http_build_query($this->input->get());
+			$config['first_url'] = $config['base_url'] . '1' . $config['suffix'];
+		}
+
+		return $config;
 	}
 }
 
