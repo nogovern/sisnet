@@ -46,7 +46,7 @@ class Stock extends CI_Controller
 		$this->load->library('pagination');
 
 		$num_rows = 15;
-		$base_url = base_url() . 'stock/lists/';
+		$base_url = base_url() . 'stock/lists/';		//변경
 
 		$config = array(
 			'base_url' 		=> $base_url,
@@ -61,7 +61,7 @@ class Stock extends CI_Controller
 		// 목록 데이터
 		$offset = ($page - 1) * $num_rows;
 		$order_by = array('id' => 'desc');
-		//---------------
+		//------- end of pagination basic config ---------
 
 		///////////////
 		// 검색 조건

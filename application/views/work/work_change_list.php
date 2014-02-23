@@ -89,8 +89,11 @@ foreach($row->targets as $target) {
 endforeach;
 ?>
         </tbody>
-
       </table>
+      <!-- Pagination -->
+      <div style="text-align:center">
+        <?=$pagination?>
+      </div>
 
       <p>
         <a href="<?=site_url("/work/change/register")?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;변경서 등록</span></a>

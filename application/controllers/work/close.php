@@ -23,7 +23,7 @@ class Close extends CI_Controller
 		$this->lists();
 	}
 
-	public function lists() {
+	public function lists($page = 1) {
 		$data['title'] = '철수 >> 업무 목록';
 		$data['current'] = 'page-close';
 
@@ -49,7 +49,17 @@ class Close extends CI_Controller
 			$criteria['office'] = $this->input->get('off_id');
 		}
 
-		$data['rows'] = $this->work_model->getCloseList($criteria);
+		// pagination 초기화
+		$config = $this->work_model->setPaginationConfig('work/close/lists/');
+
+		$data['rows'] = $this->work_model->getOperations(GS2_OP_TYPE_CLOSE, $criteria, GS2_LIST_PER_PAGE, $page);
+		// 총 결과수
+		$total_rows = $this->work_model->numRows(GS2_OP_TYPE_CLOSE, $criteria);
+		$config['total_rows'] = $total_rows;
+
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+		$data['total_rows'] = $total_rows;
 
 		// ===============
 		//  필터링 데이터

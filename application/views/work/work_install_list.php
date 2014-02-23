@@ -99,6 +99,10 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
             </tbody>
 
           </table>
+          <!-- Pagination -->
+          <div style="text-align:center">
+            <?=$pagination?>
+          </div>
 
           <p>
             <a href="<?=site_url('work/install/add')?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청 등록</span></a>

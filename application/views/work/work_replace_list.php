@@ -96,6 +96,10 @@ endforeach;
         </tbody>
 
       </table>
+      <!-- Pagination -->
+      <div style="text-align:center">
+        <?=$pagination?>
+      </div>
 
       <p>
         <a href="<?=site_url("/work/replace/register")?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청서 등록</span></a>

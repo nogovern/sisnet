@@ -102,6 +102,12 @@ endforeach;
 
       </table>
 
+      <!-- Pagination -->
+      <div style="text-align:center">
+        <?=$pagination?>
+      </div>
+
+
       <p>
         <a href="<?=site_url("/work/close/add")?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청 등록</span></a>
       </p>

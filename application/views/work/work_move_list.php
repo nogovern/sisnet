@@ -81,8 +81,11 @@ foreach($rows as $row):
 endforeach;
 ?>
         </tbody>
-
       </table>
+      <!-- Pagination -->
+      <div style="text-align:center">
+        <?=$pagination?>
+      </div>
 
       <p>
         <button id="btn_request_move" type="button" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>&nbsp;요청서 등록</button>

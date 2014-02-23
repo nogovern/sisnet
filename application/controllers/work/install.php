@@ -22,9 +22,15 @@ class Install extends CI_Controller
 		$this->lists();
 	}
 
-	public function lists() {
+	public function lists($page = 1) {
 		$data['title'] = '설치 >> 업무 리스트';
 		$data['current'] = 'page-install';
+
+		//============
+		// pagination
+		//============
+		$config = $this->work_model->setPaginationConfig('work/install/lists/');
+		//------- end of pagination basic config -----
 
 		///////////////
 		// 검색 조건
@@ -49,7 +55,15 @@ class Install extends CI_Controller
 		}
 
 		// 목록
-		$data['rows'] = $this->work_model->getInstallList($criteria);
+		$data['rows'] = $this->work_model->getOperations(GS2_OP_TYPE_INSTALL, $criteria, GS2_LIST_PER_PAGE, $page);
+
+		// 총 결과수
+		$total_rows = $this->work_model->numRows(GS2_OP_TYPE_INSTALL, $criteria);
+		$config['total_rows'] = $total_rows;
+
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+		$data['total_rows'] = $total_rows;
 
 		// ===============
 		//  필터링 데이터

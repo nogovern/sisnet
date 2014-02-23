@@ -37,7 +37,17 @@ class Change extends CI_Controller
 			$criteria['office'] = $this->input->get('off_id');
 		}
 
-		$data['rows'] = $this->work_model->getOperations(GS2_OP_TYPE_CHANGE, $criteria);
+		// pagination 초기화
+		$config = $this->work_model->setPaginationConfig('work/change/lists/');
+
+		$data['rows'] = $this->work_model->getOperations(GS2_OP_TYPE_CHANGE, $criteria, GS2_LIST_PER_PAGE, $page);
+		// 총 결과수
+		$total_rows = $this->work_model->numRows(GS2_OP_TYPE_CHANGE, $criteria);
+		$config['total_rows'] = $total_rows;
+
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+		$data['total_rows'] = $total_rows;
 
 		// ===============
 		//  필터링 데이터
