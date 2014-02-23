@@ -14,12 +14,16 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
       <div class="well well-sm">
         <form method="post" id="filter-form" class="form-inline" role="search">
           <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
-          <!--
+
           <div class="form-group">
-            업무종류 : 
-            <?php echo $operation_filter; ?>
+            업무구분 : 
+            <?php echo $op_category_filter; ?>
           </div>
-          -->
+
+          <div class="form-group">
+            업무형태 : 
+            <?php echo $op_type_filter; ?>
+          </div>
 
           <div class="form-group">
             &nbsp;&nbsp;사무소 : 
@@ -57,6 +61,23 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
   				$(this).removeClass('success');
   			}
   		);
+
+      ///////////////////////// 
+      // 업무 종류 변경시
+      /////////////////////////
+      $("#op_category").change(function(){
+        var val = $(this).val();
+
+        // 업무 형태 option 설정
+        $.getJSON(_base_url + 'ajax/get_operation_type/' + val, function(data) {
+          gs2_console(data);
+
+          $("#op_type").empty();
+          for(var idx in data) {
+            $("#op_type").append('<option value="' + idx + '">' + data[idx] + '</option>');
+          }
+        });
+      }).change(); 
 
       ///////////////////////
       // 검색 필터 전송 

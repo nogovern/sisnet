@@ -42,15 +42,22 @@ class Schedule extends CI_Controller
 		$data['calendar'] = $this->calendar_m->generate($year, $month);
 
 		// 업무종류
-		$ops = array(
-			0		=> '전체',
+		$op_category = array(
+			'0'		=> '전체',
 			'100'	=> '입고',
 			'200'	=> '설치',
-			'201'	=> '설치-신규',
 			'300'	=> '철수',
-			'301'	=> '철수-폐점',
-			);
-		$data['operation_filter'] = form_dropdown('opType', $ops, $this->input->get('opType'), 'id="op_type_filter" class="form-control" ');
+			'400'	=> '교체',
+			'500'	=> '수리',
+			'600'	=> '폐기',
+			'700'	=> '이동',
+			'800'	=> '이관',
+			'900'	=> '변경',
+		);
+		$data['op_category_filter'] = form_dropdown('opCategory', $op_category, $this->input->get('opCategory'), 'id="op_category" class="form-control" ');
+
+		// 업무 형태
+		$data['op_type_filter'] = form_dropdown('opType', array('0' => '전체'), $this->input->get('opType'), 'id="op_type" class="form-control" ');
 
 		// 재고 사무소
 		$this->load->model('office_m', 'office_model');
@@ -62,4 +69,6 @@ class Schedule extends CI_Controller
 		$this->load->view('calendar', $data);	
 	}
 
+
 } // END class Schedule extends CI_Controller
+
