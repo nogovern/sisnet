@@ -17,16 +17,53 @@ class Change extends CI_Controller
 		$this->lists();
 	}
 
-	public function lists() {
+	public function lists($page = 1) {
 		$data['title'] = '장비 상태변경 업무';
 		$data['current'] = 'page-change';
 
-		$data['status'] = '';
-		$data['rows'] = $this->work_model->getChangeList();
+		///////////////
+		// 검색 조건
+		///////////////
+		$criteria = array();
+		
+		// 상태
+		if($this->input->get('status')) {
+			$criteria['status'] = $this->input->get('status');
+		}
+
+		if($this->input->get('off_id') === false) {
+			$criteria['office'] = (gs2_user_type() == '1') ? $this->session->userdata('office_id') : 0;
+		} else {
+			$criteria['office'] = $this->input->get('off_id');
+		}
+
+		$data['rows'] = $this->work_model->getOperations(GS2_OP_TYPE_CHANGE, $criteria);
+
+		// ===============
+		//  필터링 데이터
+		// ===============
+		$this->load->helper('form');
+
+		// 진행상태
+		$status_list = array(
+			'0'	=> '-- 전체 --',	
+			'1'	=> '생성',	
+			'2'	=> '완',	
+		);
+		$data['status_filter'] = form_dropdown('status', $status_list, $this->input->get('status'), 'id="status_filter" class="form-control"');
+
+		// 담당 사무소
+		$this->load->model('office_m', 'office_model');
+		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
+		$arr_office['0'] = '--전체--';
+		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
 
 		$this->load->view('work/work_change_list', $data);
 	}
 
+	//////////
+	// 등록
+	//////////
 	public function register() {
 		$data['title'] = '장비 상태변경 변경 - 등록';
 		$data['current'] = 'page-change';
@@ -97,6 +134,9 @@ class Change extends CI_Controller
 		}
 	}
 
+	/////////////
+	// 상세보기
+	/////////////
 	public function view($id) {
 		$data['title'] = '장비 상태변경 변경 - 등록';
 		$data['current'] = 'page-change';

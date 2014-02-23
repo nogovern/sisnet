@@ -122,6 +122,37 @@ class Work_m extends MY_Model {
 		}
 
 	}
+	///////////////
+	// 업무 목록 총등록수 
+	////////////////
+	public function numRows($type, $criteria=array()) {
+		$next_type = $type + 99;
+
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('count(w.id)');
+		$qb->from('Entity\Operation', 'w')
+			->where("w.type >= $type")
+			->andWhere("w.type <= $next_type");
+
+		// 올바른 검색키 배열
+		$valid_key = array('type', 'office', 'worker', 'status');
+
+		foreach($criteria as $key => $val) {
+			$key = ($key == 'all') ? 0 : $key;
+
+			if(!in_array($key, $valid_key)) {
+				log_message('error', "$key 는 허용되지 않는 검색 옵션입니다");
+			} else {
+				if($val > 0) {
+					$qb->andWhere("w.$key = $val");
+				}
+			}
+		}
+
+		$query = $qb->getQuery();
+		return $query->getSingleScalarResult();
+
+	}
 
 	////////////////
 	// 업무 리스트 공통 (입고만 예외)
