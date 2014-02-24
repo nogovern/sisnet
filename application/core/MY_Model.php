@@ -171,7 +171,35 @@ class MY_Model extends CI_Model {
 		return $rows;	
 	}
 
+	// 직전위치 배열을 넘겨줌
+	public function getPreviousLocationArray($term) {
+		// 검색어 decoding
+		$term = urldecode($term);
 
+		// 최종 검색 결과를 담는 배열
+		$results = array();
+
+		// 사무소
+		$this->load->model('office_m', 'office_model');
+		$offices = $this->office_model->findByName($term);
+		$arr1 = array();
+		foreach($offices as $o) {
+			$arr1[] = gs2_encode_location($o);
+		}
+
+		// 점포 
+		$this->load->model('store_m', 'store_model');
+		$stores = $this->store_model->findByName($term);
+		$arr2 = array();
+		foreach($stores as $s) {
+			$arr2[] = gs2_encode_location($s);
+		}
+
+		// O@1, S@1 형태의 배열
+		$results = array_merge($arr1, $arr2);
+
+		return $results;
+	}
 
 }
 
