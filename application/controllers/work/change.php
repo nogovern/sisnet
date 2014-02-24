@@ -244,7 +244,6 @@ class Change extends CI_Controller
 						}
 
 						$wp = $this->waitpart_model->create($wp_data);
-						echo $wp->id;
 					}
 
 					// 폐기 대기 수량
@@ -267,7 +266,6 @@ class Change extends CI_Controller
 						}
 
 						$wp = $this->waitpart_model->create($wp_data);
-						echo $wp->id;
 					}
 
 					if($sp) {

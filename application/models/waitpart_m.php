@@ -24,6 +24,50 @@ class Waitpart_m extends MY_Model
 		return $query->getResult();
 	}
 
+	// 장비 존재하는지 검사 
+	public function existPartInList($gubun, $office_id, $part_id, $status = '1') {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('p')
+			->from($this->entity_name, 'p')
+			->where("p.office = $office_id")
+			->andWhere("p.gubun = '$gubun'")
+			->andWhere("p.part = $part_id")
+			->andWhere("p.status = '$status'");
+		$result = $qb->getQuery()->getResult();
+
+		return count($result) ? $result : false;
+	}
+
+	// 검색 
+	public function search($criteria = array()) {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('p')
+			->from($this->entity_name, 'p');
+
+		// 조건 (gubun, office, part, serial_number, previous_location)	
+		foreach($criteria as $key => $val) {
+			// 일반 문자열 match
+			if( $key == 'serial_number' || $key == 'gubun') {
+				$qb->andWhere("p.$key = '$val'");
+			// 직전위치 검색
+			} elseif ($key == 'previous_location') {
+				if(is_array($val)) {
+					$qb->andWhere('p.previous_location IN (:param_1)');
+					$qb->setParameter('param_1', $val);
+				} else {
+					$qb->andWhere("p.$key = '$val'");
+				}
+			} else {
+				$qb->andWhere("p.$key = $val");
+			}
+		}
+		
+		$query = $qb->getQuery();
+		$result = $query->getResult();
+
+		return $result;	
+	}
+
 	/////////
 	// 생성 
 	/////////
@@ -45,6 +89,7 @@ class Waitpart_m extends MY_Model
 		if($data['part_type'] == '1') {
 			$sp = $this->em->getReference("Entity\SerialPart", $data['serial_id']);
 			$wp->setSerialPart($sp);
+			$wo->setPreviousLocation($sp->previous_location);
 
 			// 시리얼넘버 는 분실된 장비도 있음
 			if($sp->serial_number) {

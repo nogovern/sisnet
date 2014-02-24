@@ -38,6 +38,12 @@ class WaitPart
 	 * @JoinColumn(name="part_id", referencedColumnName="id")
 	 */
 	protected $part;
+
+	/**
+	 * @OneToOne(targetEntity="Office")
+	 * @JoinColumn(name="office_id", referencedColumnName="id")
+	 */
+	protected $office;
 	
 	/** @Column(type="string", length=1) */
 	protected $part_type;

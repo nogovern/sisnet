@@ -342,6 +342,7 @@ class Ajax extends CI_Controller
 	}
 
 	// 업무 카테고리로 서브 카테고리 목록 반환
+	// 현재는 일정에서만 쓰임
 	public function get_operation_type($op_category) {
 		$op_sub_category = array(
 			'0' => array(
@@ -395,6 +396,47 @@ class Ajax extends CI_Controller
 
 	}
 
+	// 대기장비 조회 
+	public function search_waitpart($q) {
+		$this->load->model("waitpart_m", "waitpart_model");
 
+		$criteria['serial_number'] = urldecode($q);
+		$criteria['gubun'] = $this->input->get('gubun');
+		$criteria['office']	 = $this->input->get('office_id');
+		$criteria['status'] = '1';
+
+		$result = $this->waitpart_model->search($criteria);
+
+		// 없을 경우
+		$response = new stdClass;
+		if(!$result) {
+			$response->error = true;
+			$response->error_msg = "장비를 찾을 수 없습니다";
+		} else {
+			$response->error = false;
+
+			$wpart = $result[0];			// 대기 장비 정보
+			$sp = $result[0]->serial_part;
+
+			$prev_location = gs2_decode_location($sp->previous_location);
+			if($prev_location) {
+				$prev_location = $prev_location->name;
+			}
+
+			$info = array(
+				'spart_id'		=> $sp->id,			// 시리얼장비 ID
+				'category_id'	=> $sp->part->category->id,
+				'part_id'		=> $sp->part->id,
+				'serial_number'	=> $sp->serial_number,
+				'prev_location' => $prev_location,
+				'is_new'		=> $sp->is_new,
+				'wpart_id'		=> $wpart->id,		// 대기장비 ID
+			);
+
+			$response->info = $info;
+		}	
+		
+		echo json_encode($response);
+	}
 
 }

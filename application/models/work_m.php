@@ -491,40 +491,35 @@ class Work_m extends MY_Model {
 			if(!empty($data['serial_part_id'])) {
 				$sp = $this->part_model->getSerialPart($data['serial_part_id']);
 				$item->setSerialPart($sp);
-			}
-			
-			$item->setSerialNumber($data['serial_number']);
 
-			// 설치 - 시리얼장비 상태,flag
-			if($op->type >= '200' && $op->type < '300') {
-				$sp->setValidFlag(FALSE);
-				$sp->setStatus('2');
-				$this->em->persist($sp);
+				// 설치 - 시리얼장비 상태,flag
+				if($op->type >= '200' && $op->type < '300') {
+					$sp->setValidFlag(FALSE);
+					$sp->setStatus('2');
+					$this->em->persist($sp);
+				}
+				// 이동업무 시 
+				elseif ($op->type == '700') {
+					$sp->setValidFlag(FALSE);
+					$sp->setStatus('7');
+					$this->em->persist($sp);
+				}
 			}
-			// 이동업무 시 
-			elseif ($op->type == '700') {
-				$sp->setValidFlag(FALSE);
-				$sp->setStatus('7');
-				$this->em->persist($sp);
-			}
+
+			$item->setSerialNumber($data['serial_number']);
 
 			////////////////////
 			// 직전위치 저장 
 			////////////////////
 
-			// 시리얼넘버 없이 입고되는 장비인 경우 null 로 저장
-			$location = isset($sp) ? $sp->getPreviousLocation() : null;
+			// 등록되지 않은  시리얼장비인 경우 직전위치를  work_location 로 저장
+			$location = isset($sp) ? $sp->getPreviousLocation() : $op->work_location;
 			$item->setPreviousLocation($location);
 		}
 
-		// 여분 필드 extra 배열이 있을경우
-		if( isset($data['extra']) && count($data['extra'])) {
-			$extra = $data['extra'];
-
-			// 직전위치
-			if(isset($extra['previous_location']) && !empty($extra['previous_location'])) {
-				;
-			}
+		// 여분 필드 extra 데이터가 있을경우
+		if( isset($data['extra']) ) {
+			$item->setExtra($data['extra']);
 		}	
 
 		$this->em->persist($item);
@@ -572,8 +567,12 @@ class Work_m extends MY_Model {
 	}
 
 	// 업무-장비 목록 삭제
-	public function removeItem($item) {
+	public function removeItem($item, $do_flush = false) {
 		$this->em->remove($item);
+
+		if($do_flush) {
+			$this->em->flush();
+		}
 	}
 
 	// 업무-파일 생성(필요시)

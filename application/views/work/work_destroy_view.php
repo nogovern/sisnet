@@ -49,11 +49,11 @@ if( $op->type == '601') {
                 <th class="col-xs-1"></th>
                 <th class="col-xs-1">타입</th>
                 <th class="col-xs-2">S/N</th>
-                <th class="col-xs-2">장비종류</th>
+                <th class="col-xs-1">장비종류</th>
                 <th class="col-xs-2">모델명</th>
                 <th class="col-xs-1">상태</th>
                 <th class="col-xs-1">수량</th>
-                <th class="col-xs-1">직전위치</th>
+                <th class="col-xs-2">직전위치</th>
                 <th class="col-xs-1"></th>
               </tr>
             </thead>
@@ -130,10 +130,10 @@ if($item_count == 0) {
 
 $this->view('common/modal_search_previous');    // 직전위치 검색용
 
-if($op->status == '1') {
-  $this->view('common/modal_part_register');      // 설치 장비등록 사용
-} elseif ($op->status == '2') {
-  $this->view('common/modal_part_scan');          // 장비스캔
+if($op->type == '601') {
+  $this->view('common/modal_waitpart_register');      // 설치 장비등록 사용
+} elseif ($op->status == '602') {
+  $this->view('common/modal_waitpart_scan');          // 장비스캔
 }
 ?>
 
@@ -159,8 +159,8 @@ var items = [];
 var item = {};          // 현재 선택된 장비 정보
 
 /* 스캔 작업에서는 numItem == numSacn 이어야 완료 가능 */
-var numItem = 0;    // 등록된 장비 모델 수
-var numScan = <?php echo $scan_count; ?>;        // 스캔된 장비 모델 수
+var numItem = 0;                                  // 등록된 장비 모델 수
+var numScan = <?php echo $scan_count; ?>;         // 스캔된 장비 모델 수
 
 $(document).ready(function(){
   // modal 공통 설정
@@ -171,7 +171,7 @@ $(document).ready(function(){
 
   // 장비등록
   $("#btn_move_part_add").click(function(){
-    $("#modal_part_register").modal('show');
+    $("#modal_waitpart_register").modal('show');
   });
 
   // 장비삭제

@@ -292,7 +292,7 @@ function resetModalForm() {
 
   $("#serial_number", form).val('').prop('readonly', false);
   $("#select_category", form).val(0).change();
-  $('#part_qty', form).val(0).prop('readonly', false);
+  $('#part_qty', form).val(1).prop('readonly', false);
   $(':radio[name="is_new"]', form).prop('checked', false).prop('readonly', false);
 
   scanned_item = 0;

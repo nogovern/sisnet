@@ -424,6 +424,25 @@ class Tests extends CI_Controller {
 
 		// $this->waitpart_m->remove($new);
 		$this->em->flush();
+	}
+
+	// 대기 장비 검색
+	public function wait_search() {
+		$this->load->model('waitpart_m');
+
+		$condition = array("gubun" => "D", "part" => 38, 'office' => 1);
+		// $condition = array("gubun" => "D", "previous_location" => "S@7679", 'office' => 1);
+		$result = $this->waitpart_m->search($condition);
+		gs2_dump(count($result));
+
+		$arr = $this->waitpart_m->getPreviousLocationArray('테스트');
+		gs2_dump($arr);
+
+		$condition = array("previous_location" => $arr);
+		$result = $this->waitpart_m->search($condition);
+
+		gs2_dump(count($result));
+
 
 	}
 
