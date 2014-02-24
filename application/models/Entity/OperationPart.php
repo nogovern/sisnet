@@ -110,6 +110,11 @@ class OperationPart {
 		return $this->qty_scan;
 	}
 
+	// 직전위치
+	public function getPreviousLocation() {
+		return $this->prev_location;
+	}
+
 	public function isScan()
 	{
 		return ($this->is_scan == 'Y') ? TRUE : FALSE;

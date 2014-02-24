@@ -427,10 +427,6 @@ class Tests extends CI_Controller {
 
 	}
 
-	public function op_type {
-		
-	}
-
 }
 
 

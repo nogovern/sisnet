@@ -161,18 +161,15 @@ class Change extends CI_Controller
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('op_id', '작업 ID', 'required');
 
-
-		//$targets = $em->getRepository('Entity\OperationTarget')->findBy(array('operation' => $op));
 		if($this->form_validation->run() === FALSE) {
 			$data['op']	= $op;
 			$this->load->view('work/work_change_view', $data);
 
 		} else {
-			
 			// gs2_dump($_POST);
-
-			$em = $this->work_model->getEntityManager();
+			// $em = $this->work_model->getEntityManager();
 			$this->load->model('part_m', 'part_model');
+			$this->load->model('waitpart_m', 'waitpart_model');		// 수리,폐기 장비 모델
 			
 			///////////////////////
 			// 현재 작업 상태 변경
@@ -225,19 +222,52 @@ class Change extends CI_Controller
 							$sp->setStatus('1');
 						}
 					}
+
 					// 수리 대기 수량
 					if($qty_s500 > 0) {
 						$stock->increase('s500', $qty_s500);
+						
 						if($sp) {
 							$sp->setStatus('5');
 						}
+						
+						// 대기장비 목록에 등록
+						$wp_data['gubun']		= 'R';
+						$wp_data['qty']			= $qty_s500;
+						$wp_data['op_id']		= $op->id;
+						$wp_data['part_id']		= $item->part->id;
+						$wp_data['part_type']	= $item->part_type;
+						$wp_data['previous_location'] = $item->getPreviousLocation();
+
+						if($sp) {
+							$wp_data['serial_id'] = $sp->id;		// 시리얼넘버는 자동으로 채운다
+						}
+
+						$wp = $this->waitpart_model->create($wp_data);
+						echo $wp->id;
 					}
+
 					// 폐기 대기 수량
 					if($qty_s600 > 0) {
 						$stock->increase('s600', $qty_s600);
 						if($sp) {
 							$sp->setStatus('6');
 						}
+
+						// 대기장비 목록에 등록
+						$wp_data['gubun']		= 'D';
+						$wp_data['qty']			= $qty_s600;
+						$wp_data['op_id']		= $op->id;
+						$wp_data['part_id']		= $item->part->id;
+						$wp_data['part_type']	= $item->part_type;
+						$wp_data['previous_location'] = $item->getPreviousLocation();
+
+						if($sp) {
+							$wp_data['serial_id'] = $sp->id;		// 시리얼넘버는 자동으로 채운다
+						}
+
+						$wp = $this->waitpart_model->create($wp_data);
+						echo $wp->id;
 					}
 
 					if($sp) {
@@ -254,7 +284,8 @@ class Change extends CI_Controller
 					
 					// gs2_dump($item->extra);
 					// gs2_dump($stock->qty_used);
-				}
+
+				}// end of item loop
 			}
 
 			///////////////

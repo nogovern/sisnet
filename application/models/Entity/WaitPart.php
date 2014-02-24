@@ -48,6 +48,9 @@ class WaitPart
 	/** @column(type="string", length=30) */
 	protected $serial_number;
 
+	/** @column(type="string", length=20) */
+	protected $previous_location;
+
 	/** @Column(type="string", length=1) */
 	protected $status = '1';
 	
@@ -86,21 +89,25 @@ class WaitPart
 		return ($this->date_register) ? $this->date_register->format($format) : '';
 	}
 
+	public function getSerialNumber() {
+		return $this->serial_number;
+	}
+
+	public function getPreviousLocation() {
+		return $this->previous_location;
+	}
+
 	///////////
 	// set  //
 	///////////
 
-	// D-폐기, R-수
+	// D-폐기, R-수리
 	public function setGubun($val) {
 		$this->gubun = $val;
 	}
 
 	public function setOperation($obj) {
 		$this->operation = $obj;
-	}
-
-	public function setSerialPart($obj) {
-		$this->serial_part = $obj;
 	}
 
 	public function setPart($obj) {
@@ -111,17 +118,28 @@ class WaitPart
 		$this->part_type = $value;
 	}
 
+	// 시리얼장비 ID
+	public function setSerialPart($obj) {
+		$this->serial_part = $obj;
+	}
+
+	// 시리얼넘버
 	public function setSerialNumber($value) {
 		$this->serial_number = $value;
 	}
 
-	public function setQty($value=0)
-	{
+	// 직전위치
+	public function setPreviousLocation($value) {
+		$this->previous_location = $value;
+	}
+
+	// 수량
+	public function setQty($value=0) {
 		$this->qty = $value;
 	}
 
-	public function setStatus($value)
-	{
+	// 상태 (1-대기, 2-등록, 3-완료)
+	public function setStatus($value) {
 		$this->status = $value;
 	}
 

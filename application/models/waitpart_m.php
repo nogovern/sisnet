@@ -24,6 +24,9 @@ class Waitpart_m extends MY_Model
 		return $query->getResult();
 	}
 
+	/////////
+	// 생성 
+	/////////
 	public function create($data, $do_flush = false) {
 		$wp = new $this->entity_name;
 
@@ -58,6 +61,9 @@ class Waitpart_m extends MY_Model
 		return $wp;
 	}	
 
+	/////////
+	// 수정
+	/////////
 	public function update($id, $data, $do_flush = false) {
 		$wp = $this->get($id);
 
@@ -72,6 +78,9 @@ class Waitpart_m extends MY_Model
 		
 	}
 
+	/////////
+	// 삭제
+	/////////
 	public function remove($id, $do_flush = false) {
 		$wp = $this->get($id);
 
