@@ -42,13 +42,13 @@ $this->view('layout/navbar');
 <div class="row">
   <div class="col-md-12">
     
-  <table class="table table-condensed table-bordered table-hover " id="stock_list">
+  <table class="table table-condensed table-bordered table-hover table-responsive" id="stock_list">
     <caption style="text-align: right;">등록 장비수 : <?=number_format($total_rows)?></caption>
     <thead>
       <tr>
         <th>No</th>
-        <th>장비 타입</th>
-        <th>장비 종류</th>
+        <th>타입</th>
+        <th>장비종류</th>
         <th>장비명</th>
         <th>상태</th>
         <th>기준</th>

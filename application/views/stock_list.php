@@ -43,11 +43,11 @@ $this->view('layout/navbar');
     </div>
 
     
-    <table class="table table-condensed table-hover " id="stock_list">
+    <table class="table table-condensed table-hover table-responsive" id="stock_list">
       <thead>
         <tr>
           <th rowspan="2">No</th>
-          <th rowspan="2">장비 타입</th>
+          <th rowspan="2">타입</th>
           <th rowspan="2">장비 종류</th>
           <th rowspan="2">장비명</th>
           <th rowspan="2">상태</th>
@@ -61,7 +61,7 @@ $this->view('layout/navbar');
           <th style="padding:0;margin:0;">
             <table class="table" style="margin:0;">
               <tbody>
-                <td class="col-xs-2">사무소명</td>
+                <td class="col-xs-2">사무소</td>
                 <td class="col-xs-1">기준</td>
                 <td class="col-xs-1">신가</td>
                 <td class="col-xs-1">중가</td>

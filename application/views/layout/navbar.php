@@ -14,7 +14,7 @@ if(0) {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="<?=site_url()?>">GS25 재고관리</a>
+          <a class="navbar-brand" href="<?=site_url()?>">GS25 자산관리</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
