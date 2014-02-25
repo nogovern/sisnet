@@ -10,6 +10,7 @@ class Main extends CI_Controller
 	{
 		parent::__construct();
 
+		// $this->output->enable_profiler(TRUE);
 	}
 
 	public function index() {
@@ -43,7 +44,7 @@ class Main extends CI_Controller
 
 		if($this->form_validation->run() === TRUE) {
 			if($this->auth->login($this->input->post('username'), $this->input->post('password'))) {
-				$this->load->helper('alert');
+				// $this->load->helper('alert');
 
 				// 로그인 메세지 후 기본페이지 이동
 				if($this->session->userdata('user_level') == GS2_USER_LEVEL_COMPANY) {

@@ -9,12 +9,6 @@ class Install extends CI_Controller
 	{
 		parent::__construct();
 
-		// 로그인 확인
-		if(!$this->auth->isLoggedIn()) {
-			$this->load->helper('alert');
-			alert('로그인 하셔야 합니다', site_url('/'));
-		}
-
 		$this->load->model('work_m', 'work_model');
 	}
 
