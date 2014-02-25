@@ -20,7 +20,7 @@ $this->view('layout/navbar');
         <li class="<?=($type==3)?'active':''?>"><a href="<?=base_url()?>admin/user/lists/?type=3">납품처</a></li>
       </ul>
 
-      <table class="table table-hover">
+      <table class="table table-hover table-condensed table-responsive">
         <thead>
           <tr>
             <th>No</th>
@@ -37,11 +37,14 @@ $this->view('layout/navbar');
 
         <tbody>
 <?php
+// 전역변수 에서 회원타입 가져오기
+$_config = $this->config->item('gs2');
+$uTypes = $_config['user_type'];
 foreach($rows as $row):
 ?>
           <tr class="">
             <td><?=$row->id?></td>
-            <td><?=$row->getUserTypeText()?></td>
+            <td><?=$uTypes[$row->type]?></td>
             <td><?=$row->username?></td>
             <td><?=$row->name?></td>
             <td><?=$row->password?></td>

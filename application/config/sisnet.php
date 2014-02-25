@@ -115,6 +115,15 @@ $config['gs2']['store_status'] = array(
 	'3'	=> '휴점-점검',
 );
 
+// 회원 타입
+$config['gs2']['user_type'] = array(
+	'0' => '전체',
+	'1' => '시스네트',
+	'2' => 'GS25',
+	'3' => '납품처',
+	'9'	=> '관리자',
+);
+
 // 시리얼장비 상태 텍스트
 $config['gs2']['serial_part_status'] = array(
 	'1' => '',

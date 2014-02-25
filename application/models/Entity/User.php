@@ -70,12 +70,6 @@ class User {
 		return ($this->date_register) ? $this->date_register->format($format) : '';
 	}
 
-	// 회원 타입 문자열
-	public function getUserTypeText() {
-		return ($this->type) ? constant('GS2_USER_TYPE_' . $this->type) : '';
-	}
-
-
 	public function setType($val) {
 		$this->type = $val;
 	}
