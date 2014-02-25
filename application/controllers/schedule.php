@@ -43,18 +43,28 @@ class Schedule extends CI_Controller
 		$data['calendar'] = $this->calendar_m->generate($year, $month);
 
 		// 업무종류
-		$op_category = array(
-			'0'		=> '전체',
-			'100'	=> '입고',
-			'200'	=> '설치',
-			'300'	=> '철수',
-			'400'	=> '교체',
-			'500'	=> '수리',
-			'600'	=> '폐기',
-			'700'	=> '이동',
-			'800'	=> '이관',
-			'900'	=> '변경',
-		);
+		if( gs2_user_type() == GS2_USER_TYPE_SISNET ) {
+			$op_category = array(
+				'0'		=> '전체',
+				'100'	=> '입고',
+				'200'	=> '설치',
+				'300'	=> '철수',
+				'400'	=> '교체',
+				'500'	=> '수리',
+				'600'	=> '폐기',
+				'700'	=> '이동',
+				'800'	=> '이관',
+				'900'	=> '변경',
+			);
+		} else {
+			$op_category = array(
+				'0'		=> '전체',
+				'200'	=> '설치',
+				'300'	=> '철수',
+				'400'	=> '교체',
+			);
+		}
+
 		$data['op_category_filter'] = form_dropdown('opCategory', $op_category, $this->input->get('opCategory'), 'id="op_category" class="form-control" ');
 
 		// 업무 형태

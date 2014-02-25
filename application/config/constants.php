@@ -52,10 +52,10 @@ define('GS2_UPLOAD_BASEURL', 'assets/files/');						// 파일 접근 URL
 define('GS2_MAX_FILE_SIZE', 2);
 
 // 회원 타입
-define('GS2_USER_TYPE_1',	'시스네트');
-define('GS2_USER_TYPE_2',	'GS25');
-define('GS2_USER_TYPE_3',	'거래처');
-define('GS2_USER_TYPE_9',	'관리자');
+define('GS2_USER_TYPE_SISNET',	'1');				// 시스네트
+define('GS2_USER_TYPE_GS25',	'2');				// GS25
+define('GS2_USER_TYPE_COMPANY',	'3');				// 거래처 유저
+define('GS2_USER_TYPE_ADMIN',	'9');				// 관리자
 
 // 회원권한 (실제 기능 제한에 사용)
 define('GS2_USER_LEVEL_COMPANY',	'1');			// 거래처

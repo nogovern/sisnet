@@ -89,6 +89,11 @@ class Calendar_m extends MY_Model
 				$qb->andWhere("w.type >= $op_cat");
 				$qb->andWhere("w.type <= $next_type");
 			}
+		} else {
+			// GS25 유저는 설치,철수,교체 일정만 보여줌
+			if( gs2_user_type() == GS2_USER_TYPE_GS25) {
+				$qb->andWhere("w.type >= '200'")->andWhere("w.type < '500' ");
+			}
 		}
 
 		// 사무소별
