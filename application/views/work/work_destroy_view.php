@@ -108,13 +108,13 @@ if($item_count == 0) {
       <a class="btn btn-default" href="<?=base_url() . 'work/destroy'?>"><i class="fa fa-list"></i> 리스트</a>
 <?php if($op->status == '1'): ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
-      <button id="btn_move_edit_form" type="button" class="btn btn-info">요청서 수정</button>
+      <button id="btn_move_edit_form" type="button" class="btn btn-default">요청서 수정</button>
       <button id="btn_move_part_add" type="button" class="btn btn-warning">장비 등록</button>
-      <button id="btn_part_reg_complete" type="button" class="btn btn-primary">장비 등록 완료</button>
+      <button id="btn_part_reg_complete" type="button" class="btn btn-success">완료</button>
+      <button id="btn_excel_download" class="btn btn-primary"><i class="fa fa-download"></i> 엑셀 다운</button>
 <?php endif; ?>
 
 <?php if($op->status == '2'): ?> 
-      <button id="btn_excel_download" class="btn btn-success"><i class="fa fa-download"></i> 엑셀 다운</button>
       <button id="btn_move_part_scan" type="button" class="btn btn-primary">스캔</button>
       <button id="btn_move_op_complete" type="button" class="btn btn-success">완료</button>
 <?php endif; ?>

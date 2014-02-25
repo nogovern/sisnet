@@ -442,9 +442,15 @@ class Tests extends CI_Controller {
 		$result = $this->waitpart_m->search($condition);
 
 		gs2_dump(count($result));
-
-
 	}
+
+	// 인터페이스 테스트
+	public function ex_interface() {
+		$this->load->model('destroy_m');
+
+		$rows = $this->destroy_m->getList(GS2_OP_TYPE_DESTROY, array());
+		echo count($rows);
+	}	
 
 }
 

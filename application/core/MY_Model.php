@@ -203,4 +203,14 @@ class MY_Model extends CI_Model {
 
 }
 
+// 업무 모델 인터페이스
+interface IOperationModel {
+	public function create();
+	public function remove();
+	public function update();
 
+	public function addItem();
+	public function removeItem();
+	public function getItem();
+	public function getItems();
+}

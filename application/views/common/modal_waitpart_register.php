@@ -162,7 +162,13 @@ $(document).ready(function(){
     }
 
     $.ajaxSetup({
-      async: false
+      async: false,
+      beforeSend: function() {
+
+      },
+      complete: function() {
+        
+      }
     });
     
     var ajax_url = _base_url + 'ajax/search_waitpart/' + encodeURIComponent(q);
