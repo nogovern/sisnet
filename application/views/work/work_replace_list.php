@@ -101,9 +101,11 @@ endforeach;
         <?=$pagination?>
       </div>
 
+<?php if(gs2_user_type() == '2'): ?>
       <p>
-        <a href="<?=site_url("/work/replace/register")?>"><span class="btn btn-primary"><i class="icon-pencil"></i>&nbsp;요청서 등록</span></a>
+        <a href="<?=site_url("/work/replace/register")?>"><span class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>&nbsp;요청서 등록</span></a>
       </p>
+<?php endif; ?>
 
     </div>
   </div>
