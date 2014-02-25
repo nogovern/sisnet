@@ -38,7 +38,7 @@ $this->load->view('layout/navbar', array('current' => 'page-install'));
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-12">
-          <table class="table table-hover">
+          <table id="op_list" class="table table-hover table-condensed table-responsive">
             <thead>
               <tr>
                 <th>No</th>

@@ -44,7 +44,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 define('IS_AJAX', isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 
 // 공통 리스트 설정
-define('GS2_LIST_PER_PAGE', 5);			// 1페이지에 보여줄 목록 수
+define('GS2_LIST_PER_PAGE', 10);			// 1페이지에 보여줄 목록 수
 
 // 파일 업로드
 define('GS2_UPLOAD_BASEPATH', FCPATH . 'assets/files/');		// 실제 파일 저장 폴더 위치

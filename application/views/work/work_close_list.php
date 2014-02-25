@@ -38,7 +38,7 @@ $this->view('layout/navbar');
   <!-- Example row of columns -->
   <div class="row">
     <div class="col-md-12">
-      <table class="table table-hover">
+      <table id="op_list" class="table table-hover table-condensed table-responsive">
         <thead>
           <tr>
             <th>No</th>

@@ -39,7 +39,7 @@ $this->view('layout/navbar');
         </form>
       </div>
 
-      <table class="table table-hover">
+      <table id="op_list" class="table table-hover table-condensed table-responsive">
         <thead>
           <tr>
             <th>No</th>

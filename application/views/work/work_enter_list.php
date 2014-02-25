@@ -133,11 +133,6 @@ $(document).ready(function(){
     gs2_go_page(href);
   });
 
-  $("#op_list tbody tr").dblclick(function(event) {
-    var href = $("td .btn_view", this).data('href');
-    gs2_go_page(href);
-  });
-
   // 장비 종류 선택 시 장비 목록 가져오기
   $(document).on('change', "#category_filter", function(){
     var cat = $(":selected", this).val();
