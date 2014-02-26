@@ -49,7 +49,10 @@ class WaitPart
 	protected $part_type;
 	
 	/** @Column(type="integer") */
-	protected $qty = 1;
+	protected $qty = 0;						// 등록 수량
+	
+	/** @Column(type="integer") */
+	protected $qty_accept = 0;				// 승인 수량
 	
 	/** @column(type="string", length=30) */
 	protected $serial_number;
@@ -80,7 +83,13 @@ class WaitPart
 		return $this->part;
 	}
 
+	// 등록수량
 	public function getQty() {
+		return $this->qty;
+	}
+
+	// 승인수량
+	public function getQtyAccept() {
 		return $this->qty;
 	}
 
@@ -144,6 +153,10 @@ class WaitPart
 		$this->qty = $value;
 	}
 
+	public function setQtyAccpet($value=0) {
+		$this->qty_accept = $value;
+	}
+
 	// 상태 (1-대기, 2-등록, 3-완료)
 	public function setStatus($value) {
 		$this->status = $value;
@@ -154,5 +167,30 @@ class WaitPart
 		if(!empty($date))
 			$this->date_register = new \DateTime($date);
 	}
+
+	// ====== custom method ======
+	
+	// 1 - 등록수량 , 2 - 승인수량
+	public function add($qty, $gubun = 1) {
+		$operand = ($gubun == 1) ? $this->qty : $this->qty_accept;
+		return $operand += $qty;
+	} 
+
+	// 빼기
+	public function minus($qty, $gubun = 1) {
+		$operand = ($gubun == 1) ? $this->qty : $this->qty_accept;
+		return $operand -= $qty;
+	} 
+	
+	// 더하기 alias	
+	public function increase($qty, $gubun = 1) {
+		$this->add($qty, $gubun);
+	}
+	
+	// 빼기 alias
+	public function decrease($qty, $gubun = 1) {
+		$this->minus($qty, $gubun);
+	}
+	
 }
 
