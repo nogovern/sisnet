@@ -161,6 +161,7 @@ $(document).ready(function(){
       return false;
     }
 
+    // ajax 요청 시 loading 처리
     $.ajaxSetup({
       async: false,
       beforeSend: function() {
@@ -173,7 +174,7 @@ $(document).ready(function(){
     
     var ajax_url = _base_url + 'ajax/search_waitpart/' + encodeURIComponent(q);
     $.getJSON(ajax_url, {
-      op_id: operation.id,
+      id: operation.id,
       gubun: "D",
       office_id: operation.office_id,
       csrf_test_name: $.cookie("csrf_cookie_name")
@@ -196,8 +197,14 @@ $(document).ready(function(){
   // 장비 등록
   ///////////
   $(document).on("click", "#btn_part_add", function(e){
+    var part_id,
+        spart_id;
+    
+    // 장비 id
+    part_id = parseInt($("#select_part").val(), 10);
+
     // 장비종류,  모델
-    if(item.id == undefined) {
+    if(!part_id) {
       alert("장비를 선택하세요");
       return false;
     }
@@ -219,34 +226,55 @@ $(document).ready(function(){
     }
 
     // 시리얼장비 id
-    var spart_id = (item.type == '1') ? $("#serial_part_id").val() : '';
+    spart_id = (item.type == '1') ? $("#serial_part_id").val() : '';
 
-    $.ajax({
-      url: "<?=base_url()?>work/destroy/addItem",
-      type: "GET",
-      data: {
-        "id": operation.id,         
-        "part_id": item.id,
-        "serial_part_id": spart_id,
-        "serial_number": $('#serial_number').val(),
-        "qty": qty,   
-        'is_new': is_new,
+    $.getJSON(_base_url + 'work/ajax/addItem2', {
+      id: operation.id,         
+        part_id: part_id,
+        serial_number: $('#serial_number').val(),
+        serial_id: spart_id,
+        qty: qty,   
+        is_new: is_new,
         wpart_id: sel_item_id,
         "csrf_test_name": $.cookie("csrf_cookie_name")
-      },
-      dataType: "json",
-    })
-      .done(function(response) {
-        if(!response.error) {
-          callback_insert_row(response.id, is_new, qty);
-          reset_register_form();
-        } else {
-          alert(response.error_msg);
-        }
-      })
-      .fail(function(xhr, textStatus){
-        alert("Request failed: " + textStatus);
-      });
+    }, function(response) {
+      var error = response.error;
+      if(error) {
+        alert(response.error_msg);
+      } else {
+        callback_insert_row(response.id, is_new, qty);
+        reset_register_form();
+      }
+
+      gs2_console(response);
+    });
+
+    // $.ajax({
+    //   url: "<?=base_url()?>work/ajax/addItem2",
+    //   type: "GET",
+    //   data: {
+    //     id: operation.id,         
+    //     part_id: part_id,
+    //     serial_id: spart_id,
+    //     serial_number: $('#serial_number').val(),
+    //     qty: qty,   
+    //     is_new: is_new,
+    //     wpart_id: sel_item_id,
+    //     "csrf_test_name": $.cookie("csrf_cookie_name")
+    //   },
+    //   dataType: "json",
+    // })
+    //   .done(function(response) {
+    //     if(!response.error) {
+    //       callback_insert_row(response.id, is_new, qty);
+    //       reset_register_form();
+    //     } else {
+    //       alert(response.error_msg);
+    //     }
+    //   })
+    //   .fail(function(xhr, textStatus){
+    //     alert("Request failed: " + textStatus);
+    //   });
 
   });
 
@@ -258,24 +286,21 @@ $(document).ready(function(){
       return false;
     }
 
-    $.ajax({
-        url: "<?=base_url()?>work/destroy/removeItem",
-        type: "GET",
-        data: {
-          id : operation.id,
-          item_id: item_id,
-          "csrf_test_name": $.cookie("csrf_cookie_name")
-        },
-        dataType: "json",
-      })
-        .done(function(json) {
-          callback_remove_row(that);
-          alert(json.msg);
-        })
-        .fail(function(xhr, textStatus){
-          alert("Request failed: " + textStatus);
-        });
+    $.getJSON(_base_url + 'work/destroy/removeItem/', {
+      id : operation.id,
+      item_id: item_id,
+      "csrf_test_name": $.cookie("csrf_cookie_name")
+    }, function(response) {
+      var error = response.error;
+      if(!error) {
+        callback_remove_row(that);
+        alert(response.msg);
+      } else {
+        alert("등록 장비 삭제에 실패하였습니다");
+      }
+    });
   });
+
 });//end of ready
 
 // 장비 type에 따라 폼 입력 양식 변경

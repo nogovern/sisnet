@@ -13,7 +13,7 @@ class Myexcel extends CI_Controller {
 	}
 
 	// 엑셀 파일 다운로드
-	public function download($objExcel, $save_filename) {
+	public function download($objPHPExcel, $save_filename) {
 		// redirect output to client browser
 		header("Pragma: public");
 		header("Expires: 0");
@@ -23,7 +23,7 @@ class Myexcel extends CI_Controller {
 		header('Content-Disposition: attachment;filename="' . $save_filename. '"');
 		header('Cache-Control: max-age=0');
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objExcel, 'Excel2007');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->setOffice2003Compatibility(true);
 		$objWriter->save('php://output');
 	}

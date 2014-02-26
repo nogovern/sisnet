@@ -106,17 +106,17 @@ if($item_count == 0) {
     
     <div class="col-md-12">
       <a class="btn btn-default" href="<?=base_url() . 'work/destroy'?>"><i class="fa fa-list"></i> 리스트</a>
-<?php if($op->status == '1'): ?>
+<?php if($op->status < '3'): ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
-      <button id="btn_move_edit_form" type="button" class="btn btn-default">요청서 수정</button>
-      <button id="btn_move_part_add" type="button" class="btn btn-warning">장비 등록</button>
-      <button id="btn_part_reg_complete" type="button" class="btn btn-success">완료</button>
+      <button id="btn_edit_request" type="button" class="btn btn-default">요청서 수정</button>
+      <button id="btn_add_item" type="button" class="btn btn-warning">장비등록</button>
+      <button id="btn_op_accept_complete" type="button" class="btn btn-success">승인완료</button>
       <button id="btn_excel_download" class="btn btn-primary"><i class="fa fa-download"></i> 엑셀 다운</button>
 <?php endif; ?>
 
-<?php if($op->status == '2'): ?> 
-      <button id="btn_move_part_scan" type="button" class="btn btn-primary">스캔</button>
-      <button id="btn_move_op_complete" type="button" class="btn btn-success">완료</button>
+<?php if($op->type == '602' && $op->status == '2'): ?> 
+      <button id="btn_scan_item" type="button" class="btn btn-primary">스캔</button>
+      <button id="btn_op_send_complete" type="button" class="btn btn-success">출고완료</button>
 <?php endif; ?>
     </div>
 
@@ -170,7 +170,7 @@ $(document).ready(function(){
   checkPartRegistered();
 
   // 장비등록
-  $("#btn_move_part_add").click(function(){
+  $("#btn_add_item").click(function(){
     $("#modal_waitpart_register").modal('show');
   });
 
@@ -179,50 +179,42 @@ $(document).ready(function(){
     // modal_part_register 에 정의 되어 있음
   });
 
-  // 장비발송
-  $("#btn_part_reg_complete").click(function(){
-    if(!confirm("등록된 장비를 수신사무소로 보냅니다.\n수신처에서 장비 확인 해야 합니다")) {
-      return false;
-    }
-
-    // 장비발송 실행
-    $.ajax({
-      url: "<?=base_url()?>work/move/ajax_send",
-      type: "POST",
-      data: {
-        "id": operation.id,   
-        "extra": "sending for move operation",
-        "csrf_test_name": $.cookie("csrf_cookie_name")
-      },
-      dataType: "json",
-    })
-      .done(function(response) {
-        // gs2_console(response);
-        if(!response.error) {
-          alert("등록한 장비를 발송 상태로 변경 하였습니다");
-          location.reload();
-        } else {
-          alert(response.error_msg);
-          return false;
-        }
-      })
-      .fail(function(xhr, textStatus){
-        alert("Request failed: " + textStatus);
-      });
-  });
-
   // 장비스캔
-  $("#btn_move_part_scan").click(function(){
+  $("#btn_scan_item").click(function(){
     $("#modal_part_scan").modal("show");
   });
 
-  // 완료
-  $("#btn_move_op_complete").click(function(){
+  // 폐기-승인 업무 완료
+  $("#btn_op_accept_complete").click(function(){
+    if(!confirm("폐기-승인 업무를 완료 하시겠습니까?")) {
+      return false;
+    }
+
+    $.get( _base_url + "work/ajax/complete2/" + operation.id, function( data ) {
+      alert( "업무 완료!" );
+      location.reload();
+      gs2_console(data);
+    });
+  });
+
+  // 엑셀 다운로드
+  $("#btn_excel_download").click(function(){
+    if(!confirm("등록 장비를 엑셀 파일을 다운로드 합니다")) {
+      return false;
+    }
+
+    var url = _base_url + "work/destroy/excel_download/" + operation.id
+    location.href = url;
+
+  });
+
+  // 폐기-출고 업무 완료
+  $("#btn_op_send_complete").click(function(){
     if(!confirm("폐기 업무를 완료합니다.\n완료 시 실제 재고량이 변경됩니다.\n계속 하시겠습니까?")){
       return false;
     }
 
-    $.get( _base_url + "work/move/complete/" + operation.id, function( data ) {
+    $.get( _base_url + "work/destroy/complete/" + operation.id, function( data ) {
       alert( "업무 완료!" );
       gs2_console(data);
     });
@@ -238,7 +230,7 @@ $(document).ready(function(){
     }
 
     // 이 함수 내에서 confirm 으로 확인
-    gs2_cancel_operation(_base_url + "work/move");
+    gs2_cancel_operation(_base_url + "work/destroy");
   });
 
 });
@@ -249,9 +241,9 @@ function checkPartRegistered() {
   var total = 0;
 
   if(len == 0) {
-    $("#btn_part_reg_complete").prop('disabled', true);
+    $("#btn_op_accept_complete").prop('disabled', true);
   } else {
-    $("#btn_part_reg_complete").prop('disabled', false);
+    $("#btn_op_accept_complete").prop('disabled', false);
 
     $("#item_list tbody tr.op-item td:nth-child(7)").each(function(n){
       total += parseInt($(this).text(), 10);
@@ -271,9 +263,9 @@ function display() {
   }
 
   if(numItem > 0 && numScan == numItem) {
-    $("#btn_move_op_complete").prop('disabled', false);
+    $("#btn_op_send_complete").prop('disabled', false);
   } else {
-    $("#btn_move_op_complete").prop('disabled', true);
+    $("#btn_op_send_complete").prop('disabled', true);
   }
 }
 

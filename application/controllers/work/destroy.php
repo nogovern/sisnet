@@ -155,7 +155,6 @@ class Destroy extends CI_Controller
 		$serial_number = $this->input->get('serial_number');	// 시리얼넘버
 		$serial_part_id = $this->input->get('serial_part_id');
 
-		
 		if($part->type == '1' && empty($serial_part_id)) {
 			$response['error'] = true;
 			$response['error_msg'] = "시리얼장비는 시리얼넘버 or 직전위치 로 검색하셔야 합나다";
@@ -182,11 +181,19 @@ class Destroy extends CI_Controller
 			} 
 
 			$wp = $result[0];	// 대기 장비
-			if($this->input->get('qty') != $wp->qty) {
+
+			// 요청수량이 클 경우
+			if($wp->qty > $this->input->get('qty')) {
 				$response['error'] = true;
-				$response['error_msg'] = sprintf("해당 장비의 폐기 가능 수량은 %d 개 입니다", $wp->qty);
+				$response['error_msg'] = sprintf("해당 장비의 폐기 가능 최대 수량은 %d 개 입니다", $wp->qty);
 				echo json_encode($response);
-				exit;	
+				exit;
+			// 가능 수량이 없을 경우	
+			} else if ($wp->qty == 0) {
+				$response['error'] = true;
+				$response['error_msg'] = sprintf("폐기 상태의 장비가 없으므로, 선택할 수 없습니다");
+				echo json_encode($response);
+				exit;
 			}
 			
 			$wpart_id = $wp->id;
@@ -240,7 +247,13 @@ class Destroy extends CI_Controller
 		$item = $em->getReference('Entity\OperationPart', $this->input->get("item_id"));
 
 		// extra 필드에 대기장비 id 저장되어 있음
-		$this->waitpart_model->update($item->extra, array('status' => '1'));
+		// $this->waitpart_model->update($item->extra, array('status' => '1'));
+		
+		$wp = $this->waitpart_model->get($item->extra);
+		$qty = $item->getQtyRequest();
+		$wp->minus($qty, 2);
+		$wp->add($qty, 1);
+		$this->work_model->_add($wp);
 			
 		$result['msg'] = sprintf('%s 장비를 목록에서 삭제하였습니다', $item->part_name);
 		$this->work_model->removeItem($item, true);
@@ -252,6 +265,69 @@ class Destroy extends CI_Controller
 	// 폐기 출고 장비 스캔
 	public function scanItem() {
 
+	}
+
+	public function excel_download($id) {
+		$this->load->library('excel');
+		
+		$objPHPExcel = new PHPExcel();
+
+		// Set properties
+		$objPHPExcel->getProperties()->setCreator("Sisnet Service");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Sisnet Service");
+		$objPHPExcel->getProperties()->setTitle("페기장비 목록 - 승인용");
+		$objPHPExcel->getProperties()->setSubject("페기장비 목록 - 승인용");
+		$objPHPExcel->getProperties()->setDescription("페기장비 목록 - 승인용, generated using PHP classes.");
+
+		$headers = array('타입', 'Serial Number', '장비종류', '모델명', '상태', '수량', '직전점포', '등록일');
+
+		// 헤더 설정
+		$nCol = 'A';
+		$nRow = 1;
+		$objPHPExcel->setActiveSheetIndex(0);
+		foreach($headers as $h) {
+			$objPHPExcel->getActiveSheet()->SetCellValue($nCol . $nRow, $h);
+			$nCol++;
+		}
+
+		// 데이터 채우기
+		$this->load->model('work_m');
+		$op = $this->work_m->get($id);
+
+		$rows = $op->getItems();
+		
+		foreach($rows as $row) {
+			$nRow++;
+			$prev_data = ($row->prev_location) ? gs2_decode_location($row->prev_location)->name : '';
+			
+			$objPHPExcel->getActiveSheet()->SetCellValue('A'.$nRow, gs2_part_type($row->part_type));
+			$objPHPExcel->getActiveSheet()->SetCellValue('B'.$nRow, $row->serial_number);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C'.$nRow, $row->part->category->name);
+			$objPHPExcel->getActiveSheet()->SetCellValue('D'.$nRow, $row->part->name);
+			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$nRow, '중고');
+			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$nRow, $row->qty_request);
+			$objPHPExcel->getActiveSheet()->SetCellValue('G'.$nRow, $prev_data);
+			$objPHPExcel->getActiveSheet()->SetCellValue('H'.$nRow, date("Y-m-d"));
+		}
+
+		// 타이틀
+		$objPHPExcel->getActiveSheet()->setTitle('폐기장비목록');
+		$save_filename = 'test_' . date('Ymd') . '.xls';
+		
+		// 엑셀파일 다운로드
+		// $this->download($objPHPExcel, $save_filename);
+		// redirect output to client browser
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Content-Type: application/octet-stream");
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="' . $save_filename. '"');
+		header('Cache-Control: max-age=0');
+
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->setOffice2003Compatibility(true);
+		$objWriter->save('php://output');
 	}
 
 }

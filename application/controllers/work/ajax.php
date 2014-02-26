@@ -702,5 +702,41 @@ class Ajax extends CI_Controller
 		echo 'success';
 	}
 
+	/**
+	 * 개선된 장비등록 함수
+	 */
+	public function addItem2() {
+		$op_id= $this->input->get('id');		// 작업 ID
+
+		$op = $this->work_model->get($op_id);
+
+		// 폐기 업무 장비 등록
+		if($op->type >= '600' && $op->type < '700') {
+			$this->load->model('destroy_m');
+			$result = $this->destroy_m->addItem($op, $this->input->get());
+		}
+
+		echo json_encode($result);
+	}
+
+	public function removeItem2() {
+
+	}
+
+	// 업무 완료
+	public function complete2($id) {
+		$op = $this->work_model->get($id);
+
+		// 폐기 업무 완료
+		if($op->type >= '600' && $op->type < '700') {
+			$this->load->model('destroy_m');
+			$result = $this->destroy_m->complete($op);
+		}
+
+		$result['error'] = false;
+
+		return json_encode($result); 
+	}
+
 }
 

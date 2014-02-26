@@ -14,12 +14,9 @@ class Work_m extends MY_Model {
 		$this->repo = $this->em->getRepository($this->getEntityName());
 	}
 
-	// CI 에서는 모델 생성할 때 생성 인자를 전달할 수 없으므로
-	// 모델 생성 후 operation entity 를 얻기 위해
-	// 
-	// $this->work_model->get(1) 과 동작은 비슷하지만 
-	// 클래스 변수에 넣는다는 것이 틀리다. 
+	///////////
 	// 안씀!!
+	///////////
 	public function initialize($operation_id) {
 		$this->operation = $this->repo->find($operation_id);
 	}
@@ -217,8 +214,8 @@ class Work_m extends MY_Model {
 	}
 
 	// 폐기 업무 목록
-	public function getDestroyList() {
-		$result = $this->getOperations(GS2_OP_TYPE_DESTROY);
+	public function getDestroyList($criteria=array()) {
+		$result = $this->getOperations(GS2_OP_TYPE_DESTROY, $criteria);
 		return $result;
 	}
 

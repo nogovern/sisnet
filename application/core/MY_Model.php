@@ -209,7 +209,7 @@ interface IOperationModel {
 	public function remove();
 	public function update();
 
-	public function addItem();
+	public function addItem($op, $data);
 	public function removeItem();
 	public function getItem();
 	public function getItems();

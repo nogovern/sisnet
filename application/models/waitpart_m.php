@@ -25,14 +25,14 @@ class Waitpart_m extends MY_Model
 	}
 
 	// 장비 존재하는지 검사 
-	public function existPartInList($gubun, $office_id, $part_id, $status = '1') {
+	public function existPartInList($gubun, $office_id, $part_id) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('p')
 			->from($this->entity_name, 'p')
 			->where("p.office = $office_id")
 			->andWhere("p.gubun = '$gubun'")
 			->andWhere("p.part = $part_id")
-			->andWhere("p.status = '$status'");
+			->andWhere("p.qty > 0");
 		$result = $qb->getQuery()->getResult();
 
 		return count($result) ? $result : false;
@@ -57,6 +57,8 @@ class Waitpart_m extends MY_Model
 				} else {
 					$qb->andWhere("p.$key = '$val'");
 				}
+			} else if ($key == 'qty') {
+				$qb->andWhere("p.$key > $val");		// 폐기 대기 수량
 			} else {
 				$qb->andWhere("p.$key = $val");
 			}
