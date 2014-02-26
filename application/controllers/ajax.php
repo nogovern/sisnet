@@ -403,7 +403,8 @@ class Ajax extends CI_Controller
 		$criteria['serial_number'] = urldecode($q);
 		$criteria['gubun'] = $this->input->get('gubun');
 		$criteria['office']	 = $this->input->get('office_id');
-		$criteria['status'] = '1';
+		$criteria['qty'] = 0;
+		// $criteria['status'] = '1';
 
 		$result = $this->waitpart_model->search($criteria);
 
