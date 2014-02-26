@@ -77,6 +77,7 @@ $this->view('layout/navbar');
             <?php
             if($work->numFiles()) {
               foreach($work->files as $file) {
+                echo '<span class="label label-info">' . $file->gubun . "</span> ";
                 echo anchor('assets/files/' . $file->save_name, $file->org_name) . '<br>';
               }
             }

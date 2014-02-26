@@ -77,6 +77,7 @@ foreach($work->targets as $top) {
 <?php
 if($work->numFiles()) {
   foreach($work->files as $file) {
+    echo '<span class="label label-info">' . $file->gubun . "</span> ";
     echo anchor(GS2_UPLOAD_BASEURL . $file->save_name, $file->org_name) . '<br>';
   }
 }
