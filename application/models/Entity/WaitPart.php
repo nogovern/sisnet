@@ -93,6 +93,12 @@ class WaitPart
 		return $this->qty;
 	}
 
+	// 폐기, 수리 등록 된 총 수량
+	// 수량장비 경우에 유효
+	public function getTotal() {
+		return $this->qty + $this->qty_accept;
+	}
+
 	// 1-대기, 2- 등록, 3-완료
 	public function getStatus() {
 		return $this->status;
@@ -172,14 +178,20 @@ class WaitPart
 	
 	// 1 - 등록수량 , 2 - 승인수량
 	public function add($qty, $gubun = 1) {
-		$operand = ($gubun == 1) ? $this->qty : $this->qty_accept;
-		return $operand += $qty;
+		if($gubun == 1) {
+			return $this->qty += $qty;
+		} else {
+			return $this->qty_accept += $qty;
+		}
 	} 
 
 	// 빼기
 	public function minus($qty, $gubun = 1) {
-		$operand = ($gubun == 1) ? $this->qty : $this->qty_accept;
-		return $operand -= $qty;
+		if($gubun == 1) {
+			return $this->qty -= $qty;
+		} else {
+			return $this->qty_accept -= $qty;
+		}
 	} 
 	
 	// 더하기 alias	
