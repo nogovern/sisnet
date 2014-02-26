@@ -87,7 +87,7 @@ if($item_count == 0) {
                 <td><?php echo $item->getQtyRequest(); ?></td>
                 <td><?php echo gs2_location_name($item->prev_location); ?></td>
                 <td>
-<?php if($op->status == '1'){ ?>
+<?php if($op->status < '3'){ ?>
                   <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
 <?php } else { ?>
                   <i class="fa fa-check scan_status <?=($item->isScan()) ? '' : 'hide'?>" style="color:green;font-size:20px;"></i>
