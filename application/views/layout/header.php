@@ -51,6 +51,8 @@
       /** 일정표 **/
       #calendar tbody td { font-size:12px; }
       #calendar tbody tr td {height: 50px;}
+
+      #filter-form select {width:100px;}
     </style>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
