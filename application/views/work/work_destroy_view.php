@@ -111,6 +111,9 @@ if($item_count == 0) {
       <button id="btn_edit_request" type="button" class="btn btn-default">요청서 수정</button>
       <button id="btn_add_item" type="button" class="btn btn-warning">장비등록</button>
       <button id="btn_op_accept_complete" type="button" class="btn btn-success">승인완료</button>
+<?php endif; ?>
+
+<?php if($op->type == '601' && $op->status >= '2'): ?> 
       <button id="btn_excel_download" class="btn btn-primary"><i class="fa fa-download"></i> 엑셀 다운</button>
 <?php endif; ?>
 
@@ -242,8 +245,10 @@ function checkPartRegistered() {
 
   if(len == 0) {
     $("#btn_op_accept_complete").prop('disabled', true);
+    $("#btn_excel_download").prop('disabled', true);
   } else {
     $("#btn_op_accept_complete").prop('disabled', false);
+    $("#btn_excel_download").prop('disabled', false);
 
     $("#item_list tbody tr.op-item td:nth-child(7)").each(function(n){
       total += parseInt($(this).text(), 10);
