@@ -130,10 +130,18 @@ $(document).ready(function(){
           office_id: oId,
           "csrf_test_name": $.cookie("csrf_cookie_name")
         },
-        dataType: "html",
+        dataType: "json",
       })
-        .done(function(html) {
-          alert(html);
+        .done(function(response) {
+          if(!response.error) {
+            $("#modal_request_ok").modal('hide');
+            alert("담당 사무소를 변경 하였습니다.\n리스트로 이동합니다.");
+            location.href= response.data;    // 이동 url
+          
+          } else {
+            alert(response.error_msg);
+            return false;  
+          }
         })
         .fail(function(xhr, textStatus){
           alert("Request failed: " + textStatus);

@@ -356,7 +356,28 @@ class Ajax extends CI_Controller
 		);
 		$this->work_model->addLog($op, $log_data, TRUE);
 
-		echo '담당 사무소를 변경하였습니다';
+		if($op->type >= '100' && $op->type < '200') {
+			$return_url = base_url() . 'work/enter';
+		} else if($op->type >= '200' && $op->type < '300') {
+			$return_url = base_url() . 'work/install';
+		} else if($op->type >= '300' && $op->type < '400') {
+			$return_url = base_url() . 'work/close';
+		} else if($op->type >= '400' && $op->type < '500') {
+			$return_url = base_url() . 'work/replace';
+		} else if($op->type >= '500' && $op->type < '600') {
+			$return_url = base_url() . 'work/repair';
+		} else if($op->type >= '600' && $op->type < '700') {
+			$return_url = base_url() . 'work/destroy';
+		} else if($op->type >= '700' && $op->type < '800') {
+			$return_url = base_url() . 'work/move';
+		} else if($op->type >= '800' && $op->type < '900') {
+			$return_url = base_url() . 'work/transfer';
+		}
+
+		$response['error'] = false;
+		$response['data'] = $return_url;
+		
+		echo json_encode($response);
 	}
 
 	// 점포 완료
