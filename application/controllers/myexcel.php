@@ -177,5 +177,103 @@ class Myexcel extends CI_Controller {
 
 		echo $row_num;
 	}
+
+	////////////
+	/// uploae
+	////////////
+	public function upload() {
+		$data['title'] = '';
+		$data['current'] = '';
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('op_id', '업무 ID', 'required');
+		if(empty($_FILES['userfile']['name'][0])) {
+			$this->form_validation->set_rules('userfile', '파일 ', 'required|trim');
+		}
+
+		if($this->form_validation->run() === false) {
+			$this->load->view('layout/header_popup');
+			$this->load->view('sample/file_upload', $data);
+			$this->load->view('layout/footer');
+		} else {
+			//////////////////////////
+			// 첨부 파일 업로드
+			//////////////////////////
+			$this->load->library('upload');
+			$this->load->model('file_m', 'file_model');
+
+			$files = $_FILES;
+			$file_count = count($files['userfile']['name']);
+
+			// upload 옵션 변경
+			$upload_option = $this->file_model->setUploadOption();
+			$upload_option['allowed_types'] = 'xls|xlsx|cvs';
+			$upload_option['max_size'] = 10 * 1024;		// 10MB
+
+			$uploaded_files = array();
+			for($i=0; $i < $file_count; $i++) {
+				$_FILES['userfile']['name']= $files['userfile']['name'][$i];
+		        $_FILES['userfile']['type']= $files['userfile']['type'][$i];
+		        $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
+		        $_FILES['userfile']['error']= $files['userfile']['error'][$i];
+		        $_FILES['userfile']['size']= $files['userfile']['size'][$i];
+
+		        if($_FILES['userfile']['error'] == 0 && $_FILES['userfile']['size'] > 0) {
+		        	$this->upload->initialize($upload_option);
+		        	// 업로드 실패시 
+		        	if($this->upload->do_upload() === FALSE) {
+		        		$upload_error = TRUE;
+		        		
+		        	} else {
+		        		$uploaded_files[] = $this->upload->data();
+		        	}
+		        }
+			}
+
+			if(isset($upload_error) && $upload_error == true) {
+				alert($this->upload->display_errors());
+			} else {
+				// 엑셀 파일 읽기
+
+				$file_path = $uploaded_files[0]['full_path'];
+				$data = $this->read_excel($file_path);
+
+				$this->load->model('destroy_m');
+				$result = $this->destroy_m->excel_upload(62, $data);
+			}	
+		}
+	}
+
+	public function read_excel($file_path) {
+		// 엑셀 파일 읽기
+		try {
+			$inputFileType = PHPExcel_IOFactory::identify($file_path);
+			$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+			$objPHPExcel = PHPExcel_IOFactory::load($file_path);
+		} catch(Exception $e) {
+			die("Error loadiong excel fiel....");
+		}
+
+		//  Get worksheet dimensions
+		$sheet = $objPHPExcel->getSheet(0); 
+		$highestRow = $sheet->getHighestRow(); 
+		$highestColumn = $sheet->getHighestColumn();
+
+		//  Loop through each row of the worksheet in turn
+		$data = array();
+		for ($row_num = 1; $row_num <= $highestRow; $row_num++){ 
+		    //  Read a row of data into an array
+		    $rowData = $sheet->rangeToArray('A' . $row_num . ':' . $highestColumn . $row_num,
+		                                    NULL,
+		                                    TRUE,
+		                                    FALSE);
+		    //  Insert row data array into your database of choice here
+		    $data[] = $rowData[0];
+		}
+
+		return $data; 
+	}
+
 }
 

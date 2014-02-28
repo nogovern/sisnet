@@ -108,13 +108,16 @@ if($item_count == 0) {
       <a class="btn btn-default" href="<?=base_url() . 'work/destroy'?>"><i class="fa fa-list"></i> 리스트</a>
 <?php if($op->status < '3'): ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
-      <button id="btn_edit_request" type="button" class="btn btn-default">요청서 수정</button>
+      <button id="btn_edit_request" type="button" class="btn btn-default">요청서수정</button>
       <button id="btn_add_item" type="button" class="btn btn-warning">장비등록</button>
       <button id="btn_op_accept_complete" type="button" class="btn btn-success">승인완료</button>
 <?php endif; ?>
 
 <?php if($op->type == '601' && $op->status >= '2'): ?> 
       <button id="btn_excel_download" class="btn btn-primary"><i class="fa fa-download"></i> 엑셀 다운</button>
+<?php endif; ?>
+<?php if($op->type == '602' && $op->status == '1'): ?> 
+      <button id="btn_excel_upload" class="btn btn-primary"><i class="fa fa-upload"></i> 엑셀 등록</button>
 <?php endif; ?>
 
 <?php if($op->type == '602' && $op->status == '2'): ?> 
@@ -202,7 +205,7 @@ $(document).ready(function(){
 
   // 엑셀 다운로드
   $("#btn_excel_download").click(function(){
-    if(!confirm("등록 장비를 엑셀 파일을 다운로드 합니다")) {
+    if(!confirm("등록 장비 목록을 엑셀 파일로 다운로드 하시겠습니까?")) {
       return false;
     }
 

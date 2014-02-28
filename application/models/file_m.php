@@ -28,11 +28,10 @@ class File_m extends MY_Model
 			};
 		}
 
-		$config = array();
-		$config['upload_path'] = $upload_path;
-		$config['allowed_types'] = '*';
-		$config['max_size'] = intval(GS2_MAX_FILE_SIZE) * 1024;
-		$config['encrypt_name'] = TRUE;
+		$config['upload_path'] 		= $upload_path;
+		$config['allowed_types'] 	= '*';
+		$config['max_size'] 		= intval(GS2_MAX_FILE_SIZE) * 1024;
+		$config['encrypt_name'] 	= TRUE;
 
 		return $config;
 	}

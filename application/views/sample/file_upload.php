@@ -1,0 +1,33 @@
+<div class="container">
+	<div class="row">
+		<div class="well well-sm">
+			<h2>엑셀 업로드</h2>
+		</div>
+
+    <?php
+    echo validation_errors();
+    ?>
+
+		<form id="upload_form" method="post" enctype="multipart/form-data" role="form" class="form form-horizontal">
+      <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
+      <input type="hidden" name="op_id" value="1">
+      <input type="hidden" name="excel_only" value="1">
+			
+      <div class="form-group">
+        <label class="form-label col-xs-3">파일 선택</label>
+        <div class="col-xs-8">
+          <input type="file" class="form-control" name="userfile[]"></input>
+
+          <div class="help-block">파일 당 <?=GS2_MAX_FILE_SIZE?> M bytes 까지 업로드 가능합니다</div>
+        </div>
+      </div>
+
+      <div class="col-xs-12">
+        <button class="btn btn-primary">등록</button>
+      </div>
+
+    </form>
+  </div>
+</form>
+
+                

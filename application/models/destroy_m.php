@@ -114,7 +114,7 @@ class Destroy_m extends MY_Model implements IOperationModel
 			$wp = $result[0];	// 대기 장비
 
 			// 요청수량이 클 경우
-			if($wp->qty < $this->input->get('qty')) {
+			if($wp->qty < $data['qty']) {
 				$response['error'] = true;
 				$response['error_msg'] = sprintf("해당 장비의 폐기 가능 최대 수량은 %d 개 입니다", $wp->qty);
 				echo json_encode($response);
@@ -131,23 +131,23 @@ class Destroy_m extends MY_Model implements IOperationModel
 		}
 		// 시리얼장비
 		else {
-			$wpart_id = $this->input->get("wpart_id");
+			$wpart_id = $data["wpart_id"];
 			$wp = $this->waitpart_model->get($wpart_id);
 		}
 
 		$get_data = array(
-			'id'				=> $this->input->get('id'),		// 작업 ID
-			'part_id'			=> $this->input->get('part_id'),
+			'id'				=> $data['id'],		// 작업 ID
+			'part_id'			=> $data['part_id'],
 			'serial_number'		=> $serial_number,
 			'serial_part_id'	=> $serial_part_id,
-			'qty'				=> $this->input->get('qty'),
-			'is_new'			=> $this->input->get('is_new'),
+			'qty'				=> $data['qty'],
+			'is_new'			=> $data['is_new'],
 			'extra'				=> $wpart_id,
 		);
 
 		// 폐기대기 리스트 내 수량 변경
-		$wp->minus($this->input->get('qty'), 1);
-		$wp->add($this->input->get('qty'), 2);
+		$wp->minus($data['qty'], 1);
+		$wp->add($data['qty'], 2);
 		$this->em->persist($wp);
 		
 		// 대기 장비 상태를 변경
@@ -233,6 +233,52 @@ class Destroy_m extends MY_Model implements IOperationModel
 	// 업무 프로세스 처리 
 	// 	요청 -> 확정 -> 입력 -> 점포완료 -> 완료 -> 승인
 	public function process($step = 2) {
+
+	}
+
+	public function excel_upload($id, $data) {
+		if(!is_array($data)) {
+			return false;
+		}
+
+		gs2_dump($data);
+
+		// load model
+		$this->load->model("part_m", "part_model");
+
+		$op = $this->work_model->get($id);
+
+		// 결과 저장
+		$count['success'] = 0;
+		$count['fail'] = 0;
+
+		$insert_data = array();
+		foreach($data as $idx => $row) {
+			if( $idx == 0) {
+				continue;
+			}
+
+			$insert_data['id'] = $id;
+			$part = $this->em->getRepository('Entity\Part')->findOneBy(array('name' => "$row[3]"));
+
+			if($part) {
+				$count['success']++;
+				echo $part->name;
+			} else {
+				$count['fail']++;
+			}
+
+			$insert_data['part_id'] = $part->id;
+			$insert_data['serial_number'] = $row[1];
+			$insert_data['serial_id'] = '';
+			$insert_data['qty'] = $row[5];
+			$insert_data['is_new'] = 'N';
+			$insert_data['wpart_id'] = '';
+
+			$this->addItem($op, $insert_data);
+		}	
+
+		gs2_dump($count);
 
 	}
 }
