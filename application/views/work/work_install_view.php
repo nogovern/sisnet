@@ -78,7 +78,7 @@ $this->view('layout/navbar');
             if($work->numFiles()) {
               foreach($work->files as $file) {
                 echo '<span class="label label-info">' . $file->gubun . "</span> ";
-                echo anchor('assets/files/' . $file->save_name, $file->org_name) . '<br>';
+                echo anchor('assets/files/' . $file->save_name, $file->org_name, ' target="_blank"') . '<br>';
               }
             }
             ?>
@@ -241,7 +241,10 @@ if($work->status == 2) {
 
 if($work->status == 3):
 ?>
-      <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
+      <!--
+     <button id="btn_op_complete" class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
+     -->
+      <button id="btn_op_complete2" class="btn btn-danger" type="button" href="<?=base_url()?>work/ajax/iframe_complete/<?=$work->id?>" data-target="#modal_op_complete_container">작업완료</button>
 <?php
 endif;
 
@@ -265,7 +268,9 @@ $this->view('common/modal_request_ok');           // 요청 확정
 $this->view('common/modal_memo');                 // 작업자 메모
 $this->view('common/modal_change_worker');        // 방문자 변경
 $this->view('common/modal_store_complete');       // 점포 완료
-$this->view('common/modal_op_complete');          // 작업 완료
+// $this->view('common/modal_op_complete');          // 작업 완료
+$this->view('common/modal_op_complete_container');      // 작업 완료2
+
 
 $this->view('common/modal_search_previous');      // 직전위치 검색용
 ?>
@@ -328,6 +333,14 @@ $(document).ready(function(){
 
   // 점포완료 버튼 초기화
   checkPartRegistered();
+
+  // iframe 방식의 작업 완료 modal 열기
+  $("#btn_op_complete2").on('click', function(e){
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $("#modal_op_complete_container .modal-body").html('<iframe width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="'+url+'" name="iframe"></iframe>').css('height', '370px');
+    $("#modal_op_complete_container").modal('show');
+  });
 
 });// end of ready
 

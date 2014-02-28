@@ -614,5 +614,87 @@ class Ajax extends CI_Controller
 		return json_encode($result); 
 	}
 
+	/**
+	 * iframe 방식의 업무완료 작성 양식
+	 * 
+	 * @return [type] [description]
+	 */
+	public function iframe_complete($id) {
+		$data['title'] 		= '업무 완료';
+		$data['current']	= "page-schedlue";
+
+		$op = $this->work_model->get($id);
+		$data['work'] = $op;
+
+		// POST 저장 시
+		$data['form_saved'] = 'n'; 
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('op_id', '작업 ID', 'required');
+		$this->form_validation->set_rules('date_complete', '완료일시', 'required');
+
+		if($this->form_validation->run() === false) {
+			$this->load->view("form/iframe_op_complete_form", $data);
+		} else {
+			
+			//////////////////////////
+			// 첨부 파일 업로드
+			//////////////////////////
+			$this->load->library('upload');
+			$this->load->model('file_m', 'file_model');
+
+			$files = $_FILES;
+			$file_count = count($files['userfile']['name']);
+
+			for($i=0; $i < $file_count; $i++) {
+				$_FILES['userfile']['name']= $files['userfile']['name'][$i];
+		        $_FILES['userfile']['type']= $files['userfile']['type'][$i];
+		        $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
+		        $_FILES['userfile']['error']= $files['userfile']['error'][$i];
+		        $_FILES['userfile']['size']= $files['userfile']['size'][$i];
+
+		        if($_FILES['userfile']['error'] == 0 && $_FILES['userfile']['size'] > 0) {
+		        	$this->upload->initialize($this->file_model->setUploadOption());
+		        	// 업로드 실패 시 
+		        	if($this->upload->do_upload() === FALSE) {
+		        		$upload_error = TRUE;
+		        		break;
+		        	} else {
+		        		$f_data = $this->upload->data();
+
+		        		//////////////
+		        		//  업로드 저장 배열에 추가 정보를 더해 데이터 넘겨준다
+		        		//////////////
+		        		$f_data['gubun'] = '완료';
+		        		$f_data['op_id'] = $op->id;
+
+		        		$this->file_model->create($f_data);
+		        	}
+		        }
+			}// end of for
+
+			if(isset($upload_error) && $upload_error == TRUE) {
+				$data['errors'] = $this->upload->display_errors();
+				$this->load->view("form/iframe_op_complete_form", $data);
+				// alert("파일 업로드 중 에러가 발생했습니다\nerror: " . $this->upload->display_errors());
+			}
+			// 파일 업로드 성공 시....
+			else {
+				// 완료 상태로 변경
+				$result = $this->work_model->complete($op->id, '4', $this->input->post('date_complete'));
+				
+				if(!$result) {
+					echo '저장중 에러가 발생했습니다';
+				} else {
+					$data['form_saved'] = 'y';
+					$this->load->view("form/iframe_op_complete_form", $data);
+				}
+				// alert('철수 요청을 등록하였습니다.', site_url('/work/close'));
+			}
+		}
+
+	}
+
 }
 

@@ -78,7 +78,7 @@ $this->view('layout/navbar');
             if($work->numFiles()) {
               foreach($work->files as $file) {
                 echo '<span class="label label-info">' . $file->gubun . "</span> ";
-                echo anchor(GS2_UPLOAD_BASEURL . $file->save_name, $file->org_name) . '<br>';
+                echo anchor(GS2_UPLOAD_BASEURL . $file->save_name, $file->org_name, 'target="_blank"') . '<br>';
               }
             }
             ?>
@@ -300,7 +300,10 @@ if($work->status == 3):
 <?php if($work->type == '304'): ?>
       <button class="btn btn-info btn_add" type="button" data-toggle="modal" data-target="#modal_rest_part_register">점검장비 등록</button>
 <?php endif; ?>
-      <button id="btn_op_complete" class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
+      <!--
+     <button id="btn_op_complete" class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
+     -->
+      <button id="btn_op_complete2" class="btn btn-danger" type="button" href="<?=base_url()?>work/ajax/iframe_complete/<?=$work->id?>" data-target="#modal_op_complete_container">작업완료</button>
 <?php
 endif;
 if($work->status == 4):
@@ -322,7 +325,8 @@ $this->view('common/modal_request_ok');           	// 요청 확정
 $this->view('common/modal_memo');                 	// 작업자 메모
 $this->view('common/modal_change_worker');        	// 방문자 변경
 $this->view('common/modal_store_complete');       	// 점포 완료
-$this->view('common/modal_op_complete');       		  // 작업 완료
+// $this->view('common/modal_op_complete');            // 작업 완료
+$this->view('common/modal_op_complete_container'); 		  // 작업 완료2
 
 if($work->type == '304') {
   $this->view('common/modal_close_rest_part_register');   // 휴점S 용 장비 등록
@@ -380,6 +384,15 @@ $(document).ready(function(){
 
   // 작업완료 버튼 활성화 검사
   checkOperationComplete();
+
+  // iframe 방식의 작업 완료 modal 열기
+  $("#btn_op_complete2").on('click', function(e){
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $("#modal_op_complete_container .modal-body").html('<iframe width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="'+url+'" name="iframe"></iframe>').css('height', '370px');
+    $("#modal_op_complete_container").modal('show');
+  });
+
 });// end of ready
 
 //  장비리스트에 행 추가
