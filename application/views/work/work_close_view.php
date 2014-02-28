@@ -77,7 +77,8 @@ $this->view('layout/navbar');
             <?php
             if($work->numFiles()) {
               foreach($work->files as $file) {
-                echo '<span class="label label-info">' . $file->gubun . "</span> ";
+                $label_color = ($file->gubun == '요청') ? 'label-primary' : 'label-success';
+                echo '<span class="label '. $label_color .'">' . $file->gubun . "</span> ";
                 echo anchor(GS2_UPLOAD_BASEURL . $file->save_name, $file->org_name, 'target="_blank"') . '<br>';
               }
             }
