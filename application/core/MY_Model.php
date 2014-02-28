@@ -91,11 +91,6 @@ class MY_Model extends CI_Model {
 		$this->em->flush();
 	}
 
-	// 삭제
-	public function _delete($obj) {
-		;
-	}
-
 	/**
 	 *  ID 번호로 정보 가져오기
 	 * 

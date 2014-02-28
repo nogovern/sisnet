@@ -383,138 +383,14 @@ class Ajax extends CI_Controller
 	}
 
 	// 작업 완료
-	public function complete($operation_id=NULL) {
-		$id = $this->input->post('id');
-		// 테스트용
-		if(!$id) {
-			$id = $operation_id;
-		}
+	public function complete($id = null) {
+		$id = ($this->input->post('id')) ? $this->input->post('id') : $id;
 
-		$op = $this->work_model->get($id);
-
-		// 추가 모델 로딩
-		$this->load->model('part_m', 'part_model');
-		$this->load->model('file_m', 'file_model');
-
-		// 첨부파일 저장
-		// 2014.02.17 by JKH - ie 첨부파일 에러 때문에 파일 수 검증 추가
-		$files = $this->input->post('files');
-		if($files && count($files)) {
-			foreach($files as $f) {
-				$f['gubun'] = '완료';
-	    		$f['op_id'] = $op->id;
-
-	    		$this->file_model->create($f);
-			}
-		}
-
-		// 업무 메인 변경
-		$op_data['status'] = '4';
-		$op_data['date_finish'] = $this->input->post('date_complete');
-		$this->work_model->updateOperation($op, $op_data);
-
-		// 업무 장비 정보 변경
-
-		if( $op->type >= '200' && $op->type < '300') {
-			// 장비 출고 후 재고 반영
-			$this->work_model->deliveryItem($op);
-		} 
-		// 철수 후 장비 상태는 점검 전
-		elseif ( $op->type >= '300' && $op->type < '400') {
-			$items = $op->getItems();
-
-			foreach($items as $item) {
-				if($item->part_type == '1') {
-					// 기존 시리얼넘버가 존재하면 기존 정보 update
-					$sp = ($item->serial_part) ? $this->part_model->getSerialPart($item->serial_part->id): NULL;
-
-					// 없는 시리얼넘버이면 생성
-					if(!$sp) 
-					{
-						$sp_data['part_id'] = $item->part->id;
-						$sp_data['previous_location'] = $op->work_location;
-						$sp_data['current_location'] = gs2_encode_location($op->office);
-						$sp_data['date_enter']	= $op->getDateFinish();				// 최초 설치일
-						$sp_data['qty'] = 1;
-						$sp_data['serial_number'] = $item->serial_number;
-						$sp_data['is_new'] = $item->is_new;
-						$sp_data['status'] = '3';
-						$sp_data['is_valid'] = 'N';									// 가용 여부
-
-						$sp = $this->part_model->addSerialPart($sp_data, FALSE);
-					} 
-
-					else {
-						//////////////////////////////////////////////
-						// part_m 안에 updateSerialPart 로 구현하자! 
-						//////////////////////////////////////////////
-						$sp->setPreviousLocation($op->work_location);
-						$sp->setCurrentLocation(gs2_encode_location($op->office));
-						$sp->setNewFlag(FALSE);
-						$sp->setValidFlag(FALSE);
-						$sp->setStatus('3');
-						$sp->setDateEnter($op->getDateFinish());
-
-					}
-
-					///////////////////////
-					// 분실 장비일 경우 처리 
-					///////////////////////
-					if($item->qty_lost > 0) {
-						$sp->setStatus('L');
-						$sp->setMemo('분실장비');
-					}
-
-					$this->work_model->_add($sp);
-
-					// 새로 생성된 serial_part_id 를 opeartion_parts 테이블에 update
-					$item->setSerialPart($sp);
-					$this->work_model->_add($item);			
-				}
-
-				// 재고수량 변경
-				$stock = $item->part->getStock($op->office->id);
-				$stock->increase('s900', $item->qty_request);	// 점검 전 수량에 추가
-				$this->work_model->_add($stock);
-			}
-		}
-
-		// 교체 업무 시 부모,형제 업무 파악
-		if($op->type == '205' || $op->type == '305') {
-			$this->work_model->checkFamily($op);
-		}
-
-		// 점포 상태 변경 ( 0-폐점, 1-정상, 2-휴점)
-		if($op->type >= '200' && $op->type < '400') {
-			$store = gs2_decode_location($op->getWorkLocation());
-			
-			// 폐점
-			if($op->type == '301') {
-				$store->setStatus('0');
-			}
-
-			// 휴점 
-			if($op->type == '303' || $op->type == '304') {
-				$store->setStatus('2');
-			}
-
-			// 설치
-			if($op->type >= '200' && $op->type < '300') {
-				$store->setStatus('1');
-			}
-
-			$this->em->persist($store);			
-		}
-
-		// 업무 log 생성
-		$log_data = array(
-			'type' => '1',
-			'content' => gs2_op_type($op->type) . ' 작업완료 합니다',
-			'event'			=> '완료'
-		);
-		$this->work_model->addLog($op, $log_data, TRUE);
+		// 완료 상태는 업무에 따라 달라질 수 있음
+		$status = '4';	
+		$result = $this->work_model->complete($id, $status, $this->input->post('date_complete'));		
 		
-		echo "업무를 완료하였습니다.";
+		echo $result;
 	}
 
 	// 승인 
