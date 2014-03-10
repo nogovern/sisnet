@@ -609,6 +609,11 @@ class Ajax extends CI_Controller
 
 		// 폐기 업무 장비 등록
 		if($op->type >= '600' && $op->type < '700') {
+			// 업무 상태가 1 이면 '입력' 상태로 변경
+			if($op->status == '1') {
+				$this->work_model->updateOperation($op, array('status' => '2'), TRUE);
+			}
+
 			$this->load->model('destroy_m');
 			$result = $this->destroy_m->addItem($op, $this->input->get());
 		}

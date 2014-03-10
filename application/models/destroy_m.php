@@ -80,12 +80,6 @@ class Destroy_m extends MY_Model implements IOperationModel
 		$serial_number = $data['serial_number'];	// 시리얼넘버
 		$serial_part_id = $data['serial_id'];
 
-		// 업무 상태 변경 
-		if($op->status == "1") {
-			$op->setStatus('2');
-			$this->em->persist($op);
-		}
-		
 		if($part->type == '1' && empty($serial_part_id)) {
 			$response['error'] = true;
 			$response['error_msg'] = "시리얼장비는 시리얼넘버 or 직전위치 로 검색하셔야 합나다";
@@ -236,12 +230,11 @@ class Destroy_m extends MY_Model implements IOperationModel
 
 	}
 
-	public function excel_upload($id, $data) {
+	// 배열로 업무 아이템 다중 등록
+	public function multi_add($id, $data) {
 		if(!is_array($data)) {
 			return false;
 		}
-
-		gs2_dump($data);
 
 		// load model
 		$this->load->model("part_m", "part_model");
@@ -254,32 +247,55 @@ class Destroy_m extends MY_Model implements IOperationModel
 
 		$insert_data = array();
 		foreach($data as $idx => $row) {
-			if( $idx == 0) {
-				continue;
-			}
 
-			$insert_data['id'] = $id;
-			$part = $this->em->getRepository('Entity\Part')->findOneBy(array('name' => "$row[3]"));
+			$p_type = ($row[0] == '시리얼') ? "1" : "2";
+			$p_model = $row[3];
+			$qty = intval($row[5]);
+
+			// 장비 모델명으로 장비 Entity 얻기
+			$part = $this->em->getRepository('Entity\Part')->findOneBy(array('name' => "$p_model"));
 
 			if($part) {
 				$count['success']++;
 				echo $part->name;
 			} else {
 				$count['fail']++;
+				continue;
 			}
 
+			// 폐기리스트에서 검색
+			$qb = $this->em->createQueryBuilder();
+			$qb->select("wp")
+				->from("Entity\WaitPart", "wp")
+				->where("wp.gubun = 'D' ")
+				->andWhere("wp.part = {$part->id}")
+				->andWhere("wp.part_type = $p_type")
+				->andWhere("wp.office = {$op->office->id}");
+
+			$result = $qb->getQuery()->getResult();
+			$wpart = $result[0];
+			echo " - " . $wpart->qty_accept;
+
+			// 아이템 등록 용 배열
+			$insert_data['id'] = $id;
 			$insert_data['part_id'] = $part->id;
 			$insert_data['serial_number'] = $row[1];
 			$insert_data['serial_id'] = '';
-			$insert_data['qty'] = $row[5];
+			$insert_data['qty'] = $qty;
 			$insert_data['is_new'] = 'N';
-			$insert_data['wpart_id'] = '';
+			$insert_data['wpart_id'] = $wpart->id;
 
-			$this->addItem($op, $insert_data);
+			//$this->addItem($op, $insert_data);
+
+			// 아이템 등록 후 폐기 목록의 장비 정보 수량 변경
+			$wpart->decrease($qty ,2);
+
+			// $this->em->persist($wpart);
+			// $this->em->flush();
+
 		}	
 
-		gs2_dump($count);
-
+		return $count;
 	}
 }
 
