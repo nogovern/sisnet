@@ -136,7 +136,11 @@ class Destroy extends CI_Controller
 		$cats = gs2_convert_for_dropdown($cats);
 		$data['select_category'] = form_dropdown('select_category', $cats, 0, 'id="select_category" class="form-control"');
 
-		$this->load->view('work/work_destroy_view', $data);
+		if($op->type == '601') {
+			$this->load->view('work/work_destroy_view', $data);
+		} else {
+			$this->load->view('work/work_destroy_view2', $data);	// 출고 용 상세보기
+		}
 	}
 
 	public function update($id) {
@@ -234,6 +238,120 @@ class Destroy extends CI_Controller
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->setOffice2003Compatibility(true);
 		$objWriter->save('php://output');
+	}
+
+	// 폐기업무 - 출고 에서 엑셀 파일 등록
+	function excel_upload($id) {
+		$data['title'] = '엑셀 업로드 & 등록';
+		$data['current'] = '';
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('op_id', '업무 ID', 'required');
+		if(empty($_FILES['userfile']['name'][0])) {
+			$this->form_validation->set_rules('userfile', '파일 ', 'required|trim');
+		}
+
+		if($this->form_validation->run() === false) {
+			// $this->load->view('layout/header_popup');
+			$this->load->view('sample/file_upload', $data);
+			// $this->load->view('layout/footer');
+		} else {
+			//////////////////////////
+			// 첨부 파일 업로드
+			//////////////////////////
+			$this->load->library('upload');
+			$this->load->model('file_m', 'file_model');
+
+			$files = $_FILES;
+			$file_count = count($files['userfile']['name']);
+
+			// upload 옵션 변경
+			$upload_option = $this->file_model->setUploadOption();
+			$upload_option['allowed_types'] = 'xls|xlsx|csv';
+			$upload_option['max_size'] = 10 * 1024;		// 10MB
+
+			$uploaded_files = array();
+			for($i=0; $i < $file_count; $i++) {
+				$_FILES['userfile']['name']= $files['userfile']['name'][$i];
+		        $_FILES['userfile']['type']= $files['userfile']['type'][$i];
+		        $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
+		        $_FILES['userfile']['error']= $files['userfile']['error'][$i];
+		        $_FILES['userfile']['size']= $files['userfile']['size'][$i];
+
+		        if($_FILES['userfile']['error'] == 0 && $_FILES['userfile']['size'] > 0) {
+		        	$this->upload->initialize($upload_option);
+		        	// 업로드 실패시 
+		        	if(!$this->upload->do_upload()) {
+		        		$upload_error = true;
+		        		
+		        	} else {
+		        		$uploaded_files[] = $this->upload->data();
+		        	}
+
+		        }
+			}
+
+			// 업로드 실패 시 처리
+			if(isset($upload_error) && $upload_error == true) {
+				alert($this->upload->display_errors());
+			} else {
+				$op = $this->work_model->get($id);
+
+				// 업무 상태가 1 이면 '입력' 상태로 변경
+				if($op->status == '1') {
+					$this->work_model->updateOperation($op, array('status' => '2'), TRUE);
+				}
+
+				// 엑셀 파일 읽어 배열로 변환
+				$file_path = $uploaded_files[0]['full_path'];
+				// 2번째 인자가 true 이면 첫째 행은 skip
+				$excel_data = $this->read_excel($file_path, TRUE);
+
+				// 배열을 스캔 용 아이템으로 등록
+				$this->load->model('destroy_m');
+				$result = $this->destroy_m->multi_add($op->id, $excel_data);
+
+				$data['show_result'] = true;
+				$data['result'] = $result;
+				$this->load->view('sample/file_upload', $data);
+			}	
+		}
+	}
+
+	public function read_excel($file_path, $fisrt_row_skip = false) {
+		$this->load->library('excel');
+
+		// 엑셀 파일 읽기
+		try {
+			$inputFileType = PHPExcel_IOFactory::identify($file_path);
+			$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+			$objPHPExcel = PHPExcel_IOFactory::load($file_path);
+		} catch(Exception $e) {
+			die("Error loadiong excel fiel....");
+		}
+
+		//  Get worksheet dimensions
+		$sheet = $objPHPExcel->getSheet(0); 
+		$highestRow = $sheet->getHighestRow(); 
+		$highestColumn = $sheet->getHighestColumn();
+
+		//  Loop through each row of the worksheet in turn
+		$data = array();
+		for ($row_num = 1; $row_num <= $highestRow; $row_num++){
+			if($fisrt_row_skip && $row_num == 1) {
+				continue;
+			} 
+		    //  Read a row of data into an array
+		    $rowData = $sheet->rangeToArray('A' . $row_num . ':' . $highestColumn . $row_num,
+		                                    NULL,
+		                                    TRUE,
+		                                    FALSE);
+		    //  Insert row data array into your database of choice here
+		    $data[] = $rowData[0];
+		}
+
+		return $data; 
 	}
 
 }

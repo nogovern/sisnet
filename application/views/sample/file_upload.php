@@ -1,13 +1,24 @@
-<div class="container">
+<?php
+$this->view('layout/header_popup');
+?>
+
+<div class="container" style="width:100%;">
 	<div class="row">
-		<div class="well well-sm">
-			<h2>엑셀 업로드</h2>
-		</div>
+
+<?php
+// 결과를 보여줌 
+if(isset($show_result)) { 
+?>
+
+
+<?php 
+} else { 
+?> 
 
     <?php
     echo validation_errors();
     ?>
-
+    
 		<form id="upload_form" method="post" enctype="multipart/form-data" role="form" class="form form-horizontal">
       <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
       <input type="hidden" name="op_id" value="1">
@@ -23,11 +34,15 @@
       </div>
 
       <div class="col-xs-12">
-        <button class="btn btn-primary">등록</button>
+        <button type="submit" class="btn btn-primary">등록</button>
       </div>
 
     </form>
   </div>
-</form>
+</div>
 
-                
+<?php 
+}// !-- 폼출력 끝 
+
+$this->view('layout/footer');
+?>                

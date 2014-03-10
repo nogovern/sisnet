@@ -71,6 +71,14 @@ class WaitPart
 		return $this->$key;
 	}
 
+	public function __set($key, $value) {
+		if($key == 'id') {
+			return fasle;
+		}
+
+		$this->$key = $value;
+	}
+
 	public function getOperation() {
 		return $this->operation;
 	}

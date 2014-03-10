@@ -115,10 +115,11 @@ if($item_count == 0) {
 <?php if($op->status < '3'): ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
       <button id="btn_edit_request" type="button" class="btn btn-default">요청서수정</button>
+      <button id="btn_excel_upload" class="btn btn-primary" data-href="<?=site_url('work/destroy/excel_upload/' . $op->id)?>"><i class="fa fa-upload"></i> 엑셀 등록</button>
 <?php endif; ?>
 
 <?php if($op->status == '1'): ?> 
-      <button id="btn_excel_upload" class="btn btn-primary" data-href="<?=site_url('work/destroy/excel_upload/' . $op->id)?>"><i class="fa fa-upload"></i> 엑셀 등록</button>
+  
 <?php endif; ?>
 
 <?php if($op->status == '2'): ?> 

@@ -179,7 +179,7 @@ class Myexcel extends CI_Controller {
 	}
 
 	////////////
-	/// uploae
+	/// upload
 	////////////
 	public function upload() {
 		$data['title'] = '';
@@ -208,7 +208,8 @@ class Myexcel extends CI_Controller {
 
 			// upload 옵션 변경
 			$upload_option = $this->file_model->setUploadOption();
-			$upload_option['allowed_types'] = 'xls|xlsx|cvs';
+			// -- 맥 에서는 이부분에서 에러!!! 
+			$upload_option['allowed_types'] = 'xls|xlsx|csv';
 			$upload_option['max_size'] = 10 * 1024;		// 10MB
 
 			$uploaded_files = array();
@@ -222,12 +223,18 @@ class Myexcel extends CI_Controller {
 		        if($_FILES['userfile']['error'] == 0 && $_FILES['userfile']['size'] > 0) {
 		        	$this->upload->initialize($upload_option);
 		        	// 업로드 실패시 
-		        	if($this->upload->do_upload() === FALSE) {
-		        		$upload_error = TRUE;
+		        	if(!$this->upload->do_upload()) {
+		        		$upload_error = true;
 		        		
 		        	} else {
 		        		$uploaded_files[] = $this->upload->data();
 		        	}
+
+		        	// debug
+		        	// gs2_dump($_FILES);
+			        // gs2_dump($this->upload->data());
+			        // exit;
+
 		        }
 			}
 

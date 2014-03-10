@@ -1,4 +1,9 @@
 <?php
+/**
+ * 폐기-승인 상세보기
+ *
+ * 폐기대기 장비 등록 후 엑셀파일 다운
+ */
 $this->view('layout/header');
 $this->view('layout/navbar');
 ?>
