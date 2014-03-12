@@ -61,12 +61,19 @@ endforeach;
     <div class="col-md-12">
       <a href="<?=site_url('work/enter')?>"><span class="btn btn-default" type="button">리스트</span></a>
 <?php
-if($work->status == 1):
+// 요청 상태
+if($work->status == 1) {
+
+  if( gs2_user_type() == GS2_USER_TYPE_SISNET ) {
 ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
+<?php 
+  } elseif( gs2_user_type() == GS2_USER_TYPE_COMPANY ) { 
+?>
       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_enter_request_ok">요청확정</button>
 <?php
-endif;
+  }
+}// end of status == 1
 
 if($work->status == 2 && gs2_user_type() == '3'):
 ?>
