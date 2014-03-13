@@ -10,6 +10,7 @@ class Destroy_m extends MY_Model implements IOperationModel
 		parent::__construct();
 
 		$this->load->model('work_m', 'work_model');
+		$this->load->model('part_m', 'part_model');
 	}
 
 	// 업무 요청 (생성)
@@ -71,7 +72,6 @@ class Destroy_m extends MY_Model implements IOperationModel
 		$error = false;
 
 		// 모델 로딩
-		$this->load->model('part_m', 'part_model');
 		$this->load->model('waitpart_m', 'waitpart_model');
 
 		$op = $this->work_model->get($data['id']);
@@ -230,14 +230,63 @@ class Destroy_m extends MY_Model implements IOperationModel
 
 	}
 
-	// 배열로 업무 아이템 다중 등록
-	public function multi_add($id, $data) {
-		if(!is_array($data)) {
+	// 폐기 업무 장비 1개 등록 
+	public function addItem2($id, $data = array()) {
+		
+		// work_model->addItem() 용 배열로 변환
+		$op = $this->work_model->get($id);
+		$part = $this->part_model->get($data['part_id']);
+
+		$item_data['id'] 				= $id;
+		$item_data['part_id'] 			= $data['part_id'];
+		$item_data['serial_part_id'] 	= $data['serial_id'];
+		$item_data['serial_number'] 	= $data['serial_number'];
+		$item_data['qty'] 				= $data['qty'];
+		$item_data['is_new'] 			= $data['is_new'];
+
+		// 업무 장비 신규 등록
+		$new_item = $this->work_model->addItem($op, $item_data, false);
+
+		return $new_item;
+	}
+
+	// 엑셀 파일에서 읽은 배열로 장비 1개 등록
+	public function addItemFromExcel($id, $row) {
+
+		$p_type = ($row[0] == '시리얼') ? "1" : "2";
+		$p_model = $row[3];
+		$qty = intval($row[5]);
+
+		// 장비 모델명으로 장비 Entity 얻기
+		$part = $this->em->getRepository('Entity\Part')->findOneBy(array('name' => "$p_model"));
+
+		if(!$part) {
 			return false;
 		}
 
-		// load model
-		$this->load->model("part_m", "part_model");
+		// 시리얼 장비인 경우
+		if($part->type == '1') {
+			if(strlen($row[1]) > 0) {
+				;
+			}
+		}
+
+		$data['part_id'] 		= $part->id;
+		$data['serial_id'] 		= NULL;
+		$data['serial_number'] 	= $row[1];
+		$data['qty'] 			= $qty;
+		$data['is_new'] 		= 'N';
+
+		$item = $this->addItem2($id, $data);
+		return $item;
+
+	}
+
+	// 배열로 업무 아이템 다중 등록
+	public function addMultipleItem($id, $data) {
+		if(!is_array($data)) {
+			return false;
+		}
 
 		$op = $this->work_model->get($id);
 

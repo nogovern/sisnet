@@ -9,7 +9,12 @@ $this->view('layout/header_popup');
 // 결과를 보여줌 
 if(isset($show_result)) { 
 ?>
-
+  <script type="text/javascript">
+  $(document).ready(function(){
+    //var parent = $(window.frameElement).parent();
+    window.parent.location.reload();
+  });
+  </script>
 
 <?php 
 } else { 

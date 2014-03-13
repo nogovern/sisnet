@@ -465,7 +465,11 @@ class Work_m extends MY_Model {
 		$this->load->model('part_m', 'part_model');
 		$part = $this->part_model->get($data['part_id']);
 
+		/////////////////////////////////////
+		// OpItem 모델로 이동하는게 맞을 듯
+		/////////////////////////////////////
 		$item = new Entity\OperationPart;
+		
 		$item->setOperation($op);
 		$item->setPart($part);
 		$item->setQtyRequest($data['qty']);							// 요청수량

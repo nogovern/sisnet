@@ -452,6 +452,14 @@ class Tests extends CI_Controller {
 		echo count($rows);
 	}	
 
+
+	public function model($id = null) {
+		$this->load->model('opitem_m');
+
+		$result = $this->opitem_m->all($id);
+		echo count($result);
+
+	}
 }
 
 

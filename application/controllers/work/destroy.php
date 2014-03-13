@@ -310,10 +310,19 @@ class Destroy extends CI_Controller
 
 				// 배열을 스캔 용 아이템으로 등록
 				$this->load->model('destroy_m');
-				$result = $this->destroy_m->multi_add($op->id, $excel_data);
+				$result = array();
+				foreach($excel_data as $row) {
+					$item = $this->destroy_m->addItemFromExcel($op->id, $row);
+					$result[] = $item->id . ' - ' . $item->part_name;
+				}
+
+				// $this->work_model->_commit();	
+				gs2_dump($result);
+				// $result = $this->destroy_m->addMultipleItem($op->id, $excel_data);
 
 				$data['show_result'] = true;
 				$data['result'] = $result;
+
 				$this->load->view('sample/file_upload', $data);
 			}	
 		}
@@ -328,7 +337,7 @@ class Destroy extends CI_Controller
 			$objReader = PHPExcel_IOFactory::createReader($inputFileType);
 			$objPHPExcel = PHPExcel_IOFactory::load($file_path);
 		} catch(Exception $e) {
-			die("Error loadiong excel fiel....");
+			die("Error loadiong excel file....");
 		}
 
 		//  Get worksheet dimensions
