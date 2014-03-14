@@ -615,7 +615,16 @@ class Ajax extends CI_Controller
 			}
 
 			$this->load->model('destroy_m');
-			$result = $this->destroy_m->addItem($op, $this->input->get());
+			$item = $this->destroy_m->addItem($op, $this->input->get());
+		}
+
+		// 결과 출력
+		if(is_object($item)) {
+			$result['error'] = false;
+			$result['id'] = $item->id;
+		} else {
+			$result['error'] = true;
+			$result['error_msg'] = $item;		// 에러 시 에러 문구를 리턴한다
 		}
 
 		echo json_encode($result);

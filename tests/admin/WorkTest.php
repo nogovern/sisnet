@@ -14,11 +14,26 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 			$this->em = $this->CI->doctrine->em;
 		}
 
-
 	}
 
 	public function tearDown() {
+		;
+	}
 
+	//////////////
+	// 철수 업무	 //
+	//////////////
+	public function testRevertOperationStatus() {
+		echo 'here!!!';
+		$this->CI->load->model('work_m', 'work_model');
+		$op = $this->CI->work_model->get(4);
+		// $this->assertTrue(FALSE);
+
+		$op->setStatus('3');
+		$this->assertEquals('장광희', $op->user->name);
+
+		// $this->em->persist($op);
+		// $this->em->flush();
 	}
 
 	/////////////////////
@@ -28,8 +43,8 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 
 		$this->CI->load->model('part_m', 'part_model');
 		$part = $this->CI->part_model->get(3);
-		$this->assertEquals($part->name, 'IBM 8200');
-		$this->assertEquals($part->type, 1);			// 시리얼 장비인가?
+		//$this->assertEquals($part->name, 'IBM 8200');
+		// $this->assertEquals($part->type, 1);			// 시리얼 장비인가?
 
 		// 등록 데이터
 		$data = array(
@@ -45,8 +60,10 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 		// $entry = $this->CI->part_model->addSerialPart($data);		// SerialPart Entity Object
 		$entry = new ArrayObject;
 		$result = ($entry instanceof Entity\SerialPart);
-		$this->assertTrue($result);
+		//$this->assertTrue($result);
 	}
+
+
 
 	////////////
 	// 입고 업무 //
@@ -59,7 +76,7 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 	// 납품처 -> 수량장비 등록
 	public function testRegisterCountPartForDelivery() {
 		$this->CI->load->model('work_m', 'work_model');
-		$op = $this->CI->work_model->get(7);
+		$op = $this->CI->work_model->get(4);
 		$this->assertTrue($op instanceof Entity\Operation);
 
 		$part = $op->getItem()->part;
@@ -67,19 +84,19 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 		// 수량 비교용 
 		$request_qty = $op->getItem()->qty_request;
 
-		$this->CI->work_model->addTempItem($op, $part, 'A4');
+		//$this->CI->work_model->addTempItem($op, $part, 'A4');
 
 	}
 
 	// 납품처 -> 시리얼 장비 등록
 	public function testRegisterSerialPartForDelivery() {
 		$this->CI->load->model('work_m', 'work_model');
-		$op = $this->CI->work_model->get(5);
+		$op = $this->CI->work_model->get(1);
 		$this->assertTrue($op instanceof Entity\Operation);
 
 
 		$part = $op->getItem()->part;
-		$this->CI->work_model->addTempItem($op, $part, '#ZZZZZZ', TRUE);
+		//$this->CI->work_model->addTempItem($op, $part, '#ZZZZZZ', TRUE);
 	}
 	
 	
@@ -90,13 +107,13 @@ class WorkTest extends PHPUnit_Framework_TestCase {
 	// - 비가용 수량으로 전환
 	// - 설치후에는 비가용 수량에서 출고 
 
-	
 
-	//////////////
-	// 철수 업무	 //
-	//////////////
+	// 특정 업무 삭제
+	public function testRemoveOperation() {
+		$op = $this->CI->work_model->get(64);
 
-	
-
+		$this->em->remove($op);
+		$this->em->flush();
+	}
 
 }

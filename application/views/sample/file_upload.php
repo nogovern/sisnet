@@ -9,10 +9,11 @@ $this->view('layout/header_popup');
 // 결과를 보여줌 
 if(isset($show_result)) { 
 ?>
+  <p>잠시만 기다리세요. 페이지를 새로 고칩니다</p>
   <script type="text/javascript">
   $(document).ready(function(){
-    //var parent = $(window.frameElement).parent();
-    window.parent.location.reload();
+    setTimeout(window.parent.location.reload(), 3 * 1000);    
+    // window.parent.location.reload();
   });
   </script>
 
@@ -50,4 +51,6 @@ if(isset($show_result)) {
 }// !-- 폼출력 끝 
 
 $this->view('layout/footer');
-?>                
+?>
+
+                

@@ -66,10 +66,17 @@ class Destroy_m extends MY_Model implements IOperationModel
 		return $this->work_model->getOperations($type, $criteria, $limit, $page);
 	}
 
-	// 아이템 추가 (장비등록)
-	// 이미 등록된 아이템인지 확인 필요
+	// 폐기 장비 등록 분기
 	public function addItem($op, $data) {
-		$error = false;
+		if($op->type == '601') {
+			return $this->addItemForAccept($op, $data);
+		} else {
+			return $this->addItemForSend($op, $data);
+		}
+	}
+
+	// 폐기-승인 용 장비 등록
+	public function addItemForAccept($op, $data) {
 
 		// 모델 로딩
 		$this->load->model('waitpart_m', 'waitpart_model');
@@ -81,17 +88,12 @@ class Destroy_m extends MY_Model implements IOperationModel
 		$serial_part_id = $data['serial_id'];
 
 		if($part->type == '1' && empty($serial_part_id)) {
-			$response['error'] = true;
-			$response['error_msg'] = "시리얼장비는 시리얼넘버 or 직전위치 로 검색하셔야 합나다";
-			echo json_encode($response);
+			return "시리얼장비는 시리얼넘버 or 직전위치 로 검색하셔야 합나다";
 			exit;
 		}
 
 		if($part->type == '3') {
-			$response['error'] = true;
-			$response['error_msg'] = "소모품은 선택할 수 없습니다.";
-			echo json_encode($response);
-			exit;
+			return "소모품은 선택할 수 없습니다.";
 		}
 
 		// 수량장비
@@ -99,26 +101,17 @@ class Destroy_m extends MY_Model implements IOperationModel
 			// 폐기 장비 중에서 검색
 			$result = $this->waitpart_model->existPartInList("D", $op->office->id, $part->id, '1');
 			if(!$result) {
-				$response['error'] = true;
-				$response['error_msg'] = sprintf("재고 사무소의 폐기 대상에 \n\"%s\" \n장비가 없습니다", $part->name);
-				echo json_encode($response);
-				exit;
+				return sprintf("재고 사무소의 폐기 대상에 \n\"%s\" \n장비가 없습니다", $part->name);
 			} 
 
 			$wp = $result[0];	// 대기 장비
 
 			// 요청수량이 클 경우
 			if($wp->qty < $data['qty']) {
-				$response['error'] = true;
-				$response['error_msg'] = sprintf("해당 장비의 폐기 가능 최대 수량은 %d 개 입니다", $wp->qty);
-				echo json_encode($response);
-				exit;
+				return sprintf("해당 장비의 폐기 가능 최대 수량은 %d 개 입니다", $wp->qty);
 			// 가능 수량이 없을 경우	
 			} else if ($wp->qty == 0) {
-				$response['error'] = true;
-				$response['error_msg'] = sprintf("폐기 상태의 장비가 없으므로, 선택할 수 없습니다");
-				echo json_encode($response);
-				exit;
+				return sprintf("폐기 상태의 장비가 없으므로, 선택할 수 없습니다");
 			}
 			
 			$wpart_id = $wp->id;
@@ -151,22 +144,11 @@ class Destroy_m extends MY_Model implements IOperationModel
 		$item = $this->work_model->addItem($op, $get_data, TRUE);
 
 		if(!$item) {
-			$error = true;
-			$error_msg = "장비 등록에 실패하였습니다.\n 관리자에게 문의 바랍니다";
+			return "장비 등록에 실패하였습니다.\n 관리자에게 문의 바랍니다";
 		}
 
-		// json 결과 객체
-		$response = new stdClass;	
-		if($error) {
-			$response->error = true;
-			$response->error_msg = $error_msg;
-		} else {
-			$response->error = false;
-			$response->error_msg = '';
-			$response->id = $item->id;			// 새로운 opertaion_parts.id
-		}
-
-		return ($response);
+		// 성공시
+		return $item;
 	}
 
 	// 아이템 목록
@@ -230,6 +212,11 @@ class Destroy_m extends MY_Model implements IOperationModel
 
 	}
 
+	// 폐기-철수 장비 등록
+	private function addItemForSend($op, $data) {
+		return $this->addItem2($op->id, $data);
+	}
+
 	// 폐기 업무 장비 1개 등록 
 	public function addItem2($id, $data = array()) {
 		
@@ -281,70 +268,6 @@ class Destroy_m extends MY_Model implements IOperationModel
 		return $item;
 
 	}
-
-	// 배열로 업무 아이템 다중 등록
-	public function addMultipleItem($id, $data) {
-		if(!is_array($data)) {
-			return false;
-		}
-
-		$op = $this->work_model->get($id);
-
-		// 결과 저장
-		$count['success'] = 0;
-		$count['fail'] = 0;
-
-		$insert_data = array();
-		foreach($data as $idx => $row) {
-
-			$p_type = ($row[0] == '시리얼') ? "1" : "2";
-			$p_model = $row[3];
-			$qty = intval($row[5]);
-
-			// 장비 모델명으로 장비 Entity 얻기
-			$part = $this->em->getRepository('Entity\Part')->findOneBy(array('name' => "$p_model"));
-
-			if($part) {
-				$count['success']++;
-				echo $part->name;
-			} else {
-				$count['fail']++;
-				continue;
-			}
-
-			// 폐기리스트에서 검색
-			$qb = $this->em->createQueryBuilder();
-			$qb->select("wp")
-				->from("Entity\WaitPart", "wp")
-				->where("wp.gubun = 'D' ")
-				->andWhere("wp.part = {$part->id}")
-				->andWhere("wp.part_type = $p_type")
-				->andWhere("wp.office = {$op->office->id}");
-
-			$result = $qb->getQuery()->getResult();
-			$wpart = $result[0];
-			echo " - " . $wpart->qty_accept;
-
-			// 아이템 등록 용 배열
-			$insert_data['id'] = $id;
-			$insert_data['part_id'] = $part->id;
-			$insert_data['serial_number'] = $row[1];
-			$insert_data['serial_id'] = '';
-			$insert_data['qty'] = $qty;
-			$insert_data['is_new'] = 'N';
-			$insert_data['wpart_id'] = $wpart->id;
-
-			//$this->addItem($op, $insert_data);
-
-			// 아이템 등록 후 폐기 목록의 장비 정보 수량 변경
-			$wpart->decrease($qty ,2);
-
-			// $this->em->persist($wpart);
-			// $this->em->flush();
-
-		}	
-
-		return $count;
-	}
+	
 }
 

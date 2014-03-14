@@ -316,9 +316,8 @@ class Destroy extends CI_Controller
 					$result[] = $item->id . ' - ' . $item->part_name;
 				}
 
-				// $this->work_model->_commit();	
+				$this->work_model->_commit();	
 				gs2_dump($result);
-				// $result = $this->destroy_m->addMultipleItem($op->id, $excel_data);
 
 				$data['show_result'] = true;
 				$data['result'] = $result;

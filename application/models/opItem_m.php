@@ -15,7 +15,7 @@ class OpItem_m extends MY_Model
 		$this->setEntityName('OperationPart');
 	}
 
-
+	
 	function all($operation_id = null) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('i')

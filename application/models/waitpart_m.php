@@ -38,6 +38,33 @@ class Waitpart_m extends MY_Model
 		return count($result) ? $result : false;
 	}
 
+	// gs2_part_serial.id 로 찾기 (가장 확실)
+	public function searchBySerialId($gubun, $sp_id) {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('p')
+			->from($this->entity_name, 'p')
+			->where("p.gubun = '$gubun'")
+			->andWhere("p.serial_part = $sp_id");
+
+		$result = $qb->getQuery()->getResult();
+
+		return count($result) ? $result[0] : false;
+		
+	}
+
+	// SN으로 찾기
+	public function searchBySerailNumber($gubun, $sn) {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('p')
+			->from($this->entity_name, 'p')
+			->where("p.gubun = '$gubun'")
+			->andWhere("p.serial_number = $sn");
+
+		$result = $qb->getQuery()->getResult();
+
+		return count($result) ? $result[0] : false;
+	}
+
 	// 검색 
 	public function search($criteria = array()) {
 		$qb = $this->em->createQueryBuilder();

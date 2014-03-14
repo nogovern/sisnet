@@ -193,7 +193,25 @@ $(document).ready(function(){
 
   // 장비삭제
   $("#item_list .remove_item").click(function(){
-    // modal_part_register 에 정의 되어 있음
+    var item_id = $(this).closest('tr').data('item_id');
+    var that = this;
+    if(!confirm(item_id + ' 를 목록에서 삭제하시겠습니까?')) {
+      return false;
+    }
+
+    $.getJSON(_base_url + 'work/destroy/removeItem/', {
+      id : operation.id,
+      item_id: item_id,
+      "csrf_test_name": $.cookie("csrf_cookie_name")
+    }, function(response) {
+      var error = response.error;
+      if(!error) {
+        callback_remove_row(that);
+        alert(response.msg);
+      } else {
+        alert("등록 장비 삭제에 실패하였습니다");
+      }
+    });
   });
 
   // 장비스캔
