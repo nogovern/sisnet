@@ -89,8 +89,8 @@ class Transfer extends CI_Controller
 		// 업체 선택
 		$this->load->model('company_m', 'company_model');
 		$companies = gs2_convert_for_dropdown($this->company_model->getClients());
-		$data['send_company'] = form_dropdown('send_company', $companies, 0, 'id="send_company" class="form-control required"');
-		$data['receive_company'] = form_dropdown('receive_company', $companies, 0, 'id="receive_company" class="form-control required"');
+		$data['send_company'] = form_dropdown('send_company', $companies, 0, 'id="send_company" class="form-control"');
+		$data['receive_company'] = form_dropdown('receive_company', $companies, 0, 'id="receive_company" class="form-control"');
 		
 		$this->load->view('work/work_transfer_list', $data);
 
@@ -100,8 +100,8 @@ class Transfer extends CI_Controller
 
 	}
 
-	public function request() {
-
+	public function register() {
+		gs2_dump($this->input->post());
 	}
 
 	public function delete($id) {

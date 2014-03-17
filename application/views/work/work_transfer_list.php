@@ -112,7 +112,7 @@ endforeach;
 </div><!-- end of container -->
 
 <!-- modal dialog -->
-<div class="modal fade" id="modal_request_destroy" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_request_form" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -120,7 +120,7 @@ endforeach;
         <h4 class="modal-title">이관  요청서</h4>
       </div>
       <!-- start form -->
-      <form role="form" class="form form-horizontal" method="post" action="<?php echo site_url('work/destroy/register');?>">
+      <form role="form" class="form form-horizontal" method="post" action="<?php echo site_url('work/transfer/register');?>">
         <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
         <div class="modal-body">
           <div class="well well-sm">
@@ -180,7 +180,7 @@ jQuery.validator.addMethod("notEqual", function(value, element, param) {
 $(document).ready(function(){
   // open modal
   $("#btn_request_destroy").click(function(){
-    $("#modal_request_destroy").modal('show');
+    $("#modal_request_form").modal('show');
   });  
 
   // 상세 보기 페이지로 이동
@@ -193,19 +193,21 @@ $(document).ready(function(){
   // 이관 형태에 따른 입력 변경
   $("select[name=op_type]").change(function() {
     var type = $(this).val();
+
     if(type == '801') {
+      $("#send_company").prop('disabled', false);
+      $("#receive_company").prop('disabled', true).val('0');
+    }
+
+    if(type == '802') {
       $("#send_company").prop('disabled', true).val('0');
       $("#receive_company").prop('disabled', false);
     }
 
-    if(type == '802') {
-      $("#send_company").prop('disabled', false);
-      $("#receive_company").prop('disabled', true).val('0');
-    }
   });
 
   // 요청서 등록
-  $("#modal_request_destroy form").validate({
+  $("#modal_request_form form").validate({
     rules: {
       select_office: {
         required: true,
@@ -214,7 +216,20 @@ $(document).ready(function(){
       op_type: {
         required: true,
         min: 1,
+      },
+      send_company: {
+        min: 1,
+        depends: function(el) {
+          return ($("select[name=op_type]").val() == '801');
+        }
+      },
+      receive_company: {
+        min: 1,
+        depends: function(el) {
+          return ($("select[name=op_type]").val() == '802');
+        }
       }
+
     },
     messages: {
       select_office: {
@@ -222,10 +237,14 @@ $(document).ready(function(){
       },
       op_type: {
         min: '이관 업무 형태를 선택하세요'
+      },
+      send_company: {
+        min: '송신업체를 선택하세요'
       }
     },
     submitHandler: function(form) {
       form.submit();
+      // return false;
     }
 
   });
