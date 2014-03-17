@@ -82,10 +82,13 @@ class Transfer extends CI_Controller
 		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
 
 		/////////////////////////// modal 요청서 용 ////////
+		
 		// 사무소 select 생성
 		$data['select_office'] = form_dropdown('select_office', $arr_office, $this->session->userdata('office_id'), 'id="select_office" class="form-control required" disabled="disabled" ');
 
-		$companies = array( '0' => '전체', '1' => '선택가능');
+		// 업체 선택
+		$this->load->model('company_m', 'company_model');
+		$companies = gs2_convert_for_dropdown($this->company_model->getClients());
 		$data['send_company'] = form_dropdown('send_company', $companies, 0, 'id="send_company" class="form-control required"');
 		$data['receive_company'] = form_dropdown('receive_company', $companies, 0, 'id="receive_company" class="form-control required"');
 		

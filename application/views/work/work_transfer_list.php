@@ -194,13 +194,13 @@ $(document).ready(function(){
   $("select[name=op_type]").change(function() {
     var type = $(this).val();
     if(type == '801') {
-      $("#send_company").prop('disabled', true);
+      $("#send_company").prop('disabled', true).val('0');
       $("#receive_company").prop('disabled', false);
     }
 
     if(type == '802') {
       $("#send_company").prop('disabled', false);
-      $("#receive_company").prop('disabled', true);
+      $("#receive_company").prop('disabled', true).val('0');
     }
   });
 

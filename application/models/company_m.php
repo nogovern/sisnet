@@ -13,19 +13,32 @@ class Company_m extends MY_Model {
 	}
 
 	public function getByName($value) {
-		$repo = $this->em->getRepository($this->entity_name);
-		return $repo->findBy(array('name' => $value));
-	}	
+		return $this->repo->findBy(array('name' => $value));
+	}
+
+	// 업체 타입으로 업체 리스트 얻기
+	public function findByType($type = '1') {
+		return $this->repo->findBy(array('type' => $type), array('name' => 'ASC'));
+	}
+
+	// 외부 거래 업체 리스트 얻기
+	public function getClients() {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('c')
+			->from("Entity\Company", "c")
+			->where("c.type >= '3'")
+			->andWhere("c.status >= '0'");
+
+		$qb->addOrderBy("c.type", "ASC");
+		$qb->addOrderBy("c.name", "ASC");
+
+		$query = $qb->getQuery();
+		return $query->getResult();
+	}
 
 	////////////////////////////////
 	// 공통으로 사용할 수 있을듯 
 	////////////////////////////////
-	public function newId() {
-		$sql = "select max(id) as new_id from gs2_users";
-		$query = $this->db->query($sql);
-
-		return ($query->num_rows) ? $query->row()->NEW_ID + 1 : 1;
-	}
 
 	public function create($post, $do_flush=FALSE) {
 		$company = new Entity\Company;

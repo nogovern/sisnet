@@ -172,15 +172,9 @@ class Part extends CI_Controller {
 		$data['select_category'] = form_dropdown('category_id', $cats, 0, 'id="category_id" class="form-control"');
 
 		// 납품처 목록
-		unset($rows);
-		$rows = $em->getRepository('Entity\Company')->findBy(
-				array('type' => 3),
-				array('id' => 'ASC')
-			);
-		$companies[0] = '--선택하세요';
-		foreach($rows as $row) {
-			$companies[$row->id] = $row->name;
-		}
+		$this->load->model('company_m', 'company_model');
+		$companies = gs2_convert_for_dropdown($this->company_model->findByType('3'));
+		$companies[0] = '--선택하세요--';
 
 		// 납품처 selectbox 생성
 		$data['select_company'] = form_dropdown('company_id', $companies, 0, 'id="company_id" class="form-control"');
