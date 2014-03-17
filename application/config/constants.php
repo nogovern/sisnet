@@ -79,7 +79,7 @@ define('GS2_OP_TYPE_REPLACE', 	'400');		// 교체
 define('GS2_OP_TYPE_REPAIR', 	'500');		// 수리
 define('GS2_OP_TYPE_DESTROY', 	'600');		// 폐기
 define('GS2_OP_TYPE_MOVE', 		'700');		// 이동
-define('GS2_OP_TYPE_TRANS', 	'800');		// 이관 (정확한 개념???)
+define('GS2_OP_TYPE_TRANSFER', 	'800');		// 이관 (정확한 개념???)
 define('GS2_OP_TYPE_CHANGE',	'900');		// (상태변경)점검
 
 // 입고

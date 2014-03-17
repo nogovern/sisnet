@@ -35,6 +35,8 @@ $config['gs2']['op_type'] = array(
 	'602'	=> '폐기-출고',
 	'700'	=> '이동',
 	'800'	=> '이관',
+	'801'	=> '이관-입고',
+	'802'	=> '이관-출고',
 	'900'	=> '변경',
 	'901'	=> '변경-점검',
 );
@@ -63,6 +65,8 @@ $config['gs2']['op_type_short'] = array(
 	'602'	=> '폐기출고',
 	'700'	=> '이동',
 	'800'	=> '이관',
+	'801'	=> '이입',
+	'802'	=> '이철',
 	'900'	=> '변경',
 	'901'	=> '점검',
 );
@@ -91,6 +95,8 @@ $config['gs2']['op_url'] = array(
 	'602'	=> 'work/destroy/view',
 	'700'	=> 'work/move/view',
 	'800'	=> 'work/transfer/view',
+	'801'	=> 'work/transfer/view',
+	'802'	=> 'work/transfer/view',
 	'900'	=> 'work/change/view',
 	'901'	=> 'work/change/view',
 );
