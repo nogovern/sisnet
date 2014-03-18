@@ -37,11 +37,11 @@ $this->view('layout/navbar');
           </label>
           <label class="radio-inline">
             <input type="radio" class="grey" name="type" value="4">
-            수리
+            제조
           </label>
           <label class="radio-inline">
             <input type="radio" class="grey" name="type" value="5">
-            제조
+            수리
           </label>
           <label class="radio-inline">
             <input type="radio" class="grey" name="type" value="6">
