@@ -118,7 +118,7 @@ class Waitpart_m extends MY_Model
 		if($data['part_type'] == '1') {
 			$sp = $this->em->getReference("Entity\SerialPart", $data['serial_id']);
 			$wp->setSerialPart($sp);
-			$wo->setPreviousLocation($sp->previous_location);
+			$wp->setPreviousLocation($sp->previous_location);
 
 			// 시리얼넘버 는 분실된 장비도 있음
 			if($sp->serial_number) {
