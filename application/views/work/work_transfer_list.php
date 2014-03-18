@@ -91,7 +91,7 @@ foreach($rows as $row):
             </td>
             <td><?=$row->getDateRegister();?></td>
             <td><?=$row->getDateFinish();?></td>
-            <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/destroy/view/') . '/' . $row->id ?>">보기</button></td>
+            <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/transfer/view/') . '/' . $row->id ?>">보기</button></td>
           </tr>
 <?php
 endforeach;
