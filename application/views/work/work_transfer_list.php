@@ -247,7 +247,7 @@ $(document).ready(function(){
   // 검색 필터 전송 
   ///////////////////////
   $("#filter-form").submit(function() {
-    var url = _base_url + 'work/destroy/?';
+    var url = _base_url + 'work/transfer/?';
     var query = $(this).serialize();
     
     $(this).prop('action', url + query);
