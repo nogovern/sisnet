@@ -146,16 +146,9 @@ endforeach;
           </div>
 
           <div class="form-group">
-            <label class="form-label col-sm-3">송신 업체</label>
+            <label id="company_label" class="form-label col-sm-3">업체 선택</label>
             <div class="input-group col-sm-6">
-              <?php echo $send_company ?>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label col-sm-3">수신 업체</label>
-            <div class="input-group col-sm-6">
-              <?php echo $receive_company ?>
+              <?php echo $select_company ?>
             </div>
           </div>
 
@@ -178,6 +171,12 @@ jQuery.validator.addMethod("notEqual", function(value, element, param) {
 }, "송신사무소와 수신사무소와 같을 수 없습니다");
 
 $(document).ready(function(){
+  // set bootstrap modal event
+  $("#modal_request_form").on('shown.bs.modal', function() {
+    $("select[name=op_type]").val(0);
+    $("#select_company").val(0);
+  });
+
   // open modal
   $("#btn_request_destroy").click(function(){
     $("#modal_request_form").modal('show');
@@ -195,13 +194,11 @@ $(document).ready(function(){
     var type = $(this).val();
 
     if(type == '801') {
-      $("#send_company").prop('disabled', false);
-      $("#receive_company").prop('disabled', true).val('0');
+      $("#company_label").text("송신 업체");
     }
 
     if(type == '802') {
-      $("#send_company").prop('disabled', true).val('0');
-      $("#receive_company").prop('disabled', false);
+      $("#company_label").text("수신 업체");
     }
 
   });
@@ -217,20 +214,12 @@ $(document).ready(function(){
         required: true,
         min: 1,
       },
-      send_company: {
-        min: 1,
-        depends: function(el) {
-          return ($("select[name=op_type]").val() == '801');
-        }
-      },
-      receive_company: {
-        min: 1,
-        depends: function(el) {
-          return ($("select[name=op_type]").val() == '802');
-        }
+      select_company: {
+        required: true,
+        min: 1
       }
-
     },
+    
     messages: {
       select_office: {
         min: '재고 사무소를 선택하세요'
@@ -238,13 +227,12 @@ $(document).ready(function(){
       op_type: {
         min: '이관 업무 형태를 선택하세요'
       },
-      send_company: {
-        min: '송신업체를 선택하세요'
+      select_company: {
+        min: '업체를 선택하세요'
       }
     },
     submitHandler: function(form) {
       form.submit();
-      // return false;
     }
 
   });

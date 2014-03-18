@@ -27,7 +27,22 @@ class Company_m extends MY_Model {
 		$qb->select('c')
 			->from("Entity\Company", "c")
 			->where("c.type >= '3'")
-			->andWhere("c.status >= '0'");
+			->andWhere("c.status = 'Y'");
+
+		$qb->addOrderBy("c.type", "ASC");
+		$qb->addOrderBy("c.name", "ASC");
+
+		$query = $qb->getQuery();
+		return $query->getResult();
+	}
+
+	// 이관 가능한 업체 목록 (수리,폐기 업체)
+	public function getTransferClients() {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('c')
+			->from("Entity\Company", "c")
+			->where("c.type >= '5'")
+			->andWhere("c.status = 'Y'");
 
 		$qb->addOrderBy("c.type", "ASC");
 		$qb->addOrderBy("c.name", "ASC");

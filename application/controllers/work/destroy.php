@@ -101,7 +101,7 @@ class Destroy extends CI_Controller
 
 			$post_data['op_type'] =  $this->input->post('op_type');
 			$post_data['office_id'] = $this->input->post('select_office');
-			$post_data['date_request'] = date("now");
+			$post_data['date_request'] = date("Y-m-d H:i:s");
 
 
 			// 업무 생성

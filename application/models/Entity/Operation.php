@@ -155,17 +155,16 @@ class Operation
 			$this->date_register = new \DateTime($date);
 	}
 
+	// 업무 요청 일시
+	public function setDateRequest($date = null) {
+		$this->date_request = new \DateTime($date);
+	}
 	// 변경일시
 	public function setDateModify($date = 'now') {
 		if(!empty($date))
 			$this->date_modify = new \DateTime($date);
 	}
 
-	// 업무 요청 일시
-	public function setDateRequest($date = 'now') {
-		if(!empty($date))
-			$this->date_request = new \DateTime($date);
-	}
 
 	public function setDateWork($date = 'now') {
 		if(!empty($date))

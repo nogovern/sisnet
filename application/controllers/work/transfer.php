@@ -88,9 +88,8 @@ class Transfer extends CI_Controller
 
 		// 업체 선택
 		$this->load->model('company_m', 'company_model');
-		$companies = gs2_convert_for_dropdown($this->company_model->getClients());
-		$data['send_company'] = form_dropdown('send_company', $companies, 0, 'id="send_company" class="form-control"');
-		$data['receive_company'] = form_dropdown('receive_company', $companies, 0, 'id="receive_company" class="form-control"');
+		$companies = gs2_convert_for_dropdown($this->company_model->getTransferClients());
+		$data['select_company'] = form_dropdown('select_company', $companies, 0, 'id="select_company" class="form-control"');
 		
 		$this->load->view('work/work_transfer_list', $data);
 
@@ -101,7 +100,26 @@ class Transfer extends CI_Controller
 	}
 
 	public function register() {
-		gs2_dump($this->input->post());
+		// gs2_dump($this->input->post());
+		
+		$post_data['office_id'] = $this->session->userdata('office_id');
+
+		$post_data['op_type'] =  $this->input->post('op_type');
+		$post_data['company_id'] = $this->input->post('select_company');
+		$post_data['date_request'] = '';
+
+		// 업무 생성
+		$op = $this->work_model->createOperation( $this->input->post('op_type'), $post_data);
+
+		// 로그 기록
+		$log_data = array(
+			'type'		=> '1',
+			'content'	=> '이관 업무가 생성되었음',
+			'event'		=> '생성'
+		);
+		$this->work_model->addLog($op, $log_data, TRUE);
+
+		redirect('work/transfer');
 	}
 
 	public function delete($id) {
