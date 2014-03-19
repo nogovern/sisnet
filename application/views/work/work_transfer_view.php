@@ -111,7 +111,7 @@ if($item_count == 0) {
 <?php if($op->status == '1'): ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
       <button id="btn_edit_form" type="button" class="btn btn-info">요청서 수정</button>
-      <button id="btn_part_add" type="button" class="btn btn-warning">장비 등록</button>
+      <button id="btn_add_item" type="button" class="btn btn-warning">장비 등록</button>
       <button id="btn_send" type="button" class="btn btn-primary">장비 발송</button>
 <?php endif; ?>
 
@@ -129,13 +129,9 @@ if($item_count == 0) {
  * modal include 
  */
 
-$this->view('common/modal_search_previous');    // 직전위치 검색용
+$this->view('common/modal_part_register2');      // 장비등록 모달
+$this->view('common/modal_search_previous');    // 직전위치 검색 결과 모달
 
-if($op->status == '1') {
-  $this->view('common/modal_part_register');      // 설치 장비등록 사용
-} elseif ($op->status == '2') {
-  $this->view('common/modal_part_scan');          // 장비스캔
-}
 ?>
 
 <!-- 공통 modal 사용하기 위한 container -->
@@ -171,8 +167,8 @@ $(document).ready(function(){
   checkPartRegistered();
 
   // 장비등록
-  $("#btn_part_add").click(function(){
-    $("#modal_part_register").modal('show');
+  $("#btn_add_item").click(function(){
+    $("#modal_add_op_item").modal('show');
   });
 
   // 장비삭제
