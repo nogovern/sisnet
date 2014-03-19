@@ -96,7 +96,22 @@ class Transfer extends CI_Controller
 	}
 
 	public function view($id) {
-		echo '상세보기';
+
+		$data['title'] = "이관 업무 상세 보기";
+		$data['current'] = 'page-move';
+		$data['_config'] = $this->config->item('gs2');
+
+		$work = $this->work_model->get($id);
+		$data['op'] = $work;
+
+		// 장비 카테고리 dropdown
+		$this->load->helper('form');
+		$this->load->model('category_m', 'category_model');
+		$cats = $this->category_model->getValidPartCategories();
+		$cats = gs2_convert_for_dropdown($cats);
+		$data['select_category'] = form_dropdown('select_category', $cats, 0, 'id="select_category" class="form-control"');
+
+		$this->load->view('work/work_transfer_view', $data);
 	}
 
 	public function register() {
