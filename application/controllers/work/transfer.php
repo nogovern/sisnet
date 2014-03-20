@@ -98,7 +98,7 @@ class Transfer extends CI_Controller
 	public function view($id) {
 
 		$data['title'] = "이관 업무 상세 보기";
-		$data['current'] = 'page-move';
+		$data['current'] = 'page-transfer';
 		$data['_config'] = $this->config->item('gs2');
 
 		$work = $this->work_model->get($id);

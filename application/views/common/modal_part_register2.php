@@ -137,7 +137,7 @@ $(document).ready(function(){
         item = {};            // empty item
         item = html;
         changeFormLayout(item.type);
-        // gs2_console(html);
+        gs2_console(html);
       })
       .fail(function(xhr, textStatus){
         alert("Request failed: " + textStatus);
@@ -174,20 +174,21 @@ $(document).ready(function(){
       }
     });
     
-    var ajax_url = _base_url + 'ajax/search_waitpart/' + encodeURIComponent(q);
+    // var ajax_url = _base_url + 'ajax/search_waitpart/' + encodeURIComponent(q);
+    var ajax_url = _base_url + 'ajax/find_by_sn/' + encodeURIComponent(q);
     $.getJSON(ajax_url, {
       id: operation.id,
       gubun: "D",
       office_id: operation.office_id,
       csrf_test_name: $.cookie("csrf_cookie_name")
     }, function(data) {
-        // gs2_console(data);
+        gs2_console(data);
         var error = data.error;
 
         if(!error) {
           set_serialinfo(data.info);        // 시리얼 장비 정보 셋팅
           sel_item_id = data.info.wpart_id; // gs2_deprecated_parts.id
-          $("#btn_part_add").click();
+          // $("#btn_part_add").click();
         } else {
           alert(data.error_msg);
           $("#serial_number").val('').focus();
@@ -230,14 +231,13 @@ $(document).ready(function(){
     // 시리얼장비 id
     spart_id = (item.type == '1') ? $("#serial_part_id").val() : '';
 
-    $.getJSON(_base_url + 'work/ajax/addItem2', {
+    $.getJSON(_base_url + 'ajax/add_item/', {
       id: operation.id,         
         part_id: part_id,
         serial_number: $('#serial_number').val(),
         serial_id: spart_id,
         qty: qty,   
         is_new: is_new,
-        wpart_id: sel_item_id,
         "csrf_test_name": $.cookie("csrf_cookie_name")
     }, function(response) {
       var error = response.error;
@@ -250,33 +250,6 @@ $(document).ready(function(){
 
       gs2_console(response);
     });
-
-    // $.ajax({
-    //   url: "<?=base_url()?>work/ajax/addItem2",
-    //   type: "GET",
-    //   data: {
-    //     id: operation.id,         
-    //     part_id: part_id,
-    //     serial_id: spart_id,
-    //     serial_number: $('#serial_number').val(),
-    //     qty: qty,   
-    //     is_new: is_new,
-    //     wpart_id: sel_item_id,
-    //     "csrf_test_name": $.cookie("csrf_cookie_name")
-    //   },
-    //   dataType: "json",
-    // })
-    //   .done(function(response) {
-    //     if(!response.error) {
-    //       callback_insert_row(response.id, is_new, qty);
-    //       reset_register_form();
-    //     } else {
-    //       alert(response.error_msg);
-    //     }
-    //   })
-    //   .fail(function(xhr, textStatus){
-    //     alert("Request failed: " + textStatus);
-    //   });
 
   });
 
@@ -311,7 +284,6 @@ function changeFormLayout(part_type) {
 
   // 시리얼, 직전위치 검색 시
   if( part_type == 1) {
-    // $("#select_category", form).val('0').prop('disabled', true)
     // $("#select_part", form).val('').prop('disabled', true);
     $("#part_qty", form).val('1').prop('readonly', true);
   }

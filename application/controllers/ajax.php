@@ -440,4 +440,68 @@ class Ajax extends CI_Controller
 		echo json_encode($response);
 	}
 
+	// 시리얼넘버로 장비 찾기 
+	public function find_by_sn($q) {
+		$params = ($this->input->post()) ? $this->input->post() : $this->input->get();
+
+		// 시리얼넘버
+		$sn = urldecode($q);
+
+		$this->load->model('work_m', 'work_model');
+		$op = $this->work_model->get($params['id']);
+
+		if( $op->type == '801' || $op->type == '802') {
+			$this->load->model('workTransfer_m');
+			$result = $this->workTransfer_m->findBySerialNumber($op, $sn);
+		}
+
+		$response = new stdClass;
+
+		// 에러시 에러 문자열을 반환함, 성공시 array or object
+		$response->error = (is_string($result)) ? true : false;
+		$response->info = $result;
+
+		// 에러일 경우
+		if($response->error) {
+			$response->error_msg = $result;
+		}
+
+		echo json_encode($response);
+	}
+
+	// 업무 장비 등록
+	public function add_item() {
+		$this->load->model('work_m', 'work_model');
+
+		$input = ($this->input->post()) ? $this->input->post() : $this->input->get();
+
+		$op = $this->work_model->get($input['id']);
+		if( $op->type == '801' || $op->type == '802') {
+			$this->load->model('workTransfer_m');
+			$item = $this->workTransfer_m->addItem($op, $input);
+		}
+
+		$response = new stdClass;
+
+		$response->error = ($item) ? false : true;
+		$response->error_msg = '';
+
+		if($item) {
+			$response->id = $item->id;
+		}
+
+		echo json_encode($response);
+	}
+
+	// 업무 장비 삭제
+	public function remove_item($item_id) {
+
+	}
+
+	// 업무 완료
+	public function complete($id) {
+
+	}
+	
 }
+
