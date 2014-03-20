@@ -451,8 +451,8 @@ class Ajax extends CI_Controller
 		$op = $this->work_model->get($params['id']);
 
 		if( $op->type == '801' || $op->type == '802') {
-			$this->load->model('workTransfer_m');
-			$result = $this->workTransfer_m->findBySerialNumber($op, $sn);
+			$this->load->model('transfer_m');
+			$result = $this->transfer_m->findBySerialNumber($op, $sn);
 		}
 
 		$response = new stdClass;
@@ -477,8 +477,8 @@ class Ajax extends CI_Controller
 
 		$op = $this->work_model->get($input['id']);
 		if( $op->type == '801' || $op->type == '802') {
-			$this->load->model('workTransfer_m');
-			$item = $this->workTransfer_m->addItem($op, $input);
+			$this->load->model('transfer_m');
+			$item = $this->transfer_m->addItem($op, $input);
 		}
 
 		$response = new stdClass;

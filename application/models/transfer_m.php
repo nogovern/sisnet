@@ -4,7 +4,7 @@
  */
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class WorkTransfer_m extends MY_Model {
+class Transfer_m extends MY_Model {
 
 	public function __construct() {
 		parent::__construct();
