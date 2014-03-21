@@ -88,12 +88,28 @@ class Transfer_m extends MY_Model {
 		return $item;
 	}
 
+	// 등록 장비 삭제
+	public function removeItem($op, $item_id, $do_flush = false) {
+
+		$item = $this->em->getReference('Entity\OperationPart', $item_id);
+		if(!$item) {
+			return '목록에 해당 장비가 없습니다';
+		}
+
+		$this->em->remove($item);
+		if($do_flush) {
+			$this->em->flush();
+		}
+
+		return true;
+	}
+
 	public function complete($op, $input = array()) {
 
 		// 업무 메인 변경
 		$data['status'] 		= '3';
 		$data['date_finish'] 	= null;
-		
+
 		$this->work_model->updateOperation($op, $data, true);
 
 		return true;

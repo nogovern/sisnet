@@ -494,8 +494,26 @@ class Ajax extends CI_Controller
 	}
 
 	// 업무 장비 삭제
-	public function remove_item($item_id) {
+	public function remove_item($id, $item_id) {
+		$this->load->model('work_m', 'work_model');
 
+		$op = $this->work_model->get($id);
+		
+		if(!$op) {
+			$result = '업무 또는 업무 장비 정보가 없습니다';
+		}
+
+		if( $op->type == '801' || $op->type == '802') {
+			$this->load->model('transfer_m');
+			$result = $this->transfer_m->removeItem($op, $item_id, true);
+		}
+
+		// 결과 객체
+		$response = new stdClass;
+		$response->error = (is_string($result)) ? true: false;
+		$response->error_msg = $result;
+
+		echo json_encode($response);
 	}
 
 	// 업무 완료

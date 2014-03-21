@@ -255,13 +255,16 @@ $(document).ready(function(){
 
   // 장비 삭제 이벤트 등록
   $(document).on('click', '.remove_item', function(e){
-    var item_id = $(this).closest('tr').data('item_id');
+    var $item = $(this).closest('tr');
+    var item_id = $item.data('item_id');
+    var item_name = $item.find("td:nth(4)").text();
     var that = this;
-    if(!confirm(item_id + ' 를 목록에서 삭제하시겠습니까?')) {
+   
+    if(!confirm('"' + item_name + '" 를 목록에서 삭제하시겠습니까?')) {
       return false;
     }
 
-    $.getJSON(_base_url + 'work/destroy/removeItem/', {
+    $.getJSON(_base_url + 'ajax/remove_item/' + operation.id + "/" + item_id, {
       id : operation.id,
       item_id: item_id,
       "csrf_test_name": $.cookie("csrf_cookie_name")
@@ -269,9 +272,9 @@ $(document).ready(function(){
       var error = response.error;
       if(!error) {
         callback_remove_row(that);
-        alert(response.msg);
+        alert(item_name + " 장비를 목록에서 삭제하였습니다");
       } else {
-        alert("등록 장비 삭제에 실패하였습니다");
+        alert(response.error_msg);
       }
     });
   });
