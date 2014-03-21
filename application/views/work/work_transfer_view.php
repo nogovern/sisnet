@@ -1,4 +1,8 @@
 <?php
+/**
+ * 이관 - 상세보기 
+ */
+
 $this->view('layout/header');
 $this->view('layout/navbar');
 
@@ -108,15 +112,13 @@ if($item_count == 0) {
     
     <div class="col-md-12">
       <a class="btn btn-default" href="<?=base_url() . 'work/transfer'?>"><i class="fa fa-list"></i> 리스트</a>
-<?php if($op->status == '1'): ?>
+<?php if($op->status < '3'): ?>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
       <button id="btn_edit_form" type="button" class="btn btn-info">요청서 수정</button>
       <button id="btn_add_item" type="button" class="btn btn-warning">장비 등록</button>
-      <button id="btn_send" type="button" class="btn btn-primary">장비 발송</button>
 <?php endif; ?>
 
 <?php if($op->status == '2'): ?> 
-      <button id="btn_part_scan" type="button" class="btn btn-primary">스캔</button>
       <button id="btn_op_complete" type="button" class="btn btn-success">완료</button>
 <?php endif; ?>
     </div>
@@ -176,7 +178,9 @@ $(document).ready(function(){
     // modal_part_register 에 정의 되어 있음
   });
 
-  // 장비발송
+  //////////////
+  // 장비발송 ( 이부분은 이관에서 사용 안 함)
+  //////////////
   $("#btn_send").click(function(){
     if(!confirm("등록된 장비를 수신 업체로 보냅니다.\n수신처에서 장비 확인 해야 합니다")) {
       return false;
@@ -245,14 +249,14 @@ function checkPartRegistered() {
   var len = $("#item_list tbody tr.op-item").length;
   var total = 0;
 
-  if(len == 0) {
-    $("#btn_send").prop('disabled', true);
-  } else {
-    $("#btn_send").prop('disabled', false);
-
+  if(len > 0) {
     $("#item_list tbody tr.op-item td:nth-child(7)").each(function(n){
       total += parseInt($(this).text(), 10);
     });
+
+    $("#btn_op_complete").prop('disabled', false);
+  } else {
+    $("#btn_op_complete").prop('disabled', true);
   }
 
   numItem = len;
