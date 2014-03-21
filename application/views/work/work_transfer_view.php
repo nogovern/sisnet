@@ -283,7 +283,7 @@ function callback_insert_row(id, is_new, qty) {
   if( item.type == '2') type_text = '수량';
   if( item.type == '3') type_text = '소모품';
 
-  var idx = $("#item_list tbody tr").length + 1;
+  var idx = $("#item_list tbody tr.op-item").length + 1;
   var sn = $("#serial_number").val();
   
   var tr = $("<tr/>").addClass('op-item').attr('data-item_id', id);

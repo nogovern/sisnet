@@ -478,7 +478,7 @@ class Ajax extends CI_Controller
 		$op = $this->work_model->get($input['id']);
 		if( $op->type == '801' || $op->type == '802') {
 			$this->load->model('transfer_m');
-			$item = $this->transfer_m->addItem($op, $input);
+			$item = $this->transfer_m->addItem($op, $input, true);
 		}
 
 		$response = new stdClass;

@@ -79,6 +79,12 @@ class Transfer_m extends MY_Model {
 		);
 
 		$item = $this->work_model->addItem($op, $post_data, $do_flush);
+
+		// 업무 상태가 1 이면 '입력' 상태로 변경
+		if($item && $op->status == '1') {
+			$this->work_model->updateOperation($op, array('status' => '2'), true);
+		}
+
 		return $item;
 	}
 
