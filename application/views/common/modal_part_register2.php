@@ -51,10 +51,10 @@
             <label class="form-label col-sm-4">장비 상태</label>
             <div class="col-sm-5">
               <label class="radio-inline">
-                <input type="radio" name="is_new" value="Y" disabled> 신품
+                <input type="radio" name="is_new" value="Y"> 신품
               </label>
               <label class="radio-inline">
-                <input type="radio" name="is_new" value="N" checked disabled> 중고
+                <input type="radio" name="is_new" value="N"> 중고
               </label>
             </div>
           </div>
@@ -304,6 +304,7 @@ function reset_register_form() {
   $('#part_qty', form).val(1);
   $("#serial_number", form).val('');
   $("#serial_part_id", form).val('');
+  $(":radio[name=is_new]").prop('checked', false);    // 신품여부
 }
 
 // 시리얼장비 정보 채우기

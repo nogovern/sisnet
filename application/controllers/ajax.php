@@ -500,7 +500,29 @@ class Ajax extends CI_Controller
 
 	// 업무 완료
 	public function complete($id) {
+		$this->load->model('work_m', 'work_model');
 
+		$op = $this->work_model->get($id);
+
+		if( $op->type == '801' || $op->type == '802') {
+			$this->load->model('transfer_m');
+			$result = $this->transfer_m->complete($op);
+		}
+
+		$response = new stdClass;
+		$response->error = false;
+
+		// 업무 log 생성
+		if( $result === true ) {
+			$log_data = array(
+				'type' => '1',
+				'content' => gs2_op_type($op->type) . ' 작업완료 합니다',
+				'event'			=> '완료'
+			);
+			$this->work_model->addLog($op, $log_data, true);
+		}
+
+		echo json_encode($response);		
 	}
 	
 }

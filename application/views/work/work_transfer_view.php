@@ -93,11 +93,7 @@ if($item_count == 0) {
                 <td><?php echo $item->getQtyRequest(); ?></td>
                 <td><?php echo $item->isComplete(); ?></td>
                 <td>
-<?php if($op->status == '1'){ ?>
                   <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
-<?php } else { ?>
-                  <i class="fa fa-check scan_status <?=($item->isScan()) ? '' : 'hide'?>" style="color:green;font-size:20px;"></i>
-<?php } ?>
                 </td>
               </tr>
 <?php
@@ -116,9 +112,6 @@ if($item_count == 0) {
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
       <button id="btn_edit_form" type="button" class="btn btn-info">요청서 수정</button>
       <button id="btn_add_item" type="button" class="btn btn-warning">장비 등록</button>
-<?php endif; ?>
-
-<?php if($op->status == '2'): ?> 
       <button id="btn_op_complete" type="button" class="btn btn-success">완료</button>
 <?php endif; ?>
     </div>
@@ -223,9 +216,10 @@ $(document).ready(function(){
       return false;
     }
 
-    $.get( _base_url + "work/transfer/complete/" + operation.id, function( data ) {
+    $.get( _base_url + "ajax/complete/" + operation.id, function( data ) {
       alert( "업무 완료!" );
       gs2_console(data);
+      location.reload();
     });
   });
 

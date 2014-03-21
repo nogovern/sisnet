@@ -88,8 +88,15 @@ class Transfer_m extends MY_Model {
 		return $item;
 	}
 
-	public function complete($op, $input) {
-		;
+	public function complete($op, $input = array()) {
+
+		// 업무 메인 변경
+		$data['status'] 		= '3';
+		$data['date_finish'] 	= null;
+		
+		$this->work_model->updateOperation($op, $data, true);
+
+		return true;
 	}
 
 }
