@@ -2,7 +2,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* 
+* 일정 모델
 */
 class Calendar_m extends MY_Model
 {
