@@ -30,12 +30,16 @@ class Report extends CI_Controller
 		$data['current']	= 'page-report';
 
 		$this->load->model('report_m', 'report_model');
-		$stats = array();
-		$stats[] = $this->report_model->getStatsByOffice($o_id);
-		// gs2_dump($stats);
+		$rows = array();
+
+		$stats = $this->report_model->getStatsByOffice($o_id);
+		$stats['total'] = array_sum($stats);
+		$stats['name'] = '가산';	// 사무소명
+		
+		$rows[] = $stats;		
 		
 		$data['headers'] = $this->report_model->getOperationArray(); 
-		$data['rows'] = $stats;
+		$data['rows'] = $rows;
 		$data['pagination'] = '';
 
 		$this->load->view('report_office', $data);

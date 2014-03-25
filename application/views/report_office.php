@@ -20,11 +20,12 @@ $this->view('layout/navbar');
       
       <!-- filter -->
       <div class="well well-sm">
+        검색 기간 : 
       </div>
 
       <table id="op_list" class="table table-hover table-bordered table-responsive">
         <thead>
-          <tr>
+          <tr class="active">
             <th>담당사무소</th>
             <th>입고</th>
             <th>설치</th>
@@ -44,7 +45,7 @@ $this->view('layout/navbar');
 foreach($rows as $row):
 ?>
           <tr class="">
-            <td></td>
+            <td><?php echo $row['name']?></td>
             <td><?php echo $row[100]; ?></td>
             <td><?php echo $row[200]; ?></td>
             <td><?php echo $row[300]; ?></td>
@@ -54,7 +55,7 @@ foreach($rows as $row):
             <td><?php echo $row[700]; ?></td>
             <td><?php echo $row[800]; ?></td>
             <td><?php echo $row[900]; ?></td>
-            <td></td>
+            <td><?php echo $row['total'] ?></td>
           </tr>
 <?php
 endforeach;
