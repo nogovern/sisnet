@@ -30,8 +30,15 @@ class Report extends CI_Controller
 		$data['current']	= 'page-report';
 
 		$this->load->model('report_m', 'report_model');
-		$stats = $this->report_model->getStatsByOffice($o_id);
-		gs2_dump($stats);
+		$stats = array();
+		$stats[] = $this->report_model->getStatsByOffice($o_id);
+		// gs2_dump($stats);
+		
+		$data['headers'] = $this->report_model->getOperationArray(); 
+		$data['rows'] = $stats;
+		$data['pagination'] = '';
+
+		$this->load->view('report_office', $data);
 	}
 
 }
