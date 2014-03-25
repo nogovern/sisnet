@@ -162,12 +162,22 @@ class Replace extends CI_Controller
 		}
 	}
 
+	// 공통 루틴으로 해도 될듯
+	// 에러 처리
+	protected function error($msg, $url) {
+		alert($msg, $url);
+	}
+
 	public function view($id) {
 
 		$data['title'] = '교체업무 > 상세보기';
 		$data['current'] = 'page-replace';
 
 		$work = $this->work_model->get($id);
+		if(!$work) {
+			$this->error('해당 업무가 존재하지 않습니다.', site_url('work/replace'));
+		}
+
 		$data['work'] = $work;
 		$data['_config'] = $this->config->item('gs2');
 
