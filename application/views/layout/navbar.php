@@ -81,14 +81,16 @@ if($this->auth->isLoggedIn()) {
 ?>
                 <b class="caret"></b></a>
               <ul class="dropdown-menu">
+              <!--
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-inbox"></span> Inbox <span class="badge">7</span></a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                <li class="divider"></li>
+              -->
 <?php
 if($this->auth->isLoggedIn()):
 ?>                
-                <li class="divider"></li>
-                <li><a href="<?=site_url('main/logout')?>"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>
+                <li><a href="<?=site_url('main/logout')?>"><span class="glyphicon glyphicon-off"></span> 로그아웃</a></li>
 <?php
 endif;
 ?>                
