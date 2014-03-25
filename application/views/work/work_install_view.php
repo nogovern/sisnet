@@ -214,46 +214,51 @@ endforeach;
     <div class="col-md-12">
       <a href="<?=site_url('work/install')?>"><span class="btn btn-default" type="button">리스트</span></a>
 <?php
-if($work->status == 1 && $work->type != '205') {
+if(gs2_user_type() == '2' && $work->status == '1'):
 ?>
-      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_request_ok">요청확정</button>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
 <?php
-}
+endif;
 
-// 작업메모는 확정 후 부터만 가능 
-if($work->status >= 2 && $work->status < 5) {
+// 시스네트 유저만!!!
+if( gs2_user_type() == '1' || gs2_user_level() >= 5 )
+{
+  if($work->status == 1 && $work->type != '205') {
+?>
+      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_request_ok">요청확정</button>
+<?php
+  }
+
+  // 작업메모는 확정 후 부터만 가능 
+  if($work->status >= 2 && $work->status < 5) {
 ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
-  <?php if(gs2_user_type() == '1' || gs2_user_level() >= 5 ): ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
-  <?php endif; ?>
 <?php
-}
+  }
 
-if($work->status == 2) {
+  if($work->status == 2) {
 ?>
-  <?php if(gs2_user_type() == '1' || gs2_user_level() >= 5 ): ?>
       <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_part_register">장비 등록</button>
       <button id="btn_store_complete" class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete">점포 완료</button>
-  <?php endif; ?>
 <?php
-}
+  }
 
-if($work->status == 3):
+  if($work->status == 3):
 ?>
       <!--
      <button id="btn_op_complete" class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
      -->
       <button id="btn_op_complete2" class="btn btn-danger" type="button" href="<?=base_url()?>work/ajax/iframe_complete/<?=$work->id?>" data-target="#modal_op_complete_container">작업완료</button>
 <?php
-endif;
+  endif;
 
-if($work->status == 4):
+  if($work->status == 4):
 ?>
       <button id="btn_approve" class="btn btn-success" type="button">승인</button>
 <?php
-endif;
+  endif;
+}//!-- end of 시스네트 유저만!!
 ?>
 
     </div>

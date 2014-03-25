@@ -272,30 +272,36 @@ endforeach;
   <div class="row">
     <div class="col-md-12">
       <a href="<?=site_url('work/close')?>"><span class="btn btn-default" type="button"><i class="fa fa-list"></i>&nbsp;리스트</span></a>
+
+<?php if(gs2_user_type() == '2' && $work->status == '1'): ?>
+      <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
+<?php endif;?>
+
 <?php
-if($work->status == 1 && $work->type != '305') {
+// 시스네트 유저만 가능한 기능
+if( gs2_user_type() == '1') {
+  if($work->status == 1 && $work->type != '305') {
 ?>
       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_request_ok">요청확정</button>
-      <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
 <?php
-}
+  }
 
-// 작업메모는 확정 후 부터만 가능 
-if($work->status >= 2 && $work->status < 5) {
+  // 작업메모는 확정 후 부터만 가능 
+  if($work->status >= 2 && $work->status < 5) {
 ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
 
 <?php
-}
+  }
 
-if($work->status == 2) {
+  if($work->status == 2) {
 ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete">점포 완료</button>
 <?php
-}
+  }
 
-if($work->status == 3):
+  if($work->status == 3):
 ?>
       <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_close_part_register">장비 등록</button>
 <?php if($work->type == '304'): ?>
@@ -306,12 +312,13 @@ if($work->status == 3):
      -->
       <button id="btn_op_complete2" class="btn btn-danger" type="button" href="<?=base_url()?>work/ajax/iframe_complete/<?=$work->id?>" data-target="#modal_op_complete_container">작업완료</button>
 <?php
-endif;
-if($work->status == 4):
+  endif;
+  if($work->status == 4):
 ?>
       <button id="btn_approve" class="btn btn-success" type="button">승인</button>
 <?php
-endif;
+  endif;
+}//!-- end of 시스네트 유저
 ?>
 
     </div>

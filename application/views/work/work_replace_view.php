@@ -277,35 +277,31 @@ endif;
   <div class="row">
     <div class="col-md-12">
       <a href="<?=site_url('work/close')?>"><span class="btn btn-default" type="button">리스트</span></a>
-      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
 <?php
-if($work->status == 1):
+if(gs2_user_type() == '2' && $work->status == '1'):
 ?>
-      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_replace_request_ok">요청확정</button>
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
 <?php
 endif;
 
-if($work->status == 2):
-  // 대상 작업이 모두 완료일때만 교체 업무 '승인' 버튼 가능
-  if($close_target->status == '4' && $install_target->status == '4'):
-?>    
-    <!--
-      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
-      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_store_complete">점포 완료</button>
-    -->
-      <button id="btn_confirm" class="btn btn-success" type="button">승인</button>
+// 시스네트 유저만!!!
+if( gs2_user_type() == '1' || gs2_user_level() >= 5 )
+{
+  if($work->status == 1):
+?>
+      <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal_replace_request_ok">요청확정</button>
 <?php
   endif;
-endif;
 
-if($work->status == 3):
-?>
-      <button class="btn btn-warning btn_add" type="button" data-toggle="modal" data-target="#modal_close_part_register">장비 등록</button>
-      <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_op_complete">작업 완료</button>
-      <button id="btn_approve" class="btn btn-success" type="button" disabled>승인</button>
+  if($work->status == 2):
+    // 대상 작업이 모두 완료일때만 교체 업무 '승인' 버튼 가능
+    if($close_target->status == '4' && $install_target->status == '4'):
+?>    
+      <button id="btn_confirm" class="btn btn-success" type="button">승인</button>
 <?php
-endif;
+    endif;
+  endif;
+}//!-- end of 시스네트 유저만!!
 ?>
     </div>
   </div>
