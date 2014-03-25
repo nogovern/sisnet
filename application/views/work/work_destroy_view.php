@@ -115,7 +115,6 @@ if($item_count == 0) {
       <button id="btn_cancel_request" class="btn btn-danger" type="button">요청취소</button>
       <button id="btn_edit_request" type="button" class="btn btn-default">요청서수정</button>
       <button id="btn_add_item" type="button" class="btn btn-warning">장비등록</button>
-      <button id="btn_op_accept_complete" type="button" class="btn btn-success">승인완료</button>
 <?php endif; ?>
 
 <?php if($op->type == '601' && $op->status >= '2'): ?> 
@@ -128,7 +127,12 @@ if($item_count == 0) {
 <?php if($op->type == '602' && $op->status == '2'): ?> 
       <button id="btn_scan_item" type="button" class="btn btn-primary">스캔</button>
       <button id="btn_op_send_complete" type="button" class="btn btn-success">출고완료</button>
+
 <?php endif; ?>
+<?php if($op->status < '3'): ?>
+      <button id="btn_op_accept_complete" type="button" class="btn btn-success">작업완료</button>
+<?php endif; ?>
+
     </div>
 
   </div><!-- /end of row -->

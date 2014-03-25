@@ -55,7 +55,7 @@ class Auth {
 	public function logout($ret_url = '') {
 		$this->CI->session->sess_destroy();
 
-		echo '로그아웃 되었습니다';
+		// echo '로그아웃 되었습니다';
 	}
 
 	/**

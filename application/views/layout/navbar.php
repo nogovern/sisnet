@@ -76,7 +76,7 @@ if($this->auth->isLoggedIn()) {
   echo ')';
 
 } else {
-  echo 'John Smith - 이것이 보이면 에러';
+  echo '로그인 상태가 아닙니다. 다시 로그인 해 주세요';
 }
 ?>
                 <b class="caret"></b></a>
