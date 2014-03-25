@@ -118,9 +118,11 @@ endforeach;
     <?php echo $pagination; ?>
   </div>
 
-<?php if($this->session->userdata('user_level') >= '3'): ?>
+<?php
+// 20140325 - 숨김 
+if(false && $this->session->userdata('user_level') >= '3'): 
+?>
   <p class="well">
-    <!-- ie8 호환성 위해 button 태그 대신 span 태그로 변경 -->
     <a href="<?=base_url()?>stock/add"><span class="btn btn-primary" >&nbsp;신규  등록</span></a>
   </p>
 <?php endif; ?>
