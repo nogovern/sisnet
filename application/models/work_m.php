@@ -640,15 +640,16 @@ class Work_m extends MY_Model {
 			$item->setQtyComplete($qty);
 			$item->setCompleteFlag(TRUE);
 
-			$part = $this->em->getReference('Entity\Part', $item->part->id);
+			$part = $item->part;
 			$stock = $part->getStock($op->office->id);
 
 			// 시리얼장비 내용 변경
 			// 설치된 장비는 우리 재고가 아님
 			if($item->part_type == '1') {
 				$sp = $item->serial_part;
+
 				if($sp) {
-					$sp->setPreviousLocation($op->office);
+					$sp->setPreviousLocation('O@' . $op->office->id);
 					$sp->setCurrentLocation($op->work_location);
 					$sp->setDateModify();
 					$sp->setValidFlag(FALSE);		// 유효 재고에서 빠짐
@@ -660,6 +661,10 @@ class Work_m extends MY_Model {
 					}
 
 					$this->em->persist($sp);
+
+					// $this->em->flush();
+					// echo sprintf("<p>serial : %d</p>", $sp->id);
+					// exit;
 				}
 			}
 
@@ -951,7 +956,7 @@ class Work_m extends MY_Model {
 			'content' => gs2_op_type($op->type) . ' 작업완료 합니다',
 			'event'			=> '완료'
 		);
-		$this->work_model->addLog($op, $log_data);
+		$this->work_model->addLog($op, $log_data, true);
 		
 		return "업무를 완료하였습니다.";
 	}

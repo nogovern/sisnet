@@ -704,7 +704,7 @@ class Ajax extends CI_Controller
 		        		$f_data['op_id'] = $op->id;
 
 		        		// gs2_dump($f_data);
-		        		$this->file_model->create($f_data, true);
+		        		$this->file_model->create($f_data);
 		        	}
 		        }
 			}// end of for
@@ -718,8 +718,6 @@ class Ajax extends CI_Controller
 			else {
 				// 완료 상태로 변경
 				$result = $this->work_model->complete($op->id, '4', $this->input->post('date_complete'));
-				echo '-- 디버깅 메세지 --';
-				exit;
 				
 				if(!$result) {
 					echo '저장중 에러가 발생했습니다';

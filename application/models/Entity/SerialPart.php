@@ -154,15 +154,15 @@ class SerialPart
 		$this->is_valid = ($bool) ? 'Y' : 'N';
 	}
 
-	public function setDateEnter($date = 'now') {
+	public function setDateEnter($date = null) {
 		$this->date_enter = new \DateTime($date);
 	}
 
-	public function setDateInstall($date = 'now') {
+	public function setDateInstall($date = null) {
 		$this->date_install = new \DateTime($date);
 	}
 
-	public function setDateModify($date = 'now') {
+	public function setDateModify($date = null) {
 		$this->date_modify = new \DateTime($date);
 	}
 
