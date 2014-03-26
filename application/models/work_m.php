@@ -951,7 +951,7 @@ class Work_m extends MY_Model {
 			'content' => gs2_op_type($op->type) . ' 작업완료 합니다',
 			'event'			=> '완료'
 		);
-		$this->work_model->addLog($op, $log_data, TRUE);
+		$this->work_model->addLog($op, $log_data);
 		
 		return "업무를 완료하였습니다.";
 	}

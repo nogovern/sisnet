@@ -73,12 +73,12 @@ class OperationFile
 		$this->gubun = $value;
 	}
 
-	public function setOrginalName($obj) {
-		$this->org_name = $obj;
+	public function setOrginalName($value) {
+		$this->org_name = $value;
 	}
 
-	public function setSaveName($obj) {
-		$this->save_name = $obj;
+	public function setSaveName($value) {
+		$this->save_name = $value;
 	}
 
 	public function setFileType($value) {
@@ -90,9 +90,8 @@ class OperationFile
 	}
 
 	// 등록일시
-	public function setDateRegister($date = 'now') {
-		if(!empty($date))
-			$this->date_register = new \DateTime($date);
+	public function setDateRegister($date = null) {
+		$this->date_register = new \DateTime($date);
 	}
 }
 

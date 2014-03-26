@@ -672,7 +672,6 @@ class Ajax extends CI_Controller
 		if($this->form_validation->run() === false) {
 			$this->load->view("form/iframe_op_complete_form", $data);
 		} else {
-			
 			//////////////////////////
 			// 첨부 파일 업로드
 			//////////////////////////
@@ -704,7 +703,8 @@ class Ajax extends CI_Controller
 		        		$f_data['gubun'] = '완료';
 		        		$f_data['op_id'] = $op->id;
 
-		        		$this->file_model->create($f_data);
+		        		// gs2_dump($f_data);
+		        		$this->file_model->create($f_data, true);
 		        	}
 		        }
 			}// end of for
@@ -718,6 +718,8 @@ class Ajax extends CI_Controller
 			else {
 				// 완료 상태로 변경
 				$result = $this->work_model->complete($op->id, '4', $this->input->post('date_complete'));
+				echo '-- 디버깅 메세지 --';
+				exit;
 				
 				if(!$result) {
 					echo '저장중 에러가 발생했습니다';
