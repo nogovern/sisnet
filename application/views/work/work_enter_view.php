@@ -75,14 +75,14 @@ if($work->status == 1) {
   }
 }// end of status == 1
 
-if($work->status == 2 && gs2_user_type() == '3'):
+if($work->status == 2 && gs2_user_type() == GS2_USER_TYPE_COMPANY):
 ?>
       <button id="btn_part_register" class="btn btn-primary" type="button" data-target="#modal_enter_add_item">개별등록</button>
       <button id="btn_delivery" class="btn btn-success btn_delivery" type="button"  disabled>출고</button>
 <?php
 endif;
 
-if($work->status == 3 && gs2_user_type() == '1'):
+if($work->status == 3 && gs2_user_type() == GS2_USER_TYPE_SISNET):
 ?>
       <button id="btn_scan" class="btn btn-danger" type="button" data-toggle="modal" data-target="#modal_scan">장비 스캔</button>
       <button id="btn_complete" class="btn btn-success" type="button" disabled>입고 완료</button>

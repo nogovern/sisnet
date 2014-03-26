@@ -72,7 +72,7 @@ endforeach;
     <div class="col-md-12">
       <a href="<?=site_url('work/enter')?>"><span class="btn btn-default" type="button">리스트</span></a>
 <?php
-if($work->status == 3):
+if($work->status == 3 && gs2_user_type() == GS2_USER_TYPE_SISNET):
   if($work->getItem()->part_type == '1'){
 ?>
       <button id="btn_open_scan_serial" class="btn btn-danger" type="button" data-toggle="modal">장비 스캔</button>
