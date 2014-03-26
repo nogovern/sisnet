@@ -96,16 +96,16 @@ if(!function_exists('gs2_decode_location')) {
 
         switch ($arr[0]) {
             case GS2_LOCATION_TYPE_COMPANY:
-                $instance = $CI->doctrine->em->getReference('Entity\Company', intval($arr[1]));
+                $instance = $CI->doctrine->em->find('Entity\Company', intval($arr[1]));
                 break;
             
             case GS2_LOCATION_TYPE_OFFICE:
-                $instance = $CI->doctrine->em->getReference('Entity\Office', intval($arr[1]));
+                $instance = $CI->doctrine->em->find('Entity\Office', intval($arr[1]));
                 break;
             
             case GS2_LOCATION_TYPE_STORE:
             default:
-                $instance = $CI->doctrine->em->getReference('Entity\Store', intval($arr[1]));
+                $instance = $CI->doctrine->em->find('Entity\Store', intval($arr[1]));
                 break;
         }
 
@@ -121,6 +121,10 @@ if(!function_exists('gs2_location_name')) {
             return "";
         
         $obj = gs2_decode_location($location);
+        if(!$obj) {
+            return '-- 미등록 위치 --';
+        }
+
         return $obj->name;
     }
 }
