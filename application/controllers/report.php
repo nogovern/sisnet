@@ -22,7 +22,7 @@ class Report extends CI_Controller
 		$data['current']	= 'page-report';
 
 		$this->load->model('user_m', 'user_model');
-		$users = $this->user_model->getListByType(GS2_USER_TYPE_SISNET);
+		$users = $this->user_model->getListByType(GS2_USER_TYPE_SISNET, array('name' => 'asc'));
 
 		$this->load->model('report_m', 'report_model');
 		$rows = array();
@@ -35,7 +35,12 @@ class Report extends CI_Controller
 			$rows[] = $stats;		
 		}
 
-		gs2_dump($rows);
+		// gs2_dump($rows);
+		$data['headers'] = $this->report_model->getOperationArray(); 
+		$data['rows'] = $rows;
+		$data['pagination'] = '';
+
+		$this->load->view('report_worker', $data);
 	}
 
 	// 사무소별 업무

@@ -25,12 +25,12 @@ class User_m extends MY_Model {
 	}
 
 	// user type 별 목록
-	public function getListByType($type) {
+	public function getListByType($type, $order=null) {
 		$repo = $this->em->getRepository($this->getEntityName());
 		$options = array(
 			'type'	=> $type
 			);
-		$rows = $repo->findBy($options);
+		$rows = $repo->findBy($options, $order);
 
 		return $rows;
 	}
