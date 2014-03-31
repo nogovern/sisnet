@@ -25,18 +25,25 @@ class Report extends CI_Controller
 	}
 
 	// 사무소별 업무
-	public function office($o_id = 1) {
+	public function office($fromDate = null, $toDate = null) {
 		$data['title'] 		= '사무소별 작업량';
 		$data['current']	= 'page-report';
 
 		$this->load->model('report_m', 'report_model');
-		$rows = array();
 
-		$stats = $this->report_model->getStatsByOffice($o_id);
-		$stats['total'] = array_sum($stats);
-		$stats['name'] = '가산';	// 사무소명
+		// 사무소 목록 가져오기
+		$this->load->model('office_m', 'office_model');
+		$offices = $this->office_model->getList(array('name' => 'asc'));
+
+		$rows = array();
+		foreach($offices as $o) {
+			$stats = $this->report_model->getStatsByOffice($o->id);
+			$stats['total'] = array_sum($stats);
+			$stats['name'] = $o->name;	// 사무소명
+			
+			$rows[] = $stats;		
+		}
 		
-		$rows[] = $stats;		
 		
 		$data['headers'] = $this->report_model->getOperationArray(); 
 		$data['rows'] = $rows;
