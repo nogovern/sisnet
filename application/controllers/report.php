@@ -17,11 +17,25 @@ class Report extends CI_Controller
 	}
 
 	// 작업자별 업무
-	public function worker() {
+	public function worker($id = 1) {
 		$data['title'] 		= '작업자별 작업량';
 		$data['current']	= 'page-report';
 
+		$this->load->model('user_m', 'user_model');
+		$users = $this->user_model->getListByType(GS2_USER_TYPE_SISNET);
 
+		$this->load->model('report_m', 'report_model');
+		$rows = array();
+
+		foreach($users as $u) {
+			$stats = $this->report_model->getStatsByWorker($u->id);
+			$stats['total'] = array_sum($stats);
+			$stats['name'] = $u->name;	// 유저명
+			
+			$rows[] = $stats;		
+		}
+
+		gs2_dump($rows);
 	}
 
 	// 사무소별 업무

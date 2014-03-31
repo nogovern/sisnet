@@ -57,4 +57,33 @@ class Report_m extends MY_Model
 
 		return $works;
 	}
+
+	function getStatsByWorker($worker_id, $from=null, $to=null) {
+		$works = $this->getOperationArray();
+
+		$qb = $this->em->createQueryBuilder();
+
+		$qb->select("w.type, count(w.id) as cnt")
+			->from("Entity\Operation", "w")
+			->where("w.worker = $worker_id")
+			->groupBy("w.worker, w.type")
+			->orderBy("w.type");
+
+		$query = $qb->getQuery();
+		$rows = $query->getArrayResult();
+
+		// 업무 타입별 작업량으로 변환
+		// 
+		foreach($rows as $row) {
+			$type = (int)$row['type'];
+
+			for($i = 100; $i < 1000; $i += 100) {
+				if($type >= $i && $type < ($i + 100)) {
+					$works[$i] += $row['cnt'];
+				}				
+			}
+		}
+
+		return $works;
+	}
 }
