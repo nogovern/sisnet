@@ -57,6 +57,7 @@ if(0) {
             <li id="page-move"><a href="<?=site_url('/work/move')?>">이동</a></li>
             <li id="page-destroy"><a href="<?=site_url('/work/destroy')?>">폐기</a></li>
             <li id="page-transfer"><a href="<?=site_url('/work/transfer')?>">이관</a></li>
+            
 <?php endif;    // !-- 시스네트 권한 이상 ?>
           </ul>
 
@@ -81,12 +82,10 @@ if($this->auth->isLoggedIn()) {
 ?>
                 <b class="caret"></b></a>
               <ul class="dropdown-menu">
-              <!--
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-inbox"></span> Inbox <span class="badge">7</span></a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                <li><a href="<?=site_url('/report/office')?>">리포트-사무소별</a></li>
+                <li><a href="<?=site_url('/report/worker')?>">리포트-작업자별</a></li>
+                <li><a href="#">리포트-접속기록</a></li>
                 <li class="divider"></li>
-              -->
 <?php
 if($this->auth->isLoggedIn()):
 ?>                
