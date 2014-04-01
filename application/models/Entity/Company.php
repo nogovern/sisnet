@@ -58,12 +58,12 @@ class Company
 	}
 
 	public function getUser(){
-		return ($this->user) ? $this->user : '';
+		return ($this->user) ? $this->user : null;
 	}
 
 	// 담당자 - 링크 
 	public function getUserAnchor() {
-		return ($this->user) ? $this->user->name : '';
+		return ($this->user && $this->user instanceof Entity\User) ? $this->user->name : '';
 	}
 
 	// 담당자
