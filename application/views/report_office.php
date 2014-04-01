@@ -91,6 +91,9 @@ endforeach;
 </div><!-- end of container -->
 
 <script type="text/javascript">
+var fromDate = new Date("<?=$fromDate?>"); 
+var toDate = new Date("<?=$toDate?>"); 
+
 $(document).ready(function() {
   $("#fromDate").datepicker({
     dateFormat: "yy-mm-dd",
@@ -105,8 +108,8 @@ $(document).ready(function() {
   });
 
   // 기본 기간 설정
-  $("#fromDate").datepicker('setDate', -30);
-  $("#toDate").datepicker('setDate', new Date());
+  $("#fromDate").datepicker('setDate', fromDate);
+  $("#toDate").datepicker('setDate', toDate);
 
   ///////////////////////
   // 검색 필터 전송 

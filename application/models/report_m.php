@@ -40,6 +40,18 @@ class Report_m extends MY_Model
 			->groupBy("w.office, w.type")
 			->orderBy("w.type");
 
+		// 기간 검색 쿼리	
+		// 기간 검색 쿼리	
+		if( $from )  {
+			$qb->andWhere("w.date_work >= :from");
+			$qb->setParameter('from', $from);
+		}
+
+		if( $to )  {
+			$qb->andWhere("w.date_work <= :to");
+			$qb->setParameter('to', $to);
+		}
+
 		$query = $qb->getQuery();
 		$rows = $query->getArrayResult();
 
@@ -69,11 +81,21 @@ class Report_m extends MY_Model
 			->groupBy("w.worker, w.type")
 			->orderBy("w.type");
 
+		// 기간 검색 쿼리	
+		if( $from )  {
+			$qb->andWhere("w.date_work >= :from");
+			$qb->setParameter('from', $from);
+		}
+
+		if( $to )  {
+			$qb->andWhere("w.date_work <= :to");
+			$qb->setParameter('to', $to);
+		}
+
 		$query = $qb->getQuery();
 		$rows = $query->getArrayResult();
 
 		// 업무 타입별 작업량으로 변환
-		// 
 		foreach($rows as $row) {
 			$type = (int)$row['type'];
 

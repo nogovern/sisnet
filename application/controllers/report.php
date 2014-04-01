@@ -28,8 +28,13 @@ class Report extends CI_Controller
 		$this->load->model('report_m', 'report_model');
 		$rows = array();
 
+		// 기간 검색 조건
+		$today = new DateTime();
+		$fromDate = $this->input->get('fromDate') ? $this->input->get('fromDate') : $today->format("Y-m-01");
+		$toDate = $this->input->get('toDate') ? $this->input->get('toDate') : $today->format("Y-m-d");
+
 		foreach($users as $u) {
-			$stats = $this->report_model->getStatsByWorker($u->id);
+			$stats = $this->report_model->getStatsByWorker($u->id, $fromDate, $toDate);
 			$stats['total'] = array_sum($stats);
 			$stats['name'] = $u->name;	// 유저명
 			
@@ -37,6 +42,9 @@ class Report extends CI_Controller
 		}
 
 		// gs2_dump($rows);
+		$data['fromDate'] 	= $fromDate;
+		$data['toDate']		= $toDate;
+
 		$data['headers'] = $this->report_model->getOperationArray(); 
 		$data['rows'] = $rows;
 		$data['pagination'] = '';
@@ -45,7 +53,7 @@ class Report extends CI_Controller
 	}
 
 	// 사무소별 업무
-	public function office($fromDate = null, $toDate = null) {
+	public function office() {
 		$data['title'] 		= '사무소별 작업량';
 		$data['current']	= 'page-report';
 
@@ -55,15 +63,22 @@ class Report extends CI_Controller
 		$this->load->model('office_m', 'office_model');
 		$offices = $this->office_model->getList(array('name' => 'asc'));
 
+		// 기간 검색 조건
+		$today = new DateTime();
+		$fromDate = $this->input->get('fromDate') ? $this->input->get('fromDate') : $today->format("Y-m-01");
+		$toDate = $this->input->get('toDate') ? $this->input->get('toDate') : $today->format("Y-m-d");
+
 		$rows = array();
 		foreach($offices as $o) {
-			$stats = $this->report_model->getStatsByOffice($o->id);
+			$stats = $this->report_model->getStatsByOffice($o->id, $fromDate, $toDate);
 			$stats['total'] = array_sum($stats);
 			$stats['name'] = $o->name;	// 사무소명
 			
 			$rows[] = $stats;		
 		}
 		
+		$data['fromDate'] 	= $fromDate;
+		$data['toDate']		= $toDate;
 		
 		$data['headers'] = $this->report_model->getOperationArray(); 
 		$data['rows'] = $rows;
