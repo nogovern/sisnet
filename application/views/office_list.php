@@ -7,7 +7,7 @@ $this->view('layout/navbar');
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="page-header">
-        <h1><i class="fa fa-building-o"></i> <?=$page_title?></h1>
+        <h2><i class="fa fa-building-o"></i> <?=$page_title?></h2>
       </div>
 
       <!-- Example row of columns -->

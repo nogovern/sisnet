@@ -18,7 +18,7 @@ $arr_type = array(
       
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="page-header">
-        <h1><span class="fa fa-building-o"></span>&nbsp;거래처 리스트</h1>
+        <h2><span class="fa fa-building-o"></span>&nbsp;거래처 리스트</h2>
       </div>
 
       <!-- Example row of columns -->
