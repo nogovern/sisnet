@@ -20,7 +20,26 @@ $this->view('layout/navbar');
       
       <!-- filter -->
       <div class="well well-sm">
-        검색 기간 : 
+        <form method="post" id="filter-form" class="form-inline" role="search">
+          <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
+          
+          <div class="form-group"> 검색기간: </div>
+
+          <div class="form-group">
+            <input type="text" id="fromDate" name="fromDate" class="form-control date-picker">
+            <!-- <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span> -->
+          </div>
+
+          <div class="form-group"> ~ </div>
+          <div class="form-group">
+            <input type="text" id="toDate" name="toDate" class="form-control date-picker">
+            <!-- <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span> -->
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-sm">검색</button> 
+          </div>
+        </form>
       </div>
 
       <table id="op_list" class="table table-hover table-bordered table-responsive">
@@ -70,6 +89,38 @@ endforeach;
     </div>
   </div>
 </div><!-- end of container -->
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#fromDate").datepicker({
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    changeMonth: true
+  });
+  
+  $("#toDate").datepicker({
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    changeMonth: true
+  });
+
+  // 기본 기간 설정
+  $("#fromDate").datepicker('setDate', -30);
+  $("#toDate").datepicker('setDate', new Date());
+
+  ///////////////////////
+  // 검색 필터 전송 
+  ///////////////////////
+  $("#filter-form").submit(function() {
+    // var url = location.href;
+    var url = _base_url + 'report/office';
+    var query = $(this).serialize();
+
+    url = url + '/?' + query;
+    $(this).prop('action', url);
+  });
+});
+</script>
 
 <?php
 $this->view('layout/footer');

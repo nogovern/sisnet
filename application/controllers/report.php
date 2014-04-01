@@ -22,7 +22,8 @@ class Report extends CI_Controller
 		$data['current']	= 'page-report';
 
 		$this->load->model('user_m', 'user_model');
-		$users = $this->user_model->getListByType(GS2_USER_TYPE_SISNET, array('name' => 'asc'));
+		// 작업자 사무소, 이름순 정렬
+		$users = $this->user_model->getListByType(GS2_USER_TYPE_SISNET, array('office' => 'asc', 'name' => 'asc'));
 
 		$this->load->model('report_m', 'report_model');
 		$rows = array();
