@@ -8,25 +8,25 @@ $this->load->view('layout/navbar', array('current' => "page-schedule"));
 	<!-- start of div.container -->
     <div class="container">
   		<div class="page-header">
-  			<h1><span class="fa fa-calendar"></span>&nbsp;일정표</h1>
+  			<h2><span class="fa fa-calendar"></span>&nbsp;일정표</h2>
   		</div>
 
       <div class="well well-sm">
         <form method="post" id="filter-form" class="form-inline" role="search">
           <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
 
+          <div class="form-group">업무구분 : </div>
           <div class="form-group">
-            업무구분 : 
             <?php echo $op_category_filter; ?>
           </div>
 
+          <div class="form-group">업무형태 : </div>
           <div class="form-group">
-            업무형태 : 
             <?php echo $op_type_filter; ?>
           </div>
 
+          <div class="form-group">사무소 : </div>
           <div class="form-group">
-            &nbsp;&nbsp;사무소 : 
             <?php echo $office_filter; ?>
           </div>
 

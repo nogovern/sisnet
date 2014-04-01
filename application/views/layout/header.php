@@ -45,6 +45,8 @@
         padding-bottom: 40px;
       }
 
+      .page-header {margin:30px 0 0;}
+
       // 선택된 열 표시
       tr.selected {background-color:#FFD700;}
 
