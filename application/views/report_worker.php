@@ -25,13 +25,13 @@ $this->view('layout/navbar');
           <div class="form-group"> 검색기간: </div>
 
           <div class="form-group">
-            <input type="text" id="fromDate" name="fromDate" class="form-control date-picker">
+            <input type="text" id="fromDate" name="fromDate" class="form-control input-sm date-picker">
             <!-- <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span> -->
           </div>
 
           <div class="form-group"> ~ </div>
           <div class="form-group">
-            <input type="text" id="toDate" name="toDate" class="form-control date-picker">
+            <input type="text" id="toDate" name="toDate" class="form-control input-sm date-picker">
             <!-- <span class="input-group-addon btn_date"><i class="fa fa-calendar"></i></span> -->
           </div>
 
