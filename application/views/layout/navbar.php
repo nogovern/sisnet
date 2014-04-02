@@ -84,7 +84,7 @@ if($this->auth->isLoggedIn()) {
               <ul class="dropdown-menu">
                 <li><a href="<?=site_url('/report/office')?>">리포트-사무소별</a></li>
                 <li><a href="<?=site_url('/report/worker')?>">리포트-작업자별</a></li>
-                <li><a href="#">리포트-접속기록</a></li>
+                <li><a href="<?=site_url('/report/log')?>">리포트-접속기록</a></li>
                 <li class="divider"></li>
 <?php
 if($this->auth->isLoggedIn()):

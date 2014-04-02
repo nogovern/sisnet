@@ -63,11 +63,19 @@ class User_m extends MY_Model {
 	/**
 	 * 접속 로그 메서드
 	 */
-	public function getLoginLog() {
+	public function getLoginLog($name = null) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('l')
 			->from('Entity\UserLog', 'l')
-			;
+			->innerJoin('l.user', 'u')
+			->where("l.user_type < '9' ")
+			->orderBy('l.id', 'DESC');
+
+		if(!is_null($name)) {
+			$qb->andWhere("u.name like :name ")
+				->setParameter('name', '%' . $name . '%');
+		}
+
 		$query = $qb->getQuery();
 		$result = $query->getResult();
 

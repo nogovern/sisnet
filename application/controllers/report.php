@@ -18,13 +18,22 @@ class Report extends CI_Controller
 
 		$this->load->model('user_m', 'user_model');
 		
-		if(0) {
-			$this->user_model->insertLoginLog($this->session->userdata('user_id'));
-		}
+		// 기간 검색 조건
+		$today = new DateTime();
+		$fromDate = $this->input->get('fromDate') ? $this->input->get('fromDate') : $today->format("Y-m-01");
+		$toDate = $this->input->get('toDate') ? $this->input->get('toDate') : $today->format("Y-m-d");	
+		$ft_name = $this->input->get('name') ? $this->input->get("name") : null;
 
-		$logs = $this->user_model->getLoginLog();
+		$logs = $this->user_model->getLoginLog($ft_name);
+
+		// 데이터
+		$data['fromDate'] 	= $fromDate;
+		$data['toDate']		= $toDate;
 
 		$data['rows'] = $logs;
+		$data['pagination'] = '';
+
+		$this->load->view('report_login', $data);
 
 	}
 
