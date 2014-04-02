@@ -12,8 +12,20 @@ class Report extends CI_Controller
 	}
 
 	// 사용자 접속
-	public function user() {
-		echo "사용자 접속 기록";
+	public function log() {
+		$data['title'] 		= '사용자 접속 기록';
+		$data['current']	= 'page-report';
+
+		$this->load->model('user_m', 'user_model');
+		
+		if(0) {
+			$this->user_model->insertLoginLog($this->session->userdata('user_id'));
+		}
+
+		$logs = $this->user_model->getLoginLog();
+
+		$data['rows'] = $logs;
+
 	}
 
 	// 작업자별 업무

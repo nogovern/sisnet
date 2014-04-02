@@ -59,7 +59,39 @@ class User_m extends MY_Model {
 
 		return $arr;
 	}
-	
+
+	/**
+	 * 접속 로그 메서드
+	 */
+	public function getLoginLog() {
+		$qb = $this->em->createQueryBuilder();
+		$qb->select('l')
+			->from('Entity\UserLog', 'l')
+			;
+		$query = $qb->getQuery();
+		$result = $query->getResult();
+
+		return $result; 
+	}
+
+	// 접속 로그 생성
+	public function insertLoginLog($user_id) {
+		$user = $this->get($user_id);
+		if(!$user) {
+			throw new Exception("user_id : $user_id 가 없음", 1);
+			return false;
+		}
+
+		$log = new Entity\UserLog;
+		$log->user = $user;
+		$log->date_login = '';
+		$log->ip_address = $_SERVER['REMOTE_ADDR'];
+
+		$this->em->persist($log);
+		$this->em->flush();
+
+		return $log->id;
+	}	
 }
 
 
