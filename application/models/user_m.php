@@ -83,9 +83,10 @@ class User_m extends MY_Model {
 		}
 
 		$log = new Entity\UserLog;
-		$log->user = $user;
-		$log->date_login = '';
-		$log->ip_address = $_SERVER['REMOTE_ADDR'];
+		$log->user 			= $user;
+		$log->user_type 	= $user->type;
+		$log->date_login 	= '';
+		$log->ip_address 	= $_SERVER['REMOTE_ADDR'];
 
 		$this->em->persist($log);
 		$this->em->flush();

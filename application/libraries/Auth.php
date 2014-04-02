@@ -48,6 +48,7 @@ class Auth {
 		///////////////////
 		/// 접속 로그 기록
 		////////////////////
+		$this->CI->user_model->insertLoginLog($user->id);
 
 		return TRUE;
 	}

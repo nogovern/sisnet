@@ -27,6 +27,8 @@ class UserLog
 	/** @column(type="string", length=15) */
 	protected $ip_address;
 
+	/** @column(name="user_type", type="string", length=1) */
+	protected $user_type = '1';
 
 	//--------------------------------------------------------
 
