@@ -63,7 +63,7 @@ class User_m extends MY_Model {
 	/**
 	 * 접속 로그 메서드
 	 */
-	public function getLoginLog($name = null) {
+	public function getLoginLog($criteria = array()) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('l')
 			->from('Entity\UserLog', 'l')
@@ -71,9 +71,28 @@ class User_m extends MY_Model {
 			->where("l.user_type < '9' ")
 			->orderBy('l.id', 'DESC');
 
-		if(!is_null($name)) {
-			$qb->andWhere("u.name like :name ")
-				->setParameter('name', '%' . $name . '%');
+		foreach($criteria as $k => $v) {
+			if(!empty($v)) {
+				switch($k) {
+					case "name":
+						$qb->andWhere("u.name like :name ")
+							->setParameter('name', '%' . urldecode($v) . '%');
+						break;
+
+					case "from_date":
+						$qb->andWhere("l.date_login >= :from");
+						$qb->setParameter('from', $v);
+						break;
+						
+					case "to_date":
+						$qb->andWhere("l.date_login <= :to");
+						$qb->setParameter('to', $v);
+						break;
+
+					default:
+
+				}
+			}	
 		}
 
 		$query = $qb->getQuery();

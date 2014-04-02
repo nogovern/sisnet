@@ -21,10 +21,16 @@ class Report extends CI_Controller
 		// 기간 검색 조건
 		$today = new DateTime();
 		$fromDate = $this->input->get('fromDate') ? $this->input->get('fromDate') : $today->format("Y-m-01");
-		$toDate = $this->input->get('toDate') ? $this->input->get('toDate') : $today->format("Y-m-d");	
-		$ft_name = $this->input->get('name') ? $this->input->get("name") : null;
-
-		$logs = $this->user_model->getLoginLog($ft_name);
+		// $toDate = $this->input->get('toDate') ? $this->input->get('toDate') : null;
+		$toDate = new DateTime($this->input->get('toDate'));
+		$toDate = $toDate->format("Y-m-d 23:59:59");
+		
+		// 검색 조건 설정
+		$criteria = array();
+		$criteria['name'] = $this->input->get('name') ? $this->input->get("name") : null;
+		$criteria['from_date'] 	= $fromDate;
+		$criteria['to_date'] 	= $toDate;
+		$logs = $this->user_model->getLoginLog($criteria);
 
 		// 데이터
 		$data['fromDate'] 	= $fromDate;

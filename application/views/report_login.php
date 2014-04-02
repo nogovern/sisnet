@@ -58,7 +58,15 @@ $this->view('layout/navbar');
 
         <tbody>
 <?php
-foreach($rows as $row):
+if(!count($rows)) {
+?>
+          <tr class="" style="text-align: center;">
+            <td colspan="5">결과가 없습니다</td>
+          </tr>
+
+<?php
+} else {
+  foreach($rows as $row):
 ?>
           <tr class="" style="text-align: center;">
             <td><?php echo $row->id?></td>
@@ -68,7 +76,8 @@ foreach($rows as $row):
             <td><?php echo $row->date_login->format("Y-m-d h:i:s"); ?></td>
           </tr>
 <?php
-endforeach;
+  endforeach;
+}
 ?>
         </tbody>
       </table>
