@@ -6,7 +6,7 @@ $this->view('layout/navbar');
 <div class="container">
   <!-- Main hero unit for a primary marketing message or call to action -->
   <div class="page-header">
-    <h1><span class="fa fa-desktop"></span>&nbsp;수리 업무</h1>
+    <h2><span class="fa fa-desktop"></span>&nbsp;수리 업무</h2>
   </div>
  
   <!-- Example row of columns -->
@@ -17,18 +17,19 @@ $this->view('layout/navbar');
       <div class="well well-sm">
         <form method="post" id="filter-form" class="form-inline" role="search">
           <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
+
+          <div class="form-group">&nbsp;진행상태 :</div>
           <div class="form-group">
-            진행상태 : 
             <?php echo $status_filter; ?>
           </div>
 
+          <div class="form-group">&nbsp;작업형태 :</div>
           <div class="form-group">
-            &nbsp;&nbsp;작업형태 : 
             <?php echo $type_filter; ?>
           </div>
 
+          <div class="form-group">&nbsp;사무소 :</div>
           <div class="form-group">
-            &nbsp;&nbsp;사무소:
             <?php echo $office_filter; ?>
           </div>
 

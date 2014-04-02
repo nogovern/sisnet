@@ -64,7 +64,7 @@ class Repair extends CI_Controller
 		$this->load->helper('form');
 
 		// 진행상태
-		$data['status_filter'] = form_dropdown('status', gs2_op_status_list('2'), $this->input->get('status'), 'id="status_filter" class="form-control"');
+		$data['status_filter'] = form_dropdown('status', gs2_op_status_list('2'), $this->input->get('status'), 'id="status_filter" class="form-control input-sm"');
 
 		// 작업형태
 		$type_list = array(
@@ -73,13 +73,13 @@ class Repair extends CI_Controller
 			'802'	=> '수리-출고',	
 		);
 		
-		$data['type_filter'] = form_dropdown('type', $type_list, $this->input->get('type'), 'id="type_filter" class="form-control"');
+		$data['type_filter'] = form_dropdown('type', $type_list, $this->input->get('type'), 'id="type_filter" class="form-control input-sm"');
 
 		// 담당 사무소
 		$this->load->model('office_m', 'office_model');
 		$arr_office = gs2_convert_for_dropdown($this->office_model->getList());
 		$arr_office['0'] = '--전체--';
-		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control"');
+		$data['office_filter'] = form_dropdown('off_id', $arr_office, $criteria['office'], 'id="office_filter" class="form-control input-sm"');
 
 		/////////////////////////// modal 요청서 용 ////////
 		
