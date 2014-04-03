@@ -16,6 +16,7 @@ echo validation_errors();
 echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
 ?>
       <input type="hidden" name="op_type" value="900">
+      <!-- 
       <table class="table table-condensed">
         <tbody>
           <tr>
@@ -26,7 +27,8 @@ echo form_open('', 'id="register_form" role="form" class="form-horizontal" ');
             <td class="col-sm-2">완료시간: </td>
           </tr>
         </tbody>
-      </table>
+      </table> 
+      -->
       
       <!-- 철수 작업 목록 -->
       <table class="table" id="target_operations">
