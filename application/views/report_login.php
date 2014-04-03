@@ -47,7 +47,7 @@ $this->view('layout/navbar');
 
       <table id="report_table" class="table table-hover table-bordered table-responsive">
         <thead>
-          <tr class="" style="background-color: yellow;">
+          <tr class="" style="background-color: #FFE146;">
             <th class="col-xs-1 text-center">No</th>
             <th class="col-xs-2 text-center">아이디</th>
             <th class="col-xs-2 text-center">이름</th>
