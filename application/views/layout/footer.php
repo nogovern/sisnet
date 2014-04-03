@@ -23,6 +23,11 @@
         var href = $("td .btn_view", this).data('href');
         gs2_go_page(href);
       });
+
+      // datepicker 커서 변경
+      $(".date-picker").mouseover(function(){
+        $(this).css('cursor', 'default');
+      });
     });
     </script>
   </body>
