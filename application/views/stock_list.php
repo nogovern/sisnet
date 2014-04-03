@@ -1,4 +1,7 @@
 <?php
+/**
+ * 재고 전체 리스트
+ */
 $this->view('layout/header');
 $this->view('layout/navbar');
 ?>
@@ -103,9 +106,11 @@ $this->view('layout/navbar');
   <?php
   foreach($row->getStockList() as $stock):
 
-  $notice = '';         // 기준 수량 비교용
-  if($stock->getQtyMinimum() && $stock->getQtyUsable() < $stock->getQtyMinimum()) {
-  $notice = 'danger';
+  // 기준 수량 비교 하여 색지정
+  //  20140403 - 단종 상품은 색 표시 제외
+  $notice = '';
+  if($row->status > '0' && $stock->getQtyMinimum() && $stock->getQtyUsable() < $stock->getQtyMinimum()) {
+    $notice = 'danger';
   }
   ?>
   <tr class="<?=$notice?>">

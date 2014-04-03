@@ -1,4 +1,7 @@
 <?php
+/**
+ * 사무소별 재고 리스트
+ */
 $this->view('layout/header');
 $this->view('layout/navbar');
 ?>
@@ -72,9 +75,11 @@ $arr_status_text = array('단종', '정상', '일시품절');
 foreach($rows as $row):
 $part = $row->part;   // 편의상
 
-$notice = '';         // 기준 수량 비교용
-if($row->getQtyMinimum() && $row->getQtyUsable() < $row->getQtyMinimum()) {
-$notice = 'danger';
+// 기준 수량 비교 하여 색지정
+//  20140403 - 단종 상품은 색 표시 제외
+$notice = '';
+if($part->status > '0' && $row->getQtyMinimum() && $row->getQtyUsable() < $row->getQtyMinimum()) {
+  $notice = 'danger';
 }
 ?>
       <tr class="<?=$notice?>">
