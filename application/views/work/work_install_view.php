@@ -230,7 +230,7 @@ if( gs2_user_type() == '1' || gs2_user_level() >= 5 )
   }
 
   // 작업메모는 확정 후 부터만 가능 
-  if($work->status >= 2 && $work->status < 5) {
+  if($work->status >= 2 && $work->status <= 3) {
 ?>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_memo" >작업 메모</button>
       <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_change_worker">방문자 변경</button>
