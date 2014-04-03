@@ -30,7 +30,7 @@ $this->view('layout/navbar');
           </div>
 
           <div class="form-group">
-            <label class="control-label col-sm-3">점포 폐점일</label>
+            <label class="control-label col-sm-3">점포 철수일</label>
             <div class="col-sm-6">
               <div class="input-group">
                   <input type="text" id="date_close" name="date_close" class="form-control date-picker" readonly>
