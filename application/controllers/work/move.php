@@ -75,7 +75,7 @@ class Move extends CI_Controller
 		// 사무소 select 생성
 		// $rows = $this->office_model->getList();
 		// $arr_office = gs2_convert_for_dropdown($rows);
-		$data['select_sender'] = form_dropdown('send_office_id', $arr_office, $this->session->userdata('office_id'), 'id="send_office_id" class="form-control required"');
+		$data['select_sender'] = form_dropdown('send_office_id', $arr_office, 0, 'id="send_office_id" class="form-control required"');
 		$data['select_receiver'] = form_dropdown('target_office_id', $arr_office, 0, 'id="target_office_id" class="form-control required"');
 		
 		$this->load->view('work/work_move_list', $data);
