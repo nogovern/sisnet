@@ -28,7 +28,14 @@ $this->view('layout/navbar');
           </tr>
           <tr>
             <td>작업형태</td>
-            <td><?=$_config['op_type'][$work->type]?></td>
+            <td>
+<?php  
+  echo $_config['op_type'][$work->type];
+  
+  // 교체 업무인 경우 교체 요청서 링크 표시
+  echo $replace_link;
+?>              
+            </td>
             <td>&nbsp;</td>
           </tr>
           <tr>

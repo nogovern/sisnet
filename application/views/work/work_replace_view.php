@@ -68,7 +68,7 @@ foreach($work->targets as $top) {
           </tr>
           <tr>
             <td>진행상태</td>
-            <td><?=constant("GS2_OP_CLOSE_STATUS_" . $work->status)?></td>
+            <td><?=constant("GS2_OP_REPLACE_STATUS_" . $work->status)?></td>
             <td>&nbsp;</td>
           </tr>
           <tr>

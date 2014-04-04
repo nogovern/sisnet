@@ -795,6 +795,32 @@ class Work_m extends MY_Model {
 		return FALSE;
 	}
 
+	//========
+	// 타켓 업무의 부모 업무를 반환
+	//========
+	public function getTargetParent($op) {
+		$qb = $this->em->createQueryBuilder();
+
+		$qb->select('t')
+			->from('Entity\OperationTarget', "t")
+			->where("t.gubun = :gubun")
+			->andWhere("t.target = :target_id");
+
+		$qb->setParameter('gubun', "replace");
+		$qb->setParameter('target_id', $op->id);
+
+		$rs = $qb->getQuery()->getResult();
+
+		if(!count($rs)) {
+			return false;
+		}
+
+		// OperationTarget Entity
+		$target = $rs[0];
+
+		return $this->get($target->operation->id);
+	}
+
 	//====================
 	// pagination config
 	//====================
