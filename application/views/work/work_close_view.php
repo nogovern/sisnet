@@ -320,13 +320,12 @@ if( gs2_user_type() == '1') {
       <button id="btn_op_complete2" class="btn btn-danger" type="button" href="<?=base_url()?>work/ajax/iframe_complete/<?=$work->id?>" data-target="#modal_op_complete_container">작업완료</button>
 <?php
   endif;
-  if($work->status == 4):
-?>
-      <button id="btn_approve" class="btn btn-success" type="button">승인</button>
-<?php
-  endif;
 }//!-- end of 시스네트 유저
 ?>
+
+<?php if(gs2_user_type() == '2' && $work->status == '4'): ?>
+      <button id="btn_approve" class="btn btn-success" type="button">승인</button>
+<?php endif; ?>
 
     </div>
   </div>

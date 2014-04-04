@@ -202,7 +202,9 @@ class Close extends CI_Controller
 			$data['store_items'] = $this->store_model->getStoreItems($work->id);
 		}
 
-		// 교체 철수일 경우
+		//////////////////////
+		// 교체 업무일 경우
+		//////////////////////
 		if($work->type == '305') {
 			$parent = $this->work_model->getTargetParent($work);
 			$rp_link = '&nbsp;&nbsp;<a class="btn btn-info btn-xs" href="%s" target="_blank">교체요청서 보기</a>';

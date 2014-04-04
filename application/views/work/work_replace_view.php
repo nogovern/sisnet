@@ -293,16 +293,20 @@ if( gs2_user_type() == '1' || gs2_user_level() >= 5 )
 <?php
   endif;
 
-  if($work->status == 2):
-    // 대상 작업이 모두 완료일때만 교체 업무 '승인' 버튼 가능
-    if($close_target->status == '4' && $install_target->status == '4'):
-?>    
-      <button id="btn_confirm" class="btn btn-success" type="button">승인</button>
-<?php
-    endif;
-  endif;
 }//!-- end of 시스네트 유저만!!
 ?>
+
+<?php 
+if(gs2_user_type() == '2' && $work->status == '3'):
+  // 대상 작업이 모두 완료일때만 교체 업무 '승인' 버튼 가능
+  if($close_target->status == '4' && $install_target->status == '4'): 
+?>
+      <button id="btn_approve" class="btn btn-success" type="button">승인</button>
+<?php 
+  endif;
+endif; 
+?>
+
     </div>
   </div>
 </div><!-- end of div.container -->
