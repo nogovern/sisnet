@@ -69,8 +69,8 @@ class Repair extends CI_Controller
 		// 작업형태
 		$type_list = array(
 			'0'	=> '-- 전체 --',	
-			'801'	=> '수리-입고',	
-			'802'	=> '수리-출고',	
+			'501'	=> '수리-출고',	
+			'502'	=> '수리-입고',	
 		);
 		
 		$data['type_filter'] = form_dropdown('type', $type_list, $this->input->get('type'), 'id="type_filter" class="form-control input-sm"');
@@ -84,11 +84,12 @@ class Repair extends CI_Controller
 		/////////////////////////// modal 요청서 용 ////////
 		
 		// 사무소 select 생성
-		$data['select_office'] = form_dropdown('select_office', $arr_office, $this->session->userdata('office_id'), 'id="select_office" class="form-control required" disabled="disabled" ');
+		$data['select_office'] = form_dropdown('select_office', $arr_office, $this->session->userdata('office_id'), 'id="select_office" class="form-control required"');
 
-		// 업체 선택
+		// 수리 업체 선택
 		$this->load->model('company_m', 'company_model');
-		$companies = gs2_convert_for_dropdown($this->company_model->getTransferClients());
+		$companies = gs2_convert_for_dropdown($this->company_model->getClients('6'));	// 임시
+		// $companies = gs2_convert_for_dropdown($this->company_model->getClients('5'));
 		$data['select_company'] = form_dropdown('select_company', $companies, 0, 'id="select_company" class="form-control"');
 		
 		$this->load->view('work/work_repair_list', $data);
@@ -114,13 +115,16 @@ class Repair extends CI_Controller
 		$this->load->view('work/work_repair_view', $data);
 	}
 
+	/////////////////
+	// 요청 등록
+	/////////////////
 	public function register() {
-		// gs2_dump($this->input->post());
+		gs2_dump($this->input->post());
+		// exit;
 
-		$post_data['office_id'] = $this->session->userdata('office_id');
-
+		$post_data['office_id'] = $this->input->post('select_office');
 		$post_data['op_type'] =  $this->input->post('op_type');
-		$post_data['company_id'] = $this->input->post('select_company');
+		$post_data['company_id'] = $this->input->post('select_company');	// 수리 업체
 		$post_data['date_request'] = '';
 
 		// 업무 생성
@@ -137,6 +141,9 @@ class Repair extends CI_Controller
 		redirect('work/repair');
 	}
 
+	/////////////////
+	// 요청 삭제(취소)
+	/////////////////
 	public function delete($id) {
 		
 	}

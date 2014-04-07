@@ -85,7 +85,7 @@ foreach($rows as $row):
             </td>
             <td><?=$row->getDateRegister();?></td>
             <td><?=$row->getDateFinish();?></td>
-            <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/destroy/view/') . '/' . $row->id ?>">보기</button></td>
+            <td><button class="btn btn-default btn-sm btn_view" type="button" data-href="<?=site_url('work/repair/view/') . '/' . $row->id ?>">보기</button></td>
           </tr>
 <?php
 endforeach;
@@ -98,7 +98,7 @@ endforeach;
       </div>
 
       <p>
-        <button id="btn_request_destroy" type="button" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>&nbsp;요청서 등록</button>
+        <button id="btn_request_repair" type="button" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>&nbsp;요청서 등록</button>
       </p>
 
     </div>
@@ -106,7 +106,7 @@ endforeach;
 </div><!-- end of container -->
 
 <!-- modal dialog -->
-<div class="modal fade" id="modal_request_destroy" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_request_repair" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -114,7 +114,7 @@ endforeach;
         <h4 class="modal-title">수리 요청서</h4>
       </div>
       <!-- start form -->
-      <form role="form" class="form form-horizontal" method="post" action="<?php echo site_url('work/destroy/register');?>">
+      <form role="form" class="form form-horizontal" method="post" action="<?php echo site_url('work/repair/register');?>">
         <input type="hidden" name="csrf_test_name" value="<?php echo $this->security->get_csrf_hash();?>">
         <div class="modal-body">
           <div class="well well-sm">
@@ -139,6 +139,13 @@ endforeach;
             </div>
           </div>
 
+          <div class="form-group">
+            <label class="form-label col-sm-3">수리 업체</label>
+            <div class="input-group col-sm-6">
+              <?php echo $select_company ?>
+            </div>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">완료</button>
@@ -159,8 +166,8 @@ jQuery.validator.addMethod("notEqual", function(value, element, param) {
 
 $(document).ready(function(){
   // open modal
-  $("#btn_request_destroy").click(function(){
-    $("#modal_request_destroy").modal('show');
+  $("#btn_request_repair").click(function(){
+    $("#modal_request_repair").modal('show');
   });  
 
   // 상세 보기 페이지로 이동
@@ -170,13 +177,18 @@ $(document).ready(function(){
     return false;
   });
 
-  $("#modal_request_destroy form").validate({
+  // 요청서 등록
+  $("#modal_request_repair form").validate({
     rules: {
       select_office: {
         required: true,
         min: 1
       },
       op_type: {
+        required: true,
+        min: 1,
+      }, 
+      select_company: {
         required: true,
         min: 1,
       }
@@ -187,12 +199,14 @@ $(document).ready(function(){
       },
       op_type: {
         min: '수리업무 형태를 선택하세요'
+      }, 
+      select_company: {
+        min: '수리 업체를 선택하세요'
       }
     },
     submitHandler: function(form) {
       form.submit();
     }
-
   });
 
   /////////////////////////
@@ -205,7 +219,7 @@ $(document).ready(function(){
   // 검색 필터 전송 
   ///////////////////////
   $("#filter-form").submit(function() {
-    var url = _base_url + 'work/destroy/?';
+    var url = _base_url + 'work/repair/?';
     var query = $(this).serialize();
     
     $(this).prop('action', url + query);
