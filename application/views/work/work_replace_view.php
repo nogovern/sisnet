@@ -73,7 +73,7 @@ foreach($work->targets as $top) {
           </tr>
           <tr>
             <td>첨부파일</td>
-            <td>
+            <td style="white-space:nowrap;">
 <?php
 if($work->numFiles()) {
   foreach($work->files as $file) {

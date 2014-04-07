@@ -80,16 +80,16 @@ $this->view('layout/navbar');
           </tr>
           <tr>
             <td>첨부파일</td>
-            <td>
-            <?php
-            if($work->numFiles()) {
-              foreach($work->files as $file) {
-                $label_color = ($file->gubun == '요청') ? 'label-primary' : 'label-success';
-                echo '<span class="label '. $label_color .'">' . $file->gubun . "</span> ";
-                echo anchor(GS2_UPLOAD_BASEURL . $file->save_name, $file->org_name, 'target="_blank"') . '<br>';
-              }
-            }
-            ?>
+            <td style="white-space:nowrap;">
+<?php
+if($work->numFiles()) {
+  foreach($work->files as $file) {
+    $label_color = ($file->gubun == '요청') ? 'label-primary' : 'label-success';
+    echo '<span class="label '. $label_color .'">' . $file->gubun . "</span> ";
+    echo anchor(GS2_UPLOAD_BASEURL . $file->save_name, $file->org_name, 'target="_blank"') . '<br>';
+  }
+}
+?>
             </td>
             <td>&nbsp;</td>
           </tr>
