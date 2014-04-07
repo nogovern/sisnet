@@ -6,7 +6,7 @@ $this->view('layout/navbar');
 <div class="container">
   <!-- Main hero unit for a primary marketing message or call to action -->
   <div class="page-header">
-    <h1><span class="fa fa-desktop"></span>&nbsp;폐기 업무</h1>
+    <h2><span class="fa fa-desktop"></span>&nbsp;폐기 업무</h2>
   </div>
  
   <!-- Example row of columns -->

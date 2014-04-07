@@ -96,6 +96,9 @@ class Repair extends CI_Controller
 
 	}
 
+	/////////////////
+	// 상세 보기
+	/////////////////
 	public function view($id) {
 
 		$data['title'] = "수리 업무 상세 보기";
