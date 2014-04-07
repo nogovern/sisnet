@@ -10,7 +10,7 @@ $this->view('layout/navbar');
 <div class="container">
 <!-- Main hero unit for a primary marketing message or call to action -->
 <div class="page-header">
-  <h1>재고 현황</h1>
+  <h2>재고 현황</h2>
 </div>
 
 <!-- Example row of columns -->
