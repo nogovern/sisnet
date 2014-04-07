@@ -200,7 +200,7 @@ foreach($items as $item):
                 <td><?=($item->part_type == '1') ? '' : ''?></td>
                 <td><?=$item->qty_request?></td>
                 <td style="width:150px;">
-                  <?php if($work->getStatus() < '3'):?>
+                  <?php if(gs2_user_type() == '1' && $work->getStatus() < '3'):?>
                   <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
                   <?php else:?>
                   <i class="fa fa-check scan_status" style="color:green;font-size:20px;"></i>

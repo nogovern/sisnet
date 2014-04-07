@@ -108,8 +108,8 @@ if($work->numFiles()) {
         </thead>
         <tbody>
           <tr>
-            <td class="col-md-4">점포명</td>
-            <td class="col-md-8"><?=$store->name;?></td>
+            <td class="col-md-3">점포명</td>
+            <td class="col-md-9"><?=$store->name;?></td>
           </tr>
           <tr>
             <td>점포 코드</td>
@@ -258,7 +258,7 @@ foreach($items as $item):
                 <td><?=$item->qty_request?></td>
                 <td><?=$item->qty_lost?></td>
                 <td style="width:150px;">
-                  <?php if($work->getStatus() < '4'):?>
+                  <?php if(gs2_user_type() == '1' && $work->getStatus() < '4'):?>
                   <button class="btn btn-danger btn-xs remove_item" type="button">X</button>
                   <?php else:?>
                   <i class="fa fa-check scan_status" style="color:green;font-size:20px;"></i>
