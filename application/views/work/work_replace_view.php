@@ -93,8 +93,9 @@ if($work->numFiles()) {
       <table class="table table-condensed table-hover">
         <thead>
           <tr>
-            <th class="col-md-4">점포 정보</th>
-            <th class="col-md-8">&nbsp;</th>
+            <th class="col-md-12" colspan="2">점포 정보
+              <a class="btn btn-default btn-xs popup_store_info" data-storeid="<?=$store->id?>">상세보기</a>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -321,7 +322,12 @@ $this->view('common/modal_op_complete');            // 작업 완료
 //$this->view('common/modal_change_worker');          // 방문자 변경
 //$this->view('common/modal_store_complete');         // 점포 완료
 // $this->view('common/modal_close_part_register');    // 장비 등록 (설치/철수 다름)
-// 작업 완료
+
+///////////////
+//  공통 modal
+///////////////
+$this->view('common/modal_store_info');
+
 ?>
 
 <script type="text/javascript">

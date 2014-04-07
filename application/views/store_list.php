@@ -57,7 +57,7 @@ foreach($rows as $row):
           <td><?=$row->address?></td>
           <td><?=$row->getDateRegister()?></td>
           <td><?=gs2_store_status($row->status)?></td>
-          <td><button class="btn btn-info btn-sm click_me">상세</button></td>
+          <td><button class="btn btn-info btn-sm popup_store_info" data-storeid="<?=$row->id?>">상세</button></td>
         </tr>
 <?php
 endforeach;
@@ -77,15 +77,14 @@ endforeach;
     </div>
   </div>
 </div><!-- end of container -->
-<?php
-// $this->view('common/modal_store_info');
-?>
+
 <script type="text/javascript">
-jQuery(document).ready(function($) {
-  $(".click_me").click(function(){
-    openStoreInfo($(this).closest('tr').data('storeid'));
-  });
-});
+// --------- footer 로 이동 --------
+// jQuery(document).ready(function($) {
+//   $(".popup_store_info").click(function(){
+//     openStoreInfo($(this).closest('tr').data('storeid'));
+//   });
+// });
 </script>
 
 <?php

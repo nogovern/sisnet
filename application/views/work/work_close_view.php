@@ -102,7 +102,7 @@ $this->view('layout/navbar');
         <thead>
           <tr>
             <th class="col-md-12" colspan="2">점포 정보
-              <a class="btn btn-default btn-xs" href="#" onclick="alert('구현 예정');return false;">상세보기</a>
+              <a class="btn btn-default btn-xs popup_store_info" data-storeid="<?=$store->id?>">상세보기</a>
             </th>
           </tr>
         </thead>
@@ -346,6 +346,12 @@ if($work->type == '304') {
   $this->view('common/modal_close_rest_part_register');   // 휴점S 용 장비 등록
 }
 $this->view('common/modal_close_part_register');   	// 장비 등록 (설치/철수 다름)
+
+///////////////
+//  공통 modal
+///////////////
+$this->view('common/modal_store_info');
+
 ?>
 
 <script type="text/javascript">

@@ -28,6 +28,15 @@
       $(".date-picker").mouseover(function(){
         $(this).css('cursor', 'default');
       });
+
+      // 점포 정포 modal popup 이벤트
+      $(".popup_store_info").click(function(){
+        // html attribute 는 대소문자를 구분하지 않는다
+        var store_id = $(this).data('storeid');
+        openStoreInfo(store_id);
+        // gs2_console(store_id);
+        return false;
+      });
     });
     </script>
   </body>
