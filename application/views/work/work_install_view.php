@@ -108,8 +108,8 @@ if($work->numFiles()) {
         </thead>
         <tbody>
           <tr>
-            <td>점포명</td>
-            <td><?=$store->name;?></td>
+            <td class="col-md-3">점포명</td>
+            <td class="col-md-9"><?=$store->name;?></td>
           </tr>
           <tr>
             <td>점포 코드</td>
