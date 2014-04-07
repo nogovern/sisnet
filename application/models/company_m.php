@@ -22,12 +22,18 @@ class Company_m extends MY_Model {
 	}
 
 	// 외부 거래 업체 리스트 얻기
-	public function getClients() {
+	// company_type 이 지정되면 해당 type 의 업체 리스트 반환 
+	public function getClients($company_type=null) {
 		$qb = $this->em->createQueryBuilder();
 		$qb->select('c')
 			->from("Entity\Company", "c")
 			->where("c.type >= '3'")
 			->andWhere("c.status = 'Y'");
+
+		if(!is_null($company_type)) {
+			$qb->andWhere("c.type = :type")
+				->setParameter("type", $company_type);
+		}
 
 		$qb->addOrderBy("c.type", "ASC");
 		$qb->addOrderBy("c.name", "ASC");
