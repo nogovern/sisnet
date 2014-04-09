@@ -46,8 +46,8 @@ $this->view('layout/navbar');
             <th>No</th>
             <th>작업구분</th>
             <th>요청자</th>
-            <th>승인/수리 업체</th>
-            <th>요청/출고 수량</th>
+            <th>수리업체</th>
+            <th>수량</th>
             <th>재고사무소</th>
             <th>상태</th>
             <th>등록일</th>

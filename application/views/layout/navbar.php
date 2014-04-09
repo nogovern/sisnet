@@ -57,6 +57,7 @@ if(0) {
             <li id="page-move"><a href="<?=site_url('/work/move')?>">이동</a></li>
             <li id="page-destroy"><a href="<?=site_url('/work/destroy')?>">폐기</a></li>
             <li id="page-transfer"><a href="<?=site_url('/work/transfer')?>">이관</a></li>
+            <li id="page-repair"><a href="<?=site_url('/work/repair')?>">수리</a></li>
             
 <?php endif;    // !-- 시스네트 권한 이상 ?>
           </ul>
