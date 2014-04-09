@@ -100,8 +100,8 @@ class Repair extends CI_Controller
 	// 상세 보기
 	/////////////////
 	public function view($id) {
-		echo "수리업무 상세 보기 작업중";
-		exit;
+		// echo "수리업무 상세 보기 작업중";
+		// exit;
 
 		$data['title'] = "수리 업무 상세 보기";
 		$data['current'] = 'page-repair';

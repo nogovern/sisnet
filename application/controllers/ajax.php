@@ -451,8 +451,24 @@ class Ajax extends CI_Controller
 		$op = $this->work_model->get($params['id']);
 
 		if( $op->type == '801' || $op->type == '802') {
-			$this->load->model('transfer_m');
-			$result = $this->transfer_m->findBySerialNumber($op, $sn);
+		}
+
+		// 업무별 분기
+		switch($op->type) {
+			case '501':
+			case '502':
+				$this->load->model('repair_m');
+				$result = $this->repair_m->findBySerialNumber($op, $sn);
+				break;
+			// 이관 
+			case '801':
+			case '802':
+				$this->load->model('transfer_m');
+				$result = $this->transfer_m->findBySerialNumber($op, $sn);
+				break;
+
+			default:
+				break;
 		}
 
 		$response = new stdClass;
@@ -479,7 +495,10 @@ class Ajax extends CI_Controller
 		if( $op->type == '801' || $op->type == '802') {
 			$this->load->model('transfer_m');
 			$item = $this->transfer_m->addItem($op, $input, true);
-		}
+		} elseif( $op->type >= '500' || $op->type < '600') {
+			$this->load->model('repair_m');
+			$item = $this->repair_m->addItem($op, $input, true);
+		} 
 
 		$response = new stdClass;
 
@@ -506,7 +525,10 @@ class Ajax extends CI_Controller
 		if( $op->type == '801' || $op->type == '802') {
 			$this->load->model('transfer_m');
 			$result = $this->transfer_m->removeItem($op, $item_id, true);
-		}
+		} elseif( $op->type >= '500' || $op->type < '600') {
+			$this->load->model('repair_m');
+			$result = $this->repair_m->removeItem($op, $item_id, true);
+		} 
 
 		// 결과 객체
 		$response = new stdClass;
